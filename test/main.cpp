@@ -1,7 +1,11 @@
 #include "gtest/gtest.h"
 
-#include "cgmath.h"
+#include <string>
 
+// This is available in all editors.
+std::string INPUT_DIR = "../../ctk/data/test/";
+std::string OUTPUT_DIR = "test_out/";
+bool SAVE_IMAGES = true;
 
 int main(int argc, char **argv)
 {

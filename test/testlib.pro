@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += console c++14
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -12,7 +12,11 @@ MOC_DIR = $$BUILD_FOLDER/$$TARGET
 DESTDIR = $$BUILD_FOLDER/$$TARGET
 
 SOURCES += \
+        ctkbinarymatrixtest.cpp \
+        ctkgrayimagetest.cpp \
         ctkmathtest.cpp \
+        ctknumericmatrixtest.cpp \
+        ctkrgbimagetest.cpp \
         ctkvecauxtest.cpp \
         main.cpp
 
@@ -28,5 +32,29 @@ LIBS += -L$$BUILD_FOLDER/ctk -lctk
 PRE_TARGETDEPS += $$BUILD_FOLDER/ctk/libctk.a
 
 HEADERS += \
+    ctkbinarymatrixtest.h \
+    ctkgrayimagetest.h \
     ctkmathtest.h \
+    ctknumericmatrixtest.h \
+    ctkrgbimagetest.h \
     ctkvecauxtest.h
+
+
+## Dependecies
+unix {
+    target.path = /usr/lib
+}
+!isEmpty(target.path): INSTALLS += target
+
+unix:!macx {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += opencv
+}
+macx: {
+    QT_CONFIG -= no-pkg-config
+    CONFIG += link_pkgconfig
+    PKG_CONFIG = /usr/local/bin/pkg-config
+    PKGCONFIG += opencv4
+    PKGCONFIG += tesseract
+    PKGCONFIG += zbar ilmbase
+}

@@ -3,7 +3,7 @@
 #include "ctkmath.h"
 #include "ctkvectoraux.h"
 
-void CgMathTest::SetUp()
+void CtkMathTest::SetUp()
 {
     some_primes_i = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
                      47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
@@ -19,16 +19,16 @@ void CgMathTest::SetUp()
                        47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
 }
 
-TEST_F(CgMathTest, CgMathTestSetup) {
-    EXPECT_EQ(CgMathTest::some_primes_i.size(), 25);
-    EXPECT_EQ(CgMathTest::some_primes_ui.size(), 25);
-    EXPECT_EQ(CgMathTest::some_primes_l.size(), 25);
-    EXPECT_EQ(CgMathTest::some_primes_ul.size(), 25);
-    EXPECT_EQ(CgMathTest::some_primes_ll.size(), 25);
-    EXPECT_EQ(CgMathTest::some_primes_ull.size(), 25);
+TEST_F(CtkMathTest, Test_Setup) {
+    EXPECT_EQ(CtkMathTest::some_primes_i.size(), 25);
+    EXPECT_EQ(CtkMathTest::some_primes_ui.size(), 25);
+    EXPECT_EQ(CtkMathTest::some_primes_l.size(), 25);
+    EXPECT_EQ(CtkMathTest::some_primes_ul.size(), 25);
+    EXPECT_EQ(CtkMathTest::some_primes_ll.size(), 25);
+    EXPECT_EQ(CtkMathTest::some_primes_ull.size(), 25);
 }
 
-TEST_F(CgMathTest, CgMathTestCoutingPrimes) {
+TEST_F(CtkMathTest, Test_CoutingPrimes) {
     int i = 100;
     unsigned int ui = 100;
     long l = 100;
@@ -50,7 +50,7 @@ TEST_F(CgMathTest, CgMathTestCoutingPrimes) {
     EXPECT_EQ(ctk::countPrimeNumbers(ull), 25);
 }
 
-TEST_F(CgMathTest, CgMathTestListingPrimes) {
+TEST_F(CtkMathTest, Test_ListingPrimes) {
     int i = 100;
     unsigned int ui = 100;
     long l = 100;

@@ -1,0 +1,59 @@
+#ifndef NUMERICMATRIX_H
+#define NUMERICMATRIX_H
+
+#include <string>
+
+#include "ctkabstractmatrix.h"
+
+namespace ctk {
+
+class NumericMatrix : public AbstractMatrix<double>
+{
+public:
+    NumericMatrix();
+    NumericMatrix(const NumericMatrix& that);
+    NumericMatrix(cv::Mat& d);
+    NumericMatrix(int w, int h, std::vector<double>& d);
+
+    NumericMatrix& operator=(const NumericMatrix& that);
+
+    void Open(std::string filename);
+    void Save(std::string filename);
+    void Show();
+
+    NumericMatrix operator+(const NumericMatrix &that);
+    void operator+=(const NumericMatrix &that);
+
+    NumericMatrix operator-(const NumericMatrix &that);
+    void operator-=(const NumericMatrix &that);
+
+    NumericMatrix operator*(const NumericMatrix &that);
+    void operator*=(const NumericMatrix &that);
+
+    NumericMatrix operator/(const NumericMatrix &that);
+    void operator/=(const NumericMatrix &that);
+
+    NumericMatrix operator+(const double v);
+    void operator+=(const double v);
+
+    NumericMatrix operator-(const double v);
+    void operator-=(const double v);
+
+    NumericMatrix operator*(const double v);
+    void operator*=(const double v);
+
+    NumericMatrix operator/(const double v);
+    void operator/=(const double v);
+
+    double determinant();
+
+    NumericMatrix Invert();
+    void SelfInvert();
+
+    NumericMatrix Transpose();
+    void SelfTranspose();
+};
+
+}
+
+#endif // NUMERICMATRIX_H

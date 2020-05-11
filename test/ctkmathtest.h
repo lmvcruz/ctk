@@ -5,7 +5,8 @@
 
 #include <vector>
 
-class CgMathTest : public ::testing::Test {
+class CtkMathTest : public ::testing::Test
+{
 public:
     void SetUp() override;
 
@@ -18,3 +19,4 @@ public:
 };
 
 #endif // CGMATHTEST_H
+

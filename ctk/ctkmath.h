@@ -111,17 +111,89 @@ std::vector<T> generatePrimeNumbersEs(T n) {
     return primes;
 }
 
+/**
+ * @brief generatePrimeNumbersBf
+ * @param n
+ * @return
+ */
 std::vector<int> generatePrimeNumbersBf(int n);
+
+/**
+ * @brief generatePrimeNumbersBf
+ * @param n
+ * @return
+ */
 std::vector<unsigned int> generatePrimeNumbersBf(unsigned int n);
+
+/**
+ * @brief generatePrimeNumbersBf
+ * @param n
+ * @return
+ */
 std::vector<long> generatePrimeNumbersBf(long n);
+
+/**
+ * @brief generatePrimeNumbersBf
+ * @param n
+ * @return
+ */
 std::vector<unsigned long> generatePrimeNumbersBf(unsigned long n);
+
+/**
+ * @brief generatePrimeNumbersBf
+ * @param n
+ * @return
+ */
 std::vector<long long> generatePrimeNumbersBf(long long n);
+
+/**
+ * @brief generatePrimeNumbersBf
+ * @param n
+ * @return
+ */
 std::vector<unsigned long long> generatePrimeNumbersBf(unsigned long long n);
 
+
+/**
+ * @brief generatePrimeNumbers
+ * @param n
+ * @return
+ */
 std::vector<int> generatePrimeNumbers(int n);
+
+/**
+ * @brief generatePrimeNumbers
+ * @param n
+ * @return
+ */
 std::vector<unsigned int> generatePrimeNumbers(unsigned int n);
+
+/**
+ * @brief generatePrimeNumbers
+ * @param n
+ * @return
+ */
 std::vector<long> generatePrimeNumbers(long n);
+
+/**
+ * @brief generatePrimeNumbers
+ * @param n
+ * @return
+ */
 std::vector<unsigned long> generatePrimeNumbers(unsigned long n);
+
+/**
+ * @brief generatePrimeNumbers
+ * @param n
+ * @return
+ */
 std::vector<long long> generatePrimeNumbers(long long n);
+
+/**
+ * @brief generatePrimeNumbers
+ * @param n
+ * @return
+ */
 std::vector<unsigned long long> generatePrimeNumbers(unsigned long long n);
+
 };
