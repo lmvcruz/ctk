@@ -53,3 +53,4 @@ macx: {
     PKGCONFIG += tesseract
     PKGCONFIG += zbar ilmbase
 }
+

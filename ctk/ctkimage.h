@@ -450,6 +450,7 @@ public:
     int blue(int x, int y);
 
     void Save(std::string filename);
+    void Save(std::string filename, bool invert);
 
     GrayImage toGrayImage();
     //TODO: NEXT SPRINT

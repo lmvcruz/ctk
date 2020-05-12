@@ -201,6 +201,16 @@ void RgbImage::Save(std::string filename)
     cv::imwrite(filename, aux);
 }
 
+void RgbImage::Save(std::string filename, bool invert)
+{
+    if(!invert) {
+        cv::Mat aux;
+        cv::cvtColor(data, aux, cv::COLOR_RGB2BGR);
+        cv::imwrite(filename, aux);
+    }
+    else cv::imwrite(filename, data);
+}
+
 GrayImage RgbImage::toGrayImage()
 {
     GrayImage newImage;
