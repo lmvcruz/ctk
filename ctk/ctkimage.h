@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
 #include "ctkabstractmatrix.h"
 #include "ctkbinarymatrix.h"
@@ -29,6 +30,8 @@ protected:
     std::vector<int> indices;
     int currIterIdx;
 
+    bool invertchannels;
+
 public:
     using AbstractMatrix<T>::get;
     using AbstractMatrix<T>::set;
@@ -39,6 +42,8 @@ public:
     AbstractImage() {
         AbstractMatrix<T>::type = -1;
         AbstractMatrix<T>::ch_size = -1;
+        //
+        invertchannels = false;
     }
 
     /**
@@ -48,6 +53,8 @@ public:
     AbstractImage(cv::Mat &d) : AbstractMatrix<T>(d){
         AbstractMatrix<T>::type = d.type();
         AbstractMatrix<T>::ch_size = d.channels();
+        //
+        invertchannels = false;
     }
 
     /**
@@ -363,12 +370,23 @@ public:
         cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, 0);
     }
 
+    AbstractImage<T> resize(int nw, int nh) {
+        cv::Mat aux;
+        cv::resize(AbstractMatrix<T>::data, aux, cv::Size(nw,nh), cv::INTER_CUBIC);
+        return AbstractImage<T>(aux);
+    }
+
     /**
      * @brief Open TODO
      * @param filename TODO
      */
     void Open(std::string filename) {
         AbstractMatrix<T>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
+        if (invertchannels) {
+            cv::cvtColor(AbstractMatrix<T>::data,
+                         AbstractMatrix<T>::data,
+                         cv::COLOR_RGB2BGR);
+        }
     }
 
     /**
@@ -377,6 +395,12 @@ public:
      */
     void Save(std::string filename) {
         cv::imwrite(filename, AbstractMatrix<T>::data);
+        if(invertchannels) {
+            cv::Mat aux;
+            cv::cvtColor(AbstractMatrix<T>::data,
+                         aux, cv::COLOR_RGB2BGR);
+            cv::imwrite(filename, aux);
+        }
     }
 
     /**
@@ -448,9 +472,6 @@ public:
     int red(int x, int y);
     int green(int x, int y);
     int blue(int x, int y);
-
-    void Save(std::string filename);
-    void Save(std::string filename, bool invert);
 
     GrayImage toGrayImage();
     //TODO: NEXT SPRINT

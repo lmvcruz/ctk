@@ -26,6 +26,8 @@ public:
     BinaryMatrix Or(BinaryMatrix& that);
     BinaryMatrix Xor(BinaryMatrix& that);
 
+    //TODO: Implement Self methods
+
     int countTrues();
     int countFalses();
 

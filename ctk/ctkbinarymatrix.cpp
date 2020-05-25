@@ -35,10 +35,7 @@ BinaryMatrix::BinaryMatrix(int w, int h, std::vector<bool> &d)
 {
     type = CV_8U;
     ch_size = 1;
-    Create(w, h);
-    //
-    int i=-1;
-    for (auto it=begin(); it!=end(); ++it) *it = d[++i];
+    Create(w, h, d);
 }
 
 BinaryMatrix &BinaryMatrix::operator=(const BinaryMatrix &that)

@@ -8,6 +8,14 @@
 
 namespace ctk {
 
+class invalid_type: public std::exception
+{
+    virtual const char* what() const noexcept
+    {
+        return "Invalid type";
+    }
+};
+
 /**
  *  @brief CtkAbstractMatrix TODO
  */
@@ -70,8 +78,31 @@ public:
      * @param h TODO
      */
     virtual void Create(int w, int h) {
-        assert(type!=-1);
-        data = cv::Mat(h, w, type);
+        if (w>0 && h>0) {
+            if (type==-1) throw invalid_type();
+            data = cv::Mat(h, w, type);
+        }
+        else if (w<0 || h<0) {
+            throw std::bad_alloc();
+        }
+    }
+
+    /**
+     * @brief Create
+     * @param w
+     * @param h
+     * @param vec
+     */
+    virtual void Create(int w, int h, std::vector<T> &vec) {
+        if (w>0 && h>0) {
+            if (type==-1) throw invalid_type();
+            data = cv::Mat(h, w, type);
+            int i=-1;
+            for (auto it=begin(); it!=end(); ++it) *it = vec[++i];
+        }
+        else if (w<0 || h<0) {
+            throw std::bad_alloc();
+        }
     }
 
     /**

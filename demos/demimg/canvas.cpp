@@ -173,7 +173,7 @@ void Canvas::keyPressEvent(QKeyEvent *event)
     }
     case 'S': {
         ctk::RgbImage rgb = QImage2CtkImage();
-        rgb.Save("out.png", true);
+        rgb.Save("out.png");
         qDebug() << "Saving: " << rgb.width() << rgb.height();
         break;
     }

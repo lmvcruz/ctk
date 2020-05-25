@@ -44,6 +44,19 @@ NumericMatrix &NumericMatrix::operator=(const NumericMatrix &that)
     return *this;
 }
 
+void NumericMatrix::Create(int w, int h, std::vector<int> &vec) {
+    if (w>0 && h>0) {
+        if (type==-1) throw invalid_type();
+        data = cv::Mat(h, w, type);
+        int i=-1;
+        for (auto it=begin(); it!=end(); ++it)
+            *it = static_cast<double>(vec[++i]);
+    }
+    else if (w<0 || h<0) {
+        throw std::bad_alloc();
+    }
+}
+
 void NumericMatrix::Open(std::string filename)
 {
     data = cv::imread(filename, cv::IMREAD_ANYDEPTH);
@@ -105,7 +118,7 @@ NumericMatrix NumericMatrix::operator/(const NumericMatrix &that)
     assert(data.cols==that.rows());
     assert(that.cols()==that.rows() && that.cols()>0);
     assert(std::fabs(cv::determinant(that.data))>FLT_EPSILON);
-    cv::Mat res = data * that.data.inv();
+    cv::Mat res = data / that.data;
     return NumericMatrix(res);
 }
 
@@ -114,7 +127,7 @@ void NumericMatrix::operator/=(const NumericMatrix &that)
     assert(data.cols==that.rows());
     assert(that.cols()==that.rows() && that.cols()>0);
     assert(std::fabs(cv::determinant(that.data))>FLT_EPSILON);
-    data *= that.data.inv();
+    data /= that.data;
 }
 
 NumericMatrix NumericMatrix::operator+(const double v)

@@ -17,6 +17,9 @@ public:
 
     NumericMatrix& operator=(const NumericMatrix& that);
 
+    using AbstractMatrix<double>::Create;
+    virtual void Create(int w, int h, std::vector<int> &vec);
+
     void Open(std::string filename);
     void Save(std::string filename);
     void Show();

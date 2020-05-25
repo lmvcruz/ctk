@@ -10,6 +10,7 @@ GrayImage::GrayImage()
 {
     type = CV_8UC1;
     ch_size = 1;
+    invertchannels = false;
 }
 
 GrayImage::GrayImage(const GrayImage &that)
@@ -17,6 +18,7 @@ GrayImage::GrayImage(const GrayImage &that)
     assert(that.data.type()==CV_8UC1 && that.data.channels()==1);
     type = that.type;
     ch_size = that.ch_size;
+    invertchannels = false;
     data = that.data.clone();
 }
 
@@ -26,6 +28,7 @@ GrayImage::GrayImage(const AbstractImage<uchar> &that)
            && that.get_data().channels()==1);
     type = CV_8UC1;
     ch_size = 1;
+    invertchannels = false;
     data = that.get_data().clone();
 }
 
@@ -38,6 +41,7 @@ GrayImage &GrayImage::operator=(const GrayImage &that)
     assert(that.data.type()==CV_8UC1 && that.data.channels()==1);
     type = that.type;
     ch_size = that.ch_size;
+    invertchannels = false;
     data = that.data.clone();
     return *this;
 }
@@ -47,6 +51,7 @@ GrayImage &GrayImage::operator=(const cv::Mat &that)
     assert(that.type()==CV_8UC1 && that.channels()==1);
     type = that.type();
     ch_size = that.channels();
+    invertchannels = false;
     data = that.clone();
     return *this;
 }
@@ -57,6 +62,7 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that)
            && that.get_data().channels()==1);
     type = CV_8UC1;
     ch_size = 1;
+    invertchannels = false;
     data = that.get_data().clone();
     return *this;
 }
@@ -101,6 +107,7 @@ ColorImage::ColorImage()
 {
     type = CV_8UC3;
     ch_size = 3;
+    invertchannels = false;
 }
 
 ColorImage::ColorImage(const ColorImage &that)
@@ -108,6 +115,7 @@ ColorImage::ColorImage(const ColorImage &that)
     assert(that.data.type()==CV_8UC3 && that.data.channels()==3);
     type = that.type;
     ch_size = that.ch_size;
+    invertchannels = false;
     data = that.data.clone();
 }
 
@@ -117,6 +125,7 @@ ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that)
            && that.get_data().channels()==3);
     type = CV_8UC3;
     ch_size = 3;
+    invertchannels = false;
     data = that.get_data().clone();
 }
 
@@ -131,6 +140,7 @@ int ColorImage::channels()
 
 RgbImage::RgbImage() : ColorImage()
 {
+    invertchannels = true;
 }
 
 RgbImage::RgbImage(const RgbImage &that)
@@ -138,6 +148,7 @@ RgbImage::RgbImage(const RgbImage &that)
     assert(that.data.type()==CV_8UC3 && that.data.channels()==3);
     type = that.type;
     ch_size = that.ch_size;
+    invertchannels = true;
     data = that.data.clone();
 }
 
@@ -147,6 +158,7 @@ RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that)
            && that.get_data().channels()==3);
     type = CV_8UC3;
     ch_size = 3;
+    invertchannels = true;
     data = that.get_data().clone();
 }
 
@@ -192,23 +204,6 @@ int RgbImage::green(int x, int y)
 int RgbImage::blue(int x, int y)
 {
     return AbstractMatrix<cv::Vec3b>::get(x,y)[2];
-}
-
-void RgbImage::Save(std::string filename)
-{
-    cv::Mat aux;
-    cv::cvtColor(data, aux, cv::COLOR_RGB2BGR);
-    cv::imwrite(filename, aux);
-}
-
-void RgbImage::Save(std::string filename, bool invert)
-{
-    if(!invert) {
-        cv::Mat aux;
-        cv::cvtColor(data, aux, cv::COLOR_RGB2BGR);
-        cv::imwrite(filename, aux);
-    }
-    else cv::imwrite(filename, data);
 }
 
 GrayImage RgbImage::toGrayImage()
