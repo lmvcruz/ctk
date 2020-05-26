@@ -27,27 +27,27 @@ unsigned long long countPrimeNumbersBf(unsigned long long n) {
 }
 
 int countPrimeNumbers(int n) {
-    return countPrimeNumbersBf<int>(n);
+    return countPrimeNumbersEs<int>(n);
 }
 
 unsigned int countPrimeNumbers(unsigned int n) {
-    return countPrimeNumbersBf<unsigned int>(n);
+    return countPrimeNumbersEs<unsigned int>(n);
 }
 
 long countPrimeNumbers(long n) {
-    return countPrimeNumbersBf<long>(n);
+    return countPrimeNumbersEs<long>(n);
 }
 
 unsigned long countPrimeNumbers(unsigned long n) {
-    return countPrimeNumbersBf<unsigned long>(n);
+    return countPrimeNumbersEs<unsigned long>(n);
 }
 
 long long countPrimeNumbers(long long n) {
-    return countPrimeNumbersBf<long long>(n);
+    return countPrimeNumbersEs<long long>(n);
 }
 
 unsigned long long countPrimeNumbers(unsigned long long n) {
-    return countPrimeNumbersBf<unsigned long long>(n);
+    return countPrimeNumbersEs<unsigned long long>(n);
 }
 
 std::vector<int> generatePrimeNumbersBf(int n) {

@@ -180,8 +180,8 @@ TEST_F(CtkGrayImageTest, Test_startSnailIndices) {
 TEST_F(CtkGrayImageTest, Test_startCustomIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    std::vector<int> vec = RangeVector(0, (40*40)-1);
-    Shuffle(vec, 0);
+    std::vector<int> vec = ctk::RangeVector(0, (40*40)-1);
+    ctk::Shuffle(vec, 0);
     img.startCustomIndices(vec);
     for (int i=0; i<img.size(); i++) {
         img.set(i, i%255);
