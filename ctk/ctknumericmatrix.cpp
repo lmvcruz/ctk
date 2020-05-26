@@ -176,21 +176,21 @@ void NumericMatrix::operator/=(const double v)
     data /= v;
 }
 
-double NumericMatrix::determinant()
+double NumericMatrix::Determinant()
 {
     return cv::determinant(data);
 }
 
 NumericMatrix NumericMatrix::Invert()
 {
-    assert(std::fabs(determinant())>FLT_EPSILON);
+    assert(std::fabs(Determinant())>FLT_EPSILON);
     cv::Mat res = data.inv();
     return NumericMatrix(res);
 }
 
 void NumericMatrix::SelfInvert()
 {
-    assert(std::fabs(determinant())>FLT_EPSILON);
+    assert(std::fabs(Determinant())>FLT_EPSILON);
     data = data.inv();
 }
 

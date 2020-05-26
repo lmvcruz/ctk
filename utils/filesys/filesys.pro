@@ -1,29 +1,27 @@
-TEMPLATE = app
-CONFIG += console c++11
-CONFIG -= app_bundle
-CONFIG -= qt
+QT -= gui
 
-TARGET = matrices
+TEMPLATE = lib
+CONFIG += staticlib
+CONFIG += release
+CONFIG += warn_on
+
+CONFIG += c++14
+
 ROOT_FOLDER = $$PWD/../../
 BUILD_FOLDER = $$ROOT_FOLDER/../build
 
+## Propgram Setup
+TARGET = filesys
 OBJECTS_DIR = $$BUILD_FOLDER/$$TARGET
 MOC_DIR = $$BUILD_FOLDER/$$TARGET
-DESTDIR = $$BUILD_FOLDER/$$TARGET
-
-SOURCES += main.cpp
-
-# GTest and GBenchmark
-LIBS += -L/usr/local/lib/ -lgtest -lbenchmark
-INCLUDEPATH += "/usr/local/include/"
+DESTDIR = $$BUILD_FOLDER/libs
 
 
-## CGTools
-INCLUDEPATH += $$ROOT_FOLDER/ctk
-DEPENDPATH += $$ROOT_FOLDER/ctk
+SOURCES += \
+    filesystem.cpp
 
-LIBS += -L$$BUILD_FOLDER/libs -lctk
-PRE_TARGETDEPS += $$BUILD_FOLDER/libs/libctk.a
+HEADERS += \
+    filesystem.h
 
 ## Dependecies
 unix {
@@ -43,3 +41,4 @@ macx: {
     PKGCONFIG += tesseract
     PKGCONFIG += zbar ilmbase
 }
+

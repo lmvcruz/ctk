@@ -48,7 +48,7 @@ public:
     NumericMatrix operator/(const double v);
     void operator/=(const double v);
 
-    double determinant();
+    double Determinant();
 
     NumericMatrix Invert();
     void SelfInvert();

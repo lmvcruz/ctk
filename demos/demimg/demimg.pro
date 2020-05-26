@@ -58,5 +58,5 @@ macx: {
 INCLUDEPATH += $$ROOT_FOLDER/ctk
 DEPENDPATH += $$ROOT_FOLDER/ctk
 
-LIBS += -L$$BUILD_FOLDER/ctk -lctk
-PRE_TARGETDEPS += $$BUILD_FOLDER/ctk/libctk.a
+LIBS += -L$$BUILD_FOLDER/libs -lctk
+PRE_TARGETDEPS += $$BUILD_FOLDER/libs/libctk.a

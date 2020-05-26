@@ -3,7 +3,7 @@ CONFIG += console c++14
 CONFIG -= app_bundle
 CONFIG -= qt
 
-TARGET = test_lib
+TARGET = unittests
 ROOT_FOLDER = $$PWD/..
 BUILD_FOLDER = $$ROOT_FOLDER/../build
 
@@ -28,8 +28,8 @@ INCLUDEPATH += "/usr/local/include/"
 INCLUDEPATH += $$ROOT_FOLDER/ctk
 DEPENDPATH += $$ROOT_FOLDER/ctk
 
-LIBS += -L$$BUILD_FOLDER/ctk -lctk
-PRE_TARGETDEPS += $$BUILD_FOLDER/ctk/libctk.a
+LIBS += -L$$BUILD_FOLDER/libs -lctk
+PRE_TARGETDEPS += $$BUILD_FOLDER/libs/libctk.a
 
 HEADERS += \
     ctkbinarymatrixtest.h \

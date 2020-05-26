@@ -561,13 +561,13 @@ TEST_F(CtkNumericMatrixTest, Test_SelfDivNum) {
 }
 
 TEST_F(CtkNumericMatrixTest, Test_Determinant) {
-    EXPECT_LE(std::fabs(CtkNumericMatrixTest::mat3.determinant()-2.0),
+    EXPECT_LE(std::fabs(CtkNumericMatrixTest::mat3.Determinant()-2.0),
               FLT_EPSILON);
-    EXPECT_LE(std::fabs(CtkNumericMatrixTest::mat3i.determinant()-0.5),
+    EXPECT_LE(std::fabs(CtkNumericMatrixTest::mat3i.Determinant()-0.5),
               FLT_EPSILON);
     ctk::NumericMatrix mat = CtkNumericMatrixTest::mat3 *
             CtkNumericMatrixTest::mat3i;
-    EXPECT_LE(std::fabs(mat.determinant()-1.0), FLT_EPSILON);
+    EXPECT_LE(std::fabs(mat.Determinant()-1.0), FLT_EPSILON);
 }
 
 TEST_F(CtkNumericMatrixTest, Test_Inv) {

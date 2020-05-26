@@ -95,7 +95,7 @@ void Canvas::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case 'O': {
         ctk::RgbImage rgb;
-        rgb.Open("rgb_img.jpg");
+        rgb.Open("../../ctk/data/general/rgb_img.jpg");
         m_img = CtkImage2QImage(rgb);
         m_imgcache = m_img;
         qDebug() << "Opening" << m_img.width() << m_img.height();
@@ -160,7 +160,7 @@ void Canvas::keyPressEvent(QKeyEvent *event)
         ctk::RgbImage rgb = QImage2CtkImage();
         rgb.SelfRotate90();
         m_img = CtkImage2QImage(rgb);
-        qDebug() << "Flip Ver: " << m_img.width() << m_img.height();
+        qDebug() << "Rotate: " << m_img.width() << m_img.height();
         break;
     }
     case 'C': {
@@ -208,7 +208,6 @@ void Canvas::RestoreCache()
 QImage Canvas::CtkImage2QImage(ctk::RgbImage &rgb)
 {
     cv::Mat &data = rgb.get_data();
-    cv::cvtColor(data, data, cv::COLOR_BGR2RGB);
     QImage dest((const uchar *) data.data, data.cols, data.rows, data.step, QImage::Format_RGB888);
     dest.bits();
     return dest;
@@ -218,7 +217,8 @@ ctk::RgbImage Canvas::QImage2CtkImage()
 {
     cv::Mat tmp(m_img.height(),m_img.width(),CV_8UC3,
                 (uchar*)m_img.bits(),m_img.bytesPerLine());
-    cv::Mat result; // deep copy just in case (my lack of knowledge with open cv)
-    cv::cvtColor(tmp, result,cv::COLOR_BGR2RGB);
-    return result;
+    return tmp;
+//    cv::Mat result; // deep copy just in case (my lack of knowledge with open cv)
+//    cv::cvtColor(tmp, result,cv::COLOR_BGR2RGB);
+//    return result;
 }

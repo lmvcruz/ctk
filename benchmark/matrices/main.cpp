@@ -219,7 +219,7 @@ void CreateNumericMatrix(ctk::NumericMatrix &m, int w, int h)
     m.Create(w, h);
     for (auto x=0; x<w; x++) {
         for (auto y=0; y<h; y++) {
-            m.set(x,y, std::rand());
+            m.set(x,y, std::rand()%10);
         }
     }
 }
@@ -645,7 +645,7 @@ BENCHMARK(NM_MatDivScalar)
 #endif
 
 
-#if 1
+#if 0
 //
 // Arithmetic operations: by Scalar and Self
 //
@@ -752,407 +752,97 @@ BENCHMARK(NM_MatSelfDivScalar)
 #endif
 
 
-
-
-
 #if 0
 //
-// Sum
+// Linear Algebra
 //
-bool NumericMatrixScalarSum(int d) {
+static void NM_Determinant(benchmark::State& state) {
     ctk::NumericMatrix m1;
-    m1.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.set(x,y, std::rand());
-        }
+    CreateNumericMatrix(m1, state.range(0), state.range(0));
+    for (auto _ : state) {
+        m1.determinant();
     }
-    ctk::NumericMatrix m2;
-    m2.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.set(x,y, std::rand());
-        }
+    state.SetComplexityN(m1.size());
+}
+BENCHMARK(NM_Determinant)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
+
+
+static void NM_MatDeterminant(benchmark::State& state) {
+    cv::Mat m1;
+    CreateNumericMat(m1, state.range(0), state.range(0));
+    for (auto _ : state) {
+        cv::determinant(m1);
     }
-    ctk::NumericMatrix m3 = m1 + m2;
-    return m3.rows()==d;
+    state.SetComplexityN(m1.rows*m1.cols);
 }
+BENCHMARK(NM_MatDeterminant)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
 
-static void NM_NumericMatrixScalarSum(benchmark::State& state) {
-    for (auto _ : state)
-        NumericMatrixScalarSum(state.range(0));
-}
-BENCHMARK(NM_NumericMatrixScalarSum)->Range(8, 1000);
 
-bool MatScalarSum(int d) {
-    cv::Mat m1(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m2(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m3 = m1 + m2;
-    return m3.rows==d;
-}
-
-static void NM_MatScalarSum(benchmark::State& state) {
-    for (auto _ : state)
-        MatScalarSum(state.range(0));
-}
-BENCHMARK(NM_MatScalarSum)->Range(8, 1000);
-
-bool NumericMatrixSelfScalarSum(int d) {
+static void NM_Invert(benchmark::State& state) {
     ctk::NumericMatrix m1;
-    m1.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.set(x,y, std::rand());
-        }
+    CreateNumericMatrix(m1, state.range(0), state.range(0));
+    for (auto _ : state) {
+        ctk::NumericMatrix m2 = m1.Invert();
     }
-    ctk::NumericMatrix m2;
-    m2.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.set(x,y, std::rand());
-        }
-    }
-    m1 += m2;
-    return m1.rows()==d;
+    state.SetComplexityN(m1.size());
 }
+BENCHMARK(NM_Invert)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
 
-static void NM_NumericMatrixSelfScalarSum(benchmark::State& state) {
-    for (auto _ : state)
-        NumericMatrixSelfScalarSum(state.range(0));
-}
-BENCHMARK(NM_NumericMatrixSelfScalarSum)->Range(8, 1000);
 
-bool MatSelfScalarSum(int d) {
-    cv::Mat m1(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.at<double>(y,x) = std::rand();
-        }
+static void NM_MatInvert(benchmark::State& state) {
+    cv::Mat m1;
+    do {
+        CreateNumericMat(m1, state.range(0), state.range(0));
+    } while( std::fabs(cv::determinant(m1)<=FLT_EPSILON) );
+    //
+    for (auto _ : state) {
+        cv::Mat m2 = m1.inv();
     }
-    cv::Mat m2(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.at<double>(y,x) = std::rand();
-        }
-    }
-    m1 += m2;
-    return m1.rows==d;
+    state.SetComplexityN(m1.rows*m1.cols);
 }
-
-static void NM_MatSelfScalarSum(benchmark::State& state) {
-    for (auto _ : state)
-        MatSelfScalarSum(state.range(0));
-}
-BENCHMARK(NM_MatSelfScalarSum)->Range(8, 1000);
-
-//
-// Diff
-//
-bool NumericMatrixScalarDiff(int d) {
-    ctk::NumericMatrix m1;
-    m1.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m2;
-    m2.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m3 = m1 - m2;
-    return m3.rows()==d;
-}
-
-static void NM_NumericMatrixScalarDiff(benchmark::State& state) {
-    for (auto _ : state)
-        NumericMatrixScalarDiff(state.range(0));
-}
-BENCHMARK(NM_NumericMatrixScalarDiff)->Range(8, 1000);
-
-bool MatScalarDiff(int d) {
-    cv::Mat m1(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m2(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m3 = m1 - m2;
-    return m3.rows==d;
-}
-
-static void NM_MatScalarDiff(benchmark::State& state) {
-    for (auto _ : state)
-        MatScalarDiff(state.range(0));
-}
-BENCHMARK(NM_MatScalarDiff)->Range(8, 1000);
-
-bool NumericMatrixSelfScalarDiff(int d) {
-    ctk::NumericMatrix m1;
-    m1.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m2;
-    m2.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.set(x,y, std::rand());
-        }
-    }
-    m1 -= m2;
-    return m1.rows()==d;
-}
-
-static void NM_NumericMatrixSelfScalarDiff(benchmark::State& state) {
-    for (auto _ : state)
-        NumericMatrixSelfScalarDiff(state.range(0));
-}
-BENCHMARK(NM_NumericMatrixSelfScalarDiff)->Range(8, 1000);
-
-bool MatSelfScalarDiff(int d) {
-    cv::Mat m1(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m2(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.at<double>(y,x) = std::rand();
-        }
-    }
-    m1 -= m2;
-    return m1.rows==d;
-}
-
-static void NM_MatSelfScalarDiff(benchmark::State& state) {
-    for (auto _ : state)
-        MatSelfScalarDiff(state.range(0));
-}
-BENCHMARK(NM_MatSelfScalarDiff)->Range(8, 1000);
-
-//
-// Mult
-//
-bool NumericMatrixScalarMult(int d) {
-    ctk::NumericMatrix m1;
-    m1.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m2;
-    m2.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m3 = m1 * m2;
-    return m3.rows()==d;
-}
-
-static void NM_NumericMatrixScalarMult(benchmark::State& state) {
-    for (auto _ : state)
-        NumericMatrixScalarMult(state.range(0));
-}
-BENCHMARK(NM_NumericMatrixScalarMult)->Range(8, 1000);
-
-bool MatScalarMult(int d) {
-    cv::Mat m1(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m2(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m3 = m1 * m2;
-    return m3.rows==d;
-}
-
-static void NM_MatScalarMult(benchmark::State& state) {
-    for (auto _ : state)
-        MatScalarMult(state.range(0));
-}
-BENCHMARK(NM_MatScalarMult)->Range(8, 1000);
-
-bool NumericMatrixSelfScalarMult(int d) {
-    ctk::NumericMatrix m1;
-    m1.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m2;
-    m2.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.set(x,y, std::rand());
-        }
-    }
-    m1 *= m2;
-    return m1.rows()==d;
-}
-
-static void NM_NumericMatrixSelfScalarMult(benchmark::State& state) {
-    for (auto _ : state)
-        NumericMatrixSelfScalarMult(state.range(0));
-}
-BENCHMARK(NM_NumericMatrixSelfScalarMult)->Range(8, 1000);
-
-bool MatSelfScalarMult(int d) {
-    cv::Mat m1(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m2(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.at<double>(y,x) = std::rand();
-        }
-    }
-    m1 *= m2;
-    return m1.rows==d;
-}
-
-static void NM_MatSelfScalarMult(benchmark::State& state) {
-    for (auto _ : state)
-        MatSelfScalarMult(state.range(0));
-}
-BENCHMARK(NM_MatSelfScalarMult)->Range(8, 1000);
-
-//
-// Div
-//
-bool NumericMatrixScalarDiv(int d) {
-    ctk::NumericMatrix m1;
-    m1.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m2;
-    m2.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m3 = m1 / m2;
-    return m3.rows()==d;
-}
-
-static void NM_NumericMatrixScalarDiv(benchmark::State& state) {
-    for (auto _ : state)
-        NumericMatrixScalarDiv(state.range(0));
-}
-BENCHMARK(NM_NumericMatrixScalarDiv)->Range(8, 1000);
-
-bool MatScalarDiv(int d) {
-    cv::Mat m1(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m2(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m3 = m1 / m2;
-    return m3.rows==d;
-}
-
-static void NM_MatScalarDiv(benchmark::State& state) {
-    for (auto _ : state)
-        MatScalarDiv(state.range(0));
-}
-BENCHMARK(NM_MatScalarDiv)->Range(8, 1000);
-
-bool NumericMatrixSelfScalarDiv(int d) {
-    ctk::NumericMatrix m1;
-    m1.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.set(x,y, std::rand());
-        }
-    }
-    ctk::NumericMatrix m2;
-    m2.Create(d, d);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.set(x,y, std::rand());
-        }
-    }
-    m1 /= m2;
-    return m1.rows()==d;
-}
-
-static void NM_NumericMatrixSelfScalarDiv(benchmark::State& state) {
-    for (auto _ : state)
-        NumericMatrixSelfScalarDiv(state.range(0));
-}
-BENCHMARK(NM_NumericMatrixSelfScalarDiv)->Range(8, 1000);
-
-bool MatSelfScalarDiv(int d) {
-    cv::Mat m1(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m1.at<double>(y,x) = std::rand();
-        }
-    }
-    cv::Mat m2(d, d, CV_64F);
-    for (auto x=0; x<d; x++) {
-        for (auto y=0; y<d; y++) {
-            m2.at<double>(y,x) = std::rand();
-        }
-    }
-    m1 /= m2;
-    return m1.rows==d;
-}
-
-static void NM_MatSelfScalarDiv(benchmark::State& state) {
-    for (auto _ : state)
-        MatSelfScalarDiv(state.range(0));
-}
-BENCHMARK(NM_MatSelfScalarDiv)->Range(8, 1000);
+BENCHMARK(NM_MatInvert)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
 
 #endif
 
+
+#if 1
+static void NM_SelfInvert(benchmark::State& state) {
+    ctk::NumericMatrix m1, m2;
+    do {
+        CreateNumericMatrix(m1, state.range(0), state.range(0));
+    } while( std::fabs(m1.Determinant())<=FLT_EPSILON );
+    //
+    for (auto _ : state) {
+        m2 = m1;
+        m2.SelfInvert();
+    }
+    state.SetComplexityN(m1.size());
+}
+BENCHMARK(NM_SelfInvert)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
+
+
+static void NM_MatSelfInvert(benchmark::State& state) {
+    cv::Mat m1;
+    CreateNumericMat(m1, state.range(0), state.range(0));
+    for (auto _ : state) {
+        m1 = m1.inv();
+    }
+    state.SetComplexityN(m1.rows*m1.cols);
+}
+BENCHMARK(NM_MatSelfInvert)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
+
+#endif
 
 BENCHMARK_MAIN();
