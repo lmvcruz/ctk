@@ -2,6 +2,8 @@
 
 #include <random>
 
+namespace ctk {
+
 std::vector<int> RangeVector(int i, int e)
 {
     std::vector<int> v;
@@ -24,4 +26,6 @@ void Shuffle(std::vector<int> &vec, int s)
 {
     std::mt19937 urng(s);
     std::shuffle(vec.begin(), vec.end(), urng);
+}
+
 }

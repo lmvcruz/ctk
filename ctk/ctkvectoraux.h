@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+namespace ctk {
+
 /**
  * TODO
  */
@@ -19,5 +21,7 @@ std::vector<int> RangeVector(int i, int e);
 //TODO: evaluate the possibility to use generic method (template)
 void Shuffle(std::vector<int> &vec);
 void Shuffle(std::vector<int> &vec, int s);
+
+}
 
 #endif // CGVECTORAUX_H
