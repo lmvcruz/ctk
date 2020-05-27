@@ -31,9 +31,11 @@ SOURCES += \
 HEADERS += \
     ctkabstractmatrix.h \
     ctkbinarymatrix.h \
+    ctkexceptions.h \
     ctkimage.h \
     ctkmath.h \
     ctknumericmatrix.h \
+    ctkpoint.h \
     ctkvectoraux.h
 
 ## Dependecies
