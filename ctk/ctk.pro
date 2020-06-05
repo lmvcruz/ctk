@@ -22,6 +22,8 @@ DISTFILES += \
 
 SOURCES += \
     ctkabstractmatrix.cpp \
+    ctkauthentication.cpp \
+    ctkauthobject.cpp \
     ctkbinarymatrix.cpp \
     ctkimage.cpp \
     ctkmath.cpp \
@@ -30,6 +32,8 @@ SOURCES += \
 
 HEADERS += \
     ctkabstractmatrix.h \
+    ctkauthentication.h \
+    ctkauthobject.h \
     ctkbinarymatrix.h \
     ctkexceptions.h \
     ctkimage.h \
