@@ -810,10 +810,6 @@ BENCHMARK(NM_MatInvert)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
             ->Complexity(benchmark::oN);
 
-#endif
-
-
-#if 1
 static void NM_SelfInvert(benchmark::State& state) {
     ctk::NumericMatrix m1, m2;
     do {
@@ -842,7 +838,66 @@ static void NM_MatSelfInvert(benchmark::State& state) {
 BENCHMARK(NM_MatSelfInvert)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
             ->Complexity(benchmark::oN);
+#endif
 
+
+#if 1
+static void NM_Transpose(benchmark::State& state) {
+    ctk::NumericMatrix m1;
+    CreateNumericMatrix(m1, state.range(0), state.range(0));
+    for (auto _ : state) {
+        ctk::NumericMatrix m2 = m1.Transpose();
+    }
+    state.SetComplexityN(m1.size());
+}
+BENCHMARK(NM_Transpose)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
+
+
+static void NM_MatTranspose(benchmark::State& state) {
+    cv::Mat m1;
+    do {
+        CreateNumericMat(m1, state.range(0), state.range(0));
+    } while( std::fabs(cv::determinant(m1)<=FLT_EPSILON) );
+    //
+    for (auto _ : state) {
+        cv::Mat m2 = m1.t();
+    }
+    state.SetComplexityN(m1.rows*m1.cols);
+}
+BENCHMARK(NM_MatTranspose)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
+
+static void NM_SelfTranspose(benchmark::State& state) {
+    ctk::NumericMatrix m1, m2;
+    do {
+        CreateNumericMatrix(m1, state.range(0), state.range(0));
+    } while( std::fabs(m1.Determinant())<=FLT_EPSILON );
+    //
+    for (auto _ : state) {
+        m2 = m1;
+        m2.SelfTranspose();
+    }
+    state.SetComplexityN(m1.size());
+}
+BENCHMARK(NM_SelfTranspose)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
+
+
+static void NM_MatSelfTranspose(benchmark::State& state) {
+    cv::Mat m1;
+    CreateNumericMat(m1, state.range(0), state.range(0));
+    for (auto _ : state) {
+        m1 = m1.t();
+    }
+    state.SetComplexityN(m1.rows*m1.cols);
+}
+BENCHMARK(NM_MatSelfTranspose)
+            ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
+            ->Complexity(benchmark::oN);
 #endif
 
 BENCHMARK_MAIN();

@@ -5,9 +5,9 @@ CONFIG += ordered
 
 SUBDIRS = \
     ctk \
-    utils/filesys
+    utils/filesys \
 #    unittests \
-#    benchmark/matrices \
+    benchmark/matrices \
 #    benchmark/primenumbers \
 #    demos/demimg \
 #    demos/video_rotations
