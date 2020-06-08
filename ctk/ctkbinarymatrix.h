@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "opencv2/imgproc.hpp"
+
 #include "ctkabstractmatrix.h"
 
 namespace ctk {
@@ -30,6 +32,13 @@ public:
 
     int countTrues();
     int countFalses();
+
+    //TODO: test and benchmark these methods;
+    //TODO: replace type by an internal enum
+    BinaryMatrix Erode(int size, int etype=cv::MORPH_RECT);
+    void SelfErode(int size, int etype=cv::MORPH_RECT);
+    BinaryMatrix Dilate(int size, int etype=cv::MORPH_RECT);
+    void SelfDilate(int size, int etype=cv::MORPH_RECT);
 
     void Open(std::string filename);
     void Save(std::string filename);

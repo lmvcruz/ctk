@@ -123,6 +123,38 @@ int BinaryMatrix::countFalses()
     return count;
 }
 
+BinaryMatrix BinaryMatrix::Erode(int size, int etype)
+{
+    cv::Size elsize(2*size+1, 2*size+1);
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size,size));
+    BinaryMatrix aux;
+    cv::erode(data, aux.data, element);
+    return aux;
+}
+
+void BinaryMatrix::SelfErode(int size, int etype)
+{
+    cv::Size elsize(2*size+1, 2*size+1);
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size,size));
+    cv::erode(data, data, element);
+}
+
+BinaryMatrix BinaryMatrix::Dilate(int size, int etype)
+{
+    cv::Size elsize(2*size+1, 2*size+1);
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size,size));
+    BinaryMatrix aux;
+    cv::dilate(data, aux.data, element);
+    return aux;
+}
+
+void BinaryMatrix::SelfDilate(int size, int etype)
+{
+    cv::Size elsize(2*size+1, 2*size+1);
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size,size));
+    cv::dilate(data, data, element);
+}
+
 void BinaryMatrix::Open(std::string filename) {
     AbstractMatrix<bool>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
 }

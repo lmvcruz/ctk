@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "opencv2/imgproc.hpp"
+#include <opencv2/core/types_c.h>
 
 namespace ctk {
 
@@ -101,6 +102,50 @@ BinaryMatrix GrayImage::ApplyAdaptativeThreshold(int bs, int c)
                           cv::ADAPTIVE_THRESH_GAUSSIAN_C,
                           cv::THRESH_BINARY, bs, c);
     return BinaryMatrix(aux);
+}
+
+GrayImage GrayImage::Normalize(int minv, int maxv)
+{
+    //TODO: replace asserts to exceptions
+    assert(minv>=0);
+    assert(maxv<=255);
+    assert(minv<maxv);
+    //
+    GrayImage norm;
+    norm.Create(width(), height());
+    int cmin = 255;
+    int cmax = 0;
+    for (auto x=0; x<data.rows; x++) {
+        for (auto y=0; y<data.cols; y++) {
+            int ic = static_cast<int>(get(x,y));
+            cmin = std::min(cmin, ic);
+            cmax = std::max(cmax, ic);
+        }
+    }
+    float scale = static_cast<float>(maxv-minv) / static_cast<float>(cmax-cmin);
+    for (auto x=0; x<data.rows; x++) {
+        for (auto y=0; y<data.cols; y++) {
+            int ic = static_cast<int>(get(x,y));
+            float c = static_cast<float>(ic-cmin+minv)*scale;
+            norm.set(x,y,static_cast<int>(c));
+//            std::cout << x << " " << y << " " << ic << " " << c << std::endl;
+        }
+    }
+    return norm;
+}
+
+BinaryMatrix GrayImage::PickColor(int c)
+{
+    BinaryMatrix mask;
+    mask.Create(width(), height());
+    for (auto x=0; x<data.rows; x++) {
+        for (auto y=0; y<data.cols; y++) {
+//            std::cout << x << " " << y << " " << static_cast<int>(get(x,y)) << " " << c << std::endl;
+            if (static_cast<int>(get(x,y))==c) mask.set(x,y,true);
+            else mask.set(x,y,false);
+        }
+    }
+    return mask;
 }
 
 ColorImage::ColorImage()
@@ -204,6 +249,74 @@ int RgbImage::green(int x, int y)
 int RgbImage::blue(int x, int y)
 {
     return AbstractMatrix<cv::Vec3b>::get(x,y)[2];
+}
+
+PointI RgbImage::get_pixel(int x, int y)
+{
+    return PointI(red(x,y), green(x,y), blue(x,y));
+}
+
+RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
+{
+    RgbImage cluster(data);
+    cv::Mat vals;
+    cluster.data.convertTo(vals,CV_32F);
+    vals = vals.reshape(1,vals.total());
+    //
+    cv::Mat labels, centers;
+    cv::TermCriteria crit(CV_TERMCRIT_ITER, iter, eps);
+    kmeans(vals, q, labels, crit, attempts, qtype, centers);
+    // reshape both to a single row of Vec3f pixels:
+    centers = centers.reshape(3,centers.rows);
+    vals = vals.reshape(3,vals.rows);
+    // replace pixel values with their center value:
+    cv::Vec3f *p = vals.ptr<cv::Vec3f>();
+    for (size_t i=0; i<vals.rows; i++) {
+       int center_id = labels.at<int>(i);
+       p[i] = centers.at<cv::Vec3f>(center_id);
+    }
+    // back to 2d, and uchar:
+    cluster.data = vals.reshape(3, cluster.data.rows);
+    cluster.data.convertTo(cluster.data, CV_8U);
+    cv::cvtColor(cluster.data, cluster.data, cv::COLOR_BGR2RGB);
+    return cluster;
+}
+
+BinaryMatrix RgbImage::PickColor(int r, int g, int b)
+{
+    BinaryMatrix mask;
+    mask.Create(width(), height());
+    for (auto x=0; x<data.rows; x++) {
+        for (auto y=0; y<data.cols; y++) {
+            if ((red(x,y)==r) && (green(x,y)==g) && (blue(x,y)==b)) mask.set(x,y,true);
+            else mask.set(x,y,false);
+        }
+    }
+    return mask;
+}
+
+GrayImage RgbImage::Project(std::vector<PointI> &colors)
+{
+    // TODO: replace it to an exception
+    assert(colors.size()<=256);
+    //
+    GrayImage mask;
+    mask.Create(width(), height());
+    for (auto x=0; x<data.rows; x++) {
+        for (auto y=0; y<data.cols; y++) {
+            int idx = -1;
+            float dist = FLT_MAX;
+            for (auto i=0; i<colors.size(); i++) {
+                float d = colors[i].Distance(get_pixel(x,y));
+                if (d<dist) {
+                    dist = d;
+                    idx = i;
+                }
+            }
+            mask.set(x, y, idx);
+        }
+    }
+    return mask;
 }
 
 GrayImage RgbImage::toGrayImage()

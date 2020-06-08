@@ -21,7 +21,9 @@ QVector<QString> createFileList(QString dirname, QString suffix, QString filter=
 QVector<QString> createFileList(QString dirname, QString suffix, QVector<QString> filters);
 QVector<QString> createFileList(QString dirname, QVector<QString> suffixes);
 
+QVector<QString> createFileListRecursively(QString dirname, QString suffix);
+QVector<QString> createFileListRecursively(QString dirname, QString suffix, QString filter);
+QVector<QString> createFileListRecursively(QString dirname, QString suffix, QVector<QString> filters);
 QVector<QString> createFileListRecursively(QString dirname, QVector<QString> &suffixes);
-
 
 #endif // QTUTILS_FILESYSTEM_H

@@ -127,6 +127,58 @@ QVector<QString> createFileList(QString dirname, QVector<QString> suffixes)
     return files;
 }
 
+void scanDir(QString dirname, QString &suffix, QVector<QString> &files, QVector<QString> &filters)
+{
+    QDir dir(dirname);
+    dir.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    QVector<QFileInfo> allfiles = dir.entryInfoList().toVector();
+    for ( int i=0; i<allfiles.size(); i++ ) {
+        if ( suffix==allfiles[i].suffix()) {
+            if ( allfiles[i].suffix()==suffix ) {
+                bool insertFile = true;
+                for ( int j=0; j<filters.size(); j++ ) {
+                    if ( allfiles[i].baseName().contains(filters[j]) ) {
+                        insertFile = false;
+                        break;
+                    }
+                }
+                if ( insertFile ) {
+                    files.append(allfiles[i].absoluteFilePath());
+                }
+            }
+        }
+    }
+    dir.setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    QStringList dirList = dir.entryList();
+    for ( int i=0; i<dirList.size(); ++i ) {
+        QString newPath = concatPath(dir.absolutePath(), dirList.at(i));
+        scanDir(newPath, suffix, files, filters);
+    }
+}
+
+QVector<QString> createFileListRecursively(QString dirname, QString suffix)
+{
+    QVector<QString> filters;
+    QVector<QString> files;
+    scanDir(dirname, suffix, files, filters);
+    return files;
+}
+
+QVector<QString> createFileListRecursively(QString dirname, QString suffix, QString filter)
+{
+    QVector<QString> filters = {filter};
+    QVector<QString> files;
+    scanDir(dirname, suffix, files, filters);
+    return files;
+}
+
+QVector<QString> createFileListRecursively(QString dirname, QString suffix, QVector<QString> filters)
+{
+    QVector<QString> files;
+    scanDir(dirname, suffix, files, filters);
+    return files;
+}
+
 void scanDir(QString dirname, QVector<QString> &suffixes, QVector<QString> &files)
 {
     QDir dir(dirname);
@@ -152,3 +204,4 @@ QVector<QString> createFileListRecursively(QString dirname, QVector<QString> &su
     scanDir(dirname, suffixes, files);
     return files;
 }
+

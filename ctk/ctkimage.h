@@ -8,6 +8,7 @@
 
 #include "ctkabstractmatrix.h"
 #include "ctkbinarymatrix.h"
+#include "ctkpoint.h"
 
 namespace ctk {
 
@@ -435,6 +436,9 @@ public:
 
     GrayImage Truncate(int t=128);
 
+    GrayImage Normalize(int minv, int maxv);
+    BinaryMatrix PickColor(int c);
+
     RgbImage toRgbImage();
 };
 
@@ -472,6 +476,20 @@ public:
     int red(int x, int y);
     int green(int x, int y);
     int blue(int x, int y);
+
+    //TODO: test and benchmark these methods;
+    PointI get_pixel(int x, int y);
+
+    //TODO: test and benchmark these methods;
+    //TODO: replace type by an internal enum
+    RgbImage Quantize(int q, int iter=10, float eps=1.0, int attempts=3,
+                      int qtype=cv::KMEANS_PP_CENTERS);
+    RgbImage Quantize(std::vector<PointI> &centers, int iter=10,
+                      float eps=1.0, int attempts=3);
+
+
+    BinaryMatrix PickColor(int r, int g, int b);
+    GrayImage Project(std::vector<PointI> &centers);
 
     GrayImage toGrayImage();
     //TODO: NEXT SPRINT
