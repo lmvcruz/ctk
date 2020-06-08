@@ -187,7 +187,6 @@ public:
         return data.at<T>(y,x);
     }
 
-
     virtual T safe_get(int x, int y, T v) {
         if (x<0 || x>=data.cols || y<0 || y>=data.rows) {
             throw std::out_of_range("Exception thrown in AbstractMatyrix::safe_get");

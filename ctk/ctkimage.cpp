@@ -1,8 +1,11 @@
 #include "ctkimage.h"
 
 #include <iostream>
+#include <vector>
 
+#include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
+#include <opencv2/calib3d.hpp>
 #include <opencv2/core/types_c.h>
 
 namespace ctk {
@@ -317,6 +320,83 @@ GrayImage RgbImage::Project(std::vector<PointI> &colors)
         }
     }
     return mask;
+}
+
+std::vector<std::vector<PointI>> RgbImage::Contours()
+{
+    BinaryMatrix bin = toGrayImage().ApplyOtsuThreshold();
+    //
+    std::vector<std::vector<cv::Point> > cv_contours;
+    std::vector<cv::Vec4i> hierarchy;
+    cv::findContours(bin.get_data(), cv_contours, hierarchy,
+                     cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
+    //
+    std::vector<std::vector<PointI>> conts;
+    conts.resize(cv_contours.size());
+    for (auto i=0; i<cv_contours.size(); i++) {
+        conts[i].resize(cv_contours[i].size());
+        for (auto j=0; j<cv_contours[i].size(); j++) {
+            conts[i][j].setX(cv_contours[i][j].x);
+            conts[i][j].setY(cv_contours[i][j].y);
+        }
+    }
+    return conts;
+}
+
+std::vector<std::vector<PointI> > RgbImage::ApproximateContours(int eps)
+{
+    BinaryMatrix bin = toGrayImage().ApplyOtsuThreshold();
+    //
+    std::vector<std::vector<cv::Point> > cv_contours;
+    std::vector<cv::Vec4i> hierarchy;
+    cv::findContours(bin.get_data(), cv_contours, hierarchy,
+                     cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
+    //
+    std::vector<std::vector<PointI>> conts;
+    conts.resize(cv_contours.size());
+    for (auto i=0; i<cv_contours.size(); i++) {
+        //TODO: remove it
+        std::vector<cv::Point> approx;
+        approxPolyDP(cv::Mat(cv_contours[i]), approx, eps, true);
+        conts[i].resize(approx.size());
+        for (auto j=0; j<approx.size(); j++) {
+            conts[i][j].setX(approx[j].x);
+            conts[i][j].setY(approx[j].y);
+        }
+    }
+    return conts;
+}
+
+//TODO: write tests and benchmark
+RgbImage RgbImage::Warp(std::vector<PointI> &pts, std::vector<PointI> &refs,
+                        int w, int h)
+{
+    //TODO: replace assert to exceptions
+    assert(pts.size()==refs.size());
+    assert(pts.size()>=4);
+    //
+    std::vector<cv::Point2f> cv_pts;
+    cv_pts.resize(pts.size());
+    std::vector<cv::Point2f> cv_refs;
+    cv_refs.resize(refs.size());
+    for (auto i=0; i<pts.size(); i++) {
+        cv_pts[i].x = pts[i].getX();
+        cv_pts[i].y = pts[i].getY();
+        cv_refs[i].x = refs[i].getX();
+        cv_refs[i].y = refs[i].getY();
+    }
+    cv::Mat homo_mat;
+    // We assume that size>=4 (verified in the begining of the method)
+    if (pts.size()>4) {
+        homo_mat = cv::findHomography(cv_pts, cv_refs,cv::RANSAC);
+    }
+    else {
+        homo_mat = cv::findHomography(cv_pts, cv_refs);
+    }
+    //
+    RgbImage rect;
+    cv::warpPerspective(data, rect.get_data(), homo_mat, cv::Size(w,h));
+    return rect;
 }
 
 GrayImage RgbImage::toGrayImage()

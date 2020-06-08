@@ -207,6 +207,7 @@ public:
         double n = Norm();
         *this /= n;
     }
+
 };
 
 typedef Point<int> PointI;

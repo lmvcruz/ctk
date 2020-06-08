@@ -28,6 +28,7 @@ SOURCES += \
     ctkimage.cpp \
     ctkmath.cpp \
     ctknumericmatrix.cpp \
+    ctkpolygon.cpp \
     ctkvectoraux.cpp
 
 HEADERS += \
@@ -40,6 +41,7 @@ HEADERS += \
     ctkmath.h \
     ctknumericmatrix.h \
     ctkpoint.h \
+    ctkpolygon.h \
     ctkvectoraux.h
 
 ## Dependecies
