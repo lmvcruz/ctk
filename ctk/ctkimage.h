@@ -491,6 +491,11 @@ public:
     BinaryMatrix PickColor(int r, int g, int b);
     GrayImage Project(std::vector<PointI> &centers);
 
+    // TODO: create a classe for contours (avoiding copy to PointI)
+    std::vector<std::vector<PointI> > Contours();
+    std::vector<std::vector<PointI> > ApproximateContours(int eps=3);
+    RgbImage Warp(std::vector<PointI> &pts, std::vector<PointI> &refs, int w, int h);
+
     GrayImage toGrayImage();
     //TODO: NEXT SPRINT
 //    HsvImage toHsvImage();
