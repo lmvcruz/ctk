@@ -98,6 +98,16 @@ PointD &Polygon::point(int i)
     return data_[i];
 }
 
+std::vector<PointD> &Polygon::get_data()
+{
+    return data_;
+}
+
+std::vector<cv::Point> &Polygon::get_cvdata()
+{
+    return cvdata_;
+}
+
 void Polygon::Resize(int s)
 {
     data_.resize(s);
