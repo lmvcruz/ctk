@@ -28,6 +28,9 @@ public:
     void set_point(int idx, double x, double y);
     PointD &point(int i);
 
+    std::vector<PointD> &get_data();
+    std::vector<cv::Point> &get_cvdata();
+
     void Resize(int s);
     int size();
 
