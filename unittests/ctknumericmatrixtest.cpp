@@ -104,6 +104,7 @@ void CtkNumericMatrixTest::SetUp()
         1, 3, -6
     };
     mat_4_div_3.Create(mat3_w,mat4_h);
+//    mat_4_div_3.Create(mat4_w,mat3_h);
     i=-1;
     for (auto it=mat_4_div_3.begin(); it!=mat_4_div_3.end(); it++) {
         *it = data_4div3[++i];
@@ -388,6 +389,8 @@ TEST_F(CtkNumericMatrixTest, Test_Div) {
     EXPECT_EQ(mat_c.height(), CtkNumericMatrixTest::mat4_h);
     for (int y=0; y<mat_c.height(); y++) {
         for (int x=0; x<mat_c.width(); x++) {
+            std::cout << x << " " << y << " " << mat_c.get(x,y)
+                      << " " << CtkNumericMatrixTest::mat_4_div_3.get(x,y) << std::endl;
             EXPECT_EQ(mat_c.get(x,y),
                       CtkNumericMatrixTest::mat_4_div_3.get(x,y));
         }

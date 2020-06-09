@@ -25,6 +25,7 @@ SOURCES += \
     ctkauthentication.cpp \
     ctkauthobject.cpp \
     ctkbinarymatrix.cpp \
+    ctkcontours.cpp \
     ctkimage.cpp \
     ctkmath.cpp \
     ctknumericmatrix.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     ctkauthentication.h \
     ctkauthobject.h \
     ctkbinarymatrix.h \
+    ctkcontours.h \
     ctkexceptions.h \
     ctkimage.h \
     ctkmath.h \

@@ -54,7 +54,7 @@ Polygon::Polygon(std::vector<cv::Point> &cvd)
         /*!Assigns the value of x and y of each element in data_ to the value of x and y
  of the respective element in the passed vector ??????????? */
         data_[i].setX(cvd[i].x);
-        data_[i].setX(cvd[i].x);
+        data_[i].setY(cvd[i].y);
     }
 }
 
@@ -107,7 +107,7 @@ Polygon &Polygon::operator=(std::vector<cv::Point> &cvd)
     data_.resize(cvd.size());
     for (auto i=0; i<cvd.size(); i++) {
         data_[i].setX(cvd[i].x);
-        data_[i].setX(cvd[i].x);
+        data_[i].setY(cvd[i].y);
     }
     return *this;
 }

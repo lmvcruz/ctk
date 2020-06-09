@@ -9,6 +9,7 @@
 #include "ctkabstractmatrix.h"
 #include "ctkbinarymatrix.h"
 #include "ctkpoint.h"
+#include "ctkpolygon.h"
 
 namespace ctk {
 
@@ -492,9 +493,11 @@ public:
     GrayImage Project(std::vector<PointI> &centers);
 
     // TODO: create a classe for contours (avoiding copy to PointI)
-    std::vector<std::vector<PointI> > Contours();
-    std::vector<std::vector<PointI> > ApproximateContours(int eps=3);
-    RgbImage Warp(std::vector<PointI> &pts, std::vector<PointI> &refs, int w, int h);
+//    std::vector<std::vector<PointI> > Contours();
+//    std::vector<std::vector<PointI> > ApproximateContours(int eps=3);
+    std::vector<Polygon> Contours();
+    std::vector<Polygon> ApproximateContours(int eps=3);
+    RgbImage Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h);
 
     GrayImage toGrayImage();
     //TODO: NEXT SPRINT
