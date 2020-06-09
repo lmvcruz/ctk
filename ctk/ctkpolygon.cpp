@@ -43,6 +43,7 @@ Polygon::Polygon(std::vector<PointD> &d)
 }
 
 //! Parameterized constructor. Natalia
+
 /*! Takes a reference to a vector of cv::Points as input
  * and uses it to intialize another polygon object. */
 
