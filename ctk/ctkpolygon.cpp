@@ -42,7 +42,7 @@ Polygon::Polygon(std::vector<PointD> &d)
     }
 }
 
-//! Parameterized constructor.
+//! Parameterized constructor. (LEANDRO)
 /*! Takes a reference to a vector of cv::Points as input
  * and uses it to intialize another polygon object. */
 
