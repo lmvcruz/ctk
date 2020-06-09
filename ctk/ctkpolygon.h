@@ -12,6 +12,7 @@ namespace ctk {
 class Polygon
 {
 public:
+    //!Creates a Polygon
     Polygon();
     Polygon(const Polygon &that);
     Polygon(std::vector<PointD> &d);
@@ -44,8 +45,9 @@ public:
     void SelfShift(int sh);
 
 protected:
-    std::vector<PointD> data_;
-    std::vector<cv::Point> cvdata_;
+    //!Class Polygon has two attributes ??
+    std::vector<PointD> data_; /*!< Vector of 3D Point objects as defined in ctkpoint.h */
+    std::vector<cv::Point> cvdata_;  /*!< Vector of 2D Point objects from the openCV template class Point */
 };
 
 }
