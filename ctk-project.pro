@@ -6,7 +6,7 @@ CONFIG += ordered
 SUBDIRS = \
     ctk \
 #    utils/filesys \
-#    unittests \
+    unittests \
 #    benchmark/matrices \
 #    benchmark/primenumbers \
 #    demos/demimg \

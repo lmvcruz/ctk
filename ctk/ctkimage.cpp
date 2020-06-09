@@ -322,7 +322,7 @@ GrayImage RgbImage::Project(std::vector<PointI> &colors)
     return mask;
 }
 
-std::vector<std::vector<PointI>> RgbImage::Contours()
+std::vector<Polygon> RgbImage::Contours()
 {
     BinaryMatrix bin = toGrayImage().ApplyOtsuThreshold();
     //
@@ -331,19 +331,15 @@ std::vector<std::vector<PointI>> RgbImage::Contours()
     cv::findContours(bin.get_data(), cv_contours, hierarchy,
                      cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
     //
-    std::vector<std::vector<PointI>> conts;
-    conts.resize(cv_contours.size());
+    std::vector<Polygon> ctk_contours;
+    ctk_contours.resize(cv_contours.size());
     for (auto i=0; i<cv_contours.size(); i++) {
-        conts[i].resize(cv_contours[i].size());
-        for (auto j=0; j<cv_contours[i].size(); j++) {
-            conts[i][j].setX(cv_contours[i][j].x);
-            conts[i][j].setY(cv_contours[i][j].y);
-        }
+        ctk_contours[i] = cv_contours[i];
     }
-    return conts;
+    return ctk_contours;
 }
 
-std::vector<std::vector<PointI> > RgbImage::ApproximateContours(int eps)
+std::vector<Polygon> RgbImage::ApproximateContours(int eps)
 {
     BinaryMatrix bin = toGrayImage().ApplyOtsuThreshold();
     //
@@ -352,23 +348,18 @@ std::vector<std::vector<PointI> > RgbImage::ApproximateContours(int eps)
     cv::findContours(bin.get_data(), cv_contours, hierarchy,
                      cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
     //
-    std::vector<std::vector<PointI>> conts;
-    conts.resize(cv_contours.size());
+    std::vector<Polygon> ctk_contours;
+    ctk_contours.resize(cv_contours.size());
     for (auto i=0; i<cv_contours.size(); i++) {
-        //TODO: remove it
         std::vector<cv::Point> approx;
         approxPolyDP(cv::Mat(cv_contours[i]), approx, eps, true);
-        conts[i].resize(approx.size());
-        for (auto j=0; j<approx.size(); j++) {
-            conts[i][j].setX(approx[j].x);
-            conts[i][j].setY(approx[j].y);
-        }
+        ctk_contours[i] = approx;
     }
-    return conts;
+    return ctk_contours;
 }
 
 //TODO: write tests and benchmark
-RgbImage RgbImage::Warp(std::vector<PointI> &pts, std::vector<PointI> &refs,
+RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs,
                         int w, int h)
 {
     //TODO: replace assert to exceptions

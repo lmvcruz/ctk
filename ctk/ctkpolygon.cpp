@@ -30,7 +30,7 @@ Polygon::Polygon(std::vector<cv::Point> &cvd)
     data_.resize(cvd.size());
     for (auto i=0; i<cvd.size(); i++) {
         data_[i].setX(cvd[i].x);
-        data_[i].setX(cvd[i].x);
+        data_[i].setY(cvd[i].y);
     }
 }
 
@@ -64,7 +64,7 @@ Polygon &Polygon::operator=(std::vector<cv::Point> &cvd)
     data_.resize(cvd.size());
     for (auto i=0; i<cvd.size(); i++) {
         data_[i].setX(cvd[i].x);
-        data_[i].setX(cvd[i].x);
+        data_[i].setY(cvd[i].y);
     }
     return *this;
 }
