@@ -388,7 +388,6 @@ TEST_F(CtkRgbImageTest, Test_toGrayImage) {
     for (int x=0; x<color2gray.width(); x++) {
         for (int y=0; y<color2gray.height(); y++) {
             int v = static_cast<int>(static_cast<float>(x+y)*0.299);
-//            std::cout << v << " " << (int)color2gray.get(x,y)  << std::endl;
             EXPECT_LE(std::abs(color2gray.get(x,y)-v),1);
         }
     }

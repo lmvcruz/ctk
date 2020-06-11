@@ -183,7 +183,6 @@ void scanDir(QString dirname, QVector<QString> &suffixes, QVector<QString> &file
 {
     QDir dir(dirname);
     dir.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks);
-    //qDebug() << "Scanning: " << dir.path();
     QVector<QFileInfo> allfiles = dir.entryInfoList().toVector();
     for ( int i=0; i<allfiles.size(); i++ ) {
         if ( suffixes.contains(allfiles[i].suffix()) ) {
