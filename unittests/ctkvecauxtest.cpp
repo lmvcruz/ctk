@@ -2,8 +2,10 @@
 
 #include <vector>
 
+#include "ctktestsetup.h"
 #include "ctkvectoraux.h"
 
+#ifdef TEST_VEC_AUX
 TEST(CtkVecAuxTest, Test_Show) {
     std::vector<int> vec = {1,2,3,5,6,7,8};
     //
@@ -87,3 +89,4 @@ TEST(CtkVecAuxTest, Test_Shuffle3) {
     int rate = static_cast<int>(static_cast<float>(vec1gt.size())*0.8);
     EXPECT_GE(countDiff, rate);
 }
+#endif

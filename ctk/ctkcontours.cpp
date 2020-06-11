@@ -54,7 +54,7 @@ Contours Contours::OrientedBoundingBoxes()
     return boxes;
 }
 
-void Contours::CalculateContours(BinaryMatrix &img)
+void Contours::CalculateContours(BinaryImage &img)
 {
     std::vector<std::vector<cv::Point> > cv_contours;
     cv::findContours(img.get_data(), cv_contours, hierarchy_,
@@ -66,7 +66,7 @@ void Contours::CalculateContours(BinaryMatrix &img)
     }
 }
 
-void Contours::CalculateApproximateContours(BinaryMatrix &img, int eps)
+void Contours::CalculateApproximateContours(BinaryImage &img, int eps)
 {
     std::vector<std::vector<cv::Point> > cv_contours;
     std::vector<cv::Vec4i> hierarchy;

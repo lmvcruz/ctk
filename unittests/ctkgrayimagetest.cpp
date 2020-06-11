@@ -3,11 +3,7 @@
 #include <iostream>
 
 #include "ctkvectoraux.h"
-#include "ctkbinarymatrix.h"
-
-extern std::string INPUT_DIR;
-extern std::string OUTPUT_DIR;
-extern bool SAVE_IMAGES;
+#include "ctktestsetup.h"
 
 void CtkGrayImageTest::SetUp()
 {
@@ -16,6 +12,7 @@ void CtkGrayImageTest::SetUp()
     grayimg.Open(grayname);
 }
 
+#ifdef TEST_GRAY_IMAGE
 TEST_F(CtkGrayImageTest, Test_Setup) {
     EXPECT_EQ(CtkGrayImageTest::grayimg.width(), 640);
     EXPECT_EQ(CtkGrayImageTest::grayimg.height(), 427);
@@ -354,7 +351,7 @@ TEST_F(CtkGrayImageTest, Test_SelfRotate270) {
 TEST_F(CtkGrayImageTest, Test_ApplyBinaryThreshold) {
     ctk::GrayImage img;
     img.Open(INPUT_DIR+"gray-grad.png");
-    ctk::BinaryMatrix bin = img.ApplyBinaryThreshold();
+    ctk::BinaryImage bin = img.ApplyBinaryThreshold();
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"gray-grad-bin.png");
     int w = img.width()-1;
     int h = img.height()-1;
@@ -373,7 +370,7 @@ TEST_F(CtkGrayImageTest, Test_ApplyBinaryThreshold) {
 TEST_F(CtkGrayImageTest, Test_ApplyOtsuThreshold) {
     ctk::GrayImage img;
     img.Open(INPUT_DIR+"gray-grad.png");
-    ctk::BinaryMatrix bin = img.ApplyOtsuThreshold();
+    ctk::BinaryImage bin = img.ApplyOtsuThreshold();
     int w = img.width()-1;
     int h = img.height()-1;
     for (int x=0; x<=w; x++) {
@@ -391,7 +388,7 @@ TEST_F(CtkGrayImageTest, Test_ApplyOtsuThreshold) {
 TEST_F(CtkGrayImageTest, Test_ApplyAdaptativeThreshold) {
     ctk::GrayImage img;
     img.Open(INPUT_DIR+"gray_img.jpg");
-    ctk::BinaryMatrix bin = img.ApplyAdaptativeThreshold(11, 5);
+    ctk::BinaryImage bin = img.ApplyAdaptativeThreshold(11, 5);
     EXPECT_EQ(bin.width(), img.width());
     EXPECT_EQ(bin.height(), img.height());
     EXPECT_EQ(bin.channels(), 1);
@@ -445,4 +442,4 @@ TEST_F(CtkGrayImageTest, Test_toRgbImage) {
     }
     if (SAVE_IMAGES) color.Save(OUTPUT_DIR+"gray-red.png");
 }
-
+#endif

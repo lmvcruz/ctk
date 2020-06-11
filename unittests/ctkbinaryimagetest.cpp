@@ -1,38 +1,38 @@
-#include "ctkbinarymatrixtest.h"
+#include "ctkbinaryimagetest.h"
 
-extern std::string INPUT_DIR;
-extern std::string OUTPUT_DIR;
-extern bool SAVE_IMAGES;
+#include "ctktestsetup.h"
 
-void CtkBinaryMatrixTest::SetUp()
+
+void CtkBinaryImageTest::SetUp()
 {
     binimg.Open(INPUT_DIR+"mask.png");
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_Setup) {
-    EXPECT_EQ(CtkBinaryMatrixTest::binimg.width(), 200);
-    EXPECT_EQ(CtkBinaryMatrixTest::binimg.height(), 200);
-    EXPECT_EQ(CtkBinaryMatrixTest::binimg.channels(), 1);
-    EXPECT_EQ(CtkBinaryMatrixTest::binimg.CheckChannel(), true);
+#ifdef TEST_BINARY_IMAGE
+TEST_F(CtkBinaryImageTest, Test_Setup) {
+    EXPECT_EQ(CtkBinaryImageTest::binimg.width(), 200);
+    EXPECT_EQ(CtkBinaryImageTest::binimg.height(), 200);
+    EXPECT_EQ(CtkBinaryImageTest::binimg.channels(), 1);
+    EXPECT_EQ(CtkBinaryImageTest::binimg.CheckChannel(), true);
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_Get) {
-    int w = CtkBinaryMatrixTest::binimg.width();
-    int h = CtkBinaryMatrixTest::binimg.height();
+TEST_F(CtkBinaryImageTest, Test_Get) {
+    int w = CtkBinaryImageTest::binimg.width();
+    int h = CtkBinaryImageTest::binimg.height();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(CtkBinaryMatrixTest::binimg.get(x,y), true);
+                EXPECT_EQ(CtkBinaryImageTest::binimg.get(x,y), true);
             }
             else {
-                EXPECT_EQ(CtkBinaryMatrixTest::binimg.get(x,y), false);
+                EXPECT_EQ(CtkBinaryImageTest::binimg.get(x,y), false);
             }
         }
     }
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_ConstructorCopy) {
-    ctk::BinaryMatrix bin(CtkBinaryMatrixTest::binimg);
+TEST_F(CtkBinaryImageTest, Test_ConstructorCopy) {
+    ctk::BinaryImage bin(CtkBinaryImageTest::binimg);
     EXPECT_EQ(bin.width(), 200);
     EXPECT_EQ(bin.height(), 200);
     EXPECT_EQ(bin.channels(), 1);
@@ -51,9 +51,9 @@ TEST_F(CtkBinaryMatrixTest, Test_ConstructorCopy) {
     }
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_ConstructorMat) {
+TEST_F(CtkBinaryImageTest, Test_ConstructorMat) {
     cv::Mat matbin = cv::imread(INPUT_DIR+"mask.png", cv::IMREAD_UNCHANGED);
-    ctk::BinaryMatrix bin(matbin);
+    ctk::BinaryImage bin(matbin);
     EXPECT_EQ(bin.width(), 200);
     EXPECT_EQ(bin.height(), 200);
     EXPECT_EQ(bin.channels(), 1);
@@ -72,8 +72,8 @@ TEST_F(CtkBinaryMatrixTest, Test_ConstructorMat) {
     }
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_OperatorCopy) {
-    ctk::BinaryMatrix bin = CtkBinaryMatrixTest::binimg;
+TEST_F(CtkBinaryImageTest, Test_OperatorCopy) {
+    ctk::BinaryImage bin = CtkBinaryImageTest::binimg;
     EXPECT_EQ(bin.width(), 200);
     EXPECT_EQ(bin.height(), 200);
     EXPECT_EQ(bin.channels(), 1);
@@ -92,8 +92,8 @@ TEST_F(CtkBinaryMatrixTest, Test_OperatorCopy) {
     }
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_OperatorNeg) {
-    ctk::BinaryMatrix bin = CtkBinaryMatrixTest::binimg.Not();
+TEST_F(CtkBinaryImageTest, Test_OperatorNeg) {
+    ctk::BinaryImage bin = CtkBinaryImageTest::binimg.Not();
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskinv.png");
     EXPECT_EQ(bin.width(), 200);
     EXPECT_EQ(bin.height(), 200);
@@ -113,10 +113,10 @@ TEST_F(CtkBinaryMatrixTest, Test_OperatorNeg) {
     }
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_OperatorAnd) {
-    ctk::BinaryMatrix m2;
+TEST_F(CtkBinaryImageTest, Test_OperatorAnd) {
+    ctk::BinaryImage m2;
     m2.Open(INPUT_DIR+"mask2.png");
-    ctk::BinaryMatrix bin = CtkBinaryMatrixTest::binimg.And(m2);
+    ctk::BinaryImage bin = CtkBinaryImageTest::binimg.And(m2);
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskM1AndM2.png");
     EXPECT_EQ(bin.width(), 200);
     EXPECT_EQ(bin.height(), 200);
@@ -139,10 +139,10 @@ TEST_F(CtkBinaryMatrixTest, Test_OperatorAnd) {
     }
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_OperatorOr) {
-    ctk::BinaryMatrix m2;
+TEST_F(CtkBinaryImageTest, Test_OperatorOr) {
+    ctk::BinaryImage m2;
     m2.Open(INPUT_DIR+"mask2.png");
-    ctk::BinaryMatrix bin = CtkBinaryMatrixTest::binimg.Or(m2);
+    ctk::BinaryImage bin = CtkBinaryImageTest::binimg.Or(m2);
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskM1orM2.png");
     EXPECT_EQ(bin.width(), 200);
     EXPECT_EQ(bin.height(), 200);
@@ -165,10 +165,10 @@ TEST_F(CtkBinaryMatrixTest, Test_OperatorOr) {
     }
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_OperatorXor) {
-    ctk::BinaryMatrix m2;
+TEST_F(CtkBinaryImageTest, Test_OperatorXor) {
+    ctk::BinaryImage m2;
     m2.Open(INPUT_DIR+"mask2.png");
-    ctk::BinaryMatrix bin = CtkBinaryMatrixTest::binimg.Xor(m2);
+    ctk::BinaryImage bin = CtkBinaryImageTest::binimg.Xor(m2);
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskM1xorM2.png");
     EXPECT_EQ(bin.width(), 200);
     EXPECT_EQ(bin.height(), 200);
@@ -191,8 +191,8 @@ TEST_F(CtkBinaryMatrixTest, Test_OperatorXor) {
     }
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_CountTrues) {
-    ctk::BinaryMatrix m1, m2, m3, m4, m5, m6;
+TEST_F(CtkBinaryImageTest, Test_CountTrues) {
+    ctk::BinaryImage m1, m2, m3, m4, m5, m6;
     m1.Open(INPUT_DIR+"mask.png");
     m2.Open(INPUT_DIR+"mask2.png");
     m3.Open(INPUT_DIR+"maskM1AndM2.png");
@@ -207,8 +207,8 @@ TEST_F(CtkBinaryMatrixTest, Test_CountTrues) {
     EXPECT_EQ(m6.countTrues(), 10000);
 }
 
-TEST_F(CtkBinaryMatrixTest, Test_CountFalses) {
-    ctk::BinaryMatrix m1, m2, m3, m4, m5, m6;
+TEST_F(CtkBinaryImageTest, Test_CountFalses) {
+    ctk::BinaryImage m1, m2, m3, m4, m5, m6;
     m1.Open(INPUT_DIR+"mask.png");
     m2.Open(INPUT_DIR+"mask2.png");
     m3.Open(INPUT_DIR+"maskM1AndM2.png");
@@ -222,3 +222,4 @@ TEST_F(CtkBinaryMatrixTest, Test_CountFalses) {
     EXPECT_EQ(m5.countFalses(), 35000);
     EXPECT_EQ(m6.countFalses(), 30000);
 }
+#endif

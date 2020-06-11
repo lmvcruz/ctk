@@ -7,7 +7,6 @@
 #include <opencv2/imgproc.hpp>
 
 #include "ctkabstractmatrix.h"
-#include "ctkbinarymatrix.h"
 #include "ctkpoint.h"
 #include "ctkpolygon.h"
 
@@ -413,6 +412,43 @@ public:
     }
 };
 
+class BinaryImage : public AbstractImage<bool>
+{
+public:
+    BinaryImage();
+    BinaryImage(const BinaryImage& that);
+    BinaryImage(const AbstractImage<bool>& that);
+    BinaryImage(cv::Mat& d);
+    BinaryImage(int w, int h, std::vector<bool>& d);
+
+    BinaryImage &operator=(const BinaryImage& that);
+
+    void set(int x, int y, bool v);
+    bool get(int x, int y);
+
+    BinaryImage Not();
+    BinaryImage And(BinaryImage& that);
+    BinaryImage Or(BinaryImage& that);
+    BinaryImage Xor(BinaryImage& that);
+
+    //TODO: Implement Self methods
+
+    int countTrues();
+    int countFalses();
+
+    //TODO: test and benchmark these methods;
+    //TODO: replace type by an internal enum
+    BinaryImage Erode(int size, int etype=cv::MORPH_RECT);
+    void SelfErode(int size, int etype=cv::MORPH_RECT);
+    BinaryImage Dilate(int size, int etype=cv::MORPH_RECT);
+    void SelfDilate(int size, int etype=cv::MORPH_RECT);
+
+    void Open(std::string filename);
+    void Save(std::string filename);
+    void Show();
+
+};
+
 /**
  * @brief The GrayImage class
  */
@@ -431,14 +467,14 @@ public:
 
     int channels();
 
-    BinaryMatrix ApplyBinaryThreshold(int t=127);
-    BinaryMatrix ApplyOtsuThreshold();
-    BinaryMatrix ApplyAdaptativeThreshold(int bs=5, int c=1);
+    BinaryImage ApplyBinaryThreshold(int t=127);
+    BinaryImage ApplyOtsuThreshold();
+    BinaryImage ApplyAdaptativeThreshold(int bs=5, int c=1);
 
     GrayImage Truncate(int t=128);
 
     GrayImage Normalize(int minv, int maxv);
-    BinaryMatrix PickColor(int c);
+    BinaryImage PickColor(int c);
 
     RgbImage toRgbImage();
 };
@@ -489,12 +525,10 @@ public:
                       float eps=1.0, int attempts=3);
 
 
-    BinaryMatrix PickColor(int r, int g, int b);
+    BinaryImage PickColor(int r, int g, int b);
     GrayImage Project(std::vector<PointI> &centers);
 
     // TODO: create a classe for contours (avoiding copy to PointI)
-//    std::vector<std::vector<PointI> > Contours();
-//    std::vector<std::vector<PointI> > ApproximateContours(int eps=3);
     std::vector<Polygon> Contours();
     std::vector<Polygon> ApproximateContours(int eps=3);
     RgbImage Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h);

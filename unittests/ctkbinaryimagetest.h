@@ -3,14 +3,14 @@
 
 #include "gtest/gtest.h"
 
-#include "ctkbinarymatrix.h"
+#include "ctkimage.h"
 
-class CtkBinaryMatrixTest : public ::testing::Test
+class CtkBinaryImageTest : public ::testing::Test
 {
 public:
     void SetUp() override;
 
-    ctk::BinaryMatrix binimg;
+    ctk::BinaryImage binimg;
 };
 
 #endif // CTKBINARYMATRIXTEST_H

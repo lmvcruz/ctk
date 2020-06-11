@@ -118,7 +118,7 @@ NumericMatrix NumericMatrix::operator/(const NumericMatrix &that)
     assert(data.cols==that.rows());
     assert(that.cols()==that.rows() && that.cols()>0);
     assert(std::fabs(cv::determinant(that.data))>FLT_EPSILON);
-    cv::Mat res = data / that.data;
+    cv::Mat res = data * that.data.inv();
     return NumericMatrix(res);
 }
 
@@ -127,7 +127,7 @@ void NumericMatrix::operator/=(const NumericMatrix &that)
     assert(data.cols==that.rows());
     assert(that.cols()==that.rows() && that.cols()>0);
     assert(std::fabs(cv::determinant(that.data))>FLT_EPSILON);
-    data /= that.data;
+    data *= that.data.inv();
 }
 
 NumericMatrix NumericMatrix::operator+(const double v)

@@ -1,5 +1,6 @@
 #include "ctkmathtest.h"
 
+#include "ctktestsetup.h"
 #include "ctkmath.h"
 #include "ctkvectoraux.h"
 
@@ -19,6 +20,7 @@ void CtkMathTest::SetUp()
                        47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
 }
 
+#ifdef TEST_MATH
 TEST_F(CtkMathTest, Test_Setup) {
     EXPECT_EQ(CtkMathTest::some_primes_i.size(), 25);
     EXPECT_EQ(CtkMathTest::some_primes_ui.size(), 25);
@@ -71,3 +73,4 @@ TEST_F(CtkMathTest, Test_ListingPrimes) {
     EXPECT_EQ(ctk::generatePrimeNumbers(ll), some_primes_ll);
     EXPECT_EQ(ctk::generatePrimeNumbers(ull), some_primes_ull);
 }
+#endif

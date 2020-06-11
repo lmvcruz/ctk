@@ -266,7 +266,6 @@ void Polygon::SelfReduce(int epsilon)
      \param sh int specifying the nº of points to rotate the polygon by
      \return A reduced Polygon.
    */
-
 Polygon Polygon::Shift(int sh)
 {
     Polygon new_poly(*this);

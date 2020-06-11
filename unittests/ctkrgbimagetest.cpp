@@ -2,12 +2,8 @@
 
 #include <iostream>
 
+#include "ctktestsetup.h"
 #include "ctkvectoraux.h"
-#include "ctkbinarymatrix.h"
-
-extern std::string INPUT_DIR;
-extern std::string OUTPUT_DIR;
-extern bool SAVE_IMAGES;
 
 void CtkRgbImageTest::SetUp()
 {
@@ -15,6 +11,7 @@ void CtkRgbImageTest::SetUp()
     rgbimg.Open(rgbname);
 }
 
+#ifdef TEST_RGB_IMAGES
 TEST_F(CtkRgbImageTest, Test_Setup) {
     EXPECT_EQ(CtkRgbImageTest::rgbimg.width(), 640);
     EXPECT_EQ(CtkRgbImageTest::rgbimg.height(), 427);
@@ -397,3 +394,4 @@ TEST_F(CtkRgbImageTest, Test_toGrayImage) {
     }
     if (SAVE_IMAGES || 1) color.Save(OUTPUT_DIR+"rgb2gray-red.png");
 }
+#endif
