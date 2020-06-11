@@ -15,28 +15,41 @@ private:
 
 public:
 
-    //! Default constructor.
-    /*! Creates a new Point object and sets the values od x_,y_,z_ to 0 */
+    /**
+     * @brief Point  Default constructor.
+     * @param x  x coordinate, set to 0
+     * @param y  y coordinate, set to 0
+     * @param z  z coordinate, set to 0
+     */
     Point(T x=0, T y=0, T z=0) {
         x_ = x;
         y_ = y;
         z_ = z;
     }
 
-    //! Copy constructor.
-    /*! Takes a reference to an existing Point object as input (Point &that)
-     * and uses it to intialize another Point object . */
+
+    /**
+     * @brief Point Copy constructor.
+     * @param that  Reference to an existing Point object
+     */
     Point(const Point &that) {
         x_ = that.x_; /*!< the value of x_ is a copy of the value of that.x_ */
         y_ = that.y_; /*!< the value of y_ is a copy of the value of that.y_ */
         z_ = that.z_; /*!< the value of z_ is a copy of the value of that.z_ */
     }
 
-    //! Destructor
+
+    /**
+     * @brief ~Point  Destructor
+     */
     virtual ~Point() {}
 
-    //! Overload of = operator
-    /*!  */
+
+    /**
+     * @brief operator =  Overload of = operator given another Point object
+     * @param that  Reference to an existing Point object
+     * @return Updated Point objecy
+     */
     Point& operator=(const Point &that) {
         x_ = that.x_;
         y_ = that.y_;
@@ -44,131 +57,203 @@ public:
         return *this;
     }
 
-    //! Overload of == operator
+
+    //!
+    /**
+    * @brief operator ==  Overload of == operator given another Point object
+    * @param that  Reference to an existing Point object
+    * @return boolean indicating the result of the == comparison between the two Points
+    */
     bool operator==(const Point &that) {
         return (*this==that);
     }
 
+
     //! Overload of != operator
+    /**
+    * @brief operator !=  Overload of != operator given another Point object
+    * @param that  Reference to an existing Point object
+    * @return boolean indicating the result of the != comparison between the two Points
+    */
     bool operator!=(const Point &that) {
         return !(*this==that);
     }
 
-    //! Function to set the values of the attributes x_,y_ and z_
-    /*! Takes the desired values x, y and z as input and sets the Point's attributes
-    x_,y_ and z_ to those values. The value of z_ is set to 0 by default*/
+
+    /**
+     * @brief set  Function to set the values of the attributes x_,y_ and z_
+     * @param x  desired value of x_
+     * @param y  desired value of y_
+     * @param z  desired value of z_
+     */
     void set(T x, T y, T z=0) {
         x_ = x;
         y_ = y;
         z_ = z;
     }
 
-    //! Function to set the value of the attribute x_
-    /*! Takes the desired value x and sets the Point's attribute x_ that value.*/
+
+    /**
+     * @brief setX  Function to set the value of the attribute x_
+     * @param x  desired value of x_
+     */
     void setX(T x) {
         x_ = x;
     }
 
-    //! Function to access the value of the attribute x_
-    /*! Returns attribute x_ .*/
+
+    /**
+     * @brief getX  Function to access the value of the attribute x_
+     * @return Attribute x_
+     */
     T getX() {
         return x_;
     }
 
-    //! Function to set the valus of the attribute y_
-    /*! Takes the desired value y and sets the Point's attribute y_ that value.*/
+
+    /**
+     * @brief setY  Function to set the valus of the attribute y_
+     * @param y  desired value of y_
+     */
     void setY(T y) {
         y_ = y;
     }
 
-    //! Function to access the value of the attribute y_
-    /*! Returns attribute y_ .*/
+
+    /**
+     * @brief getY  Function to access the value of the attribute y_
+     * @return Attribute y_
+     */
     T getY() {
         return y_;
     }
 
-    //! Function to set the value of the attribute z_
-    /*! Takes the desired value y and sets the Point's attribute z_ that value.*/
+
+    /**
+     * @brief setZ  Function to set the value of the attribute z_
+     * @param z  desired value of z_
+     */
     void setZ(T z) {
         z_ = z;
     }
 
-    //! Function to access the value of the attribute y_
-    /*! Returns attribute z_ .*/
+
+    /**
+     * @brief getZ  Function to access the value of the attribute z_
+     * @return Attribute z_
+     */
     int getZ() {
         return z_;
     }
 
-    //! Overload of the addition (+) operator with another Point object
-    /*! The sum of two Point objects corresponds to the sum of their corresponding
-     * individual attributes x_, y_, z_  .*/
+
+    /**
+     * @brief operator +  Overload of the addition (+) operator with another Point object
+     * @param that  Reference to an existing Point object
+     * @return The sum of two Point objects corresponds to the sum of their corresponding
+     * individual attributes x_, y_, z_
+     */
     Point operator+(const Point &that) {
         return Point(x_+that.x_, y_+that.y_, z_+that.z_);
     }
 
-    //! Overload of the addition assignment (+=) operator with another Point object
-    /*! The new value of each attribue x_, y_, z_ corresponds to the current value of
-      that attribute plus the value of the attribute in the passed Point*/
+
+    /**
+     * @brief operator +=  Overload of the addition assignment (+=) operator with another Point object. The new value of each attribue x_, y_, z_ corresponds to the current value of
+      that attribute plus the value of the attribute in the passed Point
+     * @param that  Reference to an existing Point object
+     */
     void operator+=(const Point &that) {
         x_ += that.x_;
         y_ += that.y_;
         z_ += that.z_;
     }
 
-    //! Overload of the addition (+) operator with a variable of type T
-    /*! The sum of a Point object and a variable of type T corresponds to the sum of its
-     * individual attributes x_, y_, z_ and the passed variable   .*/
+
+    /**
+     * @brief operator +  Overload of the addition (+) operator with a variable of type T
+     * @param v  variable of type T
+     * @return  The sum of a Point object and a variable of type T corresponds to the sum of their corresponding
+     * individual attributes x_, y_, z_
+     */
     Point operator+(T v) {
         return Point(x_ + v.x_, y_ + v.y_, z_ + v.z_);
     }
 
-    //! Overload of the addition assignment (+=) operator with a variable of type T
-    /*! The new value of each attribue x_, y_, z_ corresponds to the current value of
-      that attribute plus the passed variable*/
+
+    /**
+     * @brief operator +=  Overload of the addition assignment (+=) operator with a variable of type T. The new value of each attribue x_, y_, z_ corresponds to the current value of
+      that attribute plus the value of the attribute in the variable
+     * @param v  variable of type T
+     */
     void operator+=(T v) {
         x_ += v.x_;
         y_ += v.y_;
         z_ += v.z_;
     }
 
-    //! Overload of the subtraction (-) operator with another Point object
-    /*! The sum of two Point objects corresponds to the subtracton of their corresponding
-     * individual attributes x_, y_, z_  .*/
+
+    /**
+     * @brief operator -  Overload of the subtraction (-) operator with another Point object
+     * @param that  Reference to an existing Point object
+     * @return  The subtraction of two Point objects corresponds to the subtracton of their corresponding
+     * individual attributes x_, y_, z_  .
+     */
     Point operator-(const Point &that) {
         return Point(x_-that.x_, y_-that.y_, z_-that.z_);
     }
 
-    //! Overload of the subtraction assignment (-=) operator with another Point object
-    /*! The new value of each attribue x_, y_, z_ corresponds to the current value of
-      that attribute minus the value of the attribute in the passed Point*/
+
+    /**
+     * @brief operator -=  Overload of the subtraction assignment (-=) operator with another Point object. The new value of each attribue x_, y_, z_ corresponds to the current value of
+      that attribute minus the value of the attribute in the passed Point
+     * @param that  Reference to an existing Point object
+     */
     void operator-=(const Point &that) {
         x_ -= that.x_;
         y_ -= that.y_;
         z_ -= that.z_;
     }
 
-
+    /**
+     * @brief operator -  Overload of the subtraction (-) operator with a variable of type T
+     * @param v  variable of type T
+     * @return The subtraction of a Point object and a variable of type T corresponds to the subtraction of their corresponding
+     * individual attributes x_, y_, z_
+     */
     Point operator-(T v) {
         return Point(x_ - v.x_, y_ - v.y_, z_ - v.z_);
     }
 
 
+    /**
+     * @brief operator -=  Overload of the subtraction assignment (-=) operator with a variable of type T. The new value of each attribue x_, y_, z_ corresponds to the current value of
+      that attribute minus the value of the attribute in the variable
+     * @param v variable of type T
+     */
     void operator-=(T v) {
         x_ -= v.x_;
         y_ -= v.y_;
         z_ -= v.z_;
     }
 
-    //! Overload of the multiplication (*) operator with another Point object
-    /*! The multiplication of two Point objects corresponds to the multiplication of their corresponding
-     * individual attributes x_, y_, z_  .*/
+
+    /**
+     * @brief operator *  Overload of the multiplication (*) operator with another Point object
+     * @param that  Reference to an existing Point object
+     * @return The multiplication of two Point objects corresponds to the multiplication of their corresponding
+     * individual attributes x_, y_, z_  .
+     */
     Point operator*(const Point &that) {
         return Point(x_*that.x_, y_*that.y_, z_*that.z_);
     }
 
-    //! Overload of the multiplication assignment (*=) operator with another Point object
-    /*! The new value of each attribue x_, y_, z_ corresponds to the current value of
-      that attribute multiplied by the value of the attribute in the passed Point*/
+
+    /**
+     * @brief operator *=   Overload of the multiplication assignment (*=) operator with another Point object. The new value of each attribue x_, y_, z_ corresponds to the current value of
+      that attribute multiplied by the value of the attribute in the passed Point
+     * @param that  Reference to an existing Point object
+     */
     void operator*=(const Point &that) {
         x_ *= that.x_;
         y_ *= that.y_;
@@ -176,34 +261,53 @@ public:
     }
 
 
+    /**
+     * @brief operator *  Overload of the multiplication (*) operator with variable of type T
+     * @param v  variable of type T
+     * @return The multiplication of a Point object and a variable of type T corresponds to the multiplication of their corresponding
+     * individual attributes x_, y_, z_
+     */
     Point operator*(T v) {
         return Point(x_ * v.x_, y_ * v.y_, z_ * v.z_);
     }
 
+
+    /**
+     * @brief operator *=  Overload of the multiplication assignment (*=) operator with a variable of type T. The new value of each attribue x_, y_, z_ corresponds to the current value of
+      that attribute multiplied by the value of the attribute in the passed variable.
+     * @param v  variable of type T
+     */
     void operator*=(T v) {
         x_ *= v.x_;
         y_ *= v.y_;
         z_ *= v.z_;
     }
 
-    //! Overload of the division (/) operator with another Point object
-    /*! The division of two Point objects corresponds to the division of their corresponding
-     * individual attributes x_, y_, z_ .*/
+
+    /**
+     * @brief operator /  Overload of the division (/) operator with another Point object
+     * @param that  Reference to an existing Point object
+     * @return The division of two Point objects corresponds to the division of their corresponding
+     * individual attributes x_, y_, z_ .
+     */
     Point operator/(const Point &that) {
 
-        /*!If any attribute of the passed object is zeros an exception is thrown. */
+        /*!If any attribute of the passed object is zero an exception is thrown. */
         if((that.x_==0) || (that.y_==0) || (that.z_==0)) {
             throw division_per_zero();
         }
         return Point(x_/that.x_, y_/that.y_, z_/that.z_);
     }
 
-    //! Overload of the division assignment (/=) operator with another Point object
-    /*! The new value of each attribue x_, y_, z_ corresponds to the current value of
-      that attribute devided by the value of the attribute in the passed Point*/
+
+    /**
+     * @brief operator /=  Overload of the division assignment (/=) operator with another Point object. The new value of each attribue x_, y_, z_ corresponds to the current value of
+      that attribute devided by the value of the attribute in the passed Point.
+     * @param that  Reference to an existing Point object
+     */
     void operator/=(const Point &that) {
 
-        /*!If any attribute of the passed object is zeros an exception is thrown. */
+        /*!If any attribute of the passed object is zero an exception is thrown. */
         if((that.x_==0) || (that.y_==0) || (that.z_==0)) {
             throw division_per_zero();
         }
@@ -212,16 +316,28 @@ public:
         z_ /= that.z_;
     }
 
-
+    /**
+     * @brief operator /  Overload of the division (/) operator with a variable of type T
+     * @param v  variable of type T
+     * @return The division of a Point object and a variable of type T corresponds to the division of their corresponding
+     * individual attributes x_, y_, z_
+     */
     Point operator/(T v) {
 
+        /*!If any attribute of the passed variable is zero an exception is thrown. */
         if((v.x_==0) || (v.y_==0) || (v.z_==0)) {
             throw division_per_zero();
         }
         return Point(x_/v.x_, y_/v.y_, z_/v.z_);
     }
 
+    /**
+     * @brief operator /=  Overload of the division assignment (/=) operator with a variable of type T
+     * @param v a variable of type T
+     */
     void operator/=(T v) {
+
+        /*!If any attribute of the passed variable is zero an exception is thrown. */
         if((v.x_==0) || (v.y_==0) || (v.z_==0)) {
             throw division_per_zero();
         }
@@ -230,36 +346,67 @@ public:
         z_ /= v.z_;
     }
 
-    //! ???
+
     // Mudar para ManhattanDistance()?
+    /**
+     * @brief ManhattanLength
+     * @return int defining the Manhattam length of the Point
+     */
     int ManhattanLength() {
         int ml = std::fabs(x_) + std::fabs(x_) + std::fabs(x_);
         return static_cast<int>(ml);
     }
 
-    //! Defines the norm of the point
+
+    /**
+     * @brief Norm
+     * @return int defining the the norm of the point
+     */
     double Norm() {
         return std::sqrt(x_*x_ + y_*y_ + z_*z_) ;
     }
 
-    //! Inner product with another Point object
+
+    /**
+    * @brief inner  Performs the inner product with another Point object
+    * @param p  Reference to an existing point object
+    * @return inner product of the two points
+    */
     double inner(const Point &p) {
         return x_*p.x_ + y_*p.y_ + z_*p.z_;
     }
 
+
     //! Outter product with another Point object
+    /**
+    * @brief outter  Performs the inner outter with another Point object
+    * @param p  Reference to an existing point object
+    * @return outter product of the two points
+    */
     Point outter(const Point &p){
         return Point(y_*p.z_ - z_*p.y_,
                      -1*(x_*p.z_ - z_*p.x_),
                      x_*p.y_ - y_*p.x_ );
     }
 
+
      //! Euclidean distance to another Point object
+    /**
+     * @brief Distance  Computes the euclidean distance to another Point object
+     * @param p  Reference to an existing point object
+     * @return euclidean distance between the two points
+     */
     double Distance(const Point &p) {
         return std::sqrt( (x_-p.x_)*(x_-p.x_) + (y_-p.y_)*(y_-p.y_) + (z_-p.z_)*(z_-p.z_) );
     }
 
-    //! Angle formed with two other Point objects
+
+    /**
+    * @brief Angle  Angle formed with two other Point objects
+    * @param pa  Reference to an existing point object
+    * @param pb  Reference to an existing point object
+    * @return Angle formed with the two Points
+    */
     double Angle(const Point &pa, const Point &pb) {
         double p_pa = Distance(pa);
         double p_pb = Distance(pb);
@@ -268,14 +415,20 @@ public:
         return std::acos((p_pa*p_pa + p_pb*p_pb + pa_pb*pa_pb)/(2*p_pa*p_pb));
     }
 
-    //! Normalizes the point dividing it by its norm
-    //! Returns normalized point
+
+    /**
+     * @brief normalize  Normalizes the point dividing it by its norm
+     * @return normalized point
+     */
     Point normalize() {
         double n = Norm();
         return *this / n;
     }
 
-    //! Normalizes the point dividing it by its norm
+
+    /**
+    * @brief SelfNormalize  Normalizes the point dividing it by its norm
+    */
     void SelfNormalize() {
         double n = Norm();
         *this /= n;
@@ -283,7 +436,16 @@ public:
 
 };
 
+
+/**
+ * @brief PointI Point object with attributes of type int
+ */
 typedef Point<int> PointI;
+
+
+/**
+ * @brief PointD  Point object with attributes of type double
+ */
 typedef Point<double> PointD;
 
 }

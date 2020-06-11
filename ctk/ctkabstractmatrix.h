@@ -24,23 +24,23 @@ class AbstractMatrix
 {
 protected:
     /**
-     * @brief type TODO
+     * @brief matrix elements type
      */
     int type;
 
     /**
-     * @brief ch_size TODO
+     * @brief ch_size number of matrix channels
      */
     int ch_size;
 
     /**
-     * @brief data TODO
+     * @brief data matrix data
      */
     cv::Mat data;
 
 public:
     /**
-     * @brief CtkAbstractMatrix TODO
+     * @brief Default Constructor
      */
     AbstractMatrix() {
         type = -1;
@@ -48,8 +48,8 @@ public:
     }
 
     /**
-     * @brief AbstractMatrix TODO
-     * @param d TODO
+     * @brief Parameterized Constructor
+     * @param d Reference to a cv::Mat array
      */
     AbstractMatrix(cv::Mat& d) {
         type = d.type();
@@ -58,8 +58,8 @@ public:
     }
 
     /**
-     * @brief AbstractMatrix TODO
-     * @param that TODO
+     * @brief Copy Constructor
+     * @param that Reference to an existing AbstractMatrix object
      */
     AbstractMatrix(const AbstractMatrix& that) {
         type = that.type;
@@ -68,14 +68,14 @@ public:
     }
 
     /**
-     * @brief ~CtkAbstractMatrix TODO
+     * @brief ~CtkAbstractMatrix Destructor
      */
     virtual ~AbstractMatrix() {}
 
     /**
-     * @brief create TODO
-     * @param w TODO
-     * @param h TODO
+     * @brief Create  Create AbstractMatrix
+     * @param w  number of rows
+     * @param h  number of cols
      */
     virtual void Create(int w, int h) {
         if (w>0 && h>0) {
@@ -88,10 +88,10 @@ public:
     }
 
     /**
-     * @brief Create
-     * @param w
-     * @param h
-     * @param vec
+     * @brief Create  Create AbstractMatrix
+     * @param w  number of rows
+     * @param h  number of cols
+     * @param vec  vector with matrix elements
      */
     virtual void Create(int w, int h, std::vector<T> &vec) {
         if (w>0 && h>0) {
@@ -106,87 +106,95 @@ public:
     }
 
     /**
-     * @brief get_data TODO
-     * @return TODO
+     * @brief get_data  Access matrix data
+     * @return data
      */
     cv::Mat& get_data() {
         return data;
     }
 
     /**
-     * @brief get_data TODO
-     * @return TODO
+     * @brief get_data  Access matrix data
+     * @return data
      */
     const cv::Mat& get_data() const {
         return data;
     }
 
     /**
-     * @brief cols TODO
-     * @return  TODO
+     * @brief cols  Get nº of columns in matrix
+     * @return  nº of columns in matrix
      */
     int cols() const{
         return data.cols;
     }
 
     /**
-     * @brief width TODO
-     * @return  TODO
+     * @brief width  Get nº of columns in matrix
+     * @return  nº of columns in matrix
      */
     int width()  const{
         return data.cols;
     }
 
     /**
-     * @brief rows TODO
-     * @return  TODO
+     * @brief rows  Get nº of rows in matrix
+     * @return nº of rows in matrix
      */
     int rows() const{
         return data.rows;
     }
 
     /**
-     * @brief height TODO
-     * @return  TODO
+     * @brief height  Get nº of rows in matrix
+     * @return nº of rows in matrix
      */
     int height() const{
         return data.rows;
     }
 
     /**
-     * @brief size TODO
-     * @return  TODO
+     * @brief size   Get matrix size
+     * @return  matrix size (nº of rows x nº of columns
      */
     int size() const{
         return data.rows*data.cols;
     }
 
     /**
-     * @brief channels TODO
-     * @return  TODO
+     * @brief channels  Get nº of channels in matrix
+     * @return  nº of channels in matrix
      */
     int channels() const{
         return ch_size;
     }
 
     /**
-     * @brief checkChannel TODO
-     * @return  TODO
+     * @brief checkChannel  Check if ch_size parameter is correctly assigned
+     * @return  Boolean true if ch_size corresponds to number of channels in matrix.
      */
     bool CheckChannel() const{
         return (ch_size==data.channels());
     }
 
     /**
-     * @brief get TODO
-     * @param x TODO
-     * @param y TODO
-     * @return  TODO
+     * @brief get  Get a specific matrix element
+     * @param x  row index
+     * @param y  column index
+     * @return  Matrix element at row x and column y
      */
     virtual T get(int x, int y) const {
         return data.at<T>(y,x);
     }
 
+
+    /**
+     * @brief safe_get   Get a specific matrix element with protections
+     * @param x  row index
+     * @param y  column index
+     * @param v ??
+     * @return  Matrix element at row x and column y
+     */
     virtual T safe_get(int x, int y, T v) {
         if (x<0 || x>=data.cols || y<0 || y>=data.rows) {
             throw std::out_of_range("Exception thrown in AbstractMatyrix::safe_get");
@@ -195,20 +203,20 @@ public:
     }
 
     /**
-     * @brief set TODO
-     * @param x TODO
-     * @param y TODO
-     * @param v TODO
+     * @brief set  Setting the value of a specific matrix element
+     * @param x  row index
+     * @param y  column index
+     * @param v  desired value
      */
     virtual void set(int x, int y, T v) {
         data.at<T>(y,x) = v;
     }
 
     /**
-     * @brief safe_set
-     * @param x
-     * @param y
-     * @param v
+     * @brief safe_set  Setting the value of a specific matrix element with protections
+     * @param x  row index
+     * @param y  column index
+     * @param v  desired value
      */
     virtual void safe_set(int x, int y, T v) {
         if (x<0 || x>=data.cols || y<0 || y>=data.rows) {
@@ -218,25 +226,25 @@ public:
     }
 
     /**
-     * @brief begin TODO
-     * @return  TODO
+     * @brief begin Get the first element of the matrix
+     * @return  matrix element at position (0,0)
      */
     T* begin() {
         return &data.at<T>(0,0);
     }
 
     /**
-     * @brief end TODO
-     * @return  TODO
+     * @brief end Get the last element of the matrix
+     * @return  matrix element at position (num of rows , num of columns)
      */
     T* end() {
         return &data.at<T>(data.rows*data.cols);
     }
 
     /**
-     * @brief operator == TODO
-     * @param that TODO
-     * @return TODO
+     * @brief operator ==
+     * @param that  reference to an existing AbstractMatrix
+     * @return boolean, true if all elements in both AbstractMatrixes are equal.
      */
     bool operator==(const AbstractMatrix<T> &that) {
         if (data.rows!=that.rows()) return false;
@@ -250,9 +258,9 @@ public:
     }
 
     /**
-     * @brief operator == TODO
-     * @param that TODO
-     * @return TODO
+     * @brief operator != TODO
+     * @param that reference to an existing AbstractMatrix
+     * @return boolean, false if all elements in both AbstractMatrixes are equal.
      */
     bool operator!=(const AbstractMatrix<T> &that) {
         return !(*this==that);

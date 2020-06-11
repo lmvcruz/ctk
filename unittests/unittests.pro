@@ -16,6 +16,7 @@ SOURCES += \
         ctkgrayimagetest.cpp \
         ctkmathtest.cpp \
         ctknumericmatrixtest.cpp \
+        ctkpolygontest.cpp \
         ctkrgbimagetest.cpp \
         ctkvecauxtest.cpp \
         main.cpp
@@ -36,6 +37,7 @@ HEADERS += \
     ctkgrayimagetest.h \
     ctkmathtest.h \
     ctknumericmatrixtest.h \
+    ctkpolygontest.h \
     ctkrgbimagetest.h \
     ctktestsetup.h \
     ctkvecauxtest.h
@@ -52,10 +54,34 @@ unix:!macx {
     PKGCONFIG += opencv
 }
 macx: {
-    QT_CONFIG -= no-pkg-config
+    QT_CONFIG -= no-pkg-configs
     CONFIG += link_pkgconfig
     PKG_CONFIG = /usr/local/bin/pkg-config
     PKGCONFIG += opencv4
     PKGCONFIG += tesseract
     PKGCONFIG += zbar ilmbase
 }
+win32: {
+ OPENCV_DIR = C:\OpenCV\Build\install
+
+ INCLUDEPATH +="$$OPENCV_DIR\include"
+ DEPENDPATH +="$$OPENCV_DIR\include"
+
+ LIBS += -L"$$OPENCV_DIR/x64/mingw/lib"\
+-lopencv_core411\
+-lopencv_imgproc411\
+-lopencv_highgui411\
+-lopencv_imgcodecs411\
+-lopencv_features2d411\
+-lopencv_face411\
+-lopencv_objdetect411\
+-lopencv_video411\
+-lopencv_ml411\
+-lopencv_dnn411\
+-lopencv_videoio411\
+-lopencv_calib3d411
+
+
+}
+
+
