@@ -10,6 +10,9 @@
 
 namespace ctk {
 
+/**
+ * @brief GrayImage::GrayImage - Default Constructor
+ */
 GrayImage::GrayImage()
 {
     type = CV_8UC1;
@@ -17,6 +20,10 @@ GrayImage::GrayImage()
     invertchannels = false;
 }
 
+/**
+ * @brief GrayImage::GrayImage - Copy Constructor
+ * @param that reference to existing GrayImage object
+ */
 GrayImage::GrayImage(const GrayImage &that)
 {
     assert(that.data.type()==CV_8UC1 && that.data.channels()==1);
@@ -26,6 +33,10 @@ GrayImage::GrayImage(const GrayImage &that)
     data = that.data.clone();
 }
 
+/**
+ * @brief GrayImage::GrayImage - Copy Constructor
+ * @param that  reference to existing AbstractImage object
+ */
 GrayImage::GrayImage(const AbstractImage<uchar> &that)
 {
     assert(that.get_data().type()==CV_8UC1
@@ -36,10 +47,20 @@ GrayImage::GrayImage(const AbstractImage<uchar> &that)
     data = that.get_data().clone();
 }
 
+/**
+ * @brief GrayImage::GrayImage
+ * @param d
+ */
 GrayImage::GrayImage(cv::Mat &d) : AbstractImage<uchar>(d){
     assert(d.type()==CV_8UC1 && d.channels()==1);
 }
 
+
+/**
+ * @brief GrayImage::operator =
+ * @param that reference to existing GrayImage object
+ * @return Updated GrayImage
+ */
 GrayImage &GrayImage::operator=(const GrayImage &that)
 {
     assert(that.data.type()==CV_8UC1 && that.data.channels()==1);
@@ -50,6 +71,11 @@ GrayImage &GrayImage::operator=(const GrayImage &that)
     return *this;
 }
 
+/**
+ * @brief GrayImage::operator =
+ * @param that reference to cv::Mat matrix
+ * @return Updated GrayImage
+ */
 GrayImage &GrayImage::operator=(const cv::Mat &that)
 {
     assert(that.type()==CV_8UC1 && that.channels()==1);
@@ -60,6 +86,11 @@ GrayImage &GrayImage::operator=(const cv::Mat &that)
     return *this;
 }
 
+/**
+ * @brief GrayImage::operator =
+ * @param that  reference to existing AbstractImage object
+ * @return Updated GrayImage
+ */
 GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that)
 {
     assert(that.get_data().type()==CV_8UC1
@@ -71,11 +102,19 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that)
     return *this;
 }
 
+/**
+ * @brief GrayImage::channels
+ * @return 1
+ */
 int GrayImage::channels()
 {
     return 1;
 }
 
+/**
+ * @brief GrayImage::toRgbImage - Convert gray image to RGB image
+ * @return RGB Image
+ */
 RgbImage GrayImage::toRgbImage()
 {
     RgbImage newImage;
@@ -83,6 +122,11 @@ RgbImage GrayImage::toRgbImage()
     return newImage;
 }
 
+/**
+ * @brief GrayImage::ApplyBinaryThreshold  - Binarize gray image according to passed threshold
+ * @param t  int representing the threshold
+ * @return Binary image resulting from applying the threshold to the Gray Image
+ */
 BinaryMatrix GrayImage::ApplyBinaryThreshold(int t)
 {
     BinaryMatrix newImage;
@@ -90,6 +134,10 @@ BinaryMatrix GrayImage::ApplyBinaryThreshold(int t)
     return newImage;
 }
 
+/**
+ * @brief GrayImage::ApplyOtsuThreshold - Binarize gray image using Otsu threshold
+ * @return Resulting Binary image
+ */
 BinaryMatrix GrayImage::ApplyOtsuThreshold()
 {
     BinaryMatrix newImage;
@@ -97,6 +145,13 @@ BinaryMatrix GrayImage::ApplyOtsuThreshold()
     return newImage;
 }
 
+
+/**
+ * @brief GrayImage::ApplyAdaptativeThreshold
+ * @param bs int representing the size of a pixel neighborhood that is used to calculate a threshold value for the pixel
+ * @param c int representing the constant subtracted from the weighted mean (Gaussian window)
+ * @return Resulting Binary image
+ */
 BinaryMatrix GrayImage::ApplyAdaptativeThreshold(int bs, int c)
 {
     cv::Mat aux;
@@ -107,6 +162,13 @@ BinaryMatrix GrayImage::ApplyAdaptativeThreshold(int bs, int c)
     return BinaryMatrix(aux);
 }
 
+
+/**
+ * @brief GrayImage::Normalize - Normalize image into a given range
+ * @param minv int representing the lower bound of the range
+ * @param maxv  int representing the upper bound of the range
+ * @return Normalized image
+ */
 GrayImage GrayImage::Normalize(int minv, int maxv)
 {
     //TODO: replace asserts to exceptions
@@ -137,6 +199,12 @@ GrayImage GrayImage::Normalize(int minv, int maxv)
     return norm;
 }
 
+
+/**
+ * @brief GrayImage::PickColor
+ * @param c int representing the desired gray level
+ * @return BinaryMatrix representing a mask of the original image which is 1 for the desired gray level and 0 otherwise
+ */
 BinaryMatrix GrayImage::PickColor(int c)
 {
     BinaryMatrix mask;
@@ -151,6 +219,9 @@ BinaryMatrix GrayImage::PickColor(int c)
     return mask;
 }
 
+/**
+ * @brief ColorImage::ColorImage - Default Constructor
+ */
 ColorImage::ColorImage()
 {
     type = CV_8UC3;
@@ -158,6 +229,10 @@ ColorImage::ColorImage()
     invertchannels = false;
 }
 
+/**
+ * @brief ColorImage::ColorImage - Copy Construtor
+ * @param that reference to an existing
+ */
 ColorImage::ColorImage(const ColorImage &that)
 {
     assert(that.data.type()==CV_8UC3 && that.data.channels()==3);
@@ -167,6 +242,10 @@ ColorImage::ColorImage(const ColorImage &that)
     data = that.data.clone();
 }
 
+/**
+ * @brief ColorImage::ColorImage - Copy Construtor
+ * @param that  reference to an AbstractImage
+ */
 ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that)
 {
     assert(that.get_data().type()==CV_8UC3
@@ -177,20 +256,35 @@ ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that)
     data = that.get_data().clone();
 }
 
+/**
+ * @brief ColorImage::ColorImage
+ * @param d
+ */
 ColorImage::ColorImage(cv::Mat &d) : AbstractImage<cv::Vec3b>(d){
     assert(d.type()==CV_8UC3 && d.channels()==3);
 }
 
+/**
+ * @brief ColorImage::channels
+ * @return 3
+ */
 int ColorImage::channels()
 {
     return 3;
 }
 
+/**
+ * @brief RgbImage::RgbImage
+ */
 RgbImage::RgbImage() : ColorImage()
 {
     invertchannels = true;
 }
 
+/**
+ * @brief RgbImage::RgbImage - Copy Construtor
+ * @param that reference to an existing RgbImage
+ */
 RgbImage::RgbImage(const RgbImage &that)
 {
     assert(that.data.type()==CV_8UC3 && that.data.channels()==3);
@@ -200,6 +294,10 @@ RgbImage::RgbImage(const RgbImage &that)
     data = that.data.clone();
 }
 
+/**
+ * @brief RgbImage::RgbImage - Copy Construtor
+ * @param that  reference to an existing AbstractImage
+ */
 RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that)
 {
     assert(that.get_data().type()==CV_8UC3
@@ -210,55 +308,128 @@ RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that)
     data = that.get_data().clone();
 }
 
+/**
+ * @brief RgbImage::RgbImage
+ * @param d
+ */
 RgbImage::RgbImage(cv::Mat &d) : ColorImage(d){
     assert(d.type()==CV_8UC3 && d.channels()==3);
 }
 
+/**
+ * @brief RgbImage::Create - Create RgbImage
+ * @param w int representing image width
+ * @param h int representing image hight
+ */
 void RgbImage::Create(int w, int h)
 {
     ColorImage::Create(w,h);
 }
 
+/**
+ * @brief RgbImage::set - Set value of image pixel
+ * @param x int representing the row index
+ * @param y int representing the column index
+ * @param r int representing the desired red value
+ * @param g int representing the desired green value
+ * @param b int representing the desired blue value
+ */
 void RgbImage::set(int x, int y, int r, int g, int b)
 {
     AbstractMatrix<cv::Vec3b>::set(x, y, cv::Vec3b(r,g,b));
 }
 
+/**
+ * @brief RgbImage::safe_set - Set value of image pixel
+ * @param x int representing the row index
+ * @param y int representing the column index
+ * @param r int representing the desired red value
+ * @param g int representing the desired green value
+ * @param b int representing the desired blue value
+ */
 void RgbImage::safe_set(int x, int y, int r, int g, int b)
 {
     AbstractMatrix<cv::Vec3b>::safe_set(x, y, cv::Vec3b(r,g,b));
 }
 
+/**
+ * @brief RgbImage::safe_set
+ * @param i
+ * @param r
+ * @param g
+ * @param b
+ */
 void RgbImage::safe_set(int i, int r, int g, int b)
 {
     AbstractImage<cv::Vec3b>::safe_set(i, cv::Vec3b(r,g,b));
 }
 
+/**
+ * @brief RgbImage::set
+ * @param i
+ * @param r
+ * @param g
+ * @param b
+ */
 void RgbImage::set(int i, int r, int g, int b)
 {
     AbstractImage<cv::Vec3b>::set(i, cv::Vec3b(r,g,b));
 }
 
+/**
+ * @brief RgbImage::red Get red value of a pixel
+ * @param x int representing the row index
+ * @param y int representing the column index
+ * @return int representing the red value of the pixel at (x,y)
+ */
 int RgbImage::red(int x, int y)
 {
     return AbstractMatrix<cv::Vec3b>::get(x,y)[0];
 }
 
+/**
+ * @brief RgbImage::green Get green value of a pixel
+ * @param x int representing the row index
+ * @param y int representing the column index
+ * @return int representing the green value of the pixel at (x,y)
+ */
 int RgbImage::green(int x, int y)
 {
     return AbstractMatrix<cv::Vec3b>::get(x,y)[1];
 }
 
+
+/**
+ * @brief RgbImage::blue Get blue value of a pixel
+ * @param x int representing the row index
+ * @param y int representing the column index
+ * @return int representing the blue value of the pixel at (x,y)
+ */
 int RgbImage::blue(int x, int y)
 {
     return AbstractMatrix<cv::Vec3b>::get(x,y)[2];
 }
 
+/**
+ * @brief RgbImage::get_pixel
+ * @param x int representing the row index
+ * @param y int representing the column index
+ * @return Point representing the pixel at (x,y)
+ */
 PointI RgbImage::get_pixel(int x, int y)
 {
     return PointI(red(x,y), green(x,y), blue(x,y));
 }
 
+/**
+ * @brief RgbImage::Quantize
+ * @param q
+ * @param iter
+ * @param eps
+ * @param attempts
+ * @param qtype
+ * @return
+ */
 RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
 {
     RgbImage cluster(data);
@@ -285,6 +456,13 @@ RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
     return cluster;
 }
 
+/**
+ * @brief RgbImage::PickColor - Produce image mask for a given color
+ * @param r int representing the red value of the desired color
+ * @param g int representing the green value of the desired color
+ * @param b int representing the blue value of the desired color
+ * @return BinaryMatrix representing a mask of the original image which is 1 for the desired gray level and 0 otherwise
+ */
 BinaryMatrix RgbImage::PickColor(int r, int g, int b)
 {
     BinaryMatrix mask;

@@ -12,7 +12,7 @@ namespace ctk {
  */
 NumericMatrix::NumericMatrix()
 {
-    type = CV_64F;
+    type = CV_64F; //CV_64F - 64-bit floating-point numbers
     ch_size = 1;
 }
 

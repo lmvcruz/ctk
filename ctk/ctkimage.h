@@ -39,7 +39,7 @@ public:
     using AbstractMatrix<T>::set;
 
     /**
-     * @brief AbstractImage
+     * @brief AbstractImage Default Constructor
      */
     AbstractImage() {
         AbstractMatrix<T>::type = -1;
@@ -49,8 +49,8 @@ public:
     }
 
     /**
-     * @brief AbstractImage TODO
-     * @param d TODO
+     * @brief AbstractImage Parameterized Constructor
+     * @param d matrix
      */
     AbstractImage(cv::Mat &d) : AbstractMatrix<T>(d){
         AbstractMatrix<T>::type = d.type();
@@ -60,7 +60,7 @@ public:
     }
 
     /**
-     * @brief ~AbstractImage TODO
+     * @brief ~AbstractImage Destructor
      */
     virtual ~AbstractImage(){}
 
@@ -235,12 +235,12 @@ public:
     }
 
     /**
-     * @brief Crop TODO
-     * @param x TODO
-     * @param y TODO
-     * @param w TODO
-     * @param h TODO
-     * @return  TODO
+     * @brief Crop
+     * @param x int representing the x coordinate of the top-left corner
+     * @param y int representing the y coordinate of the top-left corner
+     * @param w width of the rectangle
+     * @param h height of the rectangle
+     * @return  Cropped image containing the desired rgion
      */
     AbstractImage<T> Crop(int x, int y, int w, int h) {
         cv::Rect roi(x,y,w,h);
@@ -250,10 +250,10 @@ public:
 
     /**
      * @brief SelfCrop TODO
-     * @param x TODO
-     * @param y TODO
-     * @param w TODO
-     * @param h TODO
+     * @param x int representing the x coordinate of the top-left corner
+     * @param y int representing the y coordinate of the top-left corner
+     * @param w width of the rectangle
+     * @param h height of the rectangle
      */
     void SelfCrop(int x, int y, int w, int h) {
         cv::Rect roi(x,y,w,h);
@@ -261,8 +261,8 @@ public:
     }
 
     /**
-     * @brief FlipHorizontally TODO
-     * @return  TODO
+     * @brief FlipHorizontally
+     * @return  Image flipped arround the horizontal axis
      */
     AbstractImage<T> FlipHorizontally() {
         cv::Mat aux;
@@ -271,7 +271,7 @@ public:
     }
 
     /**
-     * @brief SelfFlipHorizontally TODO
+     * @brief SelfFlipHorizontally - flips the image arround the horizontal axis
      */
     void SelfFlipHorizontally()
     {
@@ -279,8 +279,8 @@ public:
     }
 
     /**
-     * @brief FlipVertically TODO
-     * @return  TODO
+     * @brief FlipVertically
+     * @return  Image flipped arround the vertical axis
      */
     AbstractImage<T> FlipVertically() {
         cv::Mat aux;
@@ -289,7 +289,7 @@ public:
     }
 
     /**
-     * @brief SelfFlipVertically TODO
+     * @brief SelfFlipVertically flips the image arround the vertical axis
      */
     void SelfFlipVertically()
     {
@@ -297,8 +297,8 @@ public:
     }
 
     /**
-     * @brief FlipBoth TODO
-     * @return  TODO
+     * @brief FlipBoth
+     * @return  Image flipped arround both the vertical and horizontal axis
      */
     AbstractImage<T> FlipBoth() {
         cv::Mat aux;
@@ -307,7 +307,7 @@ public:
     }
 
     /**
-     * @brief SelfFlipBoth TODO
+     * @brief SelfFlipBoth flips image arround both the vertical and horizontal axis
      */
     void SelfFlipBoth()
     {
@@ -315,8 +315,8 @@ public:
     }
 
     /**
-     * @brief Rotate90 TODO
-     * @return  TODO
+     * @brief Rotate90
+     * @return  Image rotated by 90º clockwise
      */
     AbstractImage<T> Rotate90() {
         cv::Mat aux;
@@ -326,7 +326,7 @@ public:
     }
 
     /**
-     * @brief SelfRotate90 TODO
+     * @brief SelfRotate90 rotates image by 90º clockwise
      */
     void SelfRotate90()
     {
@@ -335,8 +335,8 @@ public:
     }
 
     /**
-     * @brief Rotate180 TODO
-     * @return  TODO
+     * @brief Rotate180
+     * @return  Image rotated by 180º clockwise
      */
     AbstractImage<T> Rotate180() {
         cv::Mat aux;
@@ -345,7 +345,7 @@ public:
     }
 
     /**
-     * @brief SelfRotate180 TODO
+     * @brief SelfRotate180 rotates image by 180º clockwise
      */
     void SelfRotate180()
     {
@@ -354,7 +354,7 @@ public:
 
     /**
      * @brief Rotate270 TODO
-     * @return  TODO
+     * @return  Image rotated by 270º clockwise
      */
     AbstractImage<T> Rotate270() {
         cv::Mat aux;
@@ -364,7 +364,7 @@ public:
     }
 
     /**
-     * @brief SelfRotate270 TODO
+     * @brief SelfRotate270 rotates image by 270º clockwise
      */
     void SelfRotate270()
     {
@@ -372,6 +372,12 @@ public:
         cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, 0);
     }
 
+    /**
+     * @brief resize - change image size
+     * @param nw int representing new width
+     * @param nh int representing new hight
+     * @return Resized image
+     */
     AbstractImage<T> resize(int nw, int nh) {
         cv::Mat aux;
         cv::resize(AbstractMatrix<T>::data, aux, cv::Size(nw,nh), cv::INTER_CUBIC);
@@ -379,7 +385,7 @@ public:
     }
 
     /**
-     * @brief Open TODO
+     * @brief Open Read information from file
      * @param filename TODO
      */
     void Open(std::string filename) {
@@ -392,7 +398,7 @@ public:
     }
 
     /**
-     * @brief Save TODO
+     * @brief Save Save information to file
      * @param filename TODO
      */
     void Save(std::string filename) {
