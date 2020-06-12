@@ -185,8 +185,6 @@ BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &ref
     else {
         homo_mat = cv::findHomography(cv_pts, cv_refs);
     }
-    //´
-    std::cout << homo_mat.rows << " " << homo_mat.cols << " " << homo_mat.type() << std::endl;
     //
     cv::Mat aux1, aux2;
     data.convertTo(aux1, CV_32F);
