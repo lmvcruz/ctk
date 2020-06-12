@@ -29,10 +29,10 @@ template <class T>
 class AbstractImage : public AbstractMatrix<T>
 {
 protected:
-    std::vector<int> indices;
-    int currIterIdx;
+    std::vector<unsigned int> indices_;
+    int curr_iter_idx;
 
-    bool invertchannels;
+    bool invert_channels_;
 
 public:
     using AbstractMatrix<T>::get;
@@ -45,7 +45,7 @@ public:
         AbstractMatrix<T>::type = -1;
         AbstractMatrix<T>::ch_size = -1;
         //
-        invertchannels = false;
+        invert_channels_ = false;
     }
 
     /**
@@ -56,7 +56,7 @@ public:
         AbstractMatrix<T>::type = d.type();
         AbstractMatrix<T>::ch_size = d.channels();
         //
-        invertchannels = false;
+        invert_channels_ = false;
     }
 
     /**
@@ -67,13 +67,14 @@ public:
     /**
      * @brief startScanIndices TODO
      */
-    void startScanIndices() {
+    void StartScanIndices() {
         int w = AbstractMatrix<T>::width();
         int h = AbstractMatrix<T>::height();
-        indices.resize(AbstractMatrix<T>::size());
-        for (unsigned int y=0; y<h; y++) {
-            for (unsigned int x=0; x<w; x++) {
-                indices[y*w+x] = y*w+x;
+        indices_.resize(static_cast<unsigned int>(AbstractMatrix<T>::size()));
+        for (int y=0; y<h; y++) {
+            for (int x=0; x<w; x++) {
+                unsigned int idx = static_cast<unsigned int>(y*w+x);
+                indices_[idx] = idx;
             }
         }
     }
@@ -81,23 +82,23 @@ public:
     /**
      * @brief startSnakeIndices TODO
      */
-    void startSnakeIndices() {
+    void StartSnakeIndices() {
         int w = AbstractMatrix<T>::width();
         int h = AbstractMatrix<T>::height();
-        indices.resize(AbstractMatrix<T>::size());
+        indices_.resize(AbstractMatrix<T>::size());
         for (int y=0; y<h; y++) {
             for (int x=0; x<w; x++) {
-                indices[y*w+x] = y*w+x;
+                indices_[y*w+x] = y*w+x;
             }
         }
         for (int y=0; y<h; y++) {
             for (int x=0; x<w; x++) {
-                indices[y*w+x] = y*w+x;
+                indices_[y*w+x] = y*w+x;
             }
             y++;
             if (y<h) {
                 for (int x=0; x<w; x++) {
-                    indices[y*w+x] = y*w + w-1-x;
+                    indices_[y*w+x] = y*w + w-1-x;
                 }
             }
         }
@@ -106,10 +107,10 @@ public:
     /**
      * @brief startSpiralIndices TODO
      */
-    void startSpiralIndices() {
+    void StartSpiralIndices() {
         int w = AbstractMatrix<T>::width();
         int h = AbstractMatrix<T>::height();
-        indices.resize(AbstractMatrix<T>::size());
+        indices_.resize(AbstractMatrix<T>::size());
         int ptIndex = 0;
         for (int i=0; ptIndex<w*h; i++) {
             int layer = static_cast<int>( std::floor(std::sqrt(float(i))) );
@@ -124,7 +125,7 @@ public:
             if (x>=w || y>=h) {
                 continue;
             }
-            indices[ptIndex] = y*w+x;
+            indices_[ptIndex] = y*w+x;
             ptIndex++;
         }
     }
@@ -132,11 +133,11 @@ public:
     /**
      * @brief startSnailIndices TODO
      */
-    void startSnailIndices() {
+    void StartSnailIndices() {
         int w = AbstractMatrix<T>::width();
         int h = AbstractMatrix<T>::height();
         int s = w*h;
-        indices.resize(s);
+        indices_.resize(s);
         int y = 0;
         int x = -1;
         int nextturn = w;
@@ -148,7 +149,7 @@ public:
         for (int i=0; i<s; i++) {
             x += inc_c;
             y += inc_r;
-            indices[i] = y*w+x;
+            indices_[i] = y*w+x;
             if (i == nextturn-1) {
                 turns += 1;
                 if (turns%2==0) {
@@ -170,8 +171,15 @@ public:
      * @brief startCustomIndices TODO
      * @param vec TODO
      */
-    void startCustomIndices(std::vector<int> &vec) {
-        indices = vec;
+    void StartCustomIndices(std::vector<unsigned int> &vec) {
+        indices_ = vec;
+    }
+
+    void StartCustomIndices(std::vector<int> &vec) {
+        indices_.resize(vec.size());
+        for (auto i=0; i<vec.size(); i++) {
+            indices_[i] = static_cast<unsigned int>(vec[i]);
+        }
     }
 
     /**
@@ -179,7 +187,7 @@ public:
      * @return  TODO
      */
     bool isIndices() {
-        return (indices.size()>0);
+        return (indices_.size()>0);
     }
 
     /**
@@ -187,9 +195,11 @@ public:
      * @param i TODO
      * @return  TODO
      */
-    virtual T get(int i) {
-        int y = indices[i]/AbstractMatrix<T>::data.cols;
-        int x = indices[i]%AbstractMatrix<T>::data.rows;
+    T iget(int i) {
+        unsigned int ui = static_cast<unsigned int>(i);
+        int int_indx = static_cast<int>(indices_[ui]);
+        int y = int_indx/AbstractMatrix<T>::data.cols;
+        int x = int_indx%AbstractMatrix<T>::data.rows;
         return AbstractMatrix<T>::get(x,y);
     }
 
@@ -198,13 +208,16 @@ public:
      * @param i TODO
      * @return TODO
      */
-    virtual T safe_get(int i) {
-        if (!isIndices()) startScanIndices();
-        if (i<0 || i>=indices.size()) {
+    T safe_iget(int i) {
+        if (!isIndices()) StartScanIndices();
+        int isize = static_cast<int>(indices_.size());
+        if (i<0 || i>=isize) {
             throw std::out_of_range("Exception thrown in AbstractImage::safe_set");
         }
-        int y = indices[i]/AbstractMatrix<T>::data.cols;
-        int x = indices[i]%AbstractMatrix<T>::data.rows;
+        unsigned int ui = static_cast<unsigned int>(i);
+        int int_indx = static_cast<int>(indices_[ui]);
+        int y = int_indx/AbstractMatrix<T>::data.cols;
+        int x = int_indx%AbstractMatrix<T>::data.rows;
         return AbstractMatrix<T>::get(x,y);
     }
 
@@ -213,9 +226,11 @@ public:
      * @param i TODO
      * @param v TODO
      */
-    virtual void set(int i, T v) {
-        int y = indices[i]/AbstractMatrix<T>::data.cols;
-        int x = indices[i]%AbstractMatrix<T>::data.rows;
+    void iset(int i, T v) {
+        unsigned int ui = static_cast<unsigned int>(i);
+        int int_idx = static_cast<int>(indices_[ui]);
+        int y = int_idx/AbstractMatrix<T>::data.cols;
+        int x = int_idx%AbstractMatrix<T>::data.rows;
         AbstractMatrix<T>::set(x,y,v);
     }
 
@@ -224,13 +239,16 @@ public:
      * @param i TODO
      * @param v TODO
      */
-    virtual void safe_set(int i, T v) {
-        if (!isIndices()) startScanIndices();
-        if (i<0 || i>=indices.size()) {
+    void safe_iset(int i, T v) {
+        if (!isIndices()) StartScanIndices();
+        int isize = static_cast<int>(indices_.size());
+        if (i<0 || i>=isize) {
             throw std::out_of_range("Exception thrown in AbstractImage::safe_set");
         }
-        int y = indices[i]/AbstractMatrix<T>::data.cols;
-        int x = indices[i]%AbstractMatrix<T>::data.rows;
+        unsigned int ui = static_cast<unsigned int>(i);
+        int int_indx = static_cast<int>(indices_[ui]);
+        int y = int_indx/AbstractMatrix<T>::data.cols;
+        int x = int_indx%AbstractMatrix<T>::data.rows;
         AbstractMatrix<T>::set(x,y,v);
     }
 
@@ -384,7 +402,7 @@ public:
      */
     void Open(std::string filename) {
         AbstractMatrix<T>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
-        if (invertchannels) {
+        if (invert_channels_) {
             cv::cvtColor(AbstractMatrix<T>::data,
                          AbstractMatrix<T>::data,
                          cv::COLOR_RGB2BGR);
@@ -397,7 +415,7 @@ public:
      */
     void Save(std::string filename) {
         cv::imwrite(filename, AbstractMatrix<T>::data);
-        if(invertchannels) {
+        if(invert_channels_) {
             cv::Mat aux;
             cv::cvtColor(AbstractMatrix<T>::data,
                          aux, cv::COLOR_RGB2BGR);
@@ -513,7 +531,7 @@ public:
     void set(int i, int r, int g, int b);
 
     void safe_set(int x, int y, int r, int g, int b);
-    void safe_set(int i, int r, int g, int b);
+    void safe_iset(int i, int r, int g, int b);
     int red(int x, int y);
     int green(int x, int y);
     int blue(int x, int y);

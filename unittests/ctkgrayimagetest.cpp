@@ -81,9 +81,9 @@ TEST_F(CtkGrayImageTest, Test_SelfCrop) {
 TEST_F(CtkGrayImageTest, Test_startScanIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    img.startScanIndices();
+    img.StartScanIndices();
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-scan.png");
     EXPECT_EQ(img.get(10, 2), 90);
@@ -98,7 +98,7 @@ TEST_F(CtkGrayImageTest, Test_startScanIndices_Not_Init) {
     ctk::GrayImage img;
     img.Create(40, 40);
     for (int i=0; i<img.size(); i++) {
-        img.safe_set(i, i%255);
+        img.safe_iset(i, i%255);
     }
     EXPECT_EQ(img.get(10, 2), 90);
     EXPECT_EQ(img.get(10, 5), 210);
@@ -113,7 +113,7 @@ TEST_F(CtkGrayImageTest, Test_Safe_Set) {
     img.Create(40, 40);
     for (int i=0; i<img.size()+2; i++) {
         try {
-            img.safe_set(i, i%255);
+            img.safe_iset(i, i%255);
         } catch (std::exception& e){
             std::cout << e.what() << std::endl;
         }
@@ -129,9 +129,9 @@ TEST_F(CtkGrayImageTest, Test_Safe_Set) {
 TEST_F(CtkGrayImageTest, Test_startSnakeIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    img.startSnakeIndices();
+    img.StartSnakeIndices();
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-snake.png");
     EXPECT_EQ(img.get(10, 2), 90);
@@ -145,9 +145,9 @@ TEST_F(CtkGrayImageTest, Test_startSnakeIndices) {
 TEST_F(CtkGrayImageTest, Test_startSpiralIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    img.startSpiralIndices();
+    img.StartSpiralIndices();
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-spiral.png");
     EXPECT_EQ(img.get(10, 2), 102);
@@ -161,9 +161,9 @@ TEST_F(CtkGrayImageTest, Test_startSpiralIndices) {
 TEST_F(CtkGrayImageTest, Test_startSnailIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    img.startSnailIndices();
+    img.StartSnailIndices();
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-snail.png");
     EXPECT_EQ(img.get(10, 2), 57);
@@ -177,11 +177,11 @@ TEST_F(CtkGrayImageTest, Test_startSnailIndices) {
 TEST_F(CtkGrayImageTest, Test_startCustomIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    std::vector<int> vec = ctk::RangeVector(0, (40*40)-1);
+    std::vector<unsigned int> vec = ctk::RangeVectorUi(0, (40*40)-1);
     ctk::Shuffle(vec, 0);
-    img.startCustomIndices(vec);
+    img.StartCustomIndices(vec);
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-custom.png");
     EXPECT_EQ(img.get(10, 2), 208);

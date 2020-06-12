@@ -219,7 +219,7 @@ GrayImage::GrayImage()
 {
     type = CV_8UC1;
     ch_size = 1;
-    invertchannels = false;
+    invert_channels_ = false;
 }
 
 GrayImage::GrayImage(const GrayImage &that)
@@ -227,7 +227,7 @@ GrayImage::GrayImage(const GrayImage &that)
     assert(that.data.type()==CV_8UC1 && that.data.channels()==1);
     type = that.type;
     ch_size = that.ch_size;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.data.clone();
 }
 
@@ -237,7 +237,7 @@ GrayImage::GrayImage(const AbstractImage<uchar> &that)
            && that.get_data().channels()==1);
     type = CV_8UC1;
     ch_size = 1;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.get_data().clone();
 }
 
@@ -250,7 +250,7 @@ GrayImage &GrayImage::operator=(const GrayImage &that)
     assert(that.data.type()==CV_8UC1 && that.data.channels()==1);
     type = that.type;
     ch_size = that.ch_size;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.data.clone();
     return *this;
 }
@@ -260,7 +260,7 @@ GrayImage &GrayImage::operator=(const cv::Mat &that)
     assert(that.type()==CV_8UC1 && that.channels()==1);
     type = that.type();
     ch_size = that.channels();
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.clone();
     return *this;
 }
@@ -271,7 +271,7 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that)
            && that.get_data().channels()==1);
     type = CV_8UC1;
     ch_size = 1;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.get_data().clone();
     return *this;
 }
@@ -335,7 +335,7 @@ GrayImage GrayImage::Normalize(int minv, int maxv)
         for (auto y=0; y<data.cols; y++) {
             int ic = static_cast<int>(get(x,y));
             float c = static_cast<float>(ic-cmin+minv)*scale;
-            norm.set(x,y,static_cast<int>(c));
+            norm.set(x,y,static_cast<uchar>(c));
         }
     }
     return norm;
@@ -358,7 +358,7 @@ ColorImage::ColorImage()
 {
     type = CV_8UC3;
     ch_size = 3;
-    invertchannels = false;
+    invert_channels_ = false;
 }
 
 ColorImage::ColorImage(const ColorImage &that)
@@ -366,7 +366,7 @@ ColorImage::ColorImage(const ColorImage &that)
     assert(that.data.type()==CV_8UC3 && that.data.channels()==3);
     type = that.type;
     ch_size = that.ch_size;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.data.clone();
 }
 
@@ -376,7 +376,7 @@ ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that)
            && that.get_data().channels()==3);
     type = CV_8UC3;
     ch_size = 3;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.get_data().clone();
 }
 
@@ -391,7 +391,7 @@ int ColorImage::channels()
 
 RgbImage::RgbImage() : ColorImage()
 {
-    invertchannels = true;
+    invert_channels_ = true;
 }
 
 RgbImage::RgbImage(const RgbImage &that)
@@ -399,7 +399,7 @@ RgbImage::RgbImage(const RgbImage &that)
     assert(that.data.type()==CV_8UC3 && that.data.channels()==3);
     type = that.type;
     ch_size = that.ch_size;
-    invertchannels = true;
+    invert_channels_ = true;
     data = that.data.clone();
 }
 
@@ -409,7 +409,7 @@ RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that)
            && that.get_data().channels()==3);
     type = CV_8UC3;
     ch_size = 3;
-    invertchannels = true;
+    invert_channels_ = true;
     data = that.get_data().clone();
 }
 
@@ -424,22 +424,34 @@ void RgbImage::Create(int w, int h)
 
 void RgbImage::set(int x, int y, int r, int g, int b)
 {
-    AbstractMatrix<cv::Vec3b>::set(x, y, cv::Vec3b(r,g,b));
+    unsigned char ucr = static_cast<unsigned char>(r);
+    unsigned char ucg = static_cast<unsigned char>(g);
+    unsigned char ucb = static_cast<unsigned char>(b);
+    AbstractMatrix<cv::Vec3b>::set(x, y, cv::Vec3b(ucr,ucg,ucb));
 }
 
 void RgbImage::safe_set(int x, int y, int r, int g, int b)
 {
-    AbstractMatrix<cv::Vec3b>::safe_set(x, y, cv::Vec3b(r,g,b));
+    unsigned char ucr = static_cast<unsigned char>(r);
+    unsigned char ucg = static_cast<unsigned char>(g);
+    unsigned char ucb = static_cast<unsigned char>(b);
+    AbstractMatrix<cv::Vec3b>::safe_set(x, y, cv::Vec3b(ucr,ucg,ucb));
 }
 
-void RgbImage::safe_set(int i, int r, int g, int b)
+void RgbImage::safe_iset(int i, int r, int g, int b)
 {
-    AbstractImage<cv::Vec3b>::safe_set(i, cv::Vec3b(r,g,b));
+    unsigned char ucr = static_cast<unsigned char>(r);
+    unsigned char ucg = static_cast<unsigned char>(g);
+    unsigned char ucb = static_cast<unsigned char>(b);
+    AbstractImage<cv::Vec3b>::safe_iset(i, cv::Vec3b(ucr,ucg,ucb));
 }
 
 void RgbImage::set(int i, int r, int g, int b)
 {
-    AbstractImage<cv::Vec3b>::set(i, cv::Vec3b(r,g,b));
+    unsigned char ucr = static_cast<unsigned char>(r);
+    unsigned char ucg = static_cast<unsigned char>(g);
+    unsigned char ucb = static_cast<unsigned char>(b);
+    AbstractImage<cv::Vec3b>::iset(i, cv::Vec3b(ucr,ucg,ucb));
 }
 
 int RgbImage::red(int x, int y)

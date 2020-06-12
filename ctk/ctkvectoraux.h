@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <random>
 
 namespace ctk {
 
@@ -31,11 +32,28 @@ void show(std::vector<T> &vec, std::string sep=" ") {
 }
 
 std::vector<int> RangeVector(int i, int e);
+std::vector<unsigned int> RangeVectorUi(unsigned int i, unsigned int e);
 
 //TODO: evaluate the possibility to use generic method (template)
-void Shuffle(std::vector<int> &vec);
-void Shuffle(std::vector<int> &vec, int s);
+//void Shuffle(std::vector<int> &vec);
+//void Shuffle(std::vector<int> &vec, int s);
 
+//void Shuffle(std::vector<unsigned int> &vec);
+
+template<class T>
+void Shuffle(std::vector<T> &vec)
+{
+    std::random_device rng;
+    std::mt19937 urng(rng());
+    std::shuffle(vec.begin(), vec.end(), urng);
+}
+
+template<class T>
+void Shuffle(std::vector<T> &vec, unsigned int s)
+{
+    std::mt19937 urng(s);
+    std::shuffle(vec.begin(), vec.end(), urng);
+}
 
 }
 

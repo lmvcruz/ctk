@@ -37,6 +37,7 @@ void Authentication::set_verification_threshold(double thresh)
 void Authentication::DefineThreshold(double vi, double vf, double inc)
 {
     //TODO
+    vi = vf+inc;
 }
 
 bool Authentication::IsSeparable()
@@ -53,6 +54,7 @@ bool Authentication::Verify(int setIdx, AuthObject &sample)
 int Authentication::Identify(AuthObject &sample)
 {
     //TODO
+    sample.setup(0);
     return 0;
 }
 
