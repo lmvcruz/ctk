@@ -36,13 +36,13 @@ void Authentication::set_verification_threshold(double thresh)
 
 void Authentication::DefineThreshold(double vi, double vf, double inc)
 {
-    //TODO
-    vi = vf+inc;
+    //TODO: implement this method
+    vi = vf+inc; //TODO: remove it - just to remove the warning
 }
 
 bool Authentication::IsSeparable()
 {
-    //TODO
+    //TODO: implement this method
     return false;
 }
 
@@ -53,8 +53,8 @@ bool Authentication::Verify(int setIdx, AuthObject &sample)
 
 int Authentication::Identify(AuthObject &sample)
 {
-    //TODO
-    sample.setup(0);
+    //TODO: implement this method
+    sample.setup(0); //TODO: remove it - just to remove the warning
     return 0;
 }
 

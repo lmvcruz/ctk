@@ -427,6 +427,7 @@ public:
      * @brief Show TODO
      */
     void Show() {
+        //TODO: implement it
         std::cout << "TODO" << std::endl;
     }
 };
@@ -450,7 +451,7 @@ public:
     BinaryImage Or(BinaryImage& that);
     BinaryImage Xor(BinaryImage& that);
 
-    //TODO: Implement Self methods
+    //TODO: Implement Self methods of Logic Operations
 
     int countTrues();
     int countFalses();

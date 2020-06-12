@@ -28,24 +28,4 @@ std::vector<unsigned int> RangeVectorUi(unsigned int i, unsigned int e)
     return v;
 }
 
-//void Shuffle(std::vector<int> &vec)
-//{
-//    std::random_device rng;
-//    std::mt19937 urng(rng());
-//    std::shuffle(vec.begin(), vec.end(), urng);
-//}
-
-void Shuffle(std::vector<int> &vec, int s)
-{
-    std::mt19937 urng(s);
-    std::shuffle(vec.begin(), vec.end(), urng);
-}
-
-//void Shuffle(std::vector<unsigned int> &vec)
-//{
-//    std::random_device rng;
-//    std::mt19937 urng(rng());
-//    std::shuffle(vec.begin(), vec.end(), urng);
-//}
-
 }
