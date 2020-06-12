@@ -2,7 +2,7 @@ QT -= gui
 
 TEMPLATE = lib
 CONFIG += staticlib
-CONFIG += release
+CONFIG += debug
 CONFIG += warn_on
 
 CONFIG += c++14

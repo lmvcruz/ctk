@@ -25,6 +25,7 @@ public:
     void CalculateContours(BinaryImage &img);
     void CalculateApproximateContours(BinaryImage &img, int eps=3);
 
+    RgbImage Draw(BinaryImage &img);
     RgbImage Draw(RgbImage &img);
 
 protected:

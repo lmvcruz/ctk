@@ -12,6 +12,7 @@
 
 namespace ctk {
 
+class BinaryImage;
 class GrayImage;
 class RgbImage;
 class HsvImage;
@@ -443,10 +444,13 @@ public:
     BinaryImage Dilate(int size, int etype=cv::MORPH_RECT);
     void SelfDilate(int size, int etype=cv::MORPH_RECT);
 
+    BinaryImage Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h);
+
     void Open(std::string filename);
     void Save(std::string filename);
     void Show();
 
+    RgbImage toRgbImage();
 };
 
 /**
@@ -534,6 +538,9 @@ public:
     RgbImage Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h);
 
     GrayImage toGrayImage();
+
+    RgbImage DrawPolygon(Polygon &pol);
+
     //TODO: NEXT SPRINT
 //    HsvImage toHsvImage();
 //    HlsImage toHslImage();

@@ -161,6 +161,41 @@ void BinaryImage::SelfDilate(int size, int etype)
     cv::dilate(data, data, element);
 }
 
+BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h)
+{
+    //TODO: replace assert to exceptions
+    assert(pts.size()==refs.size());
+    assert(pts.size()>=4);
+    //
+    std::vector<cv::Point2f> cv_pts;
+    cv_pts.resize(pts.size());
+    std::vector<cv::Point2f> cv_refs;
+    cv_refs.resize(refs.size());
+    for (auto i=0; i<pts.size(); i++) {
+        cv_pts[i].x = pts[i].getX();
+        cv_pts[i].y = pts[i].getY();
+        cv_refs[i].x = refs[i].getX();
+        cv_refs[i].y = refs[i].getY();
+    }
+    cv::Mat homo_mat;
+    // We assume that size>=4 (verified in the begining of the method)
+    if (pts.size()>4) {
+        homo_mat = cv::findHomography(cv_pts, cv_refs,cv::RANSAC);
+    }
+    else {
+        homo_mat = cv::findHomography(cv_pts, cv_refs);
+    }
+    //´
+    std::cout << homo_mat.rows << " " << homo_mat.cols << " " << homo_mat.type() << std::endl;
+    //
+    cv::Mat aux1, aux2;
+    data.convertTo(aux1, CV_32F);
+    cv::warpPerspective(aux1, aux2, homo_mat, cv::Size(w,h));
+    aux2.convertTo(aux2, CV_8U);
+    BinaryImage rect(aux2);
+    return rect;
+}
+
 void BinaryImage::Open(std::string filename) {
     AbstractMatrix<bool>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
 }
@@ -171,6 +206,14 @@ void BinaryImage::Save(std::string filename) {
 
 void BinaryImage::Show() {
     std::cout << "TODO" << std::endl;
+}
+
+RgbImage BinaryImage::toRgbImage()
+{
+    RgbImage newImage;
+    cv::cvtColor(data, newImage.get_data(), cv::COLOR_GRAY2RGB);
+    return newImage;
+
 }
 
 
@@ -557,6 +600,22 @@ GrayImage RgbImage::toGrayImage()
     GrayImage newImage;
     cv::cvtColor(data, newImage.get_data(), cv::COLOR_RGB2GRAY);
     return newImage;
+}
+
+RgbImage RgbImage::DrawPolygon(Polygon &pol)
+{
+    std::vector<std::vector<cv::Point>> cv_conts;
+    cv_conts.resize(1);
+    cv_conts[0] = pol.get_cvdata();
+    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0]) << std::endl;
+    //
+    RgbImage new_img(data);
+    cv::Mat &new_mat = new_img.get_data();
+    const int  kThickness  = 2;
+    const int  kLineType   = 8;
+    cv::Scalar color = cv::Scalar(rand()%255, rand()%255, rand()%255);
+    cv::drawContours(new_mat,cv_conts, 0, color, kThickness, kLineType);
+    return new_img;
 }
 
 }

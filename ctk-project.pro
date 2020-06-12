@@ -5,13 +5,13 @@ CONFIG += ordered
 
 SUBDIRS = \
     ctk \
-    utils/filesys \
+#    utils/filesys \
     unittests \
-    benchmark/matrices \
-    benchmark/image \
-    benchmark/primenumbers \
-    demos/demimg \
-    demos/video_rotations
+#    benchmark/matrices \
+#    benchmark/image \
+#    benchmark/primenumbers \
+#    demos/demimg \
+#    demos/video_rotations
 
 unittests.depends = ctk
 matrices.depends = ctk

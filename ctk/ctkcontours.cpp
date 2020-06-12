@@ -81,6 +81,12 @@ void Contours::CalculateApproximateContours(BinaryImage &img, int eps)
     }
 }
 
+RgbImage Contours::Draw(BinaryImage &bin)
+{
+    RgbImage rgb = bin.toRgbImage();
+    return Draw(rgb);
+}
+
 RgbImage Contours::Draw(RgbImage &img)
 {
     RgbImage new_img = img;
@@ -91,8 +97,8 @@ RgbImage Contours::Draw(RgbImage &img)
     for (auto i=0; i<polys_.size(); i++) {
         cv_conts[i] = polys_[i].get_cvdata();
     }
+    srand(12345);
     for (int i=0; i<polys_.size(); i++) {
-        srand(12345);
         const int  kThickness  = 2;
         const int  kLineType   = 8;
         cv::Scalar color = cv::Scalar(rand()%255, rand()%255, rand()%255);
