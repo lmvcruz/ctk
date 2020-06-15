@@ -6,15 +6,9 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
+#include "ctkexceptions.h"
+
 namespace ctk {
-
-class invalid_type: public std::exception
-{
-public:
-    invalid_type() = default;
-
-    virtual const char* what() const noexcept;
-};
 
 /**
  *  @brief CtkAbstractMatrix TODO

@@ -1,6 +1,7 @@
 #include "ctkpolygontest.h"
 
-CtkPolygonTest::CtkPolygonTest()
-{
 
-}
+//void CtkPolygonTest::SetUp()
+//{
+//    //TODO
+//}

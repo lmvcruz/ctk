@@ -5,6 +5,16 @@
 
 namespace ctk {
 
+class invalid_type: public std::exception
+{
+public:
+    virtual const char* what() const noexcept
+    {
+        return "Invalid type";
+    }
+};
+
+
 class division_per_zero : public std::exception
 {
     virtual const char* what() const noexcept
