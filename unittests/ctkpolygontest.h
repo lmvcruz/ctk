@@ -1,6 +1,7 @@
 #ifndef CTKPOLYGONTEST_H
 #define CTKPOLYGONTEST_H
 
+#include "gtest/gtest.h"
 
 #include <vector>
 
@@ -32,5 +33,6 @@ public:
 
 
 };
+
 
 #endif // CTKPOLYGONTEST_H

@@ -3,5 +3,4 @@
 
 #include "gtest/gtest.h"
 
-
 #endif // CGVECAUXTEST_H

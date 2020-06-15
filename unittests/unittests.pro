@@ -1,7 +1,3 @@
-
-EXTLIB_DIR=C:/Users/3334/Documents/git/external
-include(gtest_dependency.pri)
-
 TEMPLATE = app
 CONFIG += c++14
 CONFIG -= app_bundle
@@ -24,10 +20,6 @@ SOURCES += \
         ctkrgbimagetest.cpp \
         ctkvecauxtest.cpp \
         main.cpp
-
-#LIBS += -L/usr/local/lib/ -lgtest
-INCLUDEPATH += "/usr/local/include/"
-
 
 
 ## UniQode Library
@@ -59,6 +51,9 @@ unix:!macx {
     PKGCONFIG += opencv
 }
 macx: {
+    LIBS += -L/usr/local/lib/ -lgtest
+    INCLUDEPATH += "/usr/local/include/"
+
     QT_CONFIG -= no-pkg-configs
     CONFIG += link_pkgconfig
     PKG_CONFIG = /usr/local/bin/pkg-config
@@ -66,23 +61,26 @@ macx: {
     PKGCONFIG += tesseract
     PKGCONFIG += zbar ilmbase
 }
-win32: {
- OPENCV_DIR = C:\OpenCV\build\install
+win32:!macx  {
+    EXTLIB_DIR=C:/Users/3334/Documents/git/external
+    include(gtest_dependency.pri)
 
- INCLUDEPATH +="$$OPENCV_DIR\include"
- DEPENDPATH +="$$OPENCV_DIR\include"
+     OPENCV_DIR = C:\OpenCV\build\install
 
- LIBS += -L"$$OPENCV_DIR/x64/mingw/lib"\
--lopencv_core411\
--lopencv_imgproc411\
--lopencv_highgui411\
--lopencv_imgcodecs411\
--lopencv_features2d411\
--lopencv_face411\
--lopencv_objdetect411\
--lopencv_video411\
--lopencv_ml411\
--lopencv_dnn411\
--lopencv_videoio411\
--lopencv_calib3d411
+     INCLUDEPATH +="$$OPENCV_DIR\include"
+     DEPENDPATH +="$$OPENCV_DIR\include"
+
+     LIBS += -L"$$OPENCV_DIR/x64/mingw/lib"\
+    -lopencv_core411\
+    -lopencv_imgproc411\
+    -lopencv_highgui411\
+    -lopencv_imgcodecs411\
+    -lopencv_features2d411\
+    -lopencv_face411\
+    -lopencv_objdetect411\
+    -lopencv_video411\
+    -lopencv_ml411\
+    -lopencv_dnn411\
+    -lopencv_videoio411\
+    -lopencv_calib3d411
 }

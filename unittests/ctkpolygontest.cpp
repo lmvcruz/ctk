@@ -70,3 +70,4 @@ TEST_F(CtkPolygonTest,Test_ConstructorCopy){
 #endif
 
 #endif // TEST_POLYGON
+
