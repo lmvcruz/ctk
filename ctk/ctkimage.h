@@ -195,9 +195,9 @@ public:
     }
 
     /**
-     * @brief get TODO
-     * @param i TODO
-     * @return  TODO
+     * @brief get  Get specific element in AbstractMatrix
+     * @param i int representing the desired index in vector indices_
+     * @return AbstractMatrix element at  position = indices_(i)
      */
     T iget(int i) {
         unsigned int ui = static_cast<unsigned int>(i);
@@ -208,9 +208,9 @@ public:
     }
 
     /**
-     * @brief safe_get TODO
-     * @param i TODO
-     * @return TODO
+     * @brief safe_get Get specific element in AbstractMatrix
+     * @param i int representing the desired index in vector indices_
+     * @return AbstractMatrix element at  position = indices_(i)
      */
     T safe_iget(int i) {
         if (!isIndices()) StartScanIndices();
@@ -226,9 +226,9 @@ public:
     }
 
     /**
-     * @brief set TODO
-     * @param i TODO
-     * @param v TODO
+     * @brief set  Set specific element in AbstractMatrix
+     * @param i int representing the desired index in vector indices_
+     * @param v desired value
      */
     void iset(int i, T v) {
         unsigned int ui = static_cast<unsigned int>(i);
@@ -239,9 +239,9 @@ public:
     }
 
     /**
-     * @brief safe_set TODO
-     * @param i TODO
-     * @param v TODO
+     * @brief safe_iset  Set specific element in AbstractMatrix
+     * @param i int representing the desired index in vector indices_
+     * @param v desired value
      */
     void safe_iset(int i, T v) {
         if (!isIndices()) StartScanIndices();

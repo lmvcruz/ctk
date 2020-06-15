@@ -251,12 +251,12 @@ void BinaryImage::SelfDilate(int size, int etype)
 }
 
 /**
- * @brief BinaryImage::Warp
- * @param pts
- * @param refs
- * @param w
- * @param h
- * @return
+ * @brief BinaryImage::Warp  Applies a perspective transformation to the image
+ * @param pts  vector of PointD representing the coordinates of the points in the original plane
+ * @param refs  vector of PointD representing the coordinates of the points in the target plane
+ * @param w  int representing the width of the output image
+ * @param h  int representing the hight of the output image
+ * @return BinaryImage resulting of the transformation
  */
 BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h)
 {
@@ -676,10 +676,10 @@ void RgbImage::safe_set(int x, int y, int r, int g, int b)
 
 /**
  * @brief RgbImage::safe_iset
- * @param i
- * @param r
- * @param g
- * @param b
+ * @param i int representing the desired index in vector indices_
+ * @param r int representing the desired red value
+ * @param g int representing the desired green value
+ * @param b int representing the desired blue value
  */
 void RgbImage::safe_iset(int i, int r, int g, int b)
 {
@@ -691,10 +691,10 @@ void RgbImage::safe_iset(int i, int r, int g, int b)
 
 /**
  * @brief RgbImage::set
- * @param i
- * @param r
- * @param g
- * @param b
+ * @param i int representing the desired index in vector indices_
+ * @param r int representing the desired red value
+ * @param g int representing the desired green value
+ * @param b int representing the desired blue value
  */
 void RgbImage::set(int i, int r, int g, int b)
 {
@@ -751,12 +751,12 @@ PointI RgbImage::get_pixel(int x, int y)
 
 /**
  * @brief RgbImage::Quantize
- * @param q
- * @param iter
- * @param eps
- * @param attempts
- * @param qtype
- * @return
+ * @param q int representing the number of clusters for the kmeans algorithm
+ * @param iter int representing the maximum number of iterations for the termination criteria in the kmeans algorithm
+ * @param eps float representing the desired accuracy for the termination criteria in the kmeans algorithm
+ * @param attempts int representing the number of times the kmeans algorithm is executed using different initial labellings
+ * @param qtype int specifying the method of selecting the first centers
+ * @return RgbImage obtained after kmeans clustering of original image
  */
 RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
 {
@@ -784,7 +784,13 @@ RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
     return cluster;
 }
 
-
+/**
+ * @brief RgbImage::PickColor  Get binary mask for specified color
+ * @param r int representing the red value
+ * @param g int representing the green value
+ * @param b int representing the blue value
+ * @return BinaryImage consisting of a mask of the original image which is 1 for the passed color and 0 otherwise
+ */
 BinaryImage RgbImage::PickColor(int r, int g, int b)
 {
     BinaryImage mask;
@@ -798,6 +804,11 @@ BinaryImage RgbImage::PickColor(int r, int g, int b)
     return mask;
 }
 
+/**
+ * @brief RgbImage::Project
+ * @param colors vector of PointI where each element represents a color
+ * @return GrayImage for each pixel in the original image assigns the index of the most similar color in the passed vector
+ */
 GrayImage RgbImage::Project(std::vector<PointI> &colors)
 {
     // TODO: replace it to an exception
@@ -822,6 +833,10 @@ GrayImage RgbImage::Project(std::vector<PointI> &colors)
     return mask;
 }
 
+/**
+ * @brief RgbImage::Contours Get image contours
+ * @return vector of Polygons with the image contours
+ */
 std::vector<Polygon> RgbImage::Contours()
 {
     BinaryImage bin = toGrayImage().ApplyOtsuThreshold();
@@ -839,6 +854,11 @@ std::vector<Polygon> RgbImage::Contours()
     return ctk_contours;
 }
 
+/**
+ * @brief RgbImage::ApproximateContours  Get approximate image contours
+ * @param eps int specifying the approximation accuracy. The maximum distance between the original polygon and its approximation.
+ * @return vector of Polygons with the approximate image contours
+ */
 std::vector<Polygon> RgbImage::ApproximateContours(int eps)
 {
     BinaryImage bin = toGrayImage().ApplyOtsuThreshold();
@@ -858,7 +878,17 @@ std::vector<Polygon> RgbImage::ApproximateContours(int eps)
     return ctk_contours;
 }
 
+
+
 //TODO: write tests and benchmark
+/**
+ * @brief RgbImage::Warp  Applies a perspective transformation to the image
+ * @param pts  vector of PointD representing the coordinates of the points in the original plane
+ * @param refs  vector of PointD representing the coordinates of the points in the target plane
+ * @param w  int representing the width of the output image
+ * @param h  int representing the hight of the output image
+ * @return RgbImage resulting of the transformation
+ */
 RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs,
                         int w, int h)
 {
@@ -890,6 +920,11 @@ RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs,
     return rect;
 }
 
+
+/**
+ * @brief RgbImage::toGrayImage  convert to gray image
+ * @return GrayImage
+ */
 GrayImage RgbImage::toGrayImage()
 {
     GrayImage newImage;
@@ -897,6 +932,11 @@ GrayImage RgbImage::toGrayImage()
     return newImage;
 }
 
+/**
+ * @brief RgbImage::DrawPolygon
+ * @param pol  Polygon respresenting the contour to draw
+ * @return RgbImage image with drawn contour
+ */
 RgbImage RgbImage::DrawPolygon(Polygon &pol)
 {
     std::vector<std::vector<cv::Point>> cv_conts;
