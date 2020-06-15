@@ -74,8 +74,8 @@ public:
 
     /**
      * @brief Create  Create AbstractMatrix
-     * @param w  number of rows
-     * @param h  number of cols
+     * @param w  int representing the number of cols
+     * @param h  int representing the number of rows
      */
     virtual void Create(int w, int h) {
         if (w>0 && h>0) {
@@ -89,8 +89,8 @@ public:
 
     /**
      * @brief Create  Create AbstractMatrix
-     * @param w  number of rows
-     * @param h  number of cols
+     * @param w  int representing the number of cols
+     * @param h  int representing the number of rows
      * @param vec  vector with matrix elements
      */
     virtual void Create(int w, int h, std::vector<T> &vec) {
@@ -187,9 +187,9 @@ public:
 
     /**
      * @brief get  Get a specific matrix element
-     * @param x  row index
-     * @param y  column index
-     * @return  Matrix element at row x and column y
+     * @param x  int representing the column index
+     * @param y  int representing the row index
+     * @return  Matrix element at row y and column x
      */
     virtual T get(int x, int y) const {
         return data.at<T>(y,x);
@@ -198,10 +198,9 @@ public:
 
     /**
      * @brief safe_get   Get a specific matrix element with protections
-     * @param x  row index
-     * @param y  column index
-     * @param v ??
-     * @return  Matrix element at row x and column y
+     * @param x  int representing the column index
+     * @param y  int representing the row index
+     * @return  Matrix element at row y and column x
      */
     virtual T safe_get(int x, int y) {
         if (x<0 || x>=data.cols || y<0 || y>=data.rows) {
@@ -212,8 +211,8 @@ public:
 
     /**
      * @brief set  Setting the value of a specific matrix element
-     * @param x  row index
-     * @param y  column index
+     * @param x  int representing the column index
+     * @param y  int representing the row index
      * @param v  desired value
      */
     virtual void set(int x, int y, T v) {
@@ -222,8 +221,8 @@ public:
 
     /**
      * @brief safe_set  Setting the value of a specific matrix element with protections
-     * @param x  row index
-     * @param y  column index
+     * @param x  int representing the column index
+     * @param y  int representing the row index
      * @param v  desired value
      */
     virtual void safe_set(int x, int y, T v) {
@@ -243,7 +242,7 @@ public:
 
     /**
      * @brief end Get the last element of the matrix
-     * @return  matrix element at position (num of rows , num of columns)
+     * @return  matrix element at position (nº rows , nº columns)
      */
     T* end() {
         return &data.at<T>(data.rows*data.cols);

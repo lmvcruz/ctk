@@ -6,7 +6,7 @@
 #include <string>
 #include <cmath>
 #include <random>
-
+#include <algorithm>
 #include "ctkexceptions.h"
 
 namespace ctk {

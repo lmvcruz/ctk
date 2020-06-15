@@ -175,6 +175,10 @@ public:
         indices_ = vec;
     }
 
+    /**
+     * @brief StartCustomIndices
+     * @param vec
+     */
     void StartCustomIndices(std::vector<int> &vec) {
         indices_.resize(vec.size());
         for (auto i=0; i<vec.size(); i++) {

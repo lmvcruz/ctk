@@ -1,3 +1,7 @@
+
+EXTLIB_DIR=C:/Users/3334/Documents/git/external
+include(gtest_dependency.pri)
+
 TEMPLATE = app
 CONFIG += c++14
 CONFIG -= app_bundle
@@ -21,8 +25,9 @@ SOURCES += \
         ctkvecauxtest.cpp \
         main.cpp
 
-LIBS += -L/usr/local/lib/ -lgtest
+#LIBS += -L/usr/local/lib/ -lgtest
 INCLUDEPATH += "/usr/local/include/"
+
 
 
 ## UniQode Library
@@ -62,34 +67,22 @@ macx: {
     PKGCONFIG += zbar ilmbase
 }
 win32: {
- OPENCV_DIR = C:\OpenCV\Build\install
+ OPENCV_DIR = C:\OpenCV\build\install
 
  INCLUDEPATH +="$$OPENCV_DIR\include"
  DEPENDPATH +="$$OPENCV_DIR\include"
 
-
-TESTS_DIR = C:\Users\3334\Documents\git\external\googletest-release-1.10.0\googletest
-
-INCLUDEPATH +="$$TESTS_DIR\include"
-DEPENDPATH +="$$TESTS_DIR\include"
-
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_core411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_imgproc411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_highgui411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_imgcodecs411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_features2d411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_face411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_objdetect411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_video411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_ml411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_dnn411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_videoio411.dll.a
-LIBS +=  C:/OpenCV/Build/install/x64/mingw/lib/libopencv_calib3d411.dll.a
-LIBS +=  C:/Users/3334/Documents/git/external/googletest-release-1.10.0/build/lib/libgmock.dll.a\
-LIBS +=  C:/Users/3334/Documents/git/external/googletest-release-1.10.0/build/lib/libgmock_main.dll.a\
-LIBS +=  C:/Users/3334/Documents/git/external/googletest-release-1.10.0/build/lib/libgtest.dll.a\
-LIBS +=  C:/Users/3334/Documents/git/external/googletest-release-1.10.0/build/lib/libgtest_main.dll.a\
-
+ LIBS += -L"$$OPENCV_DIR/x64/mingw/lib"\
+-lopencv_core411\
+-lopencv_imgproc411\
+-lopencv_highgui411\
+-lopencv_imgcodecs411\
+-lopencv_features2d411\
+-lopencv_face411\
+-lopencv_objdetect411\
+-lopencv_video411\
+-lopencv_ml411\
+-lopencv_dnn411\
+-lopencv_videoio411\
+-lopencv_calib3d411
 }
-
-

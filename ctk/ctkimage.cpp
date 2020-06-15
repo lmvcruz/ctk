@@ -10,13 +10,19 @@
 
 namespace ctk {
 
-
+/**
+ * @brief BinaryImage::BinaryImage  Default Constructor
+ */
 BinaryImage::BinaryImage()
 {
-    type = CV_8U;
+    type = CV_8U; //8-bit single-channel array
     ch_size = 1;
 }
 
+/**
+ * @brief BinaryImage::BinaryImage Copy Constructor
+ * @param that Reference to an existing BinaryImage object
+ */
 BinaryImage::BinaryImage(const BinaryImage &that)
 {
     assert(that.data.type()==CV_8U && that.data.channels()==1);
@@ -25,6 +31,10 @@ BinaryImage::BinaryImage(const BinaryImage &that)
     data = that.data.clone();
 }
 
+/**
+ * @brief BinaryImage::BinaryImage  Copy Constructor
+ * @param that  Reference to an existing AbstractImage object
+ */
 BinaryImage::BinaryImage(const AbstractImage<bool> &that)
 {
     assert(that.get_data().type()==CV_8U
@@ -34,10 +44,21 @@ BinaryImage::BinaryImage(const AbstractImage<bool> &that)
     data = that.get_data().clone();
 }
 
+/**
+ * @brief BinaryImage::BinaryImage
+ * @param d
+ */
 BinaryImage::BinaryImage(cv::Mat &d): AbstractImage<bool>(d){
     assert(d.type()==CV_8U && d.channels()==1);
 }
 
+
+/**
+ * @brief BinaryImage::BinaryImage Parameterized Constructor
+ * @param w  int representing the image width (number of columns)
+ * @param h  int representing the image hight (number of rows)
+ * @param d  vector of booleans representing image data
+ */
 BinaryImage::BinaryImage(int w, int h, std::vector<bool> &d)
 {
     type = CV_8U;
@@ -45,6 +66,11 @@ BinaryImage::BinaryImage(int w, int h, std::vector<bool> &d)
     Create(w, h, d);
 }
 
+/**
+ * @brief BinaryImage::operator =
+ * @param that  Reference to an existing BinaryImage object
+ * @return Updated BinaryImage
+ */
 BinaryImage &BinaryImage::operator=(const BinaryImage &that)
 {
     assert(that.data.type()==CV_8U && that.data.channels()==1);
@@ -53,17 +79,34 @@ BinaryImage &BinaryImage::operator=(const BinaryImage &that)
     data = that.data.clone();
     return *this;
 }
-
+/**
+ * @brief BinaryImage::set  Set value of a specific pixel in the image
+ * @param x  int representing column index
+ * @param y  int representing row index
+ * @param v  bool representing the desired value
+ */
 void BinaryImage::set(int x, int y, bool v)
 {
     data.at<uchar>(y,x) = v*255;
 }
 
+
+/**
+ * @brief BinaryImage::get  Get value of a specific pixel in the image
+ * @param x  int representing column index
+ * @param y  int representing row index
+ * @return image value at position (y,x)
+ */
 bool BinaryImage::get(int x, int y)
 {
     return (static_cast<int>(data.at<uchar>(y,x))>128);
 }
 
+
+/**
+ * @brief BinaryImage::Not
+ * @return Complement of original image
+ */
 BinaryImage BinaryImage::Not()
 {
     BinaryImage aux(*this);
@@ -75,6 +118,11 @@ BinaryImage BinaryImage::Not()
     return aux;
 }
 
+/**
+ * @brief BinaryImage::And -   true if both arguments are true and false otherwise
+ * @param that reference to an existing BinaryImage object
+ * @return BinaryImage resulting from the And operation between the two BinaryImages
+ */
 BinaryImage BinaryImage::And(BinaryImage &that)
 {
     BinaryImage aux(*this);
@@ -86,6 +134,11 @@ BinaryImage BinaryImage::And(BinaryImage &that)
     return aux;
 }
 
+/**
+ * @brief BinaryImage::Or -   true if any of the arguments are true and false otherwise
+ * @param that reference to an existing BinaryImage object
+ * @return BinaryImage resulting from the Or operation between the two BinaryImages
+ */
 BinaryImage BinaryImage::Or(BinaryImage &that)
 {
     BinaryImage aux(*this);
@@ -97,6 +150,11 @@ BinaryImage BinaryImage::Or(BinaryImage &that)
     return aux;
 }
 
+/**
+ * @brief BinaryImage::Xor- if either input is true, then the result is true, but if both inputs are true, then the result is false
+ * @param that reference to an existing BinaryImage object
+ * @return BinaryImage resulting from the Xor operation between the two BinaryImages
+ */
 BinaryImage BinaryImage::Xor(BinaryImage &that)
 {
     BinaryImage aux(*this);
@@ -108,6 +166,10 @@ BinaryImage BinaryImage::Xor(BinaryImage &that)
     return aux;
 }
 
+/**
+ * @brief BinaryImage::countTrues
+ * @return  int representing the number of image pixels with true value (>0)
+ */
 int BinaryImage::countTrues()
 {
     int count = 0;
@@ -119,6 +181,10 @@ int BinaryImage::countTrues()
     return count;
 }
 
+/**
+ * @brief BinaryImage::countFalses
+ * @return  int representing the number of image pixels with false value (0)
+ */
 int BinaryImage::countFalses()
 {
     int count = 0;
@@ -130,6 +196,12 @@ int BinaryImage::countFalses()
     return count;
 }
 
+/**
+ * @brief BinaryImage::Erode  Erode the image with given structuring element
+ * @param size  int representing Structuring Element size
+ * @param etype int representing Structuring Element shape
+ * @return Eroded BinaryImage
+ */
 BinaryImage BinaryImage::Erode(int size, int etype)
 {
     cv::Size elsize(2*size+1, 2*size+1);
@@ -139,6 +211,11 @@ BinaryImage BinaryImage::Erode(int size, int etype)
     return aux;
 }
 
+/**
+ * @brief BinaryImage::SelfErode  Erode the image with given structuring element
+ * @param size  int representing Structuring Element size
+ * @param etype int representing Structuring Element shape
+ */
 void BinaryImage::SelfErode(int size, int etype)
 {
     cv::Size elsize(2*size+1, 2*size+1);
@@ -146,6 +223,12 @@ void BinaryImage::SelfErode(int size, int etype)
     cv::erode(data, data, element);
 }
 
+/**
+ * @brief BinaryImage::Dilate  Dilate the image with given structuring element
+ * @param size  int representing Structuring Element size
+ * @param etype int representing Structuring Element shape
+ * @return Dilated BinaryImage
+ */
 BinaryImage BinaryImage::Dilate(int size, int etype)
 {
     cv::Size elsize(2*size+1, 2*size+1);
@@ -155,6 +238,11 @@ BinaryImage BinaryImage::Dilate(int size, int etype)
     return aux;
 }
 
+/**
+ * @brief BinaryImage::SelfDilate  Dilate the image with given structuring element
+ * @param size  int representing Structuring Element size
+ * @param etype int representing Structuring Element shape
+ */
 void BinaryImage::SelfDilate(int size, int etype)
 {
     cv::Size elsize(2*size+1, 2*size+1);
@@ -162,6 +250,14 @@ void BinaryImage::SelfDilate(int size, int etype)
     cv::dilate(data, data, element);
 }
 
+/**
+ * @brief BinaryImage::Warp
+ * @param pts
+ * @param refs
+ * @param w
+ * @param h
+ * @return
+ */
 BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h)
 {
     //TODO: replace assert to exceptions
@@ -195,18 +291,34 @@ BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &ref
     return rect;
 }
 
+/**
+ * @brief BinaryImage::Open  Load information from file into BinaryImage
+ * @param filename string with the file path
+ */
 void BinaryImage::Open(std::string filename) {
     AbstractMatrix<bool>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
 }
 
+/**
+ * @brief BinaryImage::Save  Save information from BinaryImage into file
+ * @param filename   string with the file path
+ */
 void BinaryImage::Save(std::string filename) {
     cv::imwrite(filename, AbstractMatrix<bool>::data);
 }
 
+/**
+ * @brief BinaryImage::Show  Show BinaryImage
+ */
 void BinaryImage::Show() {
     std::cout << "TODO" << std::endl;
 }
 
+
+/**
+ * @brief BinaryImage::toRgbImage  Convert BinaryImage to RGB Image
+ * @return Resulting RGB Image
+ */
 RgbImage BinaryImage::toRgbImage()
 {
     RgbImage newImage;
@@ -215,7 +327,9 @@ RgbImage BinaryImage::toRgbImage()
 
 }
 
-
+/**
+ * @brief GrayImage::GrayImage  Default Constructor
+ */
 GrayImage::GrayImage()
 {
     type = CV_8UC1;
@@ -326,6 +440,11 @@ RgbImage GrayImage::toRgbImage()
 }
 
 
+/**
+ * @brief GrayImage::ApplyBinaryThreshold-  Binarize image according to passed threshold
+ * @param t  int representing the desired threshold
+ * @return Binary Image resulting from the application of t to the original image
+ */
 BinaryImage GrayImage::ApplyBinaryThreshold(int t)
 {
     BinaryImage newImage;
@@ -334,6 +453,10 @@ BinaryImage GrayImage::ApplyBinaryThreshold(int t)
 }
 
 
+/**
+ * @brief GrayImage::ApplyOtsuThreshold- use Otsu algorithm to choose the optimal threshold value
+ * @return Binary Image resulting from the application of the Otsu threshold to the original image
+ */
 BinaryImage GrayImage::ApplyOtsuThreshold()
 {
     BinaryImage newImage;
@@ -341,6 +464,12 @@ BinaryImage GrayImage::ApplyOtsuThreshold()
     return newImage;
 }
 
+/**
+ * @brief GrayImage::ApplyAdaptativeThreshold-  Apply an adaptive threshold to the image
+ * @param bs int representing the box size: Size of a pixel neighborhood that is used to calculate a threshold value for the pixel
+ * @param c int representing a constant subtracted from the weighted mean
+ * @return Binary Image resulting from the adaptive thresholding of the original image
+ */
 
 BinaryImage GrayImage::ApplyAdaptativeThreshold(int bs, int c)
 {
@@ -388,7 +517,11 @@ GrayImage GrayImage::Normalize(int minv, int maxv)
     return norm;
 }
 
-
+/**
+ * @brief GrayImage::PickColor- Create binary mask for a given gray value c
+ * @param c int representing the desired gray value
+ * @return BinaryImage representing a mask of the original image that is 1 when the gray value is c and 0 otherwise
+ */
 BinaryImage GrayImage::PickColor(int c)
 {
     BinaryImage mask;
@@ -414,7 +547,7 @@ ColorImage::ColorImage()
 
 /**
  * @brief ColorImage::ColorImage - Copy Construtor
- * @param that reference to an existing
+ * @param that reference to an existing ColorImage object
  */
 ColorImage::ColorImage(const ColorImage &that)
 {
@@ -501,8 +634,8 @@ RgbImage::RgbImage(cv::Mat &d) : ColorImage(d){
 
 /**
  * @brief RgbImage::Create - Create RgbImage
- * @param w int representing image width
- * @param h int representing image hight
+ * @param w  int representing the image width (number of columns)
+ * @param h  int representing the image hight (number of rows)
  */
 void RgbImage::Create(int w, int h)
 {
@@ -511,8 +644,8 @@ void RgbImage::Create(int w, int h)
 
 /**
  * @brief RgbImage::set - Set value of image pixel
- * @param x int representing the row index
- * @param y int representing the column index
+ * @param x int representing the column index
+ * @param y int representing the row index
  * @param r int representing the desired red value
  * @param g int representing the desired green value
  * @param b int representing the desired blue value
@@ -527,8 +660,8 @@ void RgbImage::set(int x, int y, int r, int g, int b)
 
 /**
  * @brief RgbImage::safe_set - Set value of image pixel
- * @param x int representing the row index
- * @param y int representing the column index
+ * @param x int representing the column index
+ * @param y int representing the row index
  * @param r int representing the desired red value
  * @param g int representing the desired green value
  * @param b int representing the desired blue value
@@ -541,7 +674,13 @@ void RgbImage::safe_set(int x, int y, int r, int g, int b)
     AbstractMatrix<cv::Vec3b>::safe_set(x, y, cv::Vec3b(ucr,ucg,ucb));
 }
 
-
+/**
+ * @brief RgbImage::safe_iset
+ * @param i
+ * @param r
+ * @param g
+ * @param b
+ */
 void RgbImage::safe_iset(int i, int r, int g, int b)
 {
     unsigned char ucr = static_cast<unsigned char>(r);
