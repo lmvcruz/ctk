@@ -10,10 +10,10 @@ namespace ctk {
 
 class invalid_type: public std::exception
 {
-    virtual const char* what() const noexcept
-    {
-        return "Invalid type";
-    }
+public:
+    invalid_type() = default;
+
+    virtual const char* what() const noexcept;
 };
 
 /**
@@ -178,6 +178,14 @@ public:
     }
 
     /**
+     * @brief Fill Fill all elements of the matrix according to the received parameter
+     * @param v value used to fill the matrix
+     */
+    void Fill(T v) { //TODO: test and benchmark this method
+        for (auto it=begin(); it!=end(); ++it) *it = v;
+    }
+
+    /**
      * @brief get  Get a specific matrix element
      * @param x  row index
      * @param y  column index
@@ -195,7 +203,7 @@ public:
      * @param v ??
      * @return  Matrix element at row x and column y
      */
-    virtual T safe_get(int x, int y, T v) {
+    virtual T safe_get(int x, int y) {
         if (x<0 || x>=data.cols || y<0 || y>=data.rows) {
             throw std::out_of_range("Exception thrown in AbstractMatyrix::safe_get");
         }

@@ -2,12 +2,8 @@
 
 #include <iostream>
 
+#include "ctktestsetup.h"
 #include "ctkvectoraux.h"
-#include "ctkbinarymatrix.h"
-
-extern std::string INPUT_DIR;
-extern std::string OUTPUT_DIR;
-extern bool SAVE_IMAGES;
 
 void CtkRgbImageTest::SetUp()
 {
@@ -15,6 +11,7 @@ void CtkRgbImageTest::SetUp()
     rgbimg.Open(rgbname);
 }
 
+#ifdef TEST_RGB_IMAGES
 TEST_F(CtkRgbImageTest, Test_Setup) {
     EXPECT_EQ(CtkRgbImageTest::rgbimg.width(), 640);
     EXPECT_EQ(CtkRgbImageTest::rgbimg.height(), 427);
@@ -240,7 +237,7 @@ TEST_F(CtkRgbImageTest, Test_SelfRotate270) {
 TEST_F(CtkRgbImageTest, Test_startScanIndices) {
     ctk::RgbImage img;
     img.Create(40, 40);
-    img.startScanIndices();
+    img.StartScanIndices();
     for (int i=0; i<img.size(); i++) {
         img.set(i, i%255, 0, 0);
     }
@@ -261,7 +258,7 @@ TEST_F(CtkRgbImageTest, Test_startScanIndices_Not_Init) {
     ctk::RgbImage img;
     img.Create(40, 40);
     for (int i=0; i<img.size(); i++) {
-        img.safe_set(i, i%255,0,0);
+        img.safe_iset(i, i%255,0,0);
     }
     EXPECT_EQ(img.red(10, 2), 90);
     EXPECT_EQ(img.green(10, 2), 0);
@@ -280,7 +277,7 @@ TEST_F(CtkRgbImageTest, Test_Safe_Set) {
     img.Create(40, 40);
     for (int i=0; i<img.size()+2; i++) {
         try {
-            img.safe_set(i, i%255,0,0);
+            img.safe_iset(i, i%255,0,0);
         } catch (std::exception& e){
             std::cout << e.what() << std::endl;
         }
@@ -300,7 +297,7 @@ TEST_F(CtkRgbImageTest, Test_Safe_Set) {
 TEST_F(CtkRgbImageTest, Test_startSnakeIndices) {
     ctk::RgbImage img;
     img.Create(40, 40);
-    img.startSnakeIndices();
+    img.StartSnakeIndices();
     for (int i=0; i<img.size(); i++) {
         img.set(i, i%255, 0, 0);
     }
@@ -318,7 +315,7 @@ TEST_F(CtkRgbImageTest, Test_startSnakeIndices) {
 TEST_F(CtkRgbImageTest, Test_startSpiralIndices) {
     ctk::RgbImage img;
     img.Create(40, 40);
-    img.startSpiralIndices();
+    img.StartSpiralIndices();
     for (int i=0; i<img.size(); i++) {
         img.set(i, i%255, 0, 0);
     }
@@ -336,7 +333,7 @@ TEST_F(CtkRgbImageTest, Test_startSpiralIndices) {
 TEST_F(CtkRgbImageTest, Test_startSnailIndices) {
     ctk::RgbImage img;
     img.Create(40, 40);
-    img.startSnailIndices();
+    img.StartSnailIndices();
     for (int i=0; i<img.size(); i++) {
         img.set(i, i%255, 0, 0);
     }
@@ -354,9 +351,9 @@ TEST_F(CtkRgbImageTest, Test_startSnailIndices) {
 TEST_F(CtkRgbImageTest, Test_startCustomIndices) {
     ctk::RgbImage img;
     img.Create(40, 40);
-    std::vector<int> vec = ctk::RangeVector(0, (40*40)-1);
+    std::vector<unsigned int> vec = ctk::RangeVectorUi(0, (40*40)-1);
     ctk::Shuffle(vec, 0);
-    img.startCustomIndices(vec);
+    img.StartCustomIndices(vec);
     for (int i=0; i<img.size(); i++) {
         img.set(i, i%255, 0, 0);
     }
@@ -391,9 +388,9 @@ TEST_F(CtkRgbImageTest, Test_toGrayImage) {
     for (int x=0; x<color2gray.width(); x++) {
         for (int y=0; y<color2gray.height(); y++) {
             int v = static_cast<int>(static_cast<float>(x+y)*0.299);
-//            std::cout << v << " " << (int)color2gray.get(x,y)  << std::endl;
             EXPECT_LE(std::abs(color2gray.get(x,y)-v),1);
         }
     }
     if (SAVE_IMAGES || 1) color.Save(OUTPUT_DIR+"rgb2gray-red.png");
 }
+#endif

@@ -1,5 +1,7 @@
 #include "ctknumericmatrixtest.h"
 
+#include "ctktestsetup.h"
+
 void CtkNumericMatrixTest::SetUp()
 {
     mat1a_w = 5;
@@ -104,13 +106,15 @@ void CtkNumericMatrixTest::SetUp()
         1, 3, -6
     };
     mat_4_div_3.Create(mat3_w,mat4_h);
-//    mat_4_div_3.Create(mat4_w,mat3_h);
     i=-1;
     for (auto it=mat_4_div_3.begin(); it!=mat_4_div_3.end(); it++) {
         *it = data_4div3[++i];
     }
 }
 
+#ifdef TEST_NUMERIC_MATRICES
+
+#if 1
 TEST_F(CtkNumericMatrixTest, Test_Setup) {
     EXPECT_EQ(CtkNumericMatrixTest::data1a.size(), 15);
     EXPECT_EQ(CtkNumericMatrixTest::mat1a.width(), 5);
@@ -271,7 +275,9 @@ TEST_F(CtkNumericMatrixTest, Test_Equals) {
     EXPECT_EQ(mat_b!=CtkNumericMatrixTest::mat1a, false);
     EXPECT_EQ(mat_b!=CtkNumericMatrixTest::mat2a, true);
 }
+#endif
 
+#if 1
 TEST_F(CtkNumericMatrixTest, Test_Sum) {
     ctk::NumericMatrix mat_b(CtkNumericMatrixTest::mat2_w,
                              CtkNumericMatrixTest::mat2_h,
@@ -381,16 +387,13 @@ TEST_F(CtkNumericMatrixTest, Test_SelfMult) {
     }
 }
 
-TEST_F(CtkNumericMatrixTest, Test_Div) {
+TEST_F(CtkNumericMatrixTest, Test_DivDiffSizes) {
     ctk::NumericMatrix mat_c = CtkNumericMatrixTest::mat4
             / CtkNumericMatrixTest::mat3;
-    //
     EXPECT_EQ(mat_c.width(), CtkNumericMatrixTest::mat3_w);
     EXPECT_EQ(mat_c.height(), CtkNumericMatrixTest::mat4_h);
     for (int y=0; y<mat_c.height(); y++) {
         for (int x=0; x<mat_c.width(); x++) {
-            std::cout << x << " " << y << " " << mat_c.get(x,y)
-                      << " " << CtkNumericMatrixTest::mat_4_div_3.get(x,y) << std::endl;
             EXPECT_EQ(mat_c.get(x,y),
                       CtkNumericMatrixTest::mat_4_div_3.get(x,y));
         }
@@ -562,7 +565,9 @@ TEST_F(CtkNumericMatrixTest, Test_SelfDivNum) {
         }
     }
 }
+#endif
 
+#if 1
 TEST_F(CtkNumericMatrixTest, Test_Determinant) {
     EXPECT_LE(std::fabs(CtkNumericMatrixTest::mat3.Determinant()-2.0),
               FLT_EPSILON);
@@ -620,3 +625,6 @@ TEST_F(CtkNumericMatrixTest, Test_SelfTranspose) {
         }
     }
 }
+#endif
+
+#endif // TEST_NUMERIC_MATRICES

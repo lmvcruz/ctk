@@ -291,7 +291,6 @@ public:
      * individual attributes x_, y_, z_ .
      */
     Point operator/(const Point &that) {
-
         /*!If any attribute of the passed object is zero an exception is thrown. */
         if((that.x_==0) || (that.y_==0) || (that.z_==0)) {
             throw division_per_zero();
@@ -306,7 +305,6 @@ public:
      * @param that  Reference to an existing Point object
      */
     void operator/=(const Point &that) {
-
         /*!If any attribute of the passed object is zero an exception is thrown. */
         if((that.x_==0) || (that.y_==0) || (that.z_==0)) {
             throw division_per_zero();
@@ -323,7 +321,6 @@ public:
      * individual attributes x_, y_, z_
      */
     Point operator/(T v) {
-
         /*!If any attribute of the passed variable is zero an exception is thrown. */
         if((v.x_==0) || (v.y_==0) || (v.z_==0)) {
             throw division_per_zero();
@@ -336,7 +333,6 @@ public:
      * @param v a variable of type T
      */
     void operator/=(T v) {
-
         /*!If any attribute of the passed variable is zero an exception is thrown. */
         if((v.x_==0) || (v.y_==0) || (v.z_==0)) {
             throw division_per_zero();
@@ -347,7 +343,7 @@ public:
     }
 
 
-    // Mudar para ManhattanDistance()?
+    // TODO: Mudar para ManhattanDistance()
     /**
      * @brief ManhattanLength
      * @return int defining the Manhattam length of the Point

@@ -17,7 +17,15 @@ class value_out_of_range : public std::exception
 {
     virtual const char* what() const noexcept
     {
-        return "Division by zero\n";
+        return "Value out of range\n";
+    }
+};
+
+class incompatible_parameters : public std::exception
+{
+    virtual const char* what() const noexcept
+    {
+        return "Parameters incompatible\n";
     }
 };
 

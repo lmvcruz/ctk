@@ -3,11 +3,7 @@
 #include <iostream>
 
 #include "ctkvectoraux.h"
-#include "ctkbinarymatrix.h"
-
-extern std::string INPUT_DIR;
-extern std::string OUTPUT_DIR;
-extern bool SAVE_IMAGES;
+#include "ctktestsetup.h"
 
 void CtkGrayImageTest::SetUp()
 {
@@ -16,6 +12,7 @@ void CtkGrayImageTest::SetUp()
     grayimg.Open(grayname);
 }
 
+#ifdef TEST_GRAY_IMAGE
 TEST_F(CtkGrayImageTest, Test_Setup) {
     EXPECT_EQ(CtkGrayImageTest::grayimg.width(), 640);
     EXPECT_EQ(CtkGrayImageTest::grayimg.height(), 427);
@@ -84,9 +81,9 @@ TEST_F(CtkGrayImageTest, Test_SelfCrop) {
 TEST_F(CtkGrayImageTest, Test_startScanIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    img.startScanIndices();
+    img.StartScanIndices();
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-scan.png");
     EXPECT_EQ(img.get(10, 2), 90);
@@ -101,7 +98,7 @@ TEST_F(CtkGrayImageTest, Test_startScanIndices_Not_Init) {
     ctk::GrayImage img;
     img.Create(40, 40);
     for (int i=0; i<img.size(); i++) {
-        img.safe_set(i, i%255);
+        img.safe_iset(i, i%255);
     }
     EXPECT_EQ(img.get(10, 2), 90);
     EXPECT_EQ(img.get(10, 5), 210);
@@ -116,7 +113,7 @@ TEST_F(CtkGrayImageTest, Test_Safe_Set) {
     img.Create(40, 40);
     for (int i=0; i<img.size()+2; i++) {
         try {
-            img.safe_set(i, i%255);
+            img.safe_iset(i, i%255);
         } catch (std::exception& e){
             std::cout << e.what() << std::endl;
         }
@@ -132,9 +129,9 @@ TEST_F(CtkGrayImageTest, Test_Safe_Set) {
 TEST_F(CtkGrayImageTest, Test_startSnakeIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    img.startSnakeIndices();
+    img.StartSnakeIndices();
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-snake.png");
     EXPECT_EQ(img.get(10, 2), 90);
@@ -148,9 +145,9 @@ TEST_F(CtkGrayImageTest, Test_startSnakeIndices) {
 TEST_F(CtkGrayImageTest, Test_startSpiralIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    img.startSpiralIndices();
+    img.StartSpiralIndices();
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-spiral.png");
     EXPECT_EQ(img.get(10, 2), 102);
@@ -164,9 +161,9 @@ TEST_F(CtkGrayImageTest, Test_startSpiralIndices) {
 TEST_F(CtkGrayImageTest, Test_startSnailIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    img.startSnailIndices();
+    img.StartSnailIndices();
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-snail.png");
     EXPECT_EQ(img.get(10, 2), 57);
@@ -180,11 +177,11 @@ TEST_F(CtkGrayImageTest, Test_startSnailIndices) {
 TEST_F(CtkGrayImageTest, Test_startCustomIndices) {
     ctk::GrayImage img;
     img.Create(40, 40);
-    std::vector<int> vec = ctk::RangeVector(0, (40*40)-1);
+    std::vector<unsigned int> vec = ctk::RangeVectorUi(0, (40*40)-1);
     ctk::Shuffle(vec, 0);
-    img.startCustomIndices(vec);
+    img.StartCustomIndices(vec);
     for (int i=0; i<img.size(); i++) {
-        img.set(i, i%255);
+        img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-custom.png");
     EXPECT_EQ(img.get(10, 2), 208);
@@ -354,7 +351,7 @@ TEST_F(CtkGrayImageTest, Test_SelfRotate270) {
 TEST_F(CtkGrayImageTest, Test_ApplyBinaryThreshold) {
     ctk::GrayImage img;
     img.Open(INPUT_DIR+"gray-grad.png");
-    ctk::BinaryMatrix bin = img.ApplyBinaryThreshold();
+    ctk::BinaryImage bin = img.ApplyBinaryThreshold();
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"gray-grad-bin.png");
     int w = img.width()-1;
     int h = img.height()-1;
@@ -373,7 +370,7 @@ TEST_F(CtkGrayImageTest, Test_ApplyBinaryThreshold) {
 TEST_F(CtkGrayImageTest, Test_ApplyOtsuThreshold) {
     ctk::GrayImage img;
     img.Open(INPUT_DIR+"gray-grad.png");
-    ctk::BinaryMatrix bin = img.ApplyOtsuThreshold();
+    ctk::BinaryImage bin = img.ApplyOtsuThreshold();
     int w = img.width()-1;
     int h = img.height()-1;
     for (int x=0; x<=w; x++) {
@@ -391,7 +388,7 @@ TEST_F(CtkGrayImageTest, Test_ApplyOtsuThreshold) {
 TEST_F(CtkGrayImageTest, Test_ApplyAdaptativeThreshold) {
     ctk::GrayImage img;
     img.Open(INPUT_DIR+"gray_img.jpg");
-    ctk::BinaryMatrix bin = img.ApplyAdaptativeThreshold(11, 5);
+    ctk::BinaryImage bin = img.ApplyAdaptativeThreshold(11, 5);
     EXPECT_EQ(bin.width(), img.width());
     EXPECT_EQ(bin.height(), img.height());
     EXPECT_EQ(bin.channels(), 1);
@@ -445,4 +442,4 @@ TEST_F(CtkGrayImageTest, Test_toRgbImage) {
     }
     if (SAVE_IMAGES) color.Save(OUTPUT_DIR+"gray-red.png");
 }
-
+#endif

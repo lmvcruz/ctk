@@ -54,7 +54,7 @@ Contours Contours::OrientedBoundingBoxes()
     return boxes;
 }
 
-void Contours::CalculateContours(BinaryMatrix &img)
+void Contours::CalculateContours(BinaryImage &img)
 {
     std::vector<std::vector<cv::Point> > cv_contours;
     cv::findContours(img.get_data(), cv_contours, hierarchy_,
@@ -66,7 +66,7 @@ void Contours::CalculateContours(BinaryMatrix &img)
     }
 }
 
-void Contours::CalculateApproximateContours(BinaryMatrix &img, int eps)
+void Contours::CalculateApproximateContours(BinaryImage &img, int eps)
 {
     std::vector<std::vector<cv::Point> > cv_contours;
     std::vector<cv::Vec4i> hierarchy;
@@ -81,6 +81,12 @@ void Contours::CalculateApproximateContours(BinaryMatrix &img, int eps)
     }
 }
 
+RgbImage Contours::Draw(BinaryImage &bin)
+{
+    RgbImage rgb = bin.toRgbImage();
+    return Draw(rgb);
+}
+
 RgbImage Contours::Draw(RgbImage &img)
 {
     RgbImage new_img = img;
@@ -91,8 +97,8 @@ RgbImage Contours::Draw(RgbImage &img)
     for (auto i=0; i<polys_.size(); i++) {
         cv_conts[i] = polys_[i].get_cvdata();
     }
+    srand(12345);
     for (int i=0; i<polys_.size(); i++) {
-        srand(12345);
         const int  kThickness  = 2;
         const int  kLineType   = 8;
         cv::Scalar color = cv::Scalar(rand()%255, rand()%255, rand()%255);

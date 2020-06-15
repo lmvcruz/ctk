@@ -10,14 +10,217 @@
 
 namespace ctk {
 
-/**
- * @brief GrayImage::GrayImage - Default Constructor
- */
+
+BinaryImage::BinaryImage()
+{
+    type = CV_8U;
+    ch_size = 1;
+}
+
+BinaryImage::BinaryImage(const BinaryImage &that)
+{
+    assert(that.data.type()==CV_8U && that.data.channels()==1);
+    type = that.type;
+    ch_size = that.ch_size;
+    data = that.data.clone();
+}
+
+BinaryImage::BinaryImage(const AbstractImage<bool> &that)
+{
+    assert(that.get_data().type()==CV_8U
+           && that.get_data().channels()==1);
+    type = CV_8U;
+    ch_size = 1;
+    data = that.get_data().clone();
+}
+
+BinaryImage::BinaryImage(cv::Mat &d): AbstractImage<bool>(d){
+    assert(d.type()==CV_8U && d.channels()==1);
+}
+
+BinaryImage::BinaryImage(int w, int h, std::vector<bool> &d)
+{
+    type = CV_8U;
+    ch_size = 1;
+    Create(w, h, d);
+}
+
+BinaryImage &BinaryImage::operator=(const BinaryImage &that)
+{
+    assert(that.data.type()==CV_8U && that.data.channels()==1);
+    type = that.type;
+    ch_size = that.ch_size;
+    data = that.data.clone();
+    return *this;
+}
+
+void BinaryImage::set(int x, int y, bool v)
+{
+    data.at<uchar>(y,x) = v*255;
+}
+
+bool BinaryImage::get(int x, int y)
+{
+    return (static_cast<int>(data.at<uchar>(y,x))>128);
+}
+
+BinaryImage BinaryImage::Not()
+{
+    BinaryImage aux(*this);
+    for (int x=0; x<data.cols; x++) {
+        for(int y=0; y<data.rows; y++) {
+            aux.set(x,y, 1-get(x,y));
+        }
+    }
+    return aux;
+}
+
+BinaryImage BinaryImage::And(BinaryImage &that)
+{
+    BinaryImage aux(*this);
+    for (int x=0; x<data.cols; x++) {
+        for(int y=0; y<data.rows; y++) {
+            aux.set(x,y, get(x,y)&&that.get(x,y));
+        }
+    }
+    return aux;
+}
+
+BinaryImage BinaryImage::Or(BinaryImage &that)
+{
+    BinaryImage aux(*this);
+    for (int x=0; x<data.cols; x++) {
+        for(int y=0; y<data.rows; y++) {
+            aux.set(x,y, get(x,y)||that.get(x,y));
+        }
+    }
+    return aux;
+}
+
+BinaryImage BinaryImage::Xor(BinaryImage &that)
+{
+    BinaryImage aux(*this);
+    for (int x=0; x<data.cols; x++) {
+        for(int y=0; y<data.rows; y++) {
+            aux.set(x,y, get(x,y)^that.get(x,y));
+        }
+    }
+    return aux;
+}
+
+int BinaryImage::countTrues()
+{
+    int count = 0;
+    for (int x=0; x<data.cols; x++) {
+        for(int y=0; y<data.rows; y++) {
+            if (get(x,y)) count++;
+        }
+    }
+    return count;
+}
+
+int BinaryImage::countFalses()
+{
+    int count = 0;
+    for (int x=0; x<data.cols; x++) {
+        for(int y=0; y<data.rows; y++) {
+            if (!get(x,y)) count++;
+        }
+    }
+    return count;
+}
+
+BinaryImage BinaryImage::Erode(int size, int etype)
+{
+    cv::Size elsize(2*size+1, 2*size+1);
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size,size));
+    BinaryImage aux;
+    cv::erode(data, aux.data, element);
+    return aux;
+}
+
+void BinaryImage::SelfErode(int size, int etype)
+{
+    cv::Size elsize(2*size+1, 2*size+1);
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size,size));
+    cv::erode(data, data, element);
+}
+
+BinaryImage BinaryImage::Dilate(int size, int etype)
+{
+    cv::Size elsize(2*size+1, 2*size+1);
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size,size));
+    BinaryImage aux;
+    cv::dilate(data, aux.data, element);
+    return aux;
+}
+
+void BinaryImage::SelfDilate(int size, int etype)
+{
+    cv::Size elsize(2*size+1, 2*size+1);
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size,size));
+    cv::dilate(data, data, element);
+}
+
+BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h)
+{
+    //TODO: replace assert to exceptions
+    assert(pts.size()==refs.size());
+    assert(pts.size()>=4);
+    //
+    std::vector<cv::Point2f> cv_pts;
+    cv_pts.resize(pts.size());
+    std::vector<cv::Point2f> cv_refs;
+    cv_refs.resize(refs.size());
+    for (auto i=0; i<pts.size(); i++) {
+        cv_pts[i].x = pts[i].getX();
+        cv_pts[i].y = pts[i].getY();
+        cv_refs[i].x = refs[i].getX();
+        cv_refs[i].y = refs[i].getY();
+    }
+    cv::Mat homo_mat;
+    // We assume that size>=4 (verified in the begining of the method)
+    if (pts.size()>4) {
+        homo_mat = cv::findHomography(cv_pts, cv_refs,cv::RANSAC);
+    }
+    else {
+        homo_mat = cv::findHomography(cv_pts, cv_refs);
+    }
+    //
+    cv::Mat aux1, aux2;
+    data.convertTo(aux1, CV_32F);
+    cv::warpPerspective(aux1, aux2, homo_mat, cv::Size(w,h));
+    aux2.convertTo(aux2, CV_8U);
+    BinaryImage rect(aux2);
+    return rect;
+}
+
+void BinaryImage::Open(std::string filename) {
+    AbstractMatrix<bool>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
+}
+
+void BinaryImage::Save(std::string filename) {
+    cv::imwrite(filename, AbstractMatrix<bool>::data);
+}
+
+void BinaryImage::Show() {
+    std::cout << "TODO" << std::endl;
+}
+
+RgbImage BinaryImage::toRgbImage()
+{
+    RgbImage newImage;
+    cv::cvtColor(data, newImage.get_data(), cv::COLOR_GRAY2RGB);
+    return newImage;
+
+}
+
+
 GrayImage::GrayImage()
 {
     type = CV_8UC1;
     ch_size = 1;
-    invertchannels = false;
+    invert_channels_ = false;
 }
 
 /**
@@ -29,7 +232,7 @@ GrayImage::GrayImage(const GrayImage &that)
     assert(that.data.type()==CV_8UC1 && that.data.channels()==1);
     type = that.type;
     ch_size = that.ch_size;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.data.clone();
 }
 
@@ -43,7 +246,7 @@ GrayImage::GrayImage(const AbstractImage<uchar> &that)
            && that.get_data().channels()==1);
     type = CV_8UC1;
     ch_size = 1;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.get_data().clone();
 }
 
@@ -66,7 +269,7 @@ GrayImage &GrayImage::operator=(const GrayImage &that)
     assert(that.data.type()==CV_8UC1 && that.data.channels()==1);
     type = that.type;
     ch_size = that.ch_size;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.data.clone();
     return *this;
 }
@@ -81,7 +284,7 @@ GrayImage &GrayImage::operator=(const cv::Mat &that)
     assert(that.type()==CV_8UC1 && that.channels()==1);
     type = that.type();
     ch_size = that.channels();
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.clone();
     return *this;
 }
@@ -97,7 +300,7 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that)
            && that.get_data().channels()==1);
     type = CV_8UC1;
     ch_size = 1;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.get_data().clone();
     return *this;
 }
@@ -122,44 +325,31 @@ RgbImage GrayImage::toRgbImage()
     return newImage;
 }
 
-/**
- * @brief GrayImage::ApplyBinaryThreshold  - Binarize gray image according to passed threshold
- * @param t  int representing the threshold
- * @return Binary image resulting from applying the threshold to the Gray Image
- */
-BinaryMatrix GrayImage::ApplyBinaryThreshold(int t)
+
+BinaryImage GrayImage::ApplyBinaryThreshold(int t)
 {
-    BinaryMatrix newImage;
+    BinaryImage newImage;
     threshold(data, newImage.get_data(), t, 255, 0);
     return newImage;
 }
 
-/**
- * @brief GrayImage::ApplyOtsuThreshold - Binarize gray image using Otsu threshold
- * @return Resulting Binary image
- */
-BinaryMatrix GrayImage::ApplyOtsuThreshold()
+
+BinaryImage GrayImage::ApplyOtsuThreshold()
 {
-    BinaryMatrix newImage;
+    BinaryImage newImage;
     threshold(data, newImage.get_data(), 0, 255, cv::THRESH_OTSU);
     return newImage;
 }
 
 
-/**
- * @brief GrayImage::ApplyAdaptativeThreshold
- * @param bs int representing the size of a pixel neighborhood that is used to calculate a threshold value for the pixel
- * @param c int representing the constant subtracted from the weighted mean (Gaussian window)
- * @return Resulting Binary image
- */
-BinaryMatrix GrayImage::ApplyAdaptativeThreshold(int bs, int c)
+BinaryImage GrayImage::ApplyAdaptativeThreshold(int bs, int c)
 {
     cv::Mat aux;
     data.convertTo(aux, CV_8UC1);
     cv::adaptiveThreshold(data, aux, 255,
                           cv::ADAPTIVE_THRESH_GAUSSIAN_C,
                           cv::THRESH_BINARY, bs, c);
-    return BinaryMatrix(aux);
+    return BinaryImage(aux);
 }
 
 
@@ -192,26 +382,19 @@ GrayImage GrayImage::Normalize(int minv, int maxv)
         for (auto y=0; y<data.cols; y++) {
             int ic = static_cast<int>(get(x,y));
             float c = static_cast<float>(ic-cmin+minv)*scale;
-            norm.set(x,y,static_cast<int>(c));
-//            std::cout << x << " " << y << " " << ic << " " << c << std::endl;
+            norm.set(x,y,static_cast<uchar>(c));
         }
     }
     return norm;
 }
 
 
-/**
- * @brief GrayImage::PickColor
- * @param c int representing the desired gray level
- * @return BinaryMatrix representing a mask of the original image which is 1 for the desired gray level and 0 otherwise
- */
-BinaryMatrix GrayImage::PickColor(int c)
+BinaryImage GrayImage::PickColor(int c)
 {
-    BinaryMatrix mask;
+    BinaryImage mask;
     mask.Create(width(), height());
     for (auto x=0; x<data.rows; x++) {
         for (auto y=0; y<data.cols; y++) {
-//            std::cout << x << " " << y << " " << static_cast<int>(get(x,y)) << " " << c << std::endl;
             if (static_cast<int>(get(x,y))==c) mask.set(x,y,true);
             else mask.set(x,y,false);
         }
@@ -226,7 +409,7 @@ ColorImage::ColorImage()
 {
     type = CV_8UC3;
     ch_size = 3;
-    invertchannels = false;
+    invert_channels_ = false;
 }
 
 /**
@@ -238,7 +421,7 @@ ColorImage::ColorImage(const ColorImage &that)
     assert(that.data.type()==CV_8UC3 && that.data.channels()==3);
     type = that.type;
     ch_size = that.ch_size;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.data.clone();
 }
 
@@ -252,7 +435,7 @@ ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that)
            && that.get_data().channels()==3);
     type = CV_8UC3;
     ch_size = 3;
-    invertchannels = false;
+    invert_channels_ = false;
     data = that.get_data().clone();
 }
 
@@ -278,7 +461,7 @@ int ColorImage::channels()
  */
 RgbImage::RgbImage() : ColorImage()
 {
-    invertchannels = true;
+    invert_channels_ = true;
 }
 
 /**
@@ -290,7 +473,7 @@ RgbImage::RgbImage(const RgbImage &that)
     assert(that.data.type()==CV_8UC3 && that.data.channels()==3);
     type = that.type;
     ch_size = that.ch_size;
-    invertchannels = true;
+    invert_channels_ = true;
     data = that.data.clone();
 }
 
@@ -304,7 +487,7 @@ RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that)
            && that.get_data().channels()==3);
     type = CV_8UC3;
     ch_size = 3;
-    invertchannels = true;
+    invert_channels_ = true;
     data = that.get_data().clone();
 }
 
@@ -336,7 +519,10 @@ void RgbImage::Create(int w, int h)
  */
 void RgbImage::set(int x, int y, int r, int g, int b)
 {
-    AbstractMatrix<cv::Vec3b>::set(x, y, cv::Vec3b(r,g,b));
+    unsigned char ucr = static_cast<unsigned char>(r);
+    unsigned char ucg = static_cast<unsigned char>(g);
+    unsigned char ucb = static_cast<unsigned char>(b);
+    AbstractMatrix<cv::Vec3b>::set(x, y, cv::Vec3b(ucr,ucg,ucb));
 }
 
 /**
@@ -349,19 +535,19 @@ void RgbImage::set(int x, int y, int r, int g, int b)
  */
 void RgbImage::safe_set(int x, int y, int r, int g, int b)
 {
-    AbstractMatrix<cv::Vec3b>::safe_set(x, y, cv::Vec3b(r,g,b));
+    unsigned char ucr = static_cast<unsigned char>(r);
+    unsigned char ucg = static_cast<unsigned char>(g);
+    unsigned char ucb = static_cast<unsigned char>(b);
+    AbstractMatrix<cv::Vec3b>::safe_set(x, y, cv::Vec3b(ucr,ucg,ucb));
 }
 
-/**
- * @brief RgbImage::safe_set
- * @param i
- * @param r
- * @param g
- * @param b
- */
-void RgbImage::safe_set(int i, int r, int g, int b)
+
+void RgbImage::safe_iset(int i, int r, int g, int b)
 {
-    AbstractImage<cv::Vec3b>::safe_set(i, cv::Vec3b(r,g,b));
+    unsigned char ucr = static_cast<unsigned char>(r);
+    unsigned char ucg = static_cast<unsigned char>(g);
+    unsigned char ucb = static_cast<unsigned char>(b);
+    AbstractImage<cv::Vec3b>::safe_iset(i, cv::Vec3b(ucr,ucg,ucb));
 }
 
 /**
@@ -373,7 +559,10 @@ void RgbImage::safe_set(int i, int r, int g, int b)
  */
 void RgbImage::set(int i, int r, int g, int b)
 {
-    AbstractImage<cv::Vec3b>::set(i, cv::Vec3b(r,g,b));
+    unsigned char ucr = static_cast<unsigned char>(r);
+    unsigned char ucg = static_cast<unsigned char>(g);
+    unsigned char ucb = static_cast<unsigned char>(b);
+    AbstractImage<cv::Vec3b>::iset(i, cv::Vec3b(ucr,ucg,ucb));
 }
 
 /**
@@ -456,16 +645,10 @@ RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
     return cluster;
 }
 
-/**
- * @brief RgbImage::PickColor - Produce image mask for a given color
- * @param r int representing the red value of the desired color
- * @param g int representing the green value of the desired color
- * @param b int representing the blue value of the desired color
- * @return BinaryMatrix representing a mask of the original image which is 1 for the desired gray level and 0 otherwise
- */
-BinaryMatrix RgbImage::PickColor(int r, int g, int b)
+
+BinaryImage RgbImage::PickColor(int r, int g, int b)
 {
-    BinaryMatrix mask;
+    BinaryImage mask;
     mask.Create(width(), height());
     for (auto x=0; x<data.rows; x++) {
         for (auto y=0; y<data.cols; y++) {
@@ -502,7 +685,7 @@ GrayImage RgbImage::Project(std::vector<PointI> &colors)
 
 std::vector<Polygon> RgbImage::Contours()
 {
-    BinaryMatrix bin = toGrayImage().ApplyOtsuThreshold();
+    BinaryImage bin = toGrayImage().ApplyOtsuThreshold();
     //
     std::vector<std::vector<cv::Point> > cv_contours;
     std::vector<cv::Vec4i> hierarchy;
@@ -519,7 +702,7 @@ std::vector<Polygon> RgbImage::Contours()
 
 std::vector<Polygon> RgbImage::ApproximateContours(int eps)
 {
-    BinaryMatrix bin = toGrayImage().ApplyOtsuThreshold();
+    BinaryImage bin = toGrayImage().ApplyOtsuThreshold();
     //
     std::vector<std::vector<cv::Point> > cv_contours;
     std::vector<cv::Vec4i> hierarchy;
@@ -573,6 +756,22 @@ GrayImage RgbImage::toGrayImage()
     GrayImage newImage;
     cv::cvtColor(data, newImage.get_data(), cv::COLOR_RGB2GRAY);
     return newImage;
+}
+
+RgbImage RgbImage::DrawPolygon(Polygon &pol)
+{
+    std::vector<std::vector<cv::Point>> cv_conts;
+    cv_conts.resize(1);
+    cv_conts[0] = pol.get_cvdata();
+    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0]) << std::endl;
+    //
+    RgbImage new_img(data);
+    cv::Mat &new_mat = new_img.get_data();
+    const int  kThickness  = 2;
+    const int  kLineType   = 8;
+    cv::Scalar color = cv::Scalar(rand()%255, rand()%255, rand()%255);
+    cv::drawContours(new_mat,cv_conts, 0, color, kThickness, kLineType);
+    return new_img;
 }
 
 }

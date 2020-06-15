@@ -22,9 +22,10 @@ public:
 
     Contours OrientedBoundingBoxes();
 
-    void CalculateContours(BinaryMatrix &img);
-    void CalculateApproximateContours(BinaryMatrix &img, int eps=3);
+    void CalculateContours(BinaryImage &img);
+    void CalculateApproximateContours(BinaryImage &img, int eps=3);
 
+    RgbImage Draw(BinaryImage &img);
     RgbImage Draw(RgbImage &img);
 
 protected:

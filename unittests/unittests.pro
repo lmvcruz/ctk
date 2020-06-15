@@ -12,7 +12,7 @@ MOC_DIR = $$BUILD_FOLDER/$$TARGET
 DESTDIR = $$BUILD_FOLDER/$$TARGET
 
 SOURCES += \
-        ctkbinarymatrixtest.cpp \
+        ctkbinaryimagetest.cpp \
         ctkgrayimagetest.cpp \
         ctkmathtest.cpp \
         ctknumericmatrixtest.cpp \
@@ -33,12 +33,13 @@ LIBS += -L$$BUILD_FOLDER/libs -lctk
 PRE_TARGETDEPS += $$BUILD_FOLDER/libs/libctk.a
 
 HEADERS += \
-    ctkbinarymatrixtest.h \
+    ctkbinaryimagetest.h \
     ctkgrayimagetest.h \
     ctkmathtest.h \
     ctknumericmatrixtest.h \
     ctkpolygontest.h \
     ctkrgbimagetest.h \
+    ctktestsetup.h \
     ctkvecauxtest.h
 
 
