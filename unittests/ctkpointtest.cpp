@@ -54,7 +54,7 @@ TEST_F(CtkPointTest, Test_Get){
 
  EXPECT_EQ(CtkPointTest::Pd.getX(),1.1);
  EXPECT_EQ(CtkPointTest::Pd.getY(),2.1);
- //EXPECT_EQ(CtkPointTest::Pd.getZ(),3.1);
+ EXPECT_EQ(CtkPointTest::Pd.getZ(),3.1);
 }
 
 TEST_F(CtkPointTest, Test_DefaultConstructor){
@@ -128,7 +128,7 @@ TEST_F(CtkPointTest, Test_CopyConstructor){
  ctk::Point<double> Pdc(CtkPointTest::Pd);
  EXPECT_EQ(Pdc.getX(),1.1);
  EXPECT_EQ(Pdc.getY(),2.1);
- //EXPECT_EQ(Pdc.getZ(),3.1);
+ EXPECT_EQ(Pdc.getZ(),3.1);
 }
 
 TEST_F(CtkPointTest, Test_OperatorCopy){
@@ -165,7 +165,7 @@ TEST_F(CtkPointTest, Test_OperatorCopy){
     ctk::Point<double> Pdc = CtkPointTest::Pd;
     EXPECT_EQ(Pdc.getX(),1.1);
     EXPECT_EQ(Pdc.getY(),2.1);
-    //EXPECT_EQ(Pdc.getZ(),3.1);
+    EXPECT_EQ(Pdc.getZ(),3.1);
 
 }
 
@@ -189,7 +189,7 @@ TEST_F(CtkPointTest, Test_OperatorSum){
     ctk::PointD Pds = CtkPointTest::Pd + CtkPointTest::Pd_2;
     EXPECT_EQ(Pds.getX(),2.2);
     EXPECT_EQ(Pds.getY(),7.6);
-    //EXPECT_EQ(Pds.getZ(),9.7);
+    EXPECT_EQ(Pds.getZ(),9.7);
 }
 
 TEST_F(CtkPointTest, Test_AdditionAssignement){
@@ -203,7 +203,7 @@ TEST_F(CtkPointTest, Test_AdditionAssignement){
     Pds+= CtkPointTest::Pd;
     EXPECT_EQ(Pds.getX(),3.2);
     EXPECT_EQ(Pds.getY(),3.3);
-    //EXPECT_EQ(Pds.getZ(),6.4);
+    EXPECT_EQ(Pds.getZ(),6.4);
 
 
 }
@@ -217,7 +217,7 @@ TEST_F(CtkPointTest, Test_OperatorSubtraction){
     ctk::PointD Pds = CtkPointTest::Pd_2 - CtkPointTest::Pd;
     EXPECT_EQ(Pds.getX(),0);
     EXPECT_EQ(Pds.getY(),3.4);
-    //EXPECT_EQ(Pds.getZ(),3.5);
+    EXPECT_EQ(Pds.getZ(),3.5);
 }
 
 TEST_F(CtkPointTest, Test_SubtractionAssignement){
@@ -231,7 +231,7 @@ TEST_F(CtkPointTest, Test_SubtractionAssignement){
     Pds -= CtkPointTest::Pd;
     EXPECT_EQ(Pds.getX(),8.9);
     EXPECT_EQ(Pds.getY(),7.9);
-    //EXPECT_EQ(Pds.getZ(),6.9);
+    EXPECT_EQ(Pds.getZ(),6.9);
 
 
 }
@@ -243,9 +243,9 @@ TEST_F(CtkPointTest, Test_OperatorMultiplication){
     EXPECT_EQ(Pim.getZ(),9);
 
     ctk::PointD Pdm = CtkPointTest::Pd_2 * CtkPointTest::Pd;
-   // EXPECT_EQ(Pdm.getX(),1.21);
+    EXPECT_EQ(Pdm.getX(),1.21);
     EXPECT_EQ(Pdm.getY(),11.55);
-  //  EXPECT_EQ(Pdm.getZ(),20.46);
+    EXPECT_EQ(Pdm.getZ(),20.46);
 }
 
 TEST_F(CtkPointTest, Test_MultiplicationAssignement){
@@ -259,7 +259,7 @@ TEST_F(CtkPointTest, Test_MultiplicationAssignement){
     Pdm *= CtkPointTest::Pd;
     EXPECT_EQ(Pdm.getX(),2.2);
     EXPECT_EQ(Pdm.getY(),4.2);
-   // EXPECT_EQ(Pdm.getZ(),6.2);
+    EXPECT_EQ(Pdm.getZ(),6.2);
 
 
 }
@@ -275,7 +275,7 @@ TEST_F(CtkPointTest, Test_OperatorDivision){
     ctk::PointD Pdm = CtkPointTest::Pd / Pdx;
     EXPECT_EQ(Pdm.getX(),0.55);
     EXPECT_EQ(Pdm.getY(),1.05);
-    //EXPECT_EQ(Pdm.getZ(),1.55);
+    EXPECT_EQ(Pdm.getZ(),1.55);
 }
 
 TEST_F(CtkPointTest, Test_DivisionAssignement){
@@ -320,10 +320,10 @@ TEST_F(CtkPointTest, Test_Outter){
     EXPECT_EQ(outI.getY(),9);
     EXPECT_EQ(outI.getZ(),-3);
 
-    /*ctk::PointD ouD = CtkPointTest::Pd.outter(CtkPointTest::Pd_2);
+    ctk::PointD ouD = CtkPointTest::Pd.outter(CtkPointTest::Pd_2);
     EXPECT_EQ(ouD.getX(),-3.19);
     EXPECT_EQ(ouD.getY(),-3.85);
-    EXPECT_EQ(ouD.getZ(),3.74);*/
+    EXPECT_EQ(ouD.getZ(),3.74);
 
 
 }
@@ -331,17 +331,17 @@ TEST_F(CtkPointTest, Test_Outter){
 TEST_F(CtkPointTest, Test_Distance){
 
    EXPECT_EQ(CtkPointTest::Pi.Distance(CtkPointTest::Pi_2),std::sqrt(18));
-   //EXPECT_EQ(CtkPointTest::Pd.Distance(CtkPointTest::Pd_2),std::sqrt(23.81));
+   EXPECT_EQ(CtkPointTest::Pd.Distance(CtkPointTest::Pd_2),std::sqrt(23.81));
 
 }
 
 TEST_F(CtkPointTest, Test_Angle){
 
-   ctk::PointI p(0,0);
-   ctk::PointI p1(0,1);
-   ctk::PointI p2(1,0);
+   ctk::PointD p(0,0);
+   ctk::PointD p1(0,1);
+   ctk::PointD p2(1,0);
 
-   EXPECT_EQ(p.Angle(p1,p2),0); //erro no point?
+   EXPECT_EQ(p.Angle(p1,p2),std::acos(0.0));
 
 }
 
@@ -354,9 +354,9 @@ TEST_F(CtkPointTest, Test_Angle){
 
 
 
-}*/
+}
 
-/*TEST_F(CtkPointTest, Test_SelfNormalize){
+TEST_F(CtkPointTest, Test_SelfNormalize){
 
    ctk::PointI norm(CtkPointTest::Pi_1);
    norm.SelfNormalize();

@@ -401,14 +401,14 @@ public:
     * @brief Angle  Angle formed with two other Point objects
     * @param pa  Reference to an existing point object
     * @param pb  Reference to an existing point object
-    * @return Angle formed with the two Points
+    * @return double representing the Angle formed with the two Points in radians
     */
-    double Angle(const Point &pa, const Point &pb) {
+     double Angle (Point &pa,  Point &pb) {
         double p_pa = Distance(pa);
         double p_pb = Distance(pb);
         double pa_pb = (pa-pb).Norm();
 
-        return std::acos((p_pa*p_pa + p_pb*p_pb + pa_pb*pa_pb)/(2*p_pa*p_pb));
+        return std::acos((p_pa*p_pa + p_pb*p_pb - pa_pb*pa_pb)/(2*p_pa*p_pb));
     }
 
 
