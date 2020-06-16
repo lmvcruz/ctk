@@ -375,7 +375,7 @@ public:
 
     //! Outter product with another Point object
     /**
-    * @brief outter  Performs the inner outter with another Point object
+    * @brief outter  Performs the outter product with another Point object
     * @param p  Reference to an existing point object
     * @return outter product of the two points
     */

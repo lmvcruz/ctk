@@ -16,6 +16,7 @@ SOURCES += \
         ctkgrayimagetest.cpp \
         ctkmathtest.cpp \
         ctknumericmatrixtest.cpp \
+        ctkpointtest.cpp \
         ctkpolygontest.cpp \
         ctkrgbimagetest.cpp \
         ctkvecauxtest.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     ctkgrayimagetest.h \
     ctkmathtest.h \
     ctknumericmatrixtest.h \
+    ctkpointtest.h \
     ctkpolygontest.h \
     ctkrgbimagetest.h \
     ctktestsetup.h \

@@ -5,7 +5,7 @@
 
 #define TEST_ALL 0
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_BINARY_IMAGE
 #endif
 
@@ -22,7 +22,7 @@
 #define TEST_NUMERIC_MATRICES
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_RGB_IMAGES
 #endif
 
@@ -32,6 +32,10 @@
 
 #if ( TEST_ALL || 0 )
 #define TEST_POLYGON
+#endif
+
+#if ( TEST_ALL || 1 )
+#define TEST_POINT
 #endif
 
 const std::string INPUT_DIR = "../../ctk/data/test/";
