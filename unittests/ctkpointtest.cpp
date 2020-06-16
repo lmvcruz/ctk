@@ -335,13 +335,15 @@ TEST_F(CtkPointTest, Test_Distance){
 
 }
 
-/**TEST_F(CtkPointTest, Test_Angle){
+TEST_F(CtkPointTest, Test_Angle){
 
+   ctk::PointI p(0,0);
+   ctk::PointI p1(0,1);
+   ctk::PointI p2(1,0);
 
-   EXPECT_EQ(CtkPointTest::Pi.Angle(CtkPointTest::Pi_1,CtkPointTest::Pi_2),std::acos(18));
-   EXPECT_EQ(CtkPointTest::Pd.Angle(CtkPointTest::Pd_1,CtkPointTest::Pd_2),std::sqrt(23.81));
+   EXPECT_EQ(p.Angle(p1,p2),0); //erro no point?
 
-}*/
+}
 
 /*TEST_F(CtkPointTest, Test_Normalize){
 
@@ -354,5 +356,16 @@ TEST_F(CtkPointTest, Test_Distance){
 
 }*/
 
+/*TEST_F(CtkPointTest, Test_SelfNormalize){
+
+   ctk::PointI norm(CtkPointTest::Pi_1);
+   norm.SelfNormalize();
+   EXPECT_EQ(norm.getX(),1);
+   EXPECT_EQ(norm.getY(),1);
+   EXPECT_EQ(norm.getZ(),0);
+
+
+
+}*/
 
 #endif
