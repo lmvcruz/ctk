@@ -169,16 +169,22 @@ TEST_F(CtkPointTest, Test_OperatorCopy){
 
 }
 
-/*TEST_F(CtkPointTest, Test_OperatorEqual){
+TEST_F(CtkPointTest, Test_OperatorEqual){
     ctk::PointI Pic = CtkPointTest::Pi;
     EXPECT_EQ(CtkPointTest::Pi==CtkPointTest::Pi_2,false);
     EXPECT_EQ(CtkPointTest::Pi==Pic,true);
+
+    EXPECT_EQ(CtkPointTest::Pi!=CtkPointTest::Pi_2,true);
+    EXPECT_EQ(CtkPointTest::Pi!=Pic,false);
 
     ctk::PointD Pdc = CtkPointTest::Pd;
     EXPECT_EQ(CtkPointTest::Pd==CtkPointTest::Pd_2,false);
     EXPECT_EQ(CtkPointTest::Pd==Pdc,true);
 
-}*/
+    EXPECT_EQ(CtkPointTest::Pd!=CtkPointTest::Pd_2,true);
+    EXPECT_EQ(CtkPointTest::Pd!=Pdc,false);
+
+}
 
 TEST_F(CtkPointTest, Test_OperatorSum){
     ctk::PointI Pis = CtkPointTest::Pi + CtkPointTest::Pi_2;
@@ -348,7 +354,7 @@ TEST_F(CtkPointTest, Test_Angle){
 
 }
 
-/*TEST_F(CtkPointTest, Test_Normalize){
+TEST_F(CtkPointTest, Test_Normalize){
 
    ctk::PointI norm = CtkPointTest::Pi_1.normalize();
    EXPECT_EQ(norm.getX(),1);
@@ -369,6 +375,6 @@ TEST_F(CtkPointTest, Test_SelfNormalize){
 
 
 
-}*/
+}
 
 #endif
