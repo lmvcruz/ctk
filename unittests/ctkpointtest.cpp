@@ -243,9 +243,10 @@ TEST_F(CtkPointTest, Test_OperatorMultiplication){
     EXPECT_EQ(Pim.getZ(),9);
 
     ctk::PointD Pdm = CtkPointTest::Pd_2 * CtkPointTest::Pd;
-    EXPECT_EQ(Pdm.getX(),1.21);
-    EXPECT_EQ(Pdm.getY(),11.55);
-    EXPECT_EQ(Pdm.getZ(),20.46);
+
+    EXPECT_LE(fabs(Pdm.getX()-1.21),FLT_EPSILON);
+    EXPECT_LE(fabs(Pdm.getY()-11.55),FLT_EPSILON);
+    EXPECT_LE(fabs(Pdm.getZ()-20.46),FLT_EPSILON);
 }
 
 TEST_F(CtkPointTest, Test_MultiplicationAssignement){
@@ -257,9 +258,10 @@ TEST_F(CtkPointTest, Test_MultiplicationAssignement){
 
     ctk::PointD Pdm(2,2,2);
     Pdm *= CtkPointTest::Pd;
-    EXPECT_EQ(Pdm.getX(),2.2);
-    EXPECT_EQ(Pdm.getY(),4.2);
-    EXPECT_EQ(Pdm.getZ(),6.2);
+
+    EXPECT_LE(fabs(Pdm.getX()-2.2),FLT_EPSILON);
+    EXPECT_LE(fabs(Pdm.getY()-4.2),FLT_EPSILON);
+    EXPECT_LE(fabs(Pdm.getZ()-6.2),FLT_EPSILON);
 
 
 }
@@ -273,9 +275,10 @@ TEST_F(CtkPointTest, Test_OperatorDivision){
 
     ctk::PointD Pdx(2,2,2);
     ctk::PointD Pdm = CtkPointTest::Pd / Pdx;
-    EXPECT_EQ(Pdm.getX(),0.55);
-    EXPECT_EQ(Pdm.getY(),1.05);
-    EXPECT_EQ(Pdm.getZ(),1.55);
+
+    EXPECT_LE(fabs(Pdm.getX()-0.55),FLT_EPSILON);
+    EXPECT_LE(fabs(Pdm.getY()-1.05),FLT_EPSILON);
+    EXPECT_LE(fabs(Pdm.getZ()-1.55),FLT_EPSILON);
 }
 
 TEST_F(CtkPointTest, Test_DivisionAssignement){
@@ -301,8 +304,8 @@ TEST_F(CtkPointTest, Test_ManhattanLength){
 
 TEST_F(CtkPointTest, Test_Norm){
 
-    EXPECT_EQ(CtkPointTest::Pi.Norm(),std::sqrt(14));
-    EXPECT_EQ(CtkPointTest::Pd.Norm(),std::sqrt(15.23));
+    EXPECT_LE(fabs(CtkPointTest::Pi.Norm()-std::sqrt(14)),FLT_EPSILON);
+    EXPECT_LE(fabs(CtkPointTest::Pd.Norm()-std::sqrt(15.23)),FLT_EPSILON);
 
 }
 
@@ -321,17 +324,17 @@ TEST_F(CtkPointTest, Test_Outter){
     EXPECT_EQ(outI.getZ(),-3);
 
     ctk::PointD ouD = CtkPointTest::Pd.outter(CtkPointTest::Pd_2);
-    EXPECT_EQ(ouD.getX(),-3.19);
-    EXPECT_EQ(ouD.getY(),-3.85);
-    EXPECT_EQ(ouD.getZ(),3.74);
 
+    EXPECT_LE(fabs(ouD.getX()+3.19),FLT_EPSILON);
+    EXPECT_LE(fabs(ouD.getY()+3.85),FLT_EPSILON);
+    EXPECT_LE(fabs(ouD.getZ()-3.74),FLT_EPSILON);
 
 }
 
 TEST_F(CtkPointTest, Test_Distance){
 
-   EXPECT_EQ(CtkPointTest::Pi.Distance(CtkPointTest::Pi_2),std::sqrt(18));
-   EXPECT_EQ(CtkPointTest::Pd.Distance(CtkPointTest::Pd_2),std::sqrt(23.81));
+   EXPECT_LE(fabs(CtkPointTest::Pi.Distance(CtkPointTest::Pi_2)-std::sqrt(18)),FLT_EPSILON);
+   EXPECT_LE(fabs(CtkPointTest::Pd.Distance(CtkPointTest::Pd_2)-std::sqrt(23.81)),FLT_EPSILON);
 
 }
 
@@ -341,7 +344,7 @@ TEST_F(CtkPointTest, Test_Angle){
    ctk::PointD p1(0,1);
    ctk::PointD p2(1,0);
 
-   EXPECT_EQ(p.Angle(p1,p2),std::acos(0.0));
+   EXPECT_LE(fabs(p.Angle(p1,p2)-std::acos(0.0)),FLT_EPSILON);
 
 }
 
