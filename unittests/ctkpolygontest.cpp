@@ -3,34 +3,39 @@
 #include "ctktestsetup.h"
 
 
+
 void CtkPolygonTest::SetUp()
 {
-  p1_v1.setX(0);p1_v1.setY(0);
-  p1_v2.setX(1);p1_v2.setY(0);
-  p1_v3.setX(0);p1_v3.setY(1);
-  p1_v4.setX(1);p1_v4.setY(1);
+  p1_v1.setX(0);p1_v1.setY(1);
+  p1_v2.setX(1);p1_v2.setY(1);
+  p1_v3.setX(1);p1_v3.setY(0);
+  p1_v4.setX(0);p1_v4.setY(0);
 
-  p1cv_v1.x=0;  p1cv_v1.y=0;
-  p1cv_v2.x=1;  p1cv_v2.y=0;
-  p1cv_v3.x=0;  p1cv_v3.y=1;
-  p1cv_v4.x=1;  p1cv_v4.y=1;
+  p1cv_v1.x=0;  p1cv_v1.y=1;
+  p1cv_v2.x=1;  p1cv_v2.y=1;
+  p1cv_v3.x=1;  p1cv_v3.y=0;
+  p1cv_v4.x=0;  p1cv_v4.y=0;
+  /*p1cv_v5.x=1;  p1cv_v5.y=4;
+  p1cv_v6.x=3;  p1cv_v6.y=4;
+  p1cv_v7.x=4;  p1cv_v7.y=4;
+  p1cv_v8.x=4;  p1cv_v8.y=3;*/
 
 
-  p2_v1.setX(2);p2_v1.setY(2);
-  p2_v2.setX(5);p2_v2.setY(2);
-  p2_v3.setX(2);p2_v3.setY(5);
-  p2_v4.setX(5);p2_v4.setY(5);
+  p2_v1.setX(2);p2_v1.setY(5);
+  p2_v2.setX(5);p2_v2.setY(5);
+  p2_v3.setX(5);p2_v3.setY(2);
+  p2_v4.setX(2);p2_v4.setY(2);
 
-  p2cv_v1.x=2;  p2cv_v1.y=2;
-  p2cv_v2.x=5;  p2cv_v2.y=2;
-  p2cv_v3.x=2;  p2cv_v3.y=5;
-  p2cv_v4.x=5;  p2cv_v4.y=5;
+  p2cv_v1.x=2;  p2cv_v1.y=5;
+  p2cv_v2.x=5;  p2cv_v2.y=5;
+  p2cv_v3.x=5;  p2cv_v3.y=2;
+  p2cv_v4.x=2;  p2cv_v4.y=2;
 
 
   p1 = {p1_v1, p1_v2, p1_v3, p1_v4} ;
-  p1cv = {p1cv_v1, p1cv_v2, p1cv_v3, p1cv_v4 };
+  p1cv = {p1cv_v1,  p1cv_v2,p1cv_v3, p1cv_v4};//,p1cv_v5,p1cv_v6,p1cv_v7,p1cv_v8};
   p2 = {p2_v1, p2_v2, p2_v3, p2_v4 };
-  p2cv = {p2cv_v1, p2cv_v2, p2cv_v3, p2cv_v4 };
+  p2cv = {p2cv_v1, p2cv_v2, p2cv_v3, p2cv_v4};
 
 
  /* ctk::Polygon Poly1(p1);
@@ -41,9 +46,6 @@ void CtkPolygonTest::SetUp()
 
 }
 
-CtkPolygonTest::CtkPolygonTest()
-{
-}
 
 #ifdef TEST_POLYGON
 
@@ -65,13 +67,13 @@ TEST_F(CtkPolygonTest,Test_GetData){
 
     std::vector<ctk::PointD> Data = Poly1.get_data();
     EXPECT_EQ(Data[0].getX(),0);
-    EXPECT_EQ(Data[0].getY(),0);
+    EXPECT_EQ(Data[0].getY(),1);
     EXPECT_EQ(Data[1].getX(),1);
-    EXPECT_EQ(Data[1].getY(),0);
-    EXPECT_EQ(Data[2].getX(),0);
-    EXPECT_EQ(Data[2].getY(),1);
-    EXPECT_EQ(Data[3].getX(),1);
-    EXPECT_EQ(Data[3].getY(),1);
+    EXPECT_EQ(Data[1].getY(),1);
+    EXPECT_EQ(Data[2].getX(),1);
+    EXPECT_EQ(Data[2].getY(),0);
+    EXPECT_EQ(Data[3].getX(),0);
+    EXPECT_EQ(Data[3].getY(),0);
 
 
 }
@@ -81,13 +83,14 @@ TEST_F(CtkPolygonTest,Test_GetCVData){
 
     std::vector<cv::Point> cvData = Poly1.get_cvdata();
     EXPECT_EQ(cvData[0].x,0);
-    EXPECT_EQ(cvData[0].y,0);
+    EXPECT_EQ(cvData[0].y,1);
     EXPECT_EQ(cvData[1].x,1);
-    EXPECT_EQ(cvData[1].y,0);
-    EXPECT_EQ(cvData[2].x,0);
-    EXPECT_EQ(cvData[2].y,1);
-    EXPECT_EQ(cvData[3].x,1);
-    EXPECT_EQ(cvData[3].y,1);
+    EXPECT_EQ(cvData[1].y,1);
+    EXPECT_EQ(cvData[2].x,1);
+    EXPECT_EQ(cvData[2].y,0);
+    EXPECT_EQ(cvData[3].x,0);
+    EXPECT_EQ(cvData[3].y,0);
+
 
 
 }
@@ -114,22 +117,22 @@ TEST_F(CtkPolygonTest,Test_ConstructorCopy){
     EXPECT_EQ(cvData.size(),4);
 
     EXPECT_EQ(Data[0].getX(),0);
-    EXPECT_EQ(Data[0].getY(),0);
+    EXPECT_EQ(Data[0].getY(),1);
     EXPECT_EQ(Data[1].getX(),1);
-    EXPECT_EQ(Data[1].getY(),0);
-    EXPECT_EQ(Data[2].getX(),0);
-    EXPECT_EQ(Data[2].getY(),1);
-    EXPECT_EQ(Data[3].getX(),1);
-    EXPECT_EQ(Data[3].getY(),1);
+    EXPECT_EQ(Data[1].getY(),1);
+    EXPECT_EQ(Data[2].getX(),1);
+    EXPECT_EQ(Data[2].getY(),0);
+    EXPECT_EQ(Data[3].getX(),0);
+    EXPECT_EQ(Data[3].getY(),0);
 
     EXPECT_EQ(cvData[0].x,0);
-    EXPECT_EQ(cvData[0].y,0);
+    EXPECT_EQ(cvData[0].y,1);
     EXPECT_EQ(cvData[1].x,1);
-    EXPECT_EQ(cvData[1].y,0);
-    EXPECT_EQ(cvData[2].x,0);
-    EXPECT_EQ(cvData[2].y,1);
-    EXPECT_EQ(cvData[3].x,1);
-    EXPECT_EQ(cvData[3].y,1);
+    EXPECT_EQ(cvData[1].y,1);
+    EXPECT_EQ(cvData[2].x,1);
+    EXPECT_EQ(cvData[2].y,0);
+    EXPECT_EQ(cvData[3].x,0);
+    EXPECT_EQ(cvData[3].y,0);
 
 
 
@@ -149,22 +152,22 @@ TEST_F(CtkPolygonTest,Test_OperatorCopyPolygon){
     EXPECT_EQ(cvData.size(),4);
 
     EXPECT_EQ(Data[0].getX(),0);
-    EXPECT_EQ(Data[0].getY(),0);
+    EXPECT_EQ(Data[0].getY(),1);
     EXPECT_EQ(Data[1].getX(),1);
-    EXPECT_EQ(Data[1].getY(),0);
-    EXPECT_EQ(Data[2].getX(),0);
-    EXPECT_EQ(Data[2].getY(),1);
-    EXPECT_EQ(Data[3].getX(),1);
-    EXPECT_EQ(Data[3].getY(),1);
+    EXPECT_EQ(Data[1].getY(),1);
+    EXPECT_EQ(Data[2].getX(),1);
+    EXPECT_EQ(Data[2].getY(),0);
+    EXPECT_EQ(Data[3].getX(),0);
+    EXPECT_EQ(Data[3].getY(),0);
 
     EXPECT_EQ(cvData[0].x,0);
-    EXPECT_EQ(cvData[0].y,0);
+    EXPECT_EQ(cvData[0].y,1);
     EXPECT_EQ(cvData[1].x,1);
-    EXPECT_EQ(cvData[1].y,0);
-    EXPECT_EQ(cvData[2].x,0);
-    EXPECT_EQ(cvData[2].y,1);
-    EXPECT_EQ(cvData[3].x,1);
-    EXPECT_EQ(cvData[3].y,1);
+    EXPECT_EQ(cvData[1].y,1);
+    EXPECT_EQ(cvData[2].x,1);
+    EXPECT_EQ(cvData[2].y,0);
+    EXPECT_EQ(cvData[3].x,0);
+    EXPECT_EQ(cvData[3].y,0);
 
 
 
@@ -183,22 +186,22 @@ TEST_F(CtkPolygonTest,Test_OperatorCopyPointD){
     EXPECT_EQ(cvData.size(),4);
 
     EXPECT_EQ(Data[0].getX(),0);
-    EXPECT_EQ(Data[0].getY(),0);
+    EXPECT_EQ(Data[0].getY(),1);
     EXPECT_EQ(Data[1].getX(),1);
-    EXPECT_EQ(Data[1].getY(),0);
-    EXPECT_EQ(Data[2].getX(),0);
-    EXPECT_EQ(Data[2].getY(),1);
-    EXPECT_EQ(Data[3].getX(),1);
-    EXPECT_EQ(Data[3].getY(),1);
+    EXPECT_EQ(Data[1].getY(),1);
+    EXPECT_EQ(Data[2].getX(),1);
+    EXPECT_EQ(Data[2].getY(),0);
+    EXPECT_EQ(Data[3].getX(),0);
+    EXPECT_EQ(Data[3].getY(),0);
 
     EXPECT_EQ(cvData[0].x,0);
-    EXPECT_EQ(cvData[0].y,0);
+    EXPECT_EQ(cvData[0].y,1);
     EXPECT_EQ(cvData[1].x,1);
-    EXPECT_EQ(cvData[1].y,0);
-    EXPECT_EQ(cvData[2].x,0);
-    EXPECT_EQ(cvData[2].y,1);
-    EXPECT_EQ(cvData[3].x,1);
-    EXPECT_EQ(cvData[3].y,1);
+    EXPECT_EQ(cvData[1].y,1);
+    EXPECT_EQ(cvData[2].x,1);
+    EXPECT_EQ(cvData[2].y,0);
+    EXPECT_EQ(cvData[3].x,0);
+    EXPECT_EQ(cvData[3].y,0);
 
 }
 
@@ -214,22 +217,22 @@ TEST_F(CtkPolygonTest,Test_OperatorCopyCVPoint){
     EXPECT_EQ(cvData.size(),4);
 
     EXPECT_EQ(Data[0].getX(),0);
-    EXPECT_EQ(Data[0].getY(),0);
+    EXPECT_EQ(Data[0].getY(),1);
     EXPECT_EQ(Data[1].getX(),1);
-    EXPECT_EQ(Data[1].getY(),0);
-    EXPECT_EQ(Data[2].getX(),0);
-    EXPECT_EQ(Data[2].getY(),1);
-    EXPECT_EQ(Data[3].getX(),1);
-    EXPECT_EQ(Data[3].getY(),1);
+    EXPECT_EQ(Data[1].getY(),1);
+    EXPECT_EQ(Data[2].getX(),1);
+    EXPECT_EQ(Data[2].getY(),0);
+    EXPECT_EQ(Data[3].getX(),0);
+    EXPECT_EQ(Data[3].getY(),0);
 
     EXPECT_EQ(cvData[0].x,0);
-    EXPECT_EQ(cvData[0].y,0);
+    EXPECT_EQ(cvData[0].y,1);
     EXPECT_EQ(cvData[1].x,1);
-    EXPECT_EQ(cvData[1].y,0);
-    EXPECT_EQ(cvData[2].x,0);
-    EXPECT_EQ(cvData[2].y,1);
-    EXPECT_EQ(cvData[3].x,1);
-    EXPECT_EQ(cvData[3].y,1);
+    EXPECT_EQ(cvData[1].y,1);
+    EXPECT_EQ(cvData[2].x,1);
+    EXPECT_EQ(cvData[2].y,0);
+    EXPECT_EQ(cvData[3].x,0);
+    EXPECT_EQ(cvData[3].y,0);
 
 
 }
@@ -318,7 +321,7 @@ TEST_F(CtkPolygonTest,Test_GetPoint){
    ctk::PointD point=polC.point(0);
 
     EXPECT_EQ(point.getX(),0);
-    EXPECT_EQ(point.getY(),0);
+    EXPECT_EQ(point.getY(),1);
 }
 
 TEST_F(CtkPolygonTest,Test_Resize){
@@ -347,21 +350,53 @@ TEST_F(CtkPolygonTest,Test_Size){
     EXPECT_EQ(polC.size(),4);
 }
 
-TEST_F(CtkPolygonTest,Test_Area){
-    ctk::Polygon polC=CtkPolygonTest::p1cv;
 
-    EXPECT_EQ(polC.Perimeter(),1);
+TEST_F(CtkPolygonTest,Test_Area){
+    ctk::Polygon pol1=CtkPolygonTest::p1cv;
+    ctk::Polygon pol1cv=CtkPolygonTest::p1cv;
+    ctk::Polygon pol2=CtkPolygonTest::p2;
+    ctk::Polygon pol2cv=CtkPolygonTest::p2cv;
+
+    EXPECT_EQ(pol1.Area(),1);
+    EXPECT_EQ(pol2.Area(),9);
+    EXPECT_EQ(pol1cv.Area(),1);
+    EXPECT_EQ(pol2cv.Area(),9);
+
 }
 
 
+TEST_F(CtkPolygonTest,Test_Perimeter){
+    ctk::Polygon pol1=CtkPolygonTest::p1cv;
+    ctk::Polygon pol1cv=CtkPolygonTest::p1cv;
+    ctk::Polygon pol2=CtkPolygonTest::p2;
+    ctk::Polygon pol2cv=CtkPolygonTest::p2cv;
+
+    EXPECT_EQ(pol1.Perimeter(),4);
+    EXPECT_EQ(pol2.Perimeter(),12);
+    EXPECT_EQ(pol1cv.Perimeter(),4);
+    EXPECT_EQ(pol2cv.Perimeter(),12);
+
+}
+
+TEST_F(CtkPolygonTest,Test_Reduce){
+    ctk::Polygon pol1=CtkPolygonTest::p1cv;
+    ctk::Polygon pol1cv=CtkPolygonTest::p1cv;
+    ctk::Polygon pol2=CtkPolygonTest::p2;
+    ctk::Polygon pol2cv=CtkPolygonTest::p2cv;
 
 
+    ctk::Polygon red =pol1.Reduce(1);
+    std::vector<cv::Point> datared=red.get_cvdata();
+    for (int i=0;i<red.size();i++){
+        std::cout<<datared[i].x <<" "<<datared[i].y<<std::endl;
 
+    }
+//    EXPECT_EQ(pol1.Perimeter(),4);
+//    EXPECT_EQ(pol2.Perimeter(),12);
+//    EXPECT_EQ(pol1cv.Perimeter(),4);
+//    EXPECT_EQ(pol2cv.Perimeter(),12);
 
-
-
-
-
+}
 
 #endif
 
