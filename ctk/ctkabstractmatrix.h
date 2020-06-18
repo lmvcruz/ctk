@@ -18,17 +18,17 @@ class AbstractMatrix
 {
 protected:
     /**
-     * @brief matrix elements type
+     * @brief AbstractMatrix elements type
      */
     int type;
 
     /**
-     * @brief ch_size number of matrix channels
+     * @brief ch_size number of AbstractMatrix channels
      */
     int ch_size;
 
     /**
-     * @brief data matrix data
+     * @brief data AbstractMatrix data
      */
     cv::Mat data;
 
@@ -53,7 +53,7 @@ public:
 
     /**
      * @brief Copy Constructor
-     * @param that Reference to an existing AbstractMatrix object
+     * @param that Reference to an existing AbstractMatrix
      */
     AbstractMatrix(const AbstractMatrix& that) {
         type = that.type;
@@ -85,7 +85,7 @@ public:
      * @brief Create  Create AbstractMatrix
      * @param w  int representing the number of cols
      * @param h  int representing the number of rows
-     * @param vec  vector with matrix elements
+     * @param vec  vector with AbstractMatrix elements
      */
     virtual void Create(int w, int h, std::vector<T> &vec) {
         if (w>0 && h>0) {
@@ -100,7 +100,7 @@ public:
     }
 
     /**
-     * @brief get_data  Access matrix data
+     * @brief get_data  Access AbstractMatrix data
      * @return data
      */
     cv::Mat& get_data() {
@@ -108,7 +108,7 @@ public:
     }
 
     /**
-     * @brief get_data  Access matrix data
+     * @brief get_data  Access AbstractMatrix data
      * @return data
      */
     const cv::Mat& get_data() const {
@@ -116,48 +116,48 @@ public:
     }
 
     /**
-     * @brief cols  Get nº of columns in matrix
-     * @return  nº of columns in matrix
+     * @brief cols  Get number of columns
+     * @return  int representing the number of columns
      */
     int cols() const{
         return data.cols;
     }
 
     /**
-     * @brief width  Get nº of columns in matrix
-     * @return  nº of columns in matrix
+     * @brief width  Get AbstractMatrix width (number of columns)
+     * @return int representing the number columns in matrix
      */
     int width()  const{
         return data.cols;
     }
 
     /**
-     * @brief rows  Get nº of rows in matrix
-     * @return nº of rows in matrix
+     * @brief rows  Ge tnumber of rows
+     * @return int representing the number of rows
      */
     int rows() const{
         return data.rows;
     }
 
     /**
-     * @brief height  Get nº of rows in matrix
-     * @return nº of rows in matrix
+     * @brief height  Get AbstractMatrix width (number of rows)
+     * @return int representing the number of rows
      */
     int height() const{
         return data.rows;
     }
 
     /**
-     * @brief size   Get matrix size
-     * @return  matrix size (nº of rows x nº of columns
+     * @brief size   Get AbstractMatrix size
+     * @return int representing matrix size (nº of rows x nº of columns)
      */
     int size() const{
         return data.rows*data.cols;
     }
 
     /**
-     * @brief channels  Get nº of channels in matrix
-     * @return  nº of channels in matrix
+     * @brief channels  Get number of channels
+     * @return int representing the number of channels in matrix
      */
     int channels() const{
         return ch_size;
@@ -165,25 +165,25 @@ public:
 
     /**
      * @brief checkChannel  Check if ch_size parameter is correctly assigned
-     * @return  Boolean true if ch_size corresponds to number of channels in matrix.
+     * @return  boolean true if ch_size corresponds to number of channels in AbstractMatrix.
      */
     bool CheckChannel() const{
         return (ch_size==data.channels());
     }
 
     /**
-     * @brief Fill Fill all elements of the matrix according to the received parameter
-     * @param v value used to fill the matrix
+     * @brief Fill Fill all elements of the AbstractMatrix according to the received parameter
+     * @param v value used to fill the AbstractMatrix
      */
     void Fill(T v) { //TODO: test and benchmark this method
         for (auto it=begin(); it!=end(); ++it) *it = v;
     }
 
     /**
-     * @brief get  Get a specific matrix element
+     * @brief get  Get a specific AbstractMatrix element
      * @param x  int representing the column index
      * @param y  int representing the row index
-     * @return  Matrix element at row y and column x
+     * @return  AbstractMatrix element at row y and column x
      */
     virtual T get(int x, int y) const {
         return data.at<T>(y,x);
@@ -191,10 +191,10 @@ public:
 
 
     /**
-     * @brief safe_get   Get a specific matrix element with protections
+     * @brief safe_get   Get a specific AbstractMatrix element with protections
      * @param x  int representing the column index
      * @param y  int representing the row index
-     * @return  Matrix element at row y and column x
+     * @return  AbstractMatrix element at row y and column x
      */
     virtual T safe_get(int x, int y) {
         if (x<0 || x>=data.cols || y<0 || y>=data.rows) {
@@ -204,7 +204,7 @@ public:
     }
 
     /**
-     * @brief set  Setting the value of a specific matrix element
+     * @brief set  Setting the value of a specific AbstractMatrix element
      * @param x  int representing the column index
      * @param y  int representing the row index
      * @param v  desired value
@@ -214,7 +214,7 @@ public:
     }
 
     /**
-     * @brief safe_set  Setting the value of a specific matrix element with protections
+     * @brief safe_set  Setting the value of a specific AbstractMatrix element with protections
      * @param x  int representing the column index
      * @param y  int representing the row index
      * @param v  desired value
@@ -227,16 +227,16 @@ public:
     }
 
     /**
-     * @brief begin Get the first element of the matrix
-     * @return  matrix element at position (0,0)
+     * @brief begin Get the first element of the AbstractMatrix
+     * @return  AbstractMatrix element at position (0,0)
      */
     T* begin() {
         return &data.at<T>(0,0);
     }
 
     /**
-     * @brief end Get the last element of the matrix
-     * @return  matrix element at position (nº rows , nº columns)
+     * @brief end Get the last element of the AbstractMatrix
+     * @return  AbstractMatrix element at position (nº rows , nº columns)
      */
     T* end() {
         return &data.at<T>(data.rows*data.cols);
