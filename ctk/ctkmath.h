@@ -74,6 +74,11 @@ long long countPrimeNumbers(long long n);
 unsigned long long countPrimeNumbers(unsigned long long n);
 
 template<class T>
+/**
+ * @brief generatePrimeNumbersBf Get the prime numbers before a passed limit
+ * @param n  limit
+ * @return vector with all prime numbers before n
+ */
 std::vector<T> generatePrimeNumbersBf(T n) {
     std::vector<T> primes;
     for (int i=2; i<n; i++) {

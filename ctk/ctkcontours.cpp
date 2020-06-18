@@ -10,32 +10,58 @@ Contours::Contours()
 {
 
 }
-
+/**
+ * @brief Contours::resize resize Polygon vector
+ * @param s new size
+ * @return ??
+ */
 int Contours::resize(int s)
 {
     polys_.resize(s);
 }
 
+/**
+ * @brief Contours::size get size of Polygon vector
+ * @return int representing the size of Polygon vector
+ */
 int Contours::size()
 {
     return polys_.size();
 }
 
+/**
+ * @brief Contours::add_polygon Add Polygon to Polygon vector
+ * @param pol Polygon to be added
+ */
 void Contours::add_polygon(Polygon &pol)
 {
     polys_.push_back(pol);
 }
 
+/**
+ * @brief Contours::set_polygon Set Polygon in Polygon vector
+ * @param idx int representing the index of the element to be set
+ * @param pol desired Polygon
+ */
 void Contours::set_polygon(int idx, Polygon &pol)
 {
     polys_[idx] = pol;
 }
 
+/**
+ * @brief Contours::polygon Get Polygon in Polygon vector
+ * @param idx int representing the index of the element to be get
+ * @return Polygon at index idx
+ */
 Polygon &Contours::polygon(int idx)
 {
     return polys_[idx];
 }
 
+/**
+ * @brief Contours::OrientedBoundingBoxes Get oriented bounding boxes for each Polygon
+ * @return Contours object with oriented bounding boxes of the passed Polygons
+ */
 Contours Contours::OrientedBoundingBoxes()
 {
     Contours boxes;
@@ -54,6 +80,10 @@ Contours Contours::OrientedBoundingBoxes()
     return boxes;
 }
 
+/**
+ * @brief Contours::CalculateContours Get contours from BinaryImage
+ * @param img input BinaryImage
+ */
 void Contours::CalculateContours(BinaryImage &img)
 {
     std::vector<std::vector<cv::Point> > cv_contours;
@@ -66,6 +96,11 @@ void Contours::CalculateContours(BinaryImage &img)
     }
 }
 
+/**
+ * @brief Contours::CalculateApproximateContours Get approximate contours from BinaryImage
+ * @param img input BinaryImage
+ * @param eps int specifying the approximation accuracy. The maximum distance between the original contour and its approximation.
+ */
 void Contours::CalculateApproximateContours(BinaryImage &img, int eps)
 {
     std::vector<std::vector<cv::Point> > cv_contours;
@@ -81,12 +116,22 @@ void Contours::CalculateApproximateContours(BinaryImage &img, int eps)
     }
 }
 
+/**
+ * @brief Contours::Draw Draw contours in BinaryImage
+ * @param bin input BinaryImage
+ * @return RgbImage with drawn contours
+ */
 RgbImage Contours::Draw(BinaryImage &bin)
 {
     RgbImage rgb = bin.toRgbImage();
     return Draw(rgb);
 }
 
+/**
+ * @brief Contours::Draw Draw contours in RgbImage
+ * @param img input RgbImage
+ * @return RgbImage with drawn contours
+ */
 RgbImage Contours::Draw(RgbImage &img)
 {
     RgbImage new_img = img;
