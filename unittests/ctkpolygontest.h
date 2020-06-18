@@ -20,7 +20,7 @@ public:
     cv::Point p1cv_v1,p1cv_v2,p1cv_v3,p1cv_v4,p1cv_v5,p1cv_v6,p1cv_v7,p1cv_v8;
     std::vector<cv::Point> p1cv;
 
-    ctk::PointD p2_v1,p2_v2,p2_v3,p2_v4;
+    ctk::PointD p2_v1,p2_v2,p2_v3,p2_v4,p2_v5,p2_v6,p2_v7,p2_v8,p2_v9,p2_v10;
     std::vector<ctk::PointD> p2;
     cv::Point p2cv_v1,p2cv_v2,p2cv_v3,p2cv_v4;
     std::vector<cv::Point> p2cv;
