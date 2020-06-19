@@ -30,7 +30,7 @@
 #define TEST_VEC_AUX
 #endif
 
-#if ( TEST_ALL ||0 )
+#if ( TEST_ALL ||1 )
 #define TEST_POLYGON
 #endif
 

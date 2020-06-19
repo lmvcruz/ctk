@@ -833,6 +833,8 @@ GrayImage RgbImage::Project(std::vector<PointI> &colors)
     return mask;
 }
 
+
+
 /**
  * @brief RgbImage::Contours Get image contours
  * @return vector of Polygons with the image contours
