@@ -6,6 +6,11 @@
 namespace ctk {
 
 template<class T>
+/**
+ * @brief countPrimeNumbersBf Count the prime numbers before a passed limit
+ * @param n count limit
+ * @return number of primes befor n
+ */
 T countPrimeNumbersBf(T n) {
     T count = 0;
     for (T i=2; i<n; i++) {
@@ -22,6 +27,11 @@ T countPrimeNumbersBf(T n) {
 }
 
 template<class T>
+/**
+ * @brief countPrimeNumbersEs
+ * @param n
+ * @return
+ */
 T countPrimeNumbersEs(T n) {
     std::vector<bool> sieve;
     sieve.resize(n+1, true);
@@ -64,6 +74,11 @@ long long countPrimeNumbers(long long n);
 unsigned long long countPrimeNumbers(unsigned long long n);
 
 template<class T>
+/**
+ * @brief generatePrimeNumbersBf Get the prime numbers before a passed limit
+ * @param n  limit
+ * @return vector with all prime numbers before n
+ */
 std::vector<T> generatePrimeNumbersBf(T n) {
     std::vector<T> primes;
     for (int i=2; i<n; i++) {

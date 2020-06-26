@@ -45,8 +45,7 @@ public:
     void SelfShift(int sh);
 
 protected:
-    //!Class Polygon has two attributes ??
-    std::vector<PointD> data_; /*!< Vector of 3D Point objects as defined in ctkpoint.h */
+    std::vector<PointD> data_; /*!< Vector of 2D Point objects as defined in ctkpoint.h */
     std::vector<cv::Point> cvdata_;  /*!< Vector of 2D Point objects from the openCV template class Point */
 };
 

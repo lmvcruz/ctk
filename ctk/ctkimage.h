@@ -65,7 +65,7 @@ public:
     virtual ~AbstractImage(){}
 
     /**
-     * @brief startScanIndices TODO
+     * @brief startScanIndices Generate scan indices
      */
     void StartScanIndices() {
         int w = AbstractMatrix<T>::width();
@@ -80,7 +80,7 @@ public:
     }
 
     /**
-     * @brief startSnakeIndices TODO
+     * @brief startSnakeIndices Generate snake indices
      */
     void StartSnakeIndices() {
         int w = AbstractMatrix<T>::width();
@@ -105,7 +105,7 @@ public:
     }
 
     /**
-     * @brief startSpiralIndices TODO
+     * @brief startSpiralIndices Generate spiral indices
      */
     void StartSpiralIndices() {
         int w = AbstractMatrix<T>::width();
@@ -131,7 +131,7 @@ public:
     }
 
     /**
-     * @brief startSnailIndices TODO
+     * @brief startSnailIndices Generate snail indices
      */
     void StartSnailIndices() {
         int w = AbstractMatrix<T>::width();
@@ -168,16 +168,16 @@ public:
     }
 
     /**
-     * @brief startCustomIndices TODO
-     * @param vec TODO
+     * @brief startCustomIndices Generate Custom indices
+     * @param vec vector of unsigned int with the desired indices
      */
     void StartCustomIndices(std::vector<unsigned int> &vec) {
         indices_ = vec;
     }
 
     /**
-     * @brief StartCustomIndices
-     * @param vec
+     * @brief StartCustomIndices  Generate Custom indices
+     * @param vec  vector of int with the desired indices
      */
     void StartCustomIndices(std::vector<int> &vec) {
         indices_.resize(vec.size());
@@ -187,8 +187,8 @@ public:
     }
 
     /**
-     * @brief isIndices TODO
-     * @return  TODO
+     * @brief isIndices check if indices_ contains indices
+     * @return  true if the size of vector indices_>0
      */
     bool isIndices() {
         return (indices_.size()>0);

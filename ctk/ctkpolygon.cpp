@@ -48,8 +48,6 @@ Polygon::Polygon(std::vector<cv::Point> &cvd)
     cvdata_ = cvd;/*!< Sets cvdata_ to the passed vector of cv::Points */
     data_.resize(cvd.size()); /*!< Resizes data_ to the size of the passed vector */
     for (auto i=0; i<cvd.size(); i++) {
-        /*!Assigns the value of x and y of each element in data_ to the value of x and y
- of the respective element in the passed vector ??????????? */
         data_[i].setX(cvd[i].x);
         data_[i].setY(cvd[i].y);
     }

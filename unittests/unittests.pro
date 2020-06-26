@@ -16,6 +16,7 @@ SOURCES += \
         ctkgrayimagetest.cpp \
         ctkmathtest.cpp \
         ctknumericmatrixtest.cpp \
+        ctkpointtest.cpp \
         ctkpolygontest.cpp \
         ctkrgbimagetest.cpp \
         ctkvecauxtest.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     ctkgrayimagetest.h \
     ctkmathtest.h \
     ctknumericmatrixtest.h \
+    ctkpointtest.h \
     ctkpolygontest.h \
     ctkrgbimagetest.h \
     ctktestsetup.h \
@@ -62,7 +64,7 @@ macx: {
     PKGCONFIG += zbar ilmbase
 }
 win32:!macx  {
-#    EXTLIB_DIR=C:/Users/3334/Documents/git/external
+#    EXTLIB_DIR=$$PWD/../../../../external
 #    include(gtest_dependency.pri)
 
      OPENCV_DIR = C:\OpenCV\build\install

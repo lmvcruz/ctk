@@ -64,8 +64,14 @@ public:
     * @param that  Reference to an existing Point object
     * @return boolean indicating the result of the == comparison between the two Points
     */
-    bool operator==(const Point &that) {
-        return (*this==that);
+    bool operator==( Point &that) {
+        if (that.getX()!=this->getX()||that.getY()!=this->getY()||that.getZ()!=this->getZ()){
+            return(false);
+        }
+        else{
+            return(true);
+        }
+     //return (*this==that);
     }
 
 
@@ -75,7 +81,7 @@ public:
     * @param that  Reference to an existing Point object
     * @return boolean indicating the result of the != comparison between the two Points
     */
-    bool operator!=(const Point &that) {
+    bool operator!=(Point &that) {
         return !(*this==that);
     }
 
@@ -312,6 +318,7 @@ public:
         x_ /= that.x_;
         y_ /= that.y_;
         z_ /= that.z_;
+
     }
 
     /**
@@ -322,10 +329,14 @@ public:
      */
     Point operator/(T v) {
         /*!If any attribute of the passed variable is zero an exception is thrown. */
-        if((v.x_==0) || (v.y_==0) || (v.z_==0)) {
+        /*if((v.x_==0) || (v.y_==0) || (v.z_==0)) {
             throw division_per_zero();
         }
-        return Point(x_/v.x_, y_/v.y_, z_/v.z_);
+        return Point(x_/v.x_, y_/v.y_, z_/v.z_);*/
+        if((v==0)) {
+            throw division_per_zero();
+        }
+        return Point(x_/v, y_/v, z_/v);
     }
 
     /**
@@ -334,13 +345,20 @@ public:
      */
     void operator/=(T v) {
         /*!If any attribute of the passed variable is zero an exception is thrown. */
-        if((v.x_==0) || (v.y_==0) || (v.z_==0)) {
+        /*if((v.x_==0) || (v.y_==0) || (v.z_==0)) {
             throw division_per_zero();
         }
         x_ /= v.x_;
         y_ /= v.y_;
-        z_ /= v.z_;
+        z_ /= v.z_;*/
+        if((v==0)) {
+            throw division_per_zero();
+        }
+        x_ /= v;
+        y_ /= v;
+        z_ /= v;
     }
+
 
 
     // TODO: Mudar para ManhattanDistance()
@@ -375,7 +393,7 @@ public:
 
     //! Outter product with another Point object
     /**
-    * @brief outter  Performs the inner outter with another Point object
+    * @brief outter  Performs the outter product with another Point object
     * @param p  Reference to an existing point object
     * @return outter product of the two points
     */
@@ -401,14 +419,14 @@ public:
     * @brief Angle  Angle formed with two other Point objects
     * @param pa  Reference to an existing point object
     * @param pb  Reference to an existing point object
-    * @return Angle formed with the two Points
+    * @return double representing the Angle formed with the two Points in radians
     */
-    double Angle(const Point &pa, const Point &pb) {
+     double Angle (Point &pa,  Point &pb) {
         double p_pa = Distance(pa);
         double p_pb = Distance(pb);
         double pa_pb = (pa-pb).Norm();
 
-        return std::acos((p_pa*p_pa + p_pb*p_pb + pa_pb*pa_pb)/(2*p_pa*p_pb));
+        return std::acos((p_pa*p_pa + p_pb*p_pb - pa_pb*pa_pb)/(2*p_pa*p_pb));
     }
 
 

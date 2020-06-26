@@ -50,6 +50,8 @@ TEST_F(CtkMathTest, Test_CoutingPrimes) {
     EXPECT_EQ(ctk::countPrimeNumbers(ul), 25);
     EXPECT_EQ(ctk::countPrimeNumbers(ll), 25);
     EXPECT_EQ(ctk::countPrimeNumbers(ull), 25);
+
+
 }
 
 TEST_F(CtkMathTest, Test_ListingPrimes) {
