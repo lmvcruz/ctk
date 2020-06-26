@@ -11,7 +11,7 @@ Contours::Contours()
 
 }
 
-int Contours::resize(int s)
+void Contours::resize(int s)
 {
     polys_.resize(s);
 }

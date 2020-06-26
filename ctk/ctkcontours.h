@@ -13,7 +13,7 @@ class Contours
 public:
     Contours();
 
-    int resize(int s);
+    void resize(int s);
     int size();
 
     void add_polygon(Polygon &pol);
