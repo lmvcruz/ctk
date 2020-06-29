@@ -31,7 +31,6 @@ class AbstractImage : public AbstractMatrix<T>
 protected:
     std::vector<unsigned int> indices_;
     int curr_iter_idx;
-
     bool invert_channels_;
 
 public:
@@ -44,7 +43,7 @@ public:
     AbstractImage() {
         AbstractMatrix<T>::type = -1;
         AbstractMatrix<T>::ch_size = -1;
-        //
+
         invert_channels_ = false;
     }
 
@@ -55,7 +54,7 @@ public:
     AbstractImage(cv::Mat &d) : AbstractMatrix<T>(d){
         AbstractMatrix<T>::type = d.type();
         AbstractMatrix<T>::ch_size = d.channels();
-        //
+
         invert_channels_ = false;
     }
 
@@ -71,8 +70,8 @@ public:
         int w = AbstractMatrix<T>::width();
         int h = AbstractMatrix<T>::height();
         indices_.resize(static_cast<unsigned int>(AbstractMatrix<T>::size()));
-        for (int y=0; y<h; y++) {
-            for (int x=0; x<w; x++) {
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
                 unsigned int idx = static_cast<unsigned int>(y*w+x);
                 indices_[idx] = idx;
             }
@@ -86,18 +85,18 @@ public:
         int w = AbstractMatrix<T>::width();
         int h = AbstractMatrix<T>::height();
         indices_.resize(AbstractMatrix<T>::size());
-        for (int y=0; y<h; y++) {
-            for (int x=0; x<w; x++) {
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
                 indices_[y*w+x] = y*w+x;
             }
         }
-        for (int y=0; y<h; y++) {
-            for (int x=0; x<w; x++) {
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
                 indices_[y*w+x] = y*w+x;
             }
             y++;
-            if (y<h) {
-                for (int x=0; x<w; x++) {
+            if (y < h) {
+                for (int x = 0; x < w; x++) {
                     indices_[y*w+x] = y*w + w-1-x;
                 }
             }
@@ -112,7 +111,7 @@ public:
         int h = AbstractMatrix<T>::height();
         indices_.resize(AbstractMatrix<T>::size());
         int ptIndex = 0;
-        for (int i=0; ptIndex<w*h; i++) {
+        for (int i = 0; ptIndex < w*h; i++) {
             int layer = static_cast<int>( std::floor(std::sqrt(float(i))) );
             int indexInLayer = i - layer * (layer + 1);
             int x = layer + std::min(indexInLayer, 0);
@@ -146,7 +145,7 @@ public:
         int inc_c = 1;
         int inc_r = 0;
         int turns = 0;
-        for (int i=0; i<s; i++) {
+        for (int i = 0; i < s; i++) {
             x += inc_c;
             y += inc_r;
             indices_[i] = y*w+x;
@@ -181,7 +180,7 @@ public:
      */
     void StartCustomIndices(std::vector<int> &vec) {
         indices_.resize(vec.size());
-        for (auto i=0; i<vec.size(); i++) {
+        for (auto i = 0; i < vec.size(); i++) {
             indices_[i] = static_cast<unsigned int>(vec[i]);
         }
     }
@@ -191,7 +190,7 @@ public:
      * @return  true if the size of vector indices_>0
      */
     bool isIndices() {
-        return (indices_.size()>0);
+        return (indices_.size() > 0);
     }
 
     /**
@@ -215,7 +214,7 @@ public:
     T safe_iget(int i) {
         if (!isIndices()) StartScanIndices();
         int isize = static_cast<int>(indices_.size());
-        if (i<0 || i>=isize) {
+        if (i<0 || i >= isize) {
             throw std::out_of_range("Exception thrown in AbstractImage::safe_set");
         }
         unsigned int ui = static_cast<unsigned int>(i);
@@ -295,8 +294,7 @@ public:
     /**
      * @brief SelfFlipHorizontally - flips the image arround the horizontal axis
      */
-    void SelfFlipHorizontally()
-    {
+    void SelfFlipHorizontally() {
         cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, +1);
     }
 
@@ -313,8 +311,7 @@ public:
     /**
      * @brief SelfFlipVertically flips the image arround the vertical axis
      */
-    void SelfFlipVertically()
-    {
+    void SelfFlipVertically() {
         cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, 0);
     }
 
@@ -331,8 +328,7 @@ public:
     /**
      * @brief SelfFlipBoth flips image arround both the vertical and horizontal axis
      */
-    void SelfFlipBoth()
-    {
+    void SelfFlipBoth() {
         cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, -1);
     }
 
@@ -350,8 +346,7 @@ public:
     /**
      * @brief SelfRotate90 rotates image by 90º clockwise
      */
-    void SelfRotate90()
-    {
+    void SelfRotate90() {
         cv::transpose(AbstractMatrix<T>::data, AbstractMatrix<T>::data);
         cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, +1);
     }
@@ -369,8 +364,7 @@ public:
     /**
      * @brief SelfRotate180 rotates image by 180º clockwise
      */
-    void SelfRotate180()
-    {
+    void SelfRotate180() {
         cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, -1);
     }
 
@@ -388,8 +382,7 @@ public:
     /**
      * @brief SelfRotate270 rotates image by 270º clockwise
      */
-    void SelfRotate270()
-    {
+    void SelfRotate270() {
         cv::transpose(AbstractMatrix<T>::data, AbstractMatrix<T>::data);
         cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, 0);
     }

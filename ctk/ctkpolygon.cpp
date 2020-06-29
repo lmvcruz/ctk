@@ -132,101 +132,82 @@ void Polygon::set_point(int idx, PointD &pt) {
  * @param x  double indicating the new x coordinate.
  * @param y  double indicating the new y coordinate.
  */
-void Polygon::set_point(int idx, double x, double y)
-{
+void Polygon::set_point(int idx, double x, double y) {
     data_[idx] = PointD(x,y);
     cvdata_[idx] = cv::Point(x,y);
 }
-
 
 /**
  * @brief Polygon::point  Get a Point in the Polygon
  * @param i  an int indicating the index of the point to get.
  * @return The de point at index i in data_
  */
-PointD &Polygon::point(int i)
-{
+PointD &Polygon::point(int i) {
     return data_[i];
 }
-
 
 /**
  * @brief Polygon::get_data  Get the Point vector data_ of the Polygon
  * @return The Polygon attribute data_
  */
-std::vector<PointD> &Polygon::get_data()
-{
+std::vector<PointD> &Polygon::get_data() {
     return data_;
 }
-
 
 /**
  * @brief Polygon::get_cvdata  Get the cv::Point vector cvdata_ of the Polygon
  * @return The Polygon attribute cvdata_
  */
-std::vector<cv::Point> &Polygon::get_cvdata()
-{
+std::vector<cv::Point> &Polygon::get_cvdata() {
     return cvdata_;
 }
-
 
 /**
  * @brief Polygon::Resize  Resize the Polygon
  * @param s  an int indicating the new size of the polygon.
  */
-void Polygon::Resize(int s)
-{
+void Polygon::Resize(int s) {
     data_.resize(s);
     cvdata_.resize(s);
 }
-
 
 /**
  * @brief Polygon::size  Get the size of the Polygon
  * @return The size of the vector data_
  */
-int Polygon::size()
-{
+int Polygon::size() {
     return data_.size();
 }
-
 
 /**
  * @brief Polygon::Area  Get the area of the Polygon
  * @return The contour area of the Polygon.
  */
-double Polygon::Area()
-{
+double Polygon::Area() {
     return contourArea(cvdata_);
 }
-
 
 /**
  * @brief Polygon::Perimeter  Get the perimeter of the Polygon
  * @return  The perimeter of the Polygon.
  */
-double Polygon::Perimeter()
-{
+double Polygon::Perimeter() {
     return arcLength(cvdata_, true);
 }
-
 
 /**
  * @brief Polygon::Reduce  Reduce the nº of points in Polygon
  * @param epsilon  int specifying the approximation accuracy. The maximum distance between the original polygon and its approximation.
  * @return Polygon with less points
  */
-Polygon Polygon::Reduce(int epsilon)
-{
+Polygon Polygon::Reduce(int epsilon) {
     Polygon new_poly;
     approxPolyDP(cv::Mat(cvdata_), new_poly.cvdata_, epsilon, true); //approximate a curve or a polygon with another curve/polygon with less vertices so that the distance between them is less or equal to the specified precision
-    //
     new_poly.data_.resize(new_poly.cvdata_.size());
-    for (auto i=0; i<new_poly.cvdata_.size(); i++) {
+    for (auto i = 0; i < new_poly.cvdata_.size(); i++) {
         new_poly.data_[i].setX(new_poly.cvdata_[i].x);
         new_poly.data_[i].setX(new_poly.cvdata_[i].x);
     }
-    //
     return new_poly;
 }
 
@@ -234,11 +215,10 @@ Polygon Polygon::Reduce(int epsilon)
  * @brief Polygon::SelfReduce  Reduce the nº of points in Polygon
  * @param epsilon  int specifying the approximation accuracy. The maximum distance between the original polygon and its approximation.
  */
-void Polygon::SelfReduce(int epsilon)
-{
+void Polygon::SelfReduce(int epsilon) {
     approxPolyDP(cv::Mat(cvdata_), cvdata_, epsilon, true);
     data_.resize(cvdata_.size());
-    for (auto i=0; i<cvdata_.size(); i++) {
+    for (auto i = 0; i < cvdata_.size(); i++) {
         data_[i].setX(cvdata_[i].x);
         data_[i].setX(cvdata_[i].x);
     }
@@ -250,8 +230,7 @@ void Polygon::SelfReduce(int epsilon)
  * @param sh  int specifying the desired shift
  * @return Polygon with the reordered data_ and cvdata_ vectors
  */
-Polygon Polygon::Shift(int sh)
-{
+Polygon Polygon::Shift(int sh) {
     Polygon new_poly(*this);
     std::rotate(new_poly.data_.begin(), new_poly.data_.begin()+sh, new_poly.data_.end());
     std::rotate(new_poly.cvdata_.begin(), new_poly.cvdata_.begin()+sh, new_poly.cvdata_.end());
@@ -263,8 +242,7 @@ Polygon Polygon::Shift(int sh)
  * @brief Polygon::SelfShift  Shifts the order (arrangement) Polygon vertices in the vectors data_ and cvdata_
  * @param sh  int specifying the desired shift
  */
-void Polygon::SelfShift(int sh)
-{
+void Polygon::SelfShift(int sh) {
     std::rotate(data_.begin(), data_.begin()+sh, data_.end());
     std::rotate(cvdata_.begin(), cvdata_.begin()+sh, cvdata_.end());
 }

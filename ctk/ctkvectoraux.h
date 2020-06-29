@@ -15,6 +15,12 @@ namespace ctk {
  * TODO
  */
 template<class T>
+/**
+ * @brief Distance  Distance between two vectors
+ * @param vec1 vector 1
+ * @param vec2 vector 2
+ * @return double representing the distance between vectors 1 and 2
+ */
 double Distance(std::vector<T> &vec1, std::vector<T> &vec2)
 {
     if(vec1.size()!=vec2.size()) throw  incompatible_parameters();
@@ -28,6 +34,11 @@ double Distance(std::vector<T> &vec1, std::vector<T> &vec2)
 }
 
 template<class T>
+/**
+ * @brief show  print vector content
+ * @param vec  vector to print
+ * @param sep  delimiter to print between elements
+ */
 void show(std::vector<T> &vec, std::string sep=" ") {
     for (auto &v: vec) std::cout << v << sep;
     std::cout << std::endl;
@@ -38,6 +49,10 @@ std::vector<int> RangeVector(int i, int e);
 std::vector<unsigned int> RangeVectorUi(unsigned int i, unsigned int e);
 
 template<class T>
+/**
+ * @brief Shuffle  Randomize the order of the elements in a vector
+ * @param vec vector
+ */
 void Shuffle(std::vector<T> &vec)
 {
     std::random_device rng;
@@ -46,6 +61,11 @@ void Shuffle(std::vector<T> &vec)
 }
 
 template<class T>
+/**
+ * @brief Shuffle?
+ * @param vec
+ * @param s
+ */
 void Shuffle(std::vector<T> &vec, unsigned int s)
 {
     std::mt19937 urng(s);
