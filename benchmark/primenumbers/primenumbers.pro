@@ -14,6 +14,7 @@ DESTDIR = $$BUILD_FOLDER/$$TARGET
 SOURCES += \
         main.cpp
 
+
 HEADERS += \
     cgmathtest.h \
     cgvecauxtest.h
@@ -37,6 +38,11 @@ win32:!macx  {
     # GOOGLE BENCHMARK
     INCLUDEPATH += $$EXTLIB_DIR/benchmark/include
     INCLUDEPATH += $$EXTLIB_DIR/benchmark/src
+
+
+
+    SOURCES +=$$EXTLIB_DIR/benchmark/src/sysinfo.cc
+
     LIBS           += -L$$EXTLIB_DIR/benchmark/build/src \
                             -lshlwapi \
                             -lkernel32 \

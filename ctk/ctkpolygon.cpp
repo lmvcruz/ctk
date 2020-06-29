@@ -7,47 +7,40 @@ namespace ctk {
 /**
  * @brief Polygon::Polygon  Default constructor.
  */
-Polygon::Polygon()
-{
+Polygon::Polygon() {
 }
-
 
 /**
  * @brief Polygon::Polygon  Copy constructor. Takes a reference to an existing polygon object as input
  * and uses it to intialize another polygon object
  * @param that  reference to an existing polygon object
  */
-Polygon::Polygon(const Polygon &that)
-{
+Polygon::Polygon(const Polygon &that) {
     data_ = that.data_;
     cvdata_ = that.cvdata_;
 }
-
 
 /**
  * @brief Polygon::Polygon  Parameterized constructor.
  * @param d  vector of Point objects
  */
-Polygon::Polygon(std::vector<PointD> &d)
-{
+Polygon::Polygon(std::vector<PointD> &d) {
     data_ = d;
     cvdata_.resize(d.size());
-    for (auto i=0; i<d.size(); i++) {
+    for (auto i = 0; i < d.size(); i++) {
         cvdata_[i].x = d[i].getX();
         cvdata_[i].y = d[i].getY();
     }
 }
 
-
 /**
  * @brief Polygon::Polygon  Parameterized constructor
  * @param cvd  vector of cv::Points
  */
-Polygon::Polygon(std::vector<cv::Point> &cvd)
-{
-    cvdata_ = cvd;/*!< Sets cvdata_ to the passed vector of cv::Points */
-    data_.resize(cvd.size()); /*!< Resizes data_ to the size of the passed vector */
-    for (auto i=0; i<cvd.size(); i++) {
+Polygon::Polygon(std::vector<cv::Point> &cvd) {
+    cvdata_ = cvd;
+    data_.resize(cvd.size());
+    for (auto i  =0; i < cvd.size(); i++) {
         data_[i].setX(cvd[i].x);
         data_[i].setY(cvd[i].y);
     }
@@ -56,90 +49,78 @@ Polygon::Polygon(std::vector<cv::Point> &cvd)
 /**
  * @brief Polygon::~Polygon Destructor
  */
-Polygon::~Polygon()
-{
+Polygon::~Polygon() {
     data_.clear();
     cvdata_.clear();
 }
 
 
 /**
- * @brief Polygon::operator =  Overload of = operator given a Polygon object
+ * @brief Polygon::operator =  Copy operator given a polgygon
  * @param that  reference to an existing polygon object
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(const Polygon &that)
-{
+Polygon &Polygon::operator=(const Polygon &that) {
     data_ = that.data_;
     cvdata_ = that.cvdata_;
     return *this;
 }
 
-
 /**
- * @brief Polygon::operator =  Overload of = operator given a vector of Point objects
+ * @brief Polygon::operator =  Copy operator given a polgygon
  * @param d  vector of Point objects
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(std::vector<PointD> &d)
-{
+Polygon &Polygon::operator=(std::vector<PointD> &d) {
     data_ = d;
     cvdata_.resize(d.size());
-    for (auto i=0; i<d.size(); i++) {
+    for (auto i = 0; i < d.size(); i++) {
         cvdata_[i].x = d[i].getX();
         cvdata_[i].y = d[i].getY();
     }
     return *this;
 }
 
-
 /**
- * @brief Polygon::operator =  Overload of = operator given a vector of cv::Points
+ * @brief Polygon::operator =  Copy operator given a vector of cv::Points
  * @param cvd  vector of cv::Points
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(std::vector<cv::Point> &cvd)
-{
+Polygon &Polygon::operator=(std::vector<cv::Point> &cvd) {
     cvdata_ = cvd;
     data_.resize(cvd.size());
-    for (auto i=0; i<cvd.size(); i++) {
+    for (auto i = 0; i < cvd.size(); i++) {
         data_[i].setX(cvd[i].x);
         data_[i].setY(cvd[i].y);
     }
     return *this;
 }
 
-
 /**
  * @brief Polygon::add_point  Add a Point to the Polygon
  * @param pt  reference to the Point object to be added.
  */
-void Polygon::add_point(PointD &pt)
-{
+void Polygon::add_point(PointD &pt) {
     data_.push_back(pt);
     cvdata_.push_back(cv::Point(pt.getX(), pt.getY()));
 }
-
 
 /**
  * @brief Polygon::add_point  Add a Point to the Polygon
  * @param x  a double indicating the x coordinate of the new Point.
  * @param y  a double indicating the y coordinate of the new Point.
  */
-void Polygon::add_point(double x, double y)
-{
+void Polygon::add_point(double x, double y) {
     data_.push_back(PointD(x,y));
     cvdata_.push_back(cv::Point(x, y));
 }
-
 
 /**
  * @brief Polygon::set_point  Set a Point in the Polygon
  * @param idx  an int indicating the index of the point to be set.
  * @param pt  reference to the Point object with the new information.
  */
-void Polygon::set_point(int idx, PointD &pt)
-{
+void Polygon::set_point(int idx, PointD &pt) {
     data_[idx] = pt;
     cvdata_[idx] = cv::Point(pt.getX(), pt.getY());
 }

@@ -7,9 +7,9 @@ SUBDIRS = \
     ctk \
 #    utils/filesys \
     unittests \
-#    benchmark/matrices \
-#    benchmark/image \
-#    benchmark/primenumbers \
+    benchmark/matrices \
+    benchmark/image \
+    benchmark/primenumbers \
 #    demos/demimg \
 #    demos/video_rotations
 

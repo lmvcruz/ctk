@@ -5,8 +5,6 @@
 
 #include <vector>
 
-#include "gtest/gtest.h"
-
 #include "ctkpolygon.h"
 
 class CtkPolygonTest: public ::testing::Test
