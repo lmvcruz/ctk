@@ -33,6 +33,7 @@ void show(std::vector<T> &vec, std::string sep=" ") {
     std::cout << std::endl;
 }
 
+//TODO: std::vector<int> RangeVector(int e); vector from 0 to e
 std::vector<int> RangeVector(int i, int e);
 std::vector<unsigned int> RangeVectorUi(unsigned int i, unsigned int e);
 

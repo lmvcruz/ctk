@@ -64,8 +64,8 @@ macx: {
     PKGCONFIG += zbar ilmbase
 }
 win32:!macx  {
-    EXTLIB_DIR=$$PWD/../../../../external
-    include(gtest_dependency.pri)
+#    EXTLIB_DIR=$$PWD/../../../../external
+#    include(gtest_dependency.pri)
 
      OPENCV_DIR = C:\OpenCV\build\install
 

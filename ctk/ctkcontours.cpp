@@ -9,12 +9,12 @@ namespace ctk {
 Contours::Contours() {
 
 }
+
 /**
  * @brief Contours::resize resize Polygon vector
  * @param s new size
- * @return ??
  */
-int Contours::resize(int s) {
+void Contours::resize(int s) {
     polys_.resize(s);
 }
 
