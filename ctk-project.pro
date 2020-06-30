@@ -7,12 +7,12 @@ SUBDIRS = \
     ctk \
 #    utils/filesys \
     unittests \
-    benchmark/matrices \
-    benchmark/image \
-    benchmark/primenumbers \
+    #benchmark/matrices \
+    #benchmark/image \
+    #benchmark/primenumbers \
 #    demos/demimg \
 #    demos/video_rotations
 
 unittests.depends = ctk
-matrices.depends = ctk
-primenumbers.depends = ctk
+#matrices.depends = ctk
+#primenumbers.depends = ctk

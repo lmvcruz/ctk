@@ -60,8 +60,8 @@ public:
     * @param that  Reference to an existing Point object
     * @return boolean indicating the result of the == comparison between the two Points
     */
-    bool operator==( Point &that) {
-        if ((that.getX() != this->getX()) || (that.getY() != this->getY()) || (that.getZ() != this->getZ())) {
+    bool operator==(Point  const &that ) const  {
+        if ((that.x_ != x_) || (that.y_ != y_) || (that.z_ != z_)) {
             return(false);
         } else {
             return(true);
@@ -75,7 +75,7 @@ public:
     * @param that  Reference to an existing Point object
     * @return boolean indicating the result of the != comparison between the two Points
     */
-    bool operator!=(Point &that) {
+    bool operator!=(Point const  &that) const {
         return !(*this==that);
     }
 

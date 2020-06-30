@@ -64,15 +64,15 @@ macx: {
     PKGCONFIG += zbar ilmbase
 }
 win32:!macx  {
-#    EXTLIB_DIR=$$PWD/../../../../external
-#    include(gtest_dependency.pri)
+    EXTLIB_DIR=$$PWD/../../../../external
+    include(gtest_dependency.pri)
 
-     OPENCV_DIR = C:\OpenCV\build\install
+    OPENCV_DIR = C:\OpenCV\Build\install
 
-     INCLUDEPATH +="$$OPENCV_DIR\include"
-     DEPENDPATH +="$$OPENCV_DIR\include"
+    INCLUDEPATH +="$$OPENCV_DIR\include"
+    DEPENDPATH +="$$OPENCV_DIR\include"
 
-     LIBS += -L"$$OPENCV_DIR/x64/mingw/lib"\
+    LIBS += -L"$$OPENCV_DIR/x64/mingw/lib"\
     -lopencv_core411\
     -lopencv_imgproc411\
     -lopencv_highgui411\
