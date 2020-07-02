@@ -73,7 +73,7 @@ public:
      */
     virtual void Create(int w, int h) {
         if (w>0 && h>0) {
-            if (type==-1) throw invalid_type();
+            if (type == -1) throw invalid_type();
             data = cv::Mat(h, w, type);
         }
         else if (w<0 || h<0) {
@@ -89,7 +89,7 @@ public:
      */
     virtual void Create(int w, int h, std::vector<T> &vec) {
         if (w>0 && h>0) {
-            if (type==-1) throw invalid_type();
+            if (type == -1) throw invalid_type();
             data = cv::Mat(h, w, type);
             int i=-1;
             for (auto it=begin(); it!=end(); ++it) *it = vec[++i];
@@ -168,7 +168,7 @@ public:
      * @return  boolean true if ch_size corresponds to number of channels in AbstractMatrix.
      */
     bool CheckChannel() const{
-        return (ch_size==data.channels());
+        return (ch_size == data.channels());
     }
 
     /**
@@ -176,7 +176,7 @@ public:
      * @param v value used to fill the AbstractMatrix
      */
     void Fill(T v) { //TODO: test and benchmark this method
-        for (auto it=begin(); it!=end(); ++it) *it = v;
+        for (auto it = begin(); it != end(); ++it) *it = v;
     }
 
     /**
@@ -197,7 +197,7 @@ public:
      * @return  AbstractMatrix element at row y and column x
      */
     virtual T safe_get(int x, int y) {
-        if (x<0 || x>=data.cols || y<0 || y>=data.rows) {
+        if (x<0 || x >= data.cols || y<0 || y >= data.rows) {
             throw std::out_of_range("Exception thrown in AbstractMatyrix::safe_get");
         }
         return data.at<T>(y,x);
@@ -220,7 +220,7 @@ public:
      * @param v  desired value
      */
     virtual void safe_set(int x, int y, T v) {
-        if (x<0 || x>=data.cols || y<0 || y>=data.rows) {
+        if (x<0 || x >= data.cols || y<0 || y >= data.rows) {
             throw std::out_of_range("Exception thrown in AbstractMatyrix::safe_set");
         }
         data.at<T>(y,x) = v;
@@ -248,11 +248,11 @@ public:
      * @return boolean, true if all elements in both AbstractMatrixes are equal.
      */
     bool operator==(const AbstractMatrix<T> &that) {
-        if (data.rows!=that.rows()) return false;
-        if (data.cols!=that.cols()) return false;
-        for (auto y=0; y<data.rows; y++) {
-            for (auto x=0; x<data.cols; x++) {
-                if (data.at<T>(y,x)!=that.get(x,y)) return false;
+        if (data.rows != that.rows()) return false;
+        if (data.cols != that.cols()) return false;
+        for (auto y = 0; y < data.rows; y++) {
+            for (auto x = 0; x < data.cols; x++) {
+                if (data.at<T>(y,x) != that.get(x,y)) return false;
             }
         }
         return true;
@@ -266,7 +266,6 @@ public:
     bool operator!=(const AbstractMatrix<T> &that) {
         return !(*this==that);
     }
-
     virtual void Open(std::string filename) = 0;
     virtual void Save(std::string filename) = 0;
     virtual void Show() = 0;
