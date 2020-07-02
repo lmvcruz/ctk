@@ -6,13 +6,13 @@ CONFIG += ordered
 SUBDIRS = \
     ctk \
 #    utils/filesys \
-    unittests \
+    ctkunittests \
     #benchmark/matrices \
     #benchmark/image \
     #benchmark/primenumbers \
 #    demos/demimg \
 #    demos/video_rotations
 
-unittests.depends = ctk
+ctkunittests.depends = ctk
 #matrices.depends = ctk
 #primenumbers.depends = ctk

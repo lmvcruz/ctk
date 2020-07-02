@@ -8,6 +8,7 @@
 #include <random>
 #include <algorithm>
 #include "ctkexceptions.h"
+#include "ctkpoint.h"
 
 namespace ctk {
 
@@ -44,9 +45,21 @@ void show(std::vector<T> &vec, std::string sep=" ") {
     std::cout << std::endl;
 }
 
-//TODO: std::vector<int> RangeVector(int e); vector from 0 to e
 std::vector<int> RangeVector(int i, int e);
+std::vector<int> RangeVector(int e);
 std::vector<unsigned int> RangeVectorUi(unsigned int i, unsigned int e);
+std::vector<unsigned int> RangeVectorUi(unsigned int e);
+std::vector<int> generateUniqueRandomNumbs(int n, int s, int e);
+std::vector<PointI> getScanOrderVector(unsigned int w, unsigned int h);
+std::vector<PointI> getScanOrderVector(PointI &origin, unsigned int w, unsigned int h);
+std::vector<PointI> getSnakeOrderVector(unsigned int w, unsigned int h);
+std::vector<PointI> getSnakeOrderVector(PointI &origin, unsigned int w, unsigned int h);
+std::vector<PointI> getSpiralOrderVector(unsigned int w, unsigned int h);
+std::vector<PointI> getSpiralOrderVector(PointI &origin, unsigned int w, unsigned int h);
+std::vector<PointI> getSnailOrderVector(unsigned int w, unsigned int h);
+std::vector<PointI> getSnailOrderVector(PointI &origin, unsigned int w, unsigned int h);
+
+
 
 template<class T>
 /**

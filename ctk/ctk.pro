@@ -42,6 +42,7 @@ HEADERS += \
     ctknumericmatrix.h \
     ctkpoint.h \
     ctkpolygon.h \
+    ctktypes.h \
     ctkvectoraux.h
 
 ## Dependecies
