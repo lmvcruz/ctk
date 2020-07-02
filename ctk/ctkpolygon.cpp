@@ -109,6 +109,17 @@ Polygon &Polygon::operator=(std::vector<cv::Point> &cvd)
     return *this;
 }
 
+/**
+ * @brief Polygon::operator [] TODO
+ * @param i
+ * @return
+ */
+PointD &Polygon::operator[](int i)
+{
+    //TODO: test it
+    return data_[i];
+}
+
 
 /**
  * @brief Polygon::add_point  Add a Point to the Polygon

@@ -23,6 +23,8 @@ public:
     Polygon &operator=(std::vector<PointD> &d);
     Polygon &operator=(std::vector<cv::Point> &cvd);
 
+    PointD& operator[](int i);
+
     void add_point(PointD &pt);
     void add_point(double x, double y);
     void set_point(int idx, PointD &pt);

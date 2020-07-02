@@ -52,6 +52,19 @@ BinaryImage::BinaryImage(cv::Mat &d): AbstractImage<bool>(d){
     assert(d.type()==CV_8U && d.channels()==1);
 }
 
+/**
+ * @brief BinaryImage::BinaryImage Constructor that create and fill the image
+ * @param w width of the image
+ * @param h height of the image
+ */
+BinaryImage::BinaryImage(int w, int h, bool v)
+{
+    //TODO: test this method
+    type = CV_8U;
+    ch_size = 1;
+    CreateAndFill(w,h,v);
+}
+
 
 /**
  * @brief BinaryImage::BinaryImage Parameterized Constructor
@@ -63,7 +76,7 @@ BinaryImage::BinaryImage(int w, int h, std::vector<bool> &d)
 {
     type = CV_8U;
     ch_size = 1;
-    Create(w, h, d);
+    AbstractMatrix::Create(w, h, d);
 }
 
 /**
@@ -78,6 +91,29 @@ BinaryImage &BinaryImage::operator=(const BinaryImage &that)
     ch_size = that.ch_size;
     data = that.data.clone();
     return *this;
+}
+
+/**
+ * @brief BinaryImage::CreateAndFill
+ * @param w
+ * @param h
+ * @param v
+ */
+void BinaryImage::CreateAndFill(int w, int h, bool v)
+{
+    //TODO: test it
+    AbstractMatrix::Create(w,h);
+    AbstractMatrix::Fill(v*255);
+}
+
+/**
+ * @brief BinaryImage::Fill
+ * @param v
+ */
+void BinaryImage::Fill(bool v)
+{
+    //TODO: test it
+    AbstractMatrix::Fill(v*255);
 }
 /**
  * @brief BinaryImage::set  Set value of a specific pixel in the image
@@ -289,6 +325,52 @@ BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &ref
     aux2.convertTo(aux2, CV_8U);
     BinaryImage rect(aux2);
     return rect;
+}
+
+//TODO: when template is outside is always counted as a distance
+int BinaryImage::Compare(int x, int y, BinaryImage &that)
+{
+    int dist = 0;
+    for (int xx=0; xx<that.width(); xx++) {
+        for (int yy=0; yy<that.height(); yy++) {
+            if ((x+xx>=width()) || (y+yy>=height())) dist++;
+            else if (get(x+xx,y+yy)==that.get(xx,yy)) dist++;
+        }
+    }
+    return dist;
+}
+
+//TODO: add mirrorerd and toroidal comparisons
+PointI BinaryImage::FindBestMatch(BinaryImage &that)
+{
+    PointI bp(-1,-1);
+    int bd = INT_MAX;
+    for (int x=0; x<width()-that.width(); x++) {
+        for (int y=0; y<height()-that.height(); y++) {
+            int d = Compare(x,y,that);
+            if (d<bd) {
+                bd = d;
+                bp.set(x,y);
+            }
+        }
+    }
+    return bp;
+}
+
+PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf, BinaryImage &that)
+{
+    PointI bp(-1,-1);
+    int bd = INT_MAX;
+    for (int x=xi; x<=xf; x++) {
+        for (int y=yi; y<=yf; y++) {
+            int d = Compare(x,y,that);
+            if (d<bd) {
+                bd = d;
+                bp.set(x,y);
+            }
+        }
+    }
+    return bp;
 }
 
 /**
