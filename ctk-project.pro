@@ -5,8 +5,8 @@ CONFIG += ordered
 
 SUBDIRS = \
     ctk \
-#    utils/filesys \
-    ctkunittests \
+    utils/filesys \
+    ctkunittests
     #benchmark/matrices \
     #benchmark/image \
     #benchmark/primenumbers \
