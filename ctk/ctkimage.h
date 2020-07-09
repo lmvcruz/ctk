@@ -414,7 +414,7 @@ public:
 
     /**
      * @brief Save Save information to file
-     * @param filename TODO
+     * @param filename string with filename
      */
     void Save(std::string filename) {
         cv::imwrite(filename, AbstractMatrix<T>::data);
