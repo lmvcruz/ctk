@@ -70,8 +70,8 @@ win32: {
  INCLUDEPATH +="$$OPENCV_DIR\include"
  DEPENDPATH +="$$OPENCV_DIR\include"
 
- LIBS += -L"$$OPENCV_DIR/x64/mingw/lib"\
--lopencv_core411\
+ LIBS += -L"$$OPENCV_DIR/x64/mingw/lib/"\
+-libopencv_core411\
 -lopencv_imgproc411\
 -lopencv_highgui411\
 -lopencv_imgcodecs411\
