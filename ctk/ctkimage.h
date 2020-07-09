@@ -499,6 +499,8 @@ public:
     GrayImage& operator=(const cv::Mat& that);
     GrayImage &operator=(const AbstractImage<uchar>& that);
 
+    void Open(std::string filename);
+
     int channels();
 
     BinaryImage ApplyBinaryThreshold(int t=127);

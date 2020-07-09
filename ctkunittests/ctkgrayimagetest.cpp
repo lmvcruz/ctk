@@ -59,6 +59,17 @@ TEST_F(CtkGrayImageTest, Test_CopyMat) {
     EXPECT_EQ(img.CheckChannel(), true);
 }
 
+TEST_F(CtkGrayImageTest, Test_OpenRgb) {
+    cv::Mat matimg = cv::imread(INPUT_DIR+"rgb_img.jpg",
+                                cv::IMREAD_UNCHANGED);
+    ctk::GrayImage img = matimg;
+    //
+    EXPECT_EQ(img.width(), CtkGrayImageTest::grayimg.width());
+    EXPECT_EQ(img.height(), CtkGrayImageTest::grayimg.height());
+    EXPECT_EQ(img.channels(), CtkGrayImageTest::grayimg.channels());
+    EXPECT_EQ(img.CheckChannel(), true);
+}
+
 TEST_F(CtkGrayImageTest, Test_Crop) {
     ctk::GrayImage img = CtkGrayImageTest::grayimg.Crop(100, 100, 300, 200);
     //

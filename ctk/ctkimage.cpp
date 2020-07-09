@@ -407,20 +407,32 @@ GrayImage::GrayImage(const GrayImage &that) {
  * @param that  reference to existing AbstractImage object
  */
 GrayImage::GrayImage(const AbstractImage<uchar> &that) {
-    assert(that.get_data().type()==CV_8UC1
-           && that.get_data().channels()==1); //TODO replace with exception
+    if (that.get_data().channels()==3) {
+        cv::cvtColor(that.get_data(), data, cv::COLOR_RGB2GRAY);
+    } else {
+        data = that.get_data().clone();
+    }
     type = CV_8UC1;
     ch_size = 1;
     invert_channels_ = false;
-    data = that.get_data().clone();
+    assert(data.type()==CV_8UC1 && data.channels()==1);
 }
 
 /**
  * @brief GrayImage::GrayImage
  * @param d
  */
-GrayImage::GrayImage(cv::Mat &d) : AbstractImage<uchar>(d) {
-    assert(d.type()==CV_8UC1 && d.channels()==1); //TODO replace with exception
+GrayImage::GrayImage(cv::Mat &d)  {
+    if (d.channels()==3) {
+        cv::cvtColor(d, data, cv::COLOR_RGB2GRAY);
+    }
+    else {
+        data = d.clone();
+    }
+    type = CV_8UC1;
+    ch_size = 1;
+    invert_channels_ = false;
+    assert(data.type()==CV_8UC1 && data.channels()==1);
 }
 
 
@@ -444,11 +456,15 @@ GrayImage &GrayImage::operator=(const GrayImage &that) {
  * @return Updated GrayImage
  */
 GrayImage &GrayImage::operator=(const cv::Mat &that) {
-    assert(that.type()==CV_8UC1 && that.channels()==1);  //TODO replace with exception
+    if (that.channels()==3) {
+        cv::cvtColor(that, data, cv::COLOR_RGB2GRAY);
+    } else {
+        data = that.clone();
+    }
     type = that.type();
     ch_size = that.channels();
     invert_channels_ = false;
-    data = that.clone();
+    assert(data.type()==CV_8UC1 && data.channels()==1);  //TODO replace with exception
     return *this;
 }
 
@@ -458,13 +474,26 @@ GrayImage &GrayImage::operator=(const cv::Mat &that) {
  * @return Updated GrayImage
  */
 GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that) {
-    assert(that.get_data().type()==CV_8UC1
-           && that.get_data().channels()==1);
+    if (that.get_data().channels()==3) {
+        cv::cvtColor(that.get_data(), data, cv::COLOR_RGB2GRAY);
+    } else {
+        data = that.get_data().clone();
+    }
     type = CV_8UC1;
     ch_size = 1;
     invert_channels_ = false;
-    data = that.get_data().clone();
+    assert(data.type()==CV_8UC1 && data.channels()==1);
     return *this;
+}
+
+/**
+ * @brief GrayImage::Open
+ * @param filename
+ */
+void GrayImage::Open(std::string filename)
+{
+    data = cv::imread(filename, cv::IMREAD_UNCHANGED);
+    if (data.channels()==3) cv::cvtColor(data, data, cv::COLOR_RGB2GRAY);
 }
 
 /**
