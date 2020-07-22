@@ -3,7 +3,7 @@
 
 #include <string>
 
-#define TEST_ALL 0
+#define TEST_ALL 1
 
 #if ( TEST_ALL || 0 )
 #define TEST_BINARY_IMAGE
