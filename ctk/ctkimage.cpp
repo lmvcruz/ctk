@@ -487,13 +487,14 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that) {
 }
 
 /**
- * @brief GrayImage::Open
- * @param filename
+ * @brief GrayImage::Open Read gray image from file
+ * @param filename  string representing the filename
  */
-void GrayImage::Open(std::string filename)
-{
+void GrayImage::Open(std::string filename) {
     data = cv::imread(filename, cv::IMREAD_UNCHANGED);
-    if (data.channels()==3) cv::cvtColor(data, data, cv::COLOR_RGB2GRAY);
+    if (data.channels()==3) {
+        cv::cvtColor(data, data, cv::COLOR_RGB2GRAY);
+    }
 }
 
 /**
