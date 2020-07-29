@@ -83,24 +83,22 @@ BinaryImage &BinaryImage::operator=(const BinaryImage &that) {
 }
 
 /**
- * @brief BinaryImage::CreateAndFill
- * @param w
- * @param h
- * @param v
+ * @brief BinaryImage::CreateAndFill Create Binary image of specified size anda value
+ * @param w  int representing the desired Binary Image width
+ * @param h  int representing the desired Binary Image height
+ * @param v  bool representing the value for every pixel in the Binary Image
  */
-void BinaryImage::CreateAndFill(int w, int h, bool v)
-{
+void BinaryImage::CreateAndFill(int w, int h, bool v) {
     //TODO: test it
-    AbstractMatrix::Create(w,h);
-    AbstractMatrix::Fill(v*255);
+    Create(w,h);
+    Fill(v);
 }
 
 /**
- * @brief BinaryImage::Fill
- * @param v
+ * @brief BinaryImage::Fill  Set every pixel in the BinaryImage to the passed value
+ * @param v  bool representing the value for every pixel in the Binary Image
  */
-void BinaryImage::Fill(bool v)
-{
+void BinaryImage::Fill(bool v) {
     //TODO: test it
     AbstractMatrix::Fill(v*255);
 }
@@ -298,8 +296,7 @@ BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &ref
 }
 
 //TODO: when template is outside is always counted as a distance
-int BinaryImage::Compare(int x, int y, BinaryImage &that)
-{
+int BinaryImage::Compare(int x, int y, BinaryImage &that) {
     int dist = 0;
     for (int xx=0; xx<that.width(); xx++) {
         for (int yy=0; yy<that.height(); yy++) {
@@ -311,8 +308,7 @@ int BinaryImage::Compare(int x, int y, BinaryImage &that)
 }
 
 //TODO: add mirrorerd and toroidal comparisons
-PointI BinaryImage::FindBestMatch(BinaryImage &that)
-{
+PointI BinaryImage::FindBestMatch(BinaryImage &that) {
     PointI bp(-1,-1);
     int bd = INT_MAX;
     for (int x=0; x<width()-that.width(); x++) {
@@ -327,8 +323,7 @@ PointI BinaryImage::FindBestMatch(BinaryImage &that)
     return bp;
 }
 
-PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf, BinaryImage &that)
-{
+PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf, BinaryImage &that) {
     PointI bp(-1,-1);
     int bd = INT_MAX;
     for (int x=xi; x<=xf; x++) {
@@ -935,7 +930,6 @@ std::vector<Polygon> RgbImage::ApproximateContours(int eps) {
 RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h) {
     if (pts.size() != refs.size()) throw  incompatible_parameters();
     if (pts.size() < 4) throw  incompatible_parameters();
-
     std::vector<cv::Point2f> cv_pts;
     cv_pts.resize(pts.size());
     std::vector<cv::Point2f> cv_refs;

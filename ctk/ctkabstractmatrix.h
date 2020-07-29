@@ -2,7 +2,7 @@
 #define CTKABSTRACTMATRIX_H
 
 #include <string>
-
+#include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
@@ -175,8 +175,13 @@ public:
      * @brief Fill Fill all elements of the AbstractMatrix according to the received parameter
      * @param v value used to fill the AbstractMatrix
      */
-    void Fill(T v) { //TODO: test and benchmark this method
-        for (auto it = begin(); it != end(); ++it) *it = v;
+    void Fill(int v) { //TODO: test and benchmark this method
+        //for (auto it = begin(); it != end(); ++it) *it = v;
+        for (int x=0; x<data.rows; x++) {
+            for (int y=0; y<data.cols; y++) {
+                set(x,y,v);
+            }
+        }
     }
 
     /**
