@@ -20,7 +20,7 @@ BinaryImage::BinaryImage() {
  * @param that Reference to an existing BinaryImage object
  */
 BinaryImage::BinaryImage(const BinaryImage &that) {
-    assert(that.data.type()==CV_8U && that.data.channels()==1);
+    if (that.data.type()!=CV_8U || that.data.channels()!=1) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
     data = that.data.clone();
@@ -31,8 +31,7 @@ BinaryImage::BinaryImage(const BinaryImage &that) {
  * @param that  Reference to an existing AbstractImage object
  */
 BinaryImage::BinaryImage(const AbstractImage<bool> &that) {
-    assert(that.get_data().type()==CV_8U
-           && that.get_data().channels()==1);
+    if (that.get_data().type()!=CV_8U || that.get_data().channels()!=1) throw  incompatible_parameters();
     type = CV_8U;
     ch_size = 1;
     data = that.get_data().clone();
@@ -43,7 +42,7 @@ BinaryImage::BinaryImage(const AbstractImage<bool> &that) {
  * @param d
  */
 BinaryImage::BinaryImage(cv::Mat &d): AbstractImage<bool>(d) {
-    assert(d.type()==CV_8U && d.channels()==1);
+    if (d.type()!=CV_8U || d.channels()!=1) throw  incompatible_parameters();
 }
 
 /**
@@ -51,8 +50,7 @@ BinaryImage::BinaryImage(cv::Mat &d): AbstractImage<bool>(d) {
  * @param w width of the image
  * @param h height of the image
  */
-BinaryImage::BinaryImage(int w, int h, bool v)
-{
+BinaryImage::BinaryImage(int w, int h, bool v) {
     //TODO: test this method
     type = CV_8U;
     ch_size = 1;
@@ -77,7 +75,7 @@ BinaryImage::BinaryImage(int w, int h, std::vector<bool> &d) {
  * @return Updated BinaryImage
  */
 BinaryImage &BinaryImage::operator=(const BinaryImage &that) {
-    assert(that.data.type()==CV_8U && that.data.channels()==1);
+    if (that.data.type()!=CV_8U || that.data.channels()!=1) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
     data = that.data.clone();
@@ -272,9 +270,8 @@ void BinaryImage::SelfDilate(int size, int etype) {
  * @return BinaryImage resulting of the transformation
  */
 BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h) {
-    //TODO: replace assert to exceptions
-    assert(pts.size()==refs.size());
-    assert(pts.size()>=4);
+    if (pts.size() != refs.size()) throw  incompatible_parameters();
+    if (pts.size() < 4) throw  incompatible_parameters();
     std::vector<cv::Point2f> cv_pts;
     cv_pts.resize(pts.size());
     std::vector<cv::Point2f> cv_refs;
@@ -395,7 +392,7 @@ GrayImage::GrayImage() {
  * @param that reference to existing GrayImage object
  */
 GrayImage::GrayImage(const GrayImage &that) {
-    assert(that.data.type()==CV_8UC1 && that.data.channels()==1); //TODO replace with exception
+    if (that.data.type()!=CV_8UC1 || that.data.channels()!=1) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
     invert_channels_ = false;
@@ -415,7 +412,7 @@ GrayImage::GrayImage(const AbstractImage<uchar> &that) {
     type = CV_8UC1;
     ch_size = 1;
     invert_channels_ = false;
-    assert(data.type()==CV_8UC1 && data.channels()==1);
+    if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
 }
 
 /**
@@ -432,7 +429,7 @@ GrayImage::GrayImage(cv::Mat &d)  {
     type = CV_8UC1;
     ch_size = 1;
     invert_channels_ = false;
-    assert(data.type()==CV_8UC1 && data.channels()==1);
+    if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
 }
 
 
@@ -442,7 +439,7 @@ GrayImage::GrayImage(cv::Mat &d)  {
  * @return Updated GrayImage
  */
 GrayImage &GrayImage::operator=(const GrayImage &that) {
-    assert(that.data.type()==CV_8UC1 && that.data.channels()==1);  //TODO replace with exception
+    if (that.data.type()!=CV_8UC1 || that.data.channels()!=1) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
     invert_channels_ = false;
@@ -464,7 +461,7 @@ GrayImage &GrayImage::operator=(const cv::Mat &that) {
     type = that.type();
     ch_size = that.channels();
     invert_channels_ = false;
-    assert(data.type()==CV_8UC1 && data.channels()==1);  //TODO replace with exception
+    if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
     return *this;
 }
 
@@ -482,7 +479,7 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that) {
     type = CV_8UC1;
     ch_size = 1;
     invert_channels_ = false;
-    assert(data.type()==CV_8UC1 && data.channels()==1);
+    if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
     return *this;
 }
 
@@ -560,10 +557,9 @@ BinaryImage GrayImage::ApplyAdaptativeThreshold(int bs, int c) {
  * @return Normalized image
  */
 GrayImage GrayImage::Normalize(int minv, int maxv) {
-    //TODO: replace asserts to exceptions
-    assert(minv>=0);
-    assert(maxv<=255);
-    assert(minv<maxv);
+    if (minv < 0) throw  incompatible_parameters();
+    if (maxv > 255) throw  incompatible_parameters();
+    if (minv<maxv) throw  incompatible_parameters();
     GrayImage norm;
     norm.Create(width(), height());
     int cmin = 255;
@@ -620,7 +616,7 @@ ColorImage::ColorImage() {
  * @param that reference to an existing ColorImage object
  */
 ColorImage::ColorImage(const ColorImage &that) {
-    assert(that.data.type()==CV_8UC3 && that.data.channels()==3); //TODO: replace with exception
+    if (that.data.type()!=CV_8UC3 || that.data.channels()!=3) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
     invert_channels_ = false;
@@ -632,8 +628,7 @@ ColorImage::ColorImage(const ColorImage &that) {
  * @param that  reference to an AbstractImage
  */
 ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that) {
-    assert(that.get_data().type()==CV_8UC3
-           && that.get_data().channels()==3); //TODO: replace with exception
+    if (that.get_data().type()!=CV_8UC3 || that.get_data().channels()!=3) throw  incompatible_parameters();
     type = CV_8UC3;
     ch_size = 3;
     invert_channels_ = false;
@@ -645,7 +640,7 @@ ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that) {
  * @param d
  */
 ColorImage::ColorImage(cv::Mat &d) : AbstractImage<cv::Vec3b>(d) {
-    assert(d.type()==CV_8UC3 && d.channels()==3); //TODO: replace with exception
+    if (d.type()!=CV_8UC3 || d.channels()!=3) throw  incompatible_parameters();
 }
 
 /**
@@ -668,7 +663,7 @@ RgbImage::RgbImage() : ColorImage() {
  * @param that reference to an existing RgbImage
  */
 RgbImage::RgbImage(const RgbImage &that) {
-    assert(that.data.type()==CV_8UC3 && that.data.channels()==3); //TODO: replace with exception
+    if (that.data.type()!=CV_8UC3 || that.data.channels()!=3) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
     invert_channels_ = true;
@@ -680,8 +675,7 @@ RgbImage::RgbImage(const RgbImage &that) {
  * @param that  reference to an existing AbstractImage
  */
 RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that) {
-    assert(that.get_data().type()==CV_8UC3
-           && that.get_data().channels()==3); //TODO: replace with exception
+    if (that.get_data().type()!=CV_8UC3 || that.get_data().channels()!=3) throw  incompatible_parameters();
     type = CV_8UC3;
     ch_size = 3;
     invert_channels_ = true;
@@ -693,7 +687,7 @@ RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that) {
  * @param d
  */
 RgbImage::RgbImage(cv::Mat &d) : ColorImage(d) {
-    assert(d.type()==CV_8UC3 && d.channels()==3); //TODO: replace with exception
+    if (d.type()!=CV_8UC3 || d.channels()!=3) throw  incompatible_parameters();
 }
 
 /**
@@ -866,9 +860,7 @@ BinaryImage RgbImage::PickColor(int r, int g, int b) {
  * @return GrayImage for each pixel in the original image assigns the index of the most similar color in the passed vector
  */
 GrayImage RgbImage::Project(std::vector<PointI> &colors) {
-    // TODO: replace it to an exception
-    assert(colors.size()<=256);
-
+    if (colors.size() > 256) throw incompatible_parameters();
     GrayImage mask;
     mask.Create(width(), height());
     for (auto x = 0; x < data.rows; x++) {
@@ -941,9 +933,8 @@ std::vector<Polygon> RgbImage::ApproximateContours(int eps) {
  * @return RgbImage resulting of the transformation
  */
 RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h) {
-    //TODO: replace assert to exceptions
-    assert(pts.size() == refs.size());
-    assert(pts.size() >= 4);
+    if (pts.size() != refs.size()) throw  incompatible_parameters();
+    if (pts.size() < 4) throw  incompatible_parameters();
 
     std::vector<cv::Point2f> cv_pts;
     cv_pts.resize(pts.size());
