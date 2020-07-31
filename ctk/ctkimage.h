@@ -453,6 +453,8 @@ public:
     void set(int x, int y, bool v);
     bool get(int x, int y);
 
+    //TODO: implement safe_get and safe_set
+
     BinaryImage Not();
     BinaryImage And(BinaryImage& that);
     BinaryImage Or(BinaryImage& that);

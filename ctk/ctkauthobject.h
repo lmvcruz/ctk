@@ -24,7 +24,6 @@ public:
     double Compare(AuthObject &that);
     double Compare(std::vector<float> &that);
 
-
 protected:
     std::vector<float> m_data;
 };
