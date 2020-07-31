@@ -296,6 +296,13 @@ BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &ref
 }
 
 //TODO: when template is outside is always counted as a distance
+/**
+ * @brief BinaryImage::Compare
+ * @param x
+ * @param y
+ * @param that
+ * @return
+ */
 int BinaryImage::Compare(int x, int y, BinaryImage &that) {
     int dist = 0;
     for (int xx=0; xx<that.width(); xx++) {
@@ -308,6 +315,11 @@ int BinaryImage::Compare(int x, int y, BinaryImage &that) {
 }
 
 //TODO: add mirrorerd and toroidal comparisons
+/**
+ * @brief BinaryImage::FindBestMatch
+ * @param that
+ * @return
+ */
 PointI BinaryImage::FindBestMatch(BinaryImage &that) {
     PointI bp(-1,-1);
     int bd = INT_MAX;
@@ -323,6 +335,15 @@ PointI BinaryImage::FindBestMatch(BinaryImage &that) {
     return bp;
 }
 
+/**
+ * @brief BinaryImage::FindBestMatch
+ * @param xi
+ * @param xf
+ * @param yi
+ * @param yf
+ * @param that
+ * @return
+ */
 PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf, BinaryImage &that) {
     PointI bp(-1,-1);
     int bd = INT_MAX;

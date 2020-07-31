@@ -94,7 +94,7 @@ TEST_F(CtkBinaryImageTest, Test_OperatorCopy) {
 
 TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     ctk::BinaryImage bin1;
-    bin1.CreateAndFill(200,200,1);
+    bin1.CreateAndFill(200,200,true);
     EXPECT_EQ(bin1.width(), 200);
     EXPECT_EQ(bin1.height(), 200);
     EXPECT_EQ(bin1.channels(), 1);
@@ -107,9 +107,8 @@ TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
             EXPECT_EQ(bin1.get(x,y),true);
         }
     }
-
     ctk::BinaryImage bin0;
-    bin0.CreateAndFill(200,200,0);
+    bin0.CreateAndFill(200,200,false);
     EXPECT_EQ(bin0.width(), 200);
     EXPECT_EQ(bin0.height(), 200);
     EXPECT_EQ(bin0.channels(), 1);
