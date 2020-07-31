@@ -563,7 +563,9 @@ public:
                       float eps=1.0, int attempts=3);
 
 
+    //TODO: evaluate if this method can be in Image (generic for all types of images)
     BinaryImage PickColor(int r, int g, int b);
+    //TODO: look for a better name for this function
     GrayImage Project(std::vector<PointI> &centers);
 
     // TODO: create a classe for contours (avoiding copy to PointI)

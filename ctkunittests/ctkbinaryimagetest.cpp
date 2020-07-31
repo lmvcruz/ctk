@@ -94,7 +94,7 @@ TEST_F(CtkBinaryImageTest, Test_OperatorCopy) {
 
 TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     ctk::BinaryImage bin1;
-    bin1.CreateAndFill(200,200,1);
+    bin1.CreateAndFill(200,200,true);
     EXPECT_EQ(bin1.width(), 200);
     EXPECT_EQ(bin1.height(), 200);
     EXPECT_EQ(bin1.channels(), 1);
@@ -104,6 +104,7 @@ TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     cv::Mat data = bin1.get_data();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
+            std::cout << x << " " << y << " - " << bin1.get(x,y) << std::endl;
             EXPECT_EQ(bin1.get(x,y),true);
         }
     }
