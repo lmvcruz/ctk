@@ -92,6 +92,37 @@ TEST_F(CtkBinaryImageTest, Test_OperatorCopy) {
     }
 }
 
+TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
+    ctk::BinaryImage bin1;
+    bin1.CreateAndFill(200,200,1);
+    EXPECT_EQ(bin1.width(), 200);
+    EXPECT_EQ(bin1.height(), 200);
+    EXPECT_EQ(bin1.channels(), 1);
+    EXPECT_EQ(bin1.CheckChannel(), true);
+    int w = bin1.width();
+    int h = bin1.height();
+    cv::Mat data = bin1.get_data();
+    for (int x=0; x<w; x++) {
+        for (int y=0; y<h; y++) {
+            EXPECT_EQ(bin1.get(x,y),true);
+        }
+    }
+
+    ctk::BinaryImage bin0;
+    bin0.CreateAndFill(200,200,0);
+    EXPECT_EQ(bin0.width(), 200);
+    EXPECT_EQ(bin0.height(), 200);
+    EXPECT_EQ(bin0.channels(), 1);
+    EXPECT_EQ(bin0.CheckChannel(), true);
+    int w0 = bin0.width();
+    int h0 = bin0.height();
+    for (int x=0; x<w0; x++) {
+        for (int y=0; y<h0; y++) {
+            EXPECT_EQ(bin0.get(x,y),false);
+        }
+    }
+}
+
 TEST_F(CtkBinaryImageTest, Test_OperatorNeg) {
     ctk::BinaryImage bin = CtkBinaryImageTest::binimg.Not();
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskinv.png");
