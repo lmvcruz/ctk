@@ -73,7 +73,6 @@ std::vector<int> generateUniqueRandomNumbs(int n, int s, int e) {
     std::random_shuffle(numbers.begin(), numbers.end());
     std::vector<int> random_numbers;
     for (int i = 0; i < n; i++) {
-        std::cout<<numbers[i];
         random_numbers.push_back(numbers[i]);
     }
     return random_numbers;
