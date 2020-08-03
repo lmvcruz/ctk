@@ -453,6 +453,8 @@ public:
     void set(int x, int y, bool v);
     bool get(int x, int y);
 
+    //TODO: implement safe_get and safe_set
+
     BinaryImage Not();
     BinaryImage And(BinaryImage& that);
     BinaryImage Or(BinaryImage& that);
@@ -561,7 +563,9 @@ public:
                       float eps=1.0, int attempts=3);
 
 
+    //TODO: evaluate if this method can be in Image (generic for all types of images)
     BinaryImage PickColor(int r, int g, int b);
+    //TODO: look for a better name for this function
     GrayImage Project(std::vector<PointI> &centers);
 
     // TODO: create a classe for contours (avoiding copy to PointI)

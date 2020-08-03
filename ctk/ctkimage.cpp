@@ -100,7 +100,12 @@ void BinaryImage::CreateAndFill(int w, int h, bool v) {
  */
 void BinaryImage::Fill(bool v) {
     //TODO: test it
-    AbstractMatrix::Fill(v*255);
+    uchar conv_val = v*255;
+    for (int x=0; x<data.rows; x++) {
+        for (int y=0; y<data.cols; y++) {
+            set(x,y,conv_val);
+        }
+    }
 }
 /**
  * @brief BinaryImage::set  Set value of a specific pixel in the image

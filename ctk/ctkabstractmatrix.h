@@ -176,12 +176,7 @@ public:
      * @param v value used to fill the AbstractMatrix
      */
     virtual void Fill(T v) { //TODO: test and benchmark this method
-        //for (auto it = begin(); it != end(); ++it) *it = v;
-        for (int x=0; x<data.rows; x++) {
-            for (int y=0; y<data.cols; y++) {
-                set(x,y,v);
-            }
-        }
+        for (auto it = begin(); it != end(); ++it) *it = v;
     }
 
     /**
