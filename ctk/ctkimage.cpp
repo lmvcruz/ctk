@@ -52,6 +52,7 @@ BinaryImage::BinaryImage(cv::Mat &d): AbstractImage<bool>(d) {
  */
 BinaryImage::BinaryImage(int w, int h, bool v) {
     //TODO: test this method
+    std::cout<<"HI"<<std::endl;
     type = CV_8U;
     ch_size = 1;
     CreateAndFill(w,h,v);
@@ -90,6 +91,7 @@ BinaryImage &BinaryImage::operator=(const BinaryImage &that) {
  */
 void BinaryImage::CreateAndFill(int w, int h, bool v) {
     //TODO: test it
+    std::cout<<"H2"<<std::endl;
     Create(w,h);
     Fill(v);
 }
@@ -103,7 +105,7 @@ void BinaryImage::Fill(bool v) {
     uchar conv_val = v*255;
     for (int x=0; x<data.rows; x++) {
         for (int y=0; y<data.cols; y++) {
-            set(x,y,conv_val);
+            set(y,x,conv_val);
         }
     }
 }
@@ -385,6 +387,7 @@ void BinaryImage::Save(std::string filename) {
  */
 void BinaryImage::Show() {
     std::cout << "TODO" << std::endl;
+    //cv::imshow("test",data);
 }
 
 

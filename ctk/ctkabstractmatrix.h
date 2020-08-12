@@ -72,9 +72,11 @@ public:
      * @param h  int representing the number of rows
      */
     virtual void Create(int w, int h) {
+        std::cout<<"H3"<<std::endl;
         if (w>0 && h>0) {
             if (type == -1) throw invalid_type();
             data = cv::Mat(h, w, type);
+            std::cout<<"H4"<<std::endl;
         }
         else if (w<0 || h<0) {
             throw std::bad_alloc();
@@ -252,7 +254,7 @@ public:
         if (data.cols != that.cols()) return false;
         for (auto y = 0; y < data.rows; y++) {
             for (auto x = 0; x < data.cols; x++) {
-                if (data.at<T>(y,x) != that.get(x,y)) return false;
+                if (data.at<T>(y,x) != that.get(y,x)) return false;
             }
         }
         return true;
