@@ -72,11 +72,9 @@ public:
      * @param h  int representing the number of rows
      */
     virtual void Create(int w, int h) {
-        std::cout<<"H3"<<std::endl;
         if (w>0 && h>0) {
             if (type == -1) throw invalid_type();
             data = cv::Mat(h, w, type);
-            std::cout<<"H4"<<std::endl;
         }
         else if (w<0 || h<0) {
             throw std::bad_alloc();
