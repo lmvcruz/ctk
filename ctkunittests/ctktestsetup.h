@@ -5,7 +5,7 @@
 
 #define TEST_ALL 0
 
-#if ( TEST_ALL || 0 )
+#if ( TEST_ALL || 1 )
 #define TEST_BINARY_IMAGE
 #endif
 

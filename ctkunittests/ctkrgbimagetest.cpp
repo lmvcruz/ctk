@@ -395,4 +395,66 @@ TEST_F(CtkRgbImageTest, Test_toGrayImage) {
     }
     if (SAVE_IMAGES || 1) color.Save(OUTPUT_DIR+"rgb2gray-red.png");
 }
+
+TEST_F(CtkRgbImageTest, Test_CreateAndFill) {
+    ctk::RgbImage rgb1;
+    rgb1.CreateAndFill(200,200,255,255,255);
+    EXPECT_EQ(rgb1.width(), 200);
+    EXPECT_EQ(rgb1.height(), 200);
+    EXPECT_EQ(rgb1.channels(), 3);
+    EXPECT_EQ(rgb1.CheckChannel(), true);
+    int w = rgb1.width();
+    int h = rgb1.height();
+    cv::Mat data = rgb1.get_data();
+    for (int x=0; x<w; x++) {
+        for (int y=0; y<h; y++) {
+            EXPECT_EQ(rgb1.get(x,y),cv::Vec3b(255,255,255));
+        }
+    }
+
+    ctk::RgbImage rgb2;
+    rgb2.CreateAndFill(200,200,255,200,100);
+    EXPECT_EQ(rgb2.width(), 200);
+    EXPECT_EQ(rgb2.height(), 200);
+    EXPECT_EQ(rgb2.channels(), 3);
+    EXPECT_EQ(rgb2.CheckChannel(), true);
+    int w2 = rgb2.width();
+    int h2 = rgb2.height();
+    cv::Mat data2 = rgb2.get_data();
+    for (int x=0; x<w2; x++) {
+        for (int y=0; y<h2; y++) {
+            EXPECT_EQ(rgb2.get(x,y),cv::Vec3b(255,200,100));
+        }
+    }
+
+    ctk::RgbImage rgb0;
+    rgb0.CreateAndFill(200,200,0,0,0);
+    EXPECT_EQ(rgb0.width(), 200);
+    EXPECT_EQ(rgb0.height(), 200);
+    EXPECT_EQ(rgb0.channels(), 3);
+    EXPECT_EQ(rgb0.CheckChannel(), true);
+    int w0 = rgb0.width();
+    int h0 = rgb0.height();
+    for (int x=0; x<w0; x++) {
+        for (int y=0; y<h0; y++) {
+            EXPECT_EQ(rgb0.get(x,y),cv::Vec3b(0,0,0));
+        }
+    }
+
+    ctk::RgbImage rgb_t1;
+    ASSERT_ANY_THROW(rgb_t1.CreateAndFill(10,10,-1,5,5));
+    try {
+        rgb_t1.CreateAndFill(10,10,-1,5,5);
+    } catch (std::exception &e) {
+        EXPECT_EQ(std::string(e.what()),std::string("Parameters incompatible\n"));
+    }
+    ctk::RgbImage rgb_t2;
+    ASSERT_ANY_THROW(rgb_t2.CreateAndFill(10,10,5,256,5));
+    try {
+        rgb_t2.CreateAndFill(10,10,5,256,5);
+    } catch (std::exception &e) {
+        EXPECT_EQ(std::string(e.what()),std::string("Parameters incompatible\n"));
+    }
+
+}
 #endif

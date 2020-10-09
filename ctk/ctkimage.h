@@ -543,6 +543,9 @@ public:
     RgbImage(cv::Mat& d);
 
     void Create(int w, int h);
+    void Fill(int r, int g, int b);
+    void CreateAndFill(int w, int h, int r, int g, int b);
+
     void set(int x, int y, int r, int g, int b);
     void set(int i, int r, int g, int b);
 
@@ -576,6 +579,8 @@ public:
     GrayImage toGrayImage();
 
     RgbImage DrawPolygon(Polygon &pol);
+
+    //RgbImage PutText(std::string content, ctk::PointI position)
 
     //TODO: NEXT SPRINT
 //    HsvImage toHsvImage();

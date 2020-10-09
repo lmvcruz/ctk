@@ -89,7 +89,6 @@ BinaryImage &BinaryImage::operator=(const BinaryImage &that) {
  * @param v  bool representing the value for every pixel in the Binary Image
  */
 void BinaryImage::CreateAndFill(int w, int h, bool v) {
-    //TODO: test it
     Create(w,h);
     Fill(v);
 }
@@ -99,13 +98,8 @@ void BinaryImage::CreateAndFill(int w, int h, bool v) {
  * @param v  bool representing the value for every pixel in the Binary Image
  */
 void BinaryImage::Fill(bool v) {
-    //TODO: test it
     uchar conv_val = v*255;
-    for (int x=0; x<data.rows; x++) {
-        for (int y=0; y<data.cols; y++) {
-            set(y,x,conv_val);
-        }
-    }
+    data = cv::Scalar::all(conv_val);
 }
 /**
  * @brief BinaryImage::set  Set value of a specific pixel in the image
@@ -719,6 +713,34 @@ RgbImage::RgbImage(cv::Mat &d) : ColorImage(d) {
  */
 void RgbImage::Create(int w, int h) {
     ColorImage::Create(w,h);
+}
+
+/**
+ * @brief RgbImage::Fill  Fill all pixels in image with the passed rgb values
+ * @param r int representing the red value
+ * @param g int representing the green value
+ * @param b int representing the blue value
+ */
+void RgbImage::Fill(int r, int g, int b) {
+    //TODO: TEST
+    if ( r < 0 || r > 255) throw incompatible_parameters();
+    if ( g < 0 || g > 255) throw incompatible_parameters();
+    if ( b < 0 || b > 255) throw incompatible_parameters();
+    data = cv::Scalar(r,g,b);
+}
+
+/**
+ * @brief RgbImage::CreateAndFill Create RgbImage and fills all pixels
+ * @param w  int representing the image width (number of columns)
+ * @param h  int representing the image hight (number of rows)
+ * @param r int representing the red value
+ * @param g int representing the green value
+ * @param b int representing the blue value
+ */
+void RgbImage::CreateAndFill(int w, int h, int r, int g, int b) {
+    //TODO: TEST
+    Create(w,h);
+    Fill(r,g,b);
 }
 
 /**
