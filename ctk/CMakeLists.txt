@@ -5,11 +5,11 @@ project(ctklib VERSION 0.1)
 add_library(ctklib STATIC
 authentication/ctkauth_object.cpp
 authentication/ctkauthentication.cpp
-image/ctkimage.cpp
 geometry/ctkpolygon.cpp
+image/ctkimage.cpp
+img_proc/ctkcontours.cpp
 matrix/ctkabstractmatrix.cpp
 matrix/ctknumericmatrix.cpp
-ctkcontours.cpp
 ctkmath.cpp
 ctkvectoraux.cpp
 )

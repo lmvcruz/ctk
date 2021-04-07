@@ -9,8 +9,9 @@ target_include_directories(ctklib
     PUBLIC
         ${PROJECT_SOURCE_DIR}/ctk
         ${PROJECT_SOURCE_DIR}/ctk/authentication
-        ${PROJECT_SOURCE_DIR}/ctk/image
         ${PROJECT_SOURCE_DIR}/ctk/geometry
+        ${PROJECT_SOURCE_DIR}/ctk/image
+        ${PROJECT_SOURCE_DIR}/ctk/img_proc
         ${PROJECT_SOURCE_DIR}/ctk/matrix
 )
 
@@ -19,7 +20,8 @@ target_include_directories(unittests
         ${PROJECT_SOURCE_DIR}/ctkunittests
         ${PROJECT_SOURCE_DIR}/ctk
         ${PROJECT_SOURCE_DIR}/ctk/authentication
-        ${PROJECT_SOURCE_DIR}/ctk/image
         ${PROJECT_SOURCE_DIR}/ctk/geometry
+        ${PROJECT_SOURCE_DIR}/ctk/image
+        ${PROJECT_SOURCE_DIR}/ctk/img_proc
         ${PROJECT_SOURCE_DIR}/ctk/matrix
 )
