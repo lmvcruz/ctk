@@ -10,7 +10,6 @@ target_include_directories(ctklib
     ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/ctk
         ${PROJECT_SOURCE_DIR}/ctk/core
-        ${PROJECT_SOURCE_DIR}/ctk/geometry
         ${PROJECT_SOURCE_DIR}/ctk/image
         ${PROJECT_SOURCE_DIR}/ctk/img_proc
         ${PROJECT_SOURCE_DIR}/ctk/math
@@ -24,7 +23,6 @@ target_include_directories(unittests
         ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/ctk
         ${PROJECT_SOURCE_DIR}/ctk/core
-        ${PROJECT_SOURCE_DIR}/ctk/geometry
         ${PROJECT_SOURCE_DIR}/ctk/image
         ${PROJECT_SOURCE_DIR}/ctk/img_proc
         ${PROJECT_SOURCE_DIR}/ctk/math

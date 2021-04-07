@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "ctk/core/exceptions.h"
-#include "ctkpoint.h"
+#include "ctk/geometry/point.h"
 
 namespace ctk {
 

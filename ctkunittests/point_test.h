@@ -1,13 +1,13 @@
-#ifndef CTKPOINTTEST_H
-#define CTKPOINTTEST_H
+#pragma once
 
 #include "gtest/gtest.h"
-#include "ctkpoint.h"
-#include <vector>
-class CtkPointTest : public ::testing::Test
-{
-public:
 
+#include <vector>
+
+#include "ctk/geometry/point.h"
+
+class CtkPointTest : public ::testing::Test {
+public:
     void SetUp() override;
     ctk::PointI Pi;
     ctk::PointI Pi_1;
@@ -21,8 +21,4 @@ public:
     ctk::Point<unsigned long> Pul;
     ctk::Point<long long> Pll;
     ctk::Point<unsigned long long> Pull;
-
-
 };
-
-#endif // CTKPOINTTEST_H

@@ -10,10 +10,10 @@ ctkbinaryimagetest.cpp
 ctkgrayimagetest.cpp
 ctkprime_numbers_test.cpp
 ctknumericmatrixtest.cpp
-ctkpointtest.cpp
-ctkpolygontest.cpp
 ctkrgbimagetest.cpp
 ctkvecauxtest.cpp
+point_test.cpp
+polygon_test.cpp
 main.cpp
 )
 

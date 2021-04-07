@@ -1,16 +1,13 @@
-#ifndef CTKPOLYGONTEST_H
-#define CTKPOLYGONTEST_H
+#pragma once
 
 #include "gtest/gtest.h"
 
 #include <vector>
 
-#include "ctkpolygon.h"
+#include "ctk/geometry/polygon.h"
 
-class CtkPolygonTest: public ::testing::Test
-{
+class CtkPolygonTest: public ::testing::Test {
 public:
-
     void SetUp() override;
     ctk::PointD p1_v1,p1_v2,p1_v3,p1_v4;
     std::vector<ctk::PointD> p1;
@@ -27,8 +24,4 @@ public:
     ctk::Polygon Poly1_cv;
     ctk::Polygon Poly2;
     ctk::Polygon Poly2_cv;
-
 };
-
-
-#endif // CTKPOLYGONTEST_H

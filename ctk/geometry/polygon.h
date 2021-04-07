@@ -1,18 +1,15 @@
-#ifndef CTKPOLYGON_H
-#define CTKPOLYGON_H
+#pragma once
 
 #include <vector>
 
 #include "opencv2/highgui.hpp"
 
-#include "ctkpoint.h"
+#include "ctk/geometry/point.h"
 
 namespace ctk {
 
-class Polygon
-{
+class Polygon {
 public:
-    //!Creates a Polygon
     Polygon();
     Polygon(const Polygon &that);
     Polygon(std::vector<PointD> &d);
@@ -52,5 +49,3 @@ protected:
 };
 
 }
-
-#endif // CTKPOLYGON_H

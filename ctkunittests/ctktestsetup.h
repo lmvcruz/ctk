@@ -1,5 +1,4 @@
-#ifndef CTKTESTSETUP_H
-#define CTKTESTSETUP_H
+#pragma once
 
 #include <string>
 
@@ -30,16 +29,14 @@
 #define TEST_VEC_AUX
 #endif
 
-#if ( TEST_ALL ||0 )
+#if ( TEST_ALL || 1 )
 #define TEST_POLYGON
 #endif
 
-#if ( TEST_ALL || 0 )
+#if ( TEST_ALL || 1 )
 #define TEST_POINT
 #endif
 
 const std::string INPUT_DIR = "../../data/test/";
 const std::string OUTPUT_DIR = "test_out/";
 const bool SAVE_IMAGES = true;
-
-#endif // CTKTESTSETUP_H

@@ -1,8 +1,10 @@
 #include "ctkvectoraux.h"
-#include "ctkpoint.h"
+
 #include <algorithm>
 #include <random>
 #include <vector>
+
+#include "ctk/geometry/point.h"
 
 namespace ctk {
 /**

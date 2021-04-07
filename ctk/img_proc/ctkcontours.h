@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "ctkpolygon.h"
+#include "ctk/geometry/polygon.h"
 #include "ctkimage.h"
 
 namespace ctk {

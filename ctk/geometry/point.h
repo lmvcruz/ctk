@@ -6,9 +6,8 @@
 
 namespace ctk {
 
-//! Creates a template T - point coordinates' type
 template<class T>
-class Point{
+class Point {
 private:
     T x_, y_, z_; /*!< Each point has three attributes: x_,y_,z_ */
 
@@ -134,7 +133,7 @@ public:
      * @brief getZ  Function to access the value of the attribute z_
      * @return Attribute z_
      */
-    int getZ() {
+    T getZ() {
         return z_;
     }
 
@@ -333,16 +332,16 @@ public:
     // TODO: Mudar para ManhattanDistance()
     /**
      * @brief ManhattanLength
-     * @return int defining the Manhattam length of the Point
+     * @return the Manhattam length of the Point
      */
     int ManhattanLength() {
-        int ml = std::fabs(x_) + std::fabs(x_) + std::fabs(x_);
+        int ml = std::fabs(x_) + std::fabs(y_) + std::fabs(z_);
         return static_cast<int>(ml);
     }
 
     /**
      * @brief Norm
-     * @return int defining the the norm of the point
+     * @return the L^2 norm of the point
      */
     double Norm() {
         return std::sqrt(x_*x_ + y_*y_ + z_*z_) ;

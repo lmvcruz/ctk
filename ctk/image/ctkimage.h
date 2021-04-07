@@ -7,8 +7,8 @@
 #include <opencv2/imgproc.hpp>
 
 #include "ctkabstractmatrix.h"
-#include "ctkpoint.h"
-#include "ctkpolygon.h"
+#include "ctk/geometry/point.h"
+#include "ctk/geometry/polygon.h"
 
 namespace ctk {
 

@@ -5,7 +5,7 @@ project(ctklib VERSION 0.1)
 add_library(ctklib STATIC
 authentication/auth_object.cpp
 authentication/authentication.cpp
-geometry/ctkpolygon.cpp
+geometry/polygon.cpp
 image/ctkimage.cpp
 img_proc/ctkcontours.cpp
 math/ctkprime_numbers.cpp
