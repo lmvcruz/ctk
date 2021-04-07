@@ -42,6 +42,7 @@ Makefile
 #Folders
 build
 doc
+.tmp
 
 #Qt Files
 moc_*
