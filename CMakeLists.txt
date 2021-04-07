@@ -15,6 +15,7 @@ target_include_directories(ctklib
         ${PROJECT_SOURCE_DIR}/ctk/img_proc
         ${PROJECT_SOURCE_DIR}/ctk/math
         ${PROJECT_SOURCE_DIR}/ctk/matrix
+        ${PROJECT_SOURCE_DIR}/ctk/misc
 )
 
 target_include_directories(unittests
@@ -28,4 +29,5 @@ target_include_directories(unittests
         ${PROJECT_SOURCE_DIR}/ctk/img_proc
         ${PROJECT_SOURCE_DIR}/ctk/math
         ${PROJECT_SOURCE_DIR}/ctk/matrix
+        ${PROJECT_SOURCE_DIR}/ctk/misc
 )
