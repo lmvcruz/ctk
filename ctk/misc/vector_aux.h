@@ -1,5 +1,4 @@
-#ifndef CGVECTORAUX_H
-#define CGVECTORAUX_H
+#pragma once
 
 #include <algorithm>
 #include <cmath>
@@ -87,5 +86,3 @@ void Shuffle(std::vector<T> &vec, unsigned int s)
 }
 
 }
-
-#endif // CGVECTORAUX_H

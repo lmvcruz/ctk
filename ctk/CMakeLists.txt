@@ -11,7 +11,7 @@ img_proc/contours.cpp
 math/prime_numbers.cpp
 matrix/abstract_matrix.cpp
 matrix/numeric_matrix.cpp
-misc/ctkvectoraux.cpp
+misc/vector_aux.cpp
 )
 
 # set(OpenCV_LIBS opencv_core opencv_imgproc opencv_calib3d opencv_video opencv_features2d opencv_ml opencv_highgui opencv_objdetect)

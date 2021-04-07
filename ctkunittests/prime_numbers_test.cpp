@@ -2,7 +2,7 @@
 
 #include "ctktestsetup.h"
 #include "ctk/math/prime_numbers.h"
-#include "ctkvectoraux.h"
+#include "ctk/misc/vector_aux.h"
 
 void CtkMathTest::SetUp() {
     some_primes_i = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,

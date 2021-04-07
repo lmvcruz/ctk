@@ -6,15 +6,15 @@ project(unittests VERSION 0.1.0)
 # enable_testing()
 
 add_executable(unittests
-prime_numbers_test.cpp
-numeric_matrix_test.cpp
-ctkvecauxtest.cpp
-point_test.cpp
-polygon_test.cpp
-binary_image_test.cpp
-gray_image_test.cpp
-rgb_image_test.cpp
-main.cpp
+    binary_image_test.cpp
+    gray_image_test.cpp
+    numeric_matrix_test.cpp
+    point_test.cpp
+    polygon_test.cpp
+    prime_numbers_test.cpp
+    rgb_image_test.cpp
+    vector_aux_test.cpp
+    main.cpp
 )
 
 # set(OpenCV_LIBS opencv_core opencv_imgproc opencv_calib3d opencv_video opencv_features2d opencv_ml opencv_highgui opencv_objdetect)

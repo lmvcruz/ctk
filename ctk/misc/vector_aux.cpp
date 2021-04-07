@@ -1,4 +1,4 @@
-#include "ctkvectoraux.h"
+#include "ctk/misc/vector_aux.h"
 
 #include <algorithm>
 #include <random>

@@ -2,11 +2,10 @@
 
 #include <iostream>
 
-#include "ctkvectoraux.h"
+#include "ctk/misc/vector_aux.h"
 #include "ctktestsetup.h"
 
-void CtkGrayImageTest::SetUp()
-{
+void CtkGrayImageTest::SetUp() {
     grayname = INPUT_DIR+"gray_img.jpg";
     //
     grayimg.Open(grayname);

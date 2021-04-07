@@ -1,9 +1,9 @@
-#include "ctkvecauxtest.h"
+#include "vector_aux_test.h"
 
 #include <vector>
 
 #include "ctktestsetup.h"
-#include "ctkvectoraux.h"
+#include "ctk/misc/vector_aux.h"
 
 #ifdef TEST_VEC_AUX
 TEST(CtkVecAuxTest, Test_Show) {

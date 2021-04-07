@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "ctktestsetup.h"
-#include "ctkvectoraux.h"
+#include "ctk/misc/vector_aux.h"
 
 void CtkRgbImageTest::SetUp()
 {
