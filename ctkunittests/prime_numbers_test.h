@@ -1,12 +1,10 @@
-#ifndef CGMATHTEST_H
-#define CGMATHTEST_H
+#pragma once
 
 #include "gtest/gtest.h"
 
 #include <vector>
 
-class CtkMathTest : public ::testing::Test
-{
+class CtkMathTest : public ::testing::Test {
 public:
     void SetUp() override;
 
@@ -17,6 +15,3 @@ public:
     std::vector<long long> some_primes_ll;
     std::vector<unsigned long long> some_primes_ull;
 };
-
-#endif // CGMATHTEST_H
-

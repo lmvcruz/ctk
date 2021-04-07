@@ -1,4 +1,4 @@
-#include "ctkprime_numbers.h"
+#include "ctk/math/prime_numbers.h"
 
 namespace ctk {
 

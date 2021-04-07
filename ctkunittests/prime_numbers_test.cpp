@@ -1,11 +1,10 @@
-#include "ctkprime_numbers_test.h"
+#include "prime_numbers_test.h"
 
 #include "ctktestsetup.h"
-#include "ctkprime_numbers.h"
+#include "ctk/math/prime_numbers.h"
 #include "ctkvectoraux.h"
 
-void CtkMathTest::SetUp()
-{
+void CtkMathTest::SetUp() {
     some_primes_i = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
                      47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
     some_primes_ui = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
@@ -20,7 +19,7 @@ void CtkMathTest::SetUp()
                        47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
 }
 
-#ifdef TEST_MATH
+#ifdef TEST_PRIME_NUMBERS
 TEST_F(CtkMathTest, Test_Setup) {
     EXPECT_EQ(CtkMathTest::some_primes_i.size(), 25);
     EXPECT_EQ(CtkMathTest::some_primes_ui.size(), 25);
@@ -50,8 +49,6 @@ TEST_F(CtkMathTest, Test_CoutingPrimes) {
     EXPECT_EQ(ctk::countPrimeNumbers(ul), 25);
     EXPECT_EQ(ctk::countPrimeNumbers(ll), 25);
     EXPECT_EQ(ctk::countPrimeNumbers(ull), 25);
-
-
 }
 
 TEST_F(CtkMathTest, Test_ListingPrimes) {

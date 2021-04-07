@@ -6,7 +6,7 @@ project(unittests VERSION 0.1.0)
 # enable_testing()
 
 add_executable(unittests
-ctkprime_numbers_test.cpp
+prime_numbers_test.cpp
 ctknumericmatrixtest.cpp
 ctkvecauxtest.cpp
 point_test.cpp

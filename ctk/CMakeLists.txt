@@ -8,7 +8,7 @@ authentication/authentication.cpp
 geometry/polygon.cpp
 image/image.cpp
 img_proc/contours.cpp
-math/ctkprime_numbers.cpp
+math/prime_numbers.cpp
 matrix/ctkabstractmatrix.cpp
 matrix/ctknumericmatrix.cpp
 misc/ctkvectoraux.cpp

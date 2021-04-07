@@ -13,8 +13,8 @@
 #define TEST_GRAY_IMAGE
 #endif
 
-#if ( TEST_ALL || 0 )
-#define TEST_MATH
+#if ( TEST_ALL || 1 )
+#define TEST_PRIME_NUMBERS
 #endif
 
 #if ( TEST_ALL || 0 )
