@@ -6,14 +6,14 @@ project(unittests VERSION 0.1.0)
 # enable_testing()
 
 add_executable(unittests
-ctkbinaryimagetest.cpp
-ctkgrayimagetest.cpp
 ctkprime_numbers_test.cpp
 ctknumericmatrixtest.cpp
-ctkrgbimagetest.cpp
 ctkvecauxtest.cpp
 point_test.cpp
 polygon_test.cpp
+binary_image_test.cpp
+gray_image_test.cpp
+rgb_image_test.cpp
 main.cpp
 )
 

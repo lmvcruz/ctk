@@ -9,7 +9,7 @@
 #endif
 
 
-#if ( TEST_ALL || 0)
+#if ( TEST_ALL || 1)
 #define TEST_GRAY_IMAGE
 #endif
 

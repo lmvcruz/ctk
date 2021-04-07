@@ -1,4 +1,4 @@
-#include "ctkrgbimagetest.h"
+#include "rgb_image_test.h"
 
 #include <iostream>
 

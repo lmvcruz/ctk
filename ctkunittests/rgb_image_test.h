@@ -1,9 +1,8 @@
-#ifndef CTKRGBIMAGETEST_H
-#define CTKRGBIMAGETEST_H
+#pragma once
 
 #include "gtest/gtest.h"
 
-#include "ctkimage.h"
+#include "ctk/image/image.h"
 
 class CtkRgbImageTest : public ::testing::Test
 {
@@ -14,5 +13,3 @@ public:
 
     ctk::RgbImage rgbimg;
 };
-
-#endif // CTKRGBIMAGETEST_H

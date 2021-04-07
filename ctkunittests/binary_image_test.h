@@ -1,9 +1,8 @@
-#ifndef CTKBINARYMATRIXTEST_H
-#define CTKBINARYMATRIXTEST_H
+#pragma once
 
 #include "gtest/gtest.h"
 
-#include "ctkimage.h"
+#include "ctk/image/image.h"
 
 class CtkBinaryImageTest : public ::testing::Test
 {
@@ -12,5 +11,3 @@ public:
 
     ctk::BinaryImage binimg;
 };
-
-#endif // CTKBINARYMATRIXTEST_H

@@ -1,10 +1,9 @@
-#ifndef CTKCONTOURS_H
-#define CTKCONTOURS_H
+#pragma once
 
 #include <vector>
 
 #include "ctk/geometry/polygon.h"
-#include "ctkimage.h"
+#include "ctk/image/image.h"
 
 namespace ctk {
 
@@ -34,4 +33,3 @@ protected:
 };
 
 }
-#endif // CTKCONTOURS_H

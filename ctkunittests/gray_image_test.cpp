@@ -1,4 +1,4 @@
-#include "ctkgrayimagetest.h"
+#include "gray_image_test.h"
 
 #include <iostream>
 
@@ -12,7 +12,7 @@ void CtkGrayImageTest::SetUp()
     grayimg.Open(grayname);
 }
 
-#ifdef TEST_GRAY_IMAGE
+#ifdef TEST_GRAY_IMAGE 
 TEST_F(CtkGrayImageTest, Test_Setup) {
     EXPECT_EQ(CtkGrayImageTest::grayimg.width(), 640);
     EXPECT_EQ(CtkGrayImageTest::grayimg.height(), 427);
@@ -195,12 +195,12 @@ TEST_F(CtkGrayImageTest, Test_startCustomIndices) {
         img.iset(i, i%255);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"gray-custom.png");
-    EXPECT_EQ(img.get(10, 2), 208);
-    EXPECT_EQ(img.get(10, 5), 64);
-    EXPECT_EQ(img.get(10, 10), 96);
-    EXPECT_EQ(img.get(10, 20), 192);
-    EXPECT_EQ(img.get(10, 25), 138);
-    EXPECT_EQ(img.get(10, 35), 214);
+    EXPECT_EQ(static_cast<unsigned int>(img.get(10, 2)), 158);
+    EXPECT_EQ(static_cast<unsigned int>(img.get(10, 5)), 8);
+    EXPECT_EQ(static_cast<unsigned int>(img.get(10, 10)), 78);
+    EXPECT_EQ(static_cast<unsigned int>(img.get(10, 20)), 176);
+    EXPECT_EQ(static_cast<unsigned int>(img.get(10, 25)), 253);
+    EXPECT_EQ(static_cast<unsigned int>(img.get(10, 35)), 20);
 }
 
 TEST_F(CtkGrayImageTest, Test_FlipHorizontally) {

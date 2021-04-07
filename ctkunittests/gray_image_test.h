@@ -1,9 +1,8 @@
-#ifndef CTKGRAYIMAGETEST_H
-#define CTKGRAYIMAGETEST_H
+#pragma once
 
 #include "gtest/gtest.h"
 
-#include "ctkimage.h"
+#include "ctk/image/image.h"
 
 class CtkGrayImageTest : public ::testing::Test
 {
@@ -14,5 +13,3 @@ public:
 
     ctk::GrayImage grayimg;
 };
-
-#endif // CTKGRAYIMAGETEST_H

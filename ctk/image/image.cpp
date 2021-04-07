@@ -1,4 +1,4 @@
-#include "ctkimage.h"
+#include "ctk/image/image.h"
 
 #include <vector>
 

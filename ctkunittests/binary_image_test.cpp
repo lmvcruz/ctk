@@ -1,4 +1,4 @@
-#include "ctkbinaryimagetest.h"
+#include "binary_image_test.h"
 
 #include "ctktestsetup.h"
 

@@ -1,5 +1,4 @@
-#ifndef CTKABSTRACTIMAGE_H
-#define CTKABSTRACTIMAGE_H
+#pragma once
 
 #include <iostream>
 
@@ -690,5 +689,3 @@ public:
 //};
 
 }
-
-#endif // CTKABSTRACTIMAGE_H
