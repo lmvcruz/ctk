@@ -1,7 +1,6 @@
-#ifndef CTKAUTHENTICATION_H
-#define CTKAUTHENTICATION_H
+#pragma once
 
-#include "ctkauth_object.h"
+#include "ctk/authentication/auth_object.h"
 
 namespace ctk {
 
@@ -31,5 +30,3 @@ protected:
 };
 
 };
-
-#endif // CTKAUTHENTICATION_H

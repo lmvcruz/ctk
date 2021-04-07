@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.0.0)
 project(ctklib VERSION 0.1)
 
 add_library(ctklib STATIC
-authentication/ctkauth_object.cpp
-authentication/ctkauthentication.cpp
+authentication/auth_object.cpp
+authentication/authentication.cpp
 geometry/ctkpolygon.cpp
 image/ctkimage.cpp
 img_proc/ctkcontours.cpp

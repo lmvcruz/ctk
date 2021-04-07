@@ -1,4 +1,4 @@
-#include "ctkauth_object.h"
+#include "ctk/authentication/auth_object.h"
 
 #include "ctkvectoraux.h"
 
