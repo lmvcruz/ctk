@@ -38,7 +38,7 @@
 #define TEST_POINT
 #endif
 
-const std::string INPUT_DIR = "../../ctk/data/test/";
+const std::string INPUT_DIR = "../../data/test/";
 const std::string OUTPUT_DIR = "test_out/";
 const bool SAVE_IMAGES = true;
 
