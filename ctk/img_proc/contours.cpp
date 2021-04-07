@@ -1,4 +1,4 @@
-#include "ctkcontours.h"
+#include "ctk/img_proc/contours.h"
 
 #include <random>
 
