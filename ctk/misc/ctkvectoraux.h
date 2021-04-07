@@ -1,13 +1,14 @@
 #ifndef CGVECTORAUX_H
 #define CGVECTORAUX_H
 
-#include <vector>
-#include <iostream>
-#include <string>
-#include <cmath>
-#include <random>
 #include <algorithm>
-#include "ctkexceptions.h"
+#include <cmath>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+#include "ctk/core/exceptions.h"
 #include "ctkpoint.h"
 
 namespace ctk {

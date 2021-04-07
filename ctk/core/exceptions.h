@@ -1,5 +1,4 @@
-#ifndef CTKEXCEPTIONS_H
-#define CTKEXCEPTIONS_H
+#pragma once
 
 #include <exception>
 
@@ -31,5 +30,3 @@ class incompatible_parameters : public std::exception {
 };
 
 }
-
-#endif // CTKEXCEPTIONS_H

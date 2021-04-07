@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "ctkexceptions.h"
+#include "ctk/core/exceptions.h"
 
 namespace ctk {
 

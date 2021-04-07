@@ -6,7 +6,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
-#include "ctkexceptions.h"
+#include "ctk/core/exceptions.h"
 
 namespace ctk {
 
