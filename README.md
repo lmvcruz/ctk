@@ -1,4 +1,4 @@
 # ctk
 Cross Toolkit
 
-Using develop as default branch
+Using develop as default branch.
