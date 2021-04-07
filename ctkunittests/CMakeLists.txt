@@ -8,7 +8,7 @@ project(unittests VERSION 0.1.0)
 add_executable(unittests
 ctkbinaryimagetest.cpp
 ctkgrayimagetest.cpp
-ctkmathtest.cpp
+ctkprime_numbers_test.cpp
 ctknumericmatrixtest.cpp
 ctkpointtest.cpp
 ctkpolygontest.cpp

@@ -1,7 +1,7 @@
-#include "ctkmathtest.h"
+#include "ctkprime_numbers_test.h"
 
 #include "ctktestsetup.h"
-#include "ctkmath.h"
+#include "ctkprime_numbers.h"
 #include "ctkvectoraux.h"
 
 void CtkMathTest::SetUp()

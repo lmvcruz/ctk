@@ -8,9 +8,9 @@ authentication/ctkauthentication.cpp
 geometry/ctkpolygon.cpp
 image/ctkimage.cpp
 img_proc/ctkcontours.cpp
+math/ctkprime_numbers.cpp
 matrix/ctkabstractmatrix.cpp
 matrix/ctknumericmatrix.cpp
-ctkmath.cpp
 ctkvectoraux.cpp
 )
 
