@@ -3,15 +3,14 @@ cmake_minimum_required(VERSION 3.0.0)
 project(ctklib VERSION 0.1)
 
 add_library(ctklib STATIC
+authentication/ctkauth_object.cpp
+authentication/ctkauthentication.cpp
+image/ctkimage.cpp
+geometry/ctkpolygon.cpp
 matrix/ctkabstractmatrix.cpp
 matrix/ctknumericmatrix.cpp
-ctkauthobject.cpp
 ctkcontours.cpp
 ctkmath.cpp
-ctkpolygon.cpp
-ctkauthentication.cpp
-ctkimage.cpp
-
 ctkvectoraux.cpp
 )
 

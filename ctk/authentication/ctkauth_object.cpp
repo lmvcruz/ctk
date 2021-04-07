@@ -1,4 +1,4 @@
-#include "ctkauthobject.h"
+#include "ctkauth_object.h"
 
 #include "ctkvectoraux.h"
 

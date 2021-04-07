@@ -1,5 +1,4 @@
-#ifndef CTKGEOMETRY_H
-#define CTKGEOMETRY_H
+#pragma once
 
 #include <cmath>
 
@@ -420,5 +419,3 @@ typedef Point<int> PointI;
  */
 typedef Point<double> PointD;
 }
-
-#endif // CTKGEOMETRY_H

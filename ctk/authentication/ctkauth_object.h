@@ -1,5 +1,4 @@
-#ifndef CTKAUTHOBJECT_H
-#define CTKAUTHOBJECT_H
+#pragma once
 
 #include <vector>
 
@@ -100,6 +99,3 @@ protected:
 };
 
 };
-
-
-#endif // CTKAUTHOBJECT_H

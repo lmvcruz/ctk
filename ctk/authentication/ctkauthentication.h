@@ -1,7 +1,7 @@
 #ifndef CTKAUTHENTICATION_H
 #define CTKAUTHENTICATION_H
 
-#include "ctkauthobject.h"
+#include "ctkauth_object.h"
 
 namespace ctk {
 
