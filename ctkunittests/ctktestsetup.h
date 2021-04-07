@@ -17,7 +17,7 @@
 #define TEST_PRIME_NUMBERS
 #endif
 
-#if ( TEST_ALL || 0 )
+#if ( TEST_ALL || 1 )
 #define TEST_NUMERIC_MATRICES
 #endif
 

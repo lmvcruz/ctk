@@ -1,9 +1,8 @@
-#include "ctknumericmatrixtest.h"
+#include "numeric_matrix_test.h"
 
 #include "ctktestsetup.h"
 
-void CtkNumericMatrixTest::SetUp()
-{
+void CtkNumericMatrixTest::SetUp() {
     mat1a_w = 5;
     mat1a_h = 3;
     //
@@ -113,8 +112,6 @@ void CtkNumericMatrixTest::SetUp()
 }
 
 #ifdef TEST_NUMERIC_MATRICES
-
-#if 1
 TEST_F(CtkNumericMatrixTest, Test_Setup) {
     EXPECT_EQ(CtkNumericMatrixTest::data1a.size(), 15);
     EXPECT_EQ(CtkNumericMatrixTest::mat1a.width(), 5);
@@ -275,9 +272,7 @@ TEST_F(CtkNumericMatrixTest, Test_Equals) {
     EXPECT_EQ(mat_b!=CtkNumericMatrixTest::mat1a, false);
     EXPECT_EQ(mat_b!=CtkNumericMatrixTest::mat2a, true);
 }
-#endif
 
-#if 1
 TEST_F(CtkNumericMatrixTest, Test_Sum) {
     ctk::NumericMatrix mat_b(CtkNumericMatrixTest::mat2_w,
                              CtkNumericMatrixTest::mat2_h,
@@ -317,7 +312,6 @@ TEST_F(CtkNumericMatrixTest, Test_SelfSum) {
         }
     }
 }
-
 
 TEST_F(CtkNumericMatrixTest, Test_Diff) {
     ctk::NumericMatrix mat_b(CtkNumericMatrixTest::mat2_w,
@@ -565,9 +559,7 @@ TEST_F(CtkNumericMatrixTest, Test_SelfDivNum) {
         }
     }
 }
-#endif
 
-#if 1
 TEST_F(CtkNumericMatrixTest, Test_Determinant) {
     EXPECT_LE(std::fabs(CtkNumericMatrixTest::mat3.Determinant()-2.0),
               FLT_EPSILON);
@@ -619,12 +611,10 @@ TEST_F(CtkNumericMatrixTest, Test_SelfTranspose) {
     mat_a.SelfTranspose();
     for (int y=0; y<mat_a.height(); y++) {
         for (int x=0; x<mat_a.width(); x++) {
-            EXPECT_LE(fabs( mat_a.get(x,y) -
-                            CtkNumericMatrixTest::mat4.get(y,x)
-                          ), FLT_EPSILON);
+            EXPECT_DOUBLE_EQ(mat_a.get(x, y), 
+                             CtkNumericMatrixTest::mat4.get(y, x));
         }
     }
 }
-#endif
 
 #endif // TEST_NUMERIC_MATRICES

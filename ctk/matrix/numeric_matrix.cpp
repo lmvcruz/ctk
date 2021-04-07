@@ -1,7 +1,7 @@
-#include "ctknumericmatrix.h"
+#include "ctk/matrix/numeric_matrix.h"
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 #include <opencv2/highgui.hpp>
 
@@ -36,7 +36,6 @@ NumericMatrix::NumericMatrix(int w, int h, std::vector<double> &d) {
     int i=-1;
     for (auto it = begin(); it != end(); ++it) *it = d[++i];
 }
-
 
 /**
  * @brief NumericMatrix::NumericMatrix  Copy Constructor
@@ -109,7 +108,6 @@ void NumericMatrix::Show() {
     }
 }
 
-
 /**
  * @brief NumericMatrix::operator + Addition operator
  * @param that  Reference to an existing NumericMatrix object
@@ -128,7 +126,6 @@ void NumericMatrix::operator+=(const NumericMatrix &that) {
     data += that.data;
 }
 
-
 /**
  * @brief NumericMatrix::operator - Subtraction operator
  * @param that  Reference to an existing NumericMatrix object
@@ -146,7 +143,6 @@ NumericMatrix NumericMatrix::operator-(const NumericMatrix &that) {
 void NumericMatrix::operator-=(const NumericMatrix &that) {
     data -= that.data;
 }
-
 
 /**
  * @brief NumericMatrix::operator * Multiplication operator
@@ -202,7 +198,6 @@ NumericMatrix NumericMatrix::operator+(const double v) {
     return NumericMatrix(res);
 }
 
-
 /**
  * @brief NumericMatrix::operator += + Addition assignement operator with const
  * @param v double constant
@@ -210,7 +205,6 @@ NumericMatrix NumericMatrix::operator+(const double v) {
 void NumericMatrix::operator+=(const double v) {
     data += v;
 }
-
 
 /**
  * @brief NumericMatrix::operator - Subtraction operator with const
@@ -239,7 +233,6 @@ NumericMatrix NumericMatrix::operator*(const double v) {
     cv::Mat res = data * v;
     return NumericMatrix(res);
 }
-
 
 /**
  * @brief NumericMatrix::operator *= Multiplication assignement operator with const
@@ -287,7 +280,6 @@ NumericMatrix NumericMatrix::Invert() {
     return NumericMatrix(res);
 }
 
-
 /**
  * @brief NumericMatrix::SelfInvert  invert the NumericMatrix
  */
@@ -295,7 +287,6 @@ void NumericMatrix::SelfInvert() {
     assert(std::fabs(Determinant())>FLT_EPSILON); //TODO: replace with exception?
     data = data.inv();
 }
-
 
 /**
  * @brief NumericMatrix::Transpose
@@ -314,4 +305,3 @@ void NumericMatrix::SelfTranspose() {
 }
 
 }
-

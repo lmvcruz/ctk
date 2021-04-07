@@ -1,5 +1,4 @@
-#ifndef CTKABSTRACTMATRIX_H
-#define CTKABSTRACTMATRIX_H
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -14,8 +13,7 @@ namespace ctk {
  *  @brief CtkAbstractMatrix TODO
  */
 template<class T>
-class AbstractMatrix
-{
+class AbstractMatrix {
 protected:
     /**
      * @brief AbstractMatrix elements type
@@ -252,7 +250,7 @@ public:
         if (data.cols != that.cols()) return false;
         for (auto y = 0; y < data.rows; y++) {
             for (auto x = 0; x < data.cols; x++) {
-                if (data.at<T>(y,x) != that.get(y,x)) return false;
+                if (data.at<T>(y,x) != that.get(x, y)) return false;
             }
         }
         return true;
@@ -271,5 +269,3 @@ public:
     virtual void Show() = 0;
 };
 }
-
-#endif // CTKABSTRACTMATRIX_H

@@ -1,14 +1,12 @@
-#ifndef NUMERICMATRIX_H
-#define NUMERICMATRIX_H
+#pragma once
 
 #include <string>
 
-#include "ctkabstractmatrix.h"
+#include "ctk/matrix/abstract_matrix.h"
 
 namespace ctk {
 
-class NumericMatrix : public AbstractMatrix<double>
-{
+class NumericMatrix : public AbstractMatrix<double> {
 public:
     NumericMatrix();
     NumericMatrix(const NumericMatrix& that);
@@ -58,5 +56,3 @@ public:
 };
 
 }
-
-#endif // NUMERICMATRIX_H

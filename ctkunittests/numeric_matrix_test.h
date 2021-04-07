@@ -1,14 +1,12 @@
-#ifndef CTKNUMERICMATRIXTEST_H
-#define CTKNUMERICMATRIXTEST_H
+#pragma once
 
 #include <vector>
 
 #include "gtest/gtest.h"
 
-#include "ctknumericmatrix.h"
+#include "ctk/matrix/numeric_matrix.h"
 
-class CtkNumericMatrixTest : public ::testing::Test
-{
+class CtkNumericMatrixTest : public ::testing::Test {
 public:
     void SetUp() override;
 
@@ -40,7 +38,4 @@ public:
     ctk::NumericMatrix mat4;
 
     ctk::NumericMatrix mat_4_div_3;
-
 };
-
-#endif // CTKNUMERICMATRIXTEST_H

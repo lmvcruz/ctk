@@ -7,7 +7,7 @@ project(unittests VERSION 0.1.0)
 
 add_executable(unittests
 prime_numbers_test.cpp
-ctknumericmatrixtest.cpp
+numeric_matrix_test.cpp
 ctkvecauxtest.cpp
 point_test.cpp
 polygon_test.cpp
@@ -17,7 +17,7 @@ rgb_image_test.cpp
 main.cpp
 )
 
-
+# set(OpenCV_LIBS opencv_core opencv_imgproc opencv_calib3d opencv_video opencv_features2d opencv_ml opencv_highgui opencv_objdetect)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
