@@ -11,6 +11,7 @@ img_proc/contours.cpp
 math/prime_numbers.cpp
 matrix/abstract_matrix.cpp
 matrix/numeric_matrix.cpp
+misc/spatial_ordering.cpp
 misc/vector_aux.cpp
 )
 

@@ -50,16 +50,6 @@ std::vector<int> RangeVector(int e);
 std::vector<unsigned int> RangeVectorUi(unsigned int i, unsigned int e);
 std::vector<unsigned int> RangeVectorUi(unsigned int e);
 std::vector<int> generateUniqueRandomNumbs(int n, int s, int e);
-std::vector<PointI> getScanOrderVector(unsigned int w, unsigned int h);
-std::vector<PointI> getScanOrderVector(PointI &origin, unsigned int w, unsigned int h);
-std::vector<PointI> getSnakeOrderVector(unsigned int w, unsigned int h);
-std::vector<PointI> getSnakeOrderVector(PointI &origin, unsigned int w, unsigned int h);
-std::vector<PointI> getSpiralOrderVector(unsigned int w, unsigned int h);
-std::vector<PointI> getSpiralOrderVector(PointI &origin, unsigned int w, unsigned int h);
-std::vector<PointI> getSnailOrderVector(unsigned int w, unsigned int h);
-std::vector<PointI> getSnailOrderVector(PointI &origin, unsigned int w, unsigned int h);
-
-
 
 template<class T>
 /**

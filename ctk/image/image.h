@@ -5,9 +5,10 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-#include "ctk/matrix/abstract_matrix.h"
 #include "ctk/geometry/point.h"
 #include "ctk/geometry/polygon.h"
+#include "ctk/matrix/abstract_matrix.h"
+#include "ctk/misc/spatial_ordering.h"
 
 namespace ctk {
 
@@ -66,103 +67,48 @@ public:
      * @brief startScanIndices Generate scan indices
      */
     void StartScanIndices() {
-        int w = AbstractMatrix<T>::width();
-        int h = AbstractMatrix<T>::height();
-        indices_.resize(static_cast<unsigned int>(AbstractMatrix<T>::size()));
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                unsigned int idx = static_cast<unsigned int>(y*w+x);
-                indices_[idx] = idx;
-            }
-        }
+        unsigned int w = static_cast<unsigned int>(
+                                    AbstractMatrix<T>::width());
+        unsigned int h = static_cast<unsigned int>(
+                                    AbstractMatrix<T>::height());
+        auto points = getScanOrderVector(w, h);
+        InitIndicesFromPointVector(points);
     }
 
     /**
      * @brief startSnakeIndices Generate snake indices
      */
     void StartSnakeIndices() {
-        int w = AbstractMatrix<T>::width();
-        int h = AbstractMatrix<T>::height();
-        indices_.resize(AbstractMatrix<T>::size());
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                indices_[y*w+x] = y*w+x;
-            }
-        }
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                indices_[y*w+x] = y*w+x;
-            }
-            y++;
-            if (y < h) {
-                for (int x = 0; x < w; x++) {
-                    indices_[y*w+x] = y*w + w-1-x;
-                }
-            }
-        }
+        unsigned int w = static_cast<unsigned int>(
+                                    AbstractMatrix<T>::width());
+        unsigned int h = static_cast<unsigned int>(
+                                    AbstractMatrix<T>::height());
+        auto points = getSnakeOrderVector(w, h);
+        InitIndicesFromPointVector(points);
     }
 
     /**
      * @brief startSpiralIndices Generate spiral indices
      */
     void StartSpiralIndices() {
-        int w = AbstractMatrix<T>::width();
-        int h = AbstractMatrix<T>::height();
-        indices_.resize(AbstractMatrix<T>::size());
-        int ptIndex = 0;
-        for (int i = 0; ptIndex < w*h; i++) {
-            int layer = static_cast<int>( std::floor(std::sqrt(float(i))) );
-            int indexInLayer = i - layer * (layer + 1);
-            int x = layer + std::min(indexInLayer, 0);
-            int y = layer - std::max(indexInLayer, 0);
-            if (layer % 2 == 0) {
-                int tmp = y;
-                y = x;
-                x = tmp;
-            }
-            if (x>=w || y>=h) {
-                continue;
-            }
-            indices_[ptIndex] = y*w+x;
-            ptIndex++;
-        }
+        unsigned int w = static_cast<unsigned int>(
+                                    AbstractMatrix<T>::width());
+        unsigned int h = static_cast<unsigned int>(
+                                    AbstractMatrix<T>::height());
+        auto points = getSpiralOrderVector(w, h);
+        InitIndicesFromPointVector(points);
     }
 
     /**
      * @brief startSnailIndices Generate snail indices
      */
     void StartSnailIndices() {
-        int w = AbstractMatrix<T>::width();
-        int h = AbstractMatrix<T>::height();
-        int s = w*h;
-        indices_.resize(s);
-        int y = 0;
-        int x = -1;
-        int nextturn = w;
-        int stepsx = w;
-        int stepsy = h-1;
-        int inc_c = 1;
-        int inc_r = 0;
-        int turns = 0;
-        for (int i = 0; i < s; i++) {
-            x += inc_c;
-            y += inc_r;
-            indices_[i] = y*w+x;
-            if (i == nextturn-1) {
-                turns += 1;
-                if (turns%2==0) {
-                    nextturn += stepsx;
-                    stepsy -= 1;
-                }
-                else {
-                    nextturn += stepsy;
-                    stepsx -= 1;
-                }
-                int tmp = inc_c;
-                inc_c = -inc_r;
-                inc_r = tmp;
-            }
-        }
+        unsigned int w = static_cast<unsigned int>(
+                                    AbstractMatrix<T>::width());
+        unsigned int h = static_cast<unsigned int>(
+                                    AbstractMatrix<T>::height());
+        auto points = getSnailOrderVector(w, h);
+        InitIndicesFromPointVector(points);
     }
 
     /**
@@ -431,6 +377,17 @@ public:
     void Show() {
         //TODO: implement it
         std::cout << "TODO" << std::endl;
+    }
+
+private:
+    void InitIndicesFromPointVector(std::vector<PointI>& points) {
+        int w = AbstractMatrix<T>::width();
+        int h = AbstractMatrix<T>::height();
+        indices_.resize(static_cast<unsigned int>(AbstractMatrix<T>::size()));
+        for (size_t ii = 0; ii < points.size(); ++ii) {
+            int idx = points[ii].getY()*w+points[ii].getX();
+            indices_[ii] = static_cast<unsigned int>(idx);
+        }
     }
 };
 
