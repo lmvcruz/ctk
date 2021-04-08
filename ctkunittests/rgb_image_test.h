@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "ctk/image/image.h"
+#include "ctk/image/rgb_image.h"
 
 class CtkRgbImageTest : public ::testing::Test
 {

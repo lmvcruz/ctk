@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
@@ -21,13 +22,11 @@ class LabImage;
 class RgbaImage;
 class BgraImage;
 
-
 /**
  * @brief The AbstractImage class
  */
 template <class T>
-class AbstractImage : public AbstractMatrix<T>
-{
+class AbstractImage : public AbstractMatrix<T> {
 protected:
     std::vector<unsigned int> indices_;
     int curr_iter_idx;
@@ -391,91 +390,8 @@ private:
     }
 };
 
-class BinaryImage : public AbstractImage<bool>
-{
-public:
-    BinaryImage();
-    BinaryImage(const BinaryImage& that);
-    BinaryImage(const AbstractImage<bool>& that);
-    BinaryImage(cv::Mat& d);
-    BinaryImage(int w, int h, bool v=false);
-    BinaryImage(int w, int h, std::vector<bool>& d);
 
-    BinaryImage &operator=(const BinaryImage& that);
-
-    void CreateAndFill(int w, int h, bool v);
-
-    void Fill(bool v);
-    void set(int x, int y, bool v);
-    bool get(int x, int y);
-
-    //TODO: implement safe_get and safe_set
-
-    BinaryImage Not();
-    BinaryImage And(BinaryImage& that);
-    BinaryImage Or(BinaryImage& that);
-    BinaryImage Xor(BinaryImage& that);
-
-    //TODO: Implement Self methods of Logic Operations
-
-    int countTrues();
-    int countFalses();
-
-    //TODO: test and benchmark these methods;
-    //TODO: replace type by an internal enum
-    BinaryImage Erode(int size, int etype=cv::MORPH_RECT);
-    void SelfErode(int size, int etype=cv::MORPH_RECT);
-    BinaryImage Dilate(int size, int etype=cv::MORPH_RECT);
-    void SelfDilate(int size, int etype=cv::MORPH_RECT);
-
-    BinaryImage Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h);
-
-    int Compare(int x, int y, ctk::BinaryImage &that);
-    ctk::PointI FindBestMatch(ctk::BinaryImage &that);
-    ctk::PointI FindBestMatch(int xi, int xf, int yi, int yf, ctk::BinaryImage &that);
-
-    void Open(std::string filename);
-    void Save(std::string filename);
-    void Show();
-
-    RgbImage toRgbImage();
-};
-
-/**
- * @brief The GrayImage class
- */
-class GrayImage : public AbstractImage<uchar>
-{
-public:
-    GrayImage();
-    GrayImage(const GrayImage& that);
-    GrayImage(const AbstractImage<uchar>& that);
-    GrayImage(cv::Mat& d);
-    virtual ~GrayImage(){}
-
-    GrayImage &operator=(const GrayImage& that);
-    GrayImage& operator=(const cv::Mat& that);
-    GrayImage &operator=(const AbstractImage<uchar>& that);
-
-    void Open(std::string filename);
-
-    int channels();
-
-    BinaryImage ApplyBinaryThreshold(int t=127);
-    BinaryImage ApplyOtsuThreshold();
-    BinaryImage ApplyAdaptativeThreshold(int bs=5, int c=1);
-
-    GrayImage Truncate(int t=128);
-
-    GrayImage Normalize(int minv, int maxv);
-    BinaryImage PickColor(int c);
-
-    RgbImage toRgbImage();
-};
-
-
-class ColorImage : public AbstractImage<cv::Vec3b>
-{
+class ColorImage : public AbstractImage<cv::Vec3b> {
 public:
     ColorImage();
     ColorImage(const ColorImage& that);
@@ -485,72 +401,6 @@ public:
     virtual ~ColorImage(){}
 
     int channels();
-};
-
-class RgbImage : public ColorImage
-{
-public:
-    using AbstractMatrix<cv::Vec3b>::get;
-    using AbstractMatrix<cv::Vec3b>::set;
-
-    RgbImage();
-    RgbImage(const RgbImage& that);
-    RgbImage(const AbstractImage<cv::Vec3b>& that);
-    RgbImage(cv::Mat& d);
-
-    void Create(int w, int h);
-    void Fill(int r, int g, int b);
-    void CreateAndFill(int w, int h, int r, int g, int b);
-
-    void set(int x, int y, int r, int g, int b);
-    void set(int i, int r, int g, int b);
-
-    void safe_set(int x, int y, int r, int g, int b);
-    void safe_iset(int i, int r, int g, int b);
-    int red(int x, int y);
-    int green(int x, int y);
-    int blue(int x, int y);
-
-    //TODO: test and benchmark these methods;
-    PointI get_pixel(int x, int y);
-
-    //TODO: test and benchmark these methods;
-    //TODO: replace type by an internal enum
-    RgbImage Quantize(int q, int iter=10, float eps=1.0, int attempts=3,
-                      int qtype=cv::KMEANS_PP_CENTERS);
-    RgbImage Quantize(std::vector<PointI> &centers, int iter=10,
-                      float eps=1.0, int attempts=3);
-
-
-    //TODO: evaluate if this method can be in Image (generic for all types of images)
-    BinaryImage PickColor(int r, int g, int b);
-    //TODO: look for a better name for this function
-    GrayImage Project(std::vector<PointI> &centers);
-
-    // TODO: create a classe for contours (avoiding copy to PointI)
-    std::vector<Polygon> Contours();
-    std::vector<Polygon> ApproximateContours(int eps=3);
-    RgbImage Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h);
-
-    GrayImage toGrayImage();
-
-    RgbImage DrawPolygon(Polygon &pol);
-
-    //RgbImage PutText(std::string content, ctk::PointI position)
-
-    //TODO: NEXT SPRINT
-//    HsvImage toHsvImage();
-//    HlsImage toHslImage();
-//    LabImage toLabImage();
-//    RgbaImage toRgbaImage();
-//    BgraImage toBgraImage();
-
-
-//    friend class HsvImage;
-//    friend class HlsImage;
-//    friend class LabImage;
-//    friend class RgbaImage;
-//    friend class BgraImage;
 };
 
 //TODO: NEXT SPRINT
@@ -645,4 +495,4 @@ public:
 //    friend class RgbImage;
 //};
 
-}
+} // namespace ctk

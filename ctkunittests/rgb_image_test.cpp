@@ -5,6 +5,8 @@
 #include "ctktestsetup.h"
 #include "ctk/misc/vector_aux.h"
 
+#include "ctk/image/gray_image.h"
+
 void CtkRgbImageTest::SetUp()
 {
     rgbname = INPUT_DIR+"rgb_img.jpg";

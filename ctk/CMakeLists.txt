@@ -6,7 +6,10 @@ add_library(ctklib STATIC
 authentication/auth_object.cpp
 authentication/authentication.cpp
 geometry/polygon.cpp
-image/image.cpp
+image/abstract_image.cpp
+image/binary_image.cpp
+image/gray_image.cpp
+image/rgb_image.cpp
 img_proc/contours.cpp
 math/prime_numbers.cpp
 matrix/abstract_matrix.cpp

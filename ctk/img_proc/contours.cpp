@@ -2,8 +2,6 @@
 
 #include <random>
 
-#include "ctk/geometry/polygon.h"
-
 namespace ctk {
 
 Contours::Contours() {
@@ -138,4 +136,4 @@ RgbImage Contours::Draw(RgbImage &img) {
     return new_img;
 }
 
-}
+} // namespace ctk 

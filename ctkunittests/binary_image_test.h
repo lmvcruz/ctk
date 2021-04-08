@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "ctk/image/image.h"
+#include "ctk/image/binary_image.h"
 
 class CtkBinaryImageTest : public ::testing::Test
 {
