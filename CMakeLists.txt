@@ -6,6 +6,7 @@ add_subdirectory (ctk)
 add_subdirectory (ctkunittests)
 add_subdirectory (benchmark/image)
 add_subdirectory (benchmark/matrices)
+add_subdirectory (benchmark/primenumbers)
 
 
 target_include_directories(ctklib
@@ -26,6 +27,12 @@ target_include_directories(imagebench
 )
 
 target_include_directories(matrixbench
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}
+        ${PROJECT_SOURCE_DIR}/ctk
+)
+
+target_include_directories(primenumbench
     PUBLIC
         ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/ctk

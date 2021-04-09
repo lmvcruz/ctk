@@ -1,6 +1,6 @@
 #include <benchmark/benchmark.h>
 
-#include "ctkmath.h"
+#include "ctk/math/prime_numbers.h"
 
 static void BM_CountPrimeNumbersBfInt(benchmark::State& state) {
   for (auto _ : state)
