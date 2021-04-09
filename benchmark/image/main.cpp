@@ -4,9 +4,11 @@
 #include <vector>
 #include <algorithm>
 
-#include "ctkmath.h"
-#include "ctkimage.h"
-#include "ctknumericmatrix.h"
+#include <opencv2/highgui.hpp>
+
+#include "ctk/math/prime_numbers.h"
+#include "ctk/image/binary_image.h"
+#include "ctk/matrix/numeric_matrix.h"
 
 const int LARGE_RANGE_MIN = 8;
 const int LARGE_RANGE_MAX = 8<<2;
