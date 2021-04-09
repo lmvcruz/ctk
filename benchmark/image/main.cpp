@@ -1,18 +1,16 @@
 #include <benchmark/benchmark.h>
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 #include <opencv2/highgui.hpp>
 
-#include "ctk/math/prime_numbers.h"
 #include "ctk/image/binary_image.h"
 #include "ctk/matrix/numeric_matrix.h"
 
 const int LARGE_RANGE_MIN = 8;
 const int LARGE_RANGE_MAX = 8<<2;
-
 const double NUMERIC_SCALAR = 1000.0;
 
 
@@ -211,6 +209,5 @@ BENCHMARK(BM_Xor)
                      {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
             ->Complexity(benchmark::oN);
 #endif
-
 
 BENCHMARK_MAIN();
