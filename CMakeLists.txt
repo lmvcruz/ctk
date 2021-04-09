@@ -5,6 +5,8 @@ project(CTK VERSION 0.1)
 add_subdirectory (ctk)
 add_subdirectory (ctkunittests)
 add_subdirectory (benchmark/image)
+add_subdirectory (benchmark/matrices)
+
 
 target_include_directories(ctklib
     PUBLIC
@@ -21,6 +23,10 @@ target_include_directories(imagebench
     PUBLIC
         ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/ctk
-        ${PROJECT_SOURCE_DIR}/ctk/matrix
-        ${PROJECT_SOURCE_DIR}/ctk/misc
+)
+
+target_include_directories(matrixbench
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}
+        ${PROJECT_SOURCE_DIR}/ctk
 )

@@ -1,13 +1,10 @@
 #include <benchmark/benchmark.h>
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
-#include "ctkmath.h"
-//#include "ctkbinarymatrix.h"
-#include "ctkimage.h"
-#include "ctknumericmatrix.h"
+#include "ctk/matrix/numeric_matrix.h"
 
 const int LARGE_RANGE_MIN = 8;
 const int LARGE_RANGE_MAX = 8<<2;
