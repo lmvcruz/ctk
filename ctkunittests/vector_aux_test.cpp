@@ -2,8 +2,9 @@
 
 #include <vector>
 
-#include "ctktestsetup.h"
 #include "ctk/misc/vector_aux.h"
+
+#include "test_setup.h"
 
 #ifdef TEST_VEC_AUX
 TEST(CtkVecAuxTest, Test_Show) {

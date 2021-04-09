@@ -1,6 +1,6 @@
 #include "numeric_matrix_test.h"
 
-#include "ctktestsetup.h"
+#include "test_setup.h"
 
 void CtkNumericMatrixTest::SetUp() {
     mat1a_w = 5;

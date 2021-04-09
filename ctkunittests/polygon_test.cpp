@@ -1,7 +1,6 @@
 #include "polygon_test.h"
 
-#include "ctktestsetup.h"
-
+#include "test_setup.h"
 
 void CtkPolygonTest::SetUp() {
     p1_v1.setX(0);p1_v1.setY(1);

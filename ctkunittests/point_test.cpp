@@ -1,6 +1,6 @@
 #include "point_test.h"
 
-#include "ctktestsetup.h"
+#include "test_setup.h"
 
 void CtkPointTest::SetUp() {
     Pi.set(1,2,3);

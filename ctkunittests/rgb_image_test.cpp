@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "ctktestsetup.h"
+#include "ctk/image/gray_image.h"
 #include "ctk/misc/vector_aux.h"
 
-#include "ctk/image/gray_image.h"
+#include "test_setup.h"
 
 void CtkRgbImageTest::SetUp()
 {

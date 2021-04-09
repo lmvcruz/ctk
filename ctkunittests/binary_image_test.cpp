@@ -1,7 +1,6 @@
 #include "binary_image_test.h"
 
-#include "ctktestsetup.h"
-
+#include "test_setup.h"
 
 void CtkBinaryImageTest::SetUp()
 {

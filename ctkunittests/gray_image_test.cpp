@@ -2,11 +2,12 @@
 
 #include <iostream>
 
-#include "ctktestsetup.h"
 #include "ctk/image/binary_image.h"
 #include "ctk/image/gray_image.h"
 #include "ctk/image/rgb_image.h"
 #include "ctk/misc/vector_aux.h"
+
+#include "test_setup.h"
 
 void CtkGrayImageTest::SetUp() {
     grayname = INPUT_DIR+"gray_img.jpg";
