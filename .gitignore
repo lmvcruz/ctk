@@ -43,6 +43,7 @@ Makefile
 build
 doc
 .tmp
+.vscode
 
 #Qt Files
 moc_*
