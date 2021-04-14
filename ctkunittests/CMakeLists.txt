@@ -7,12 +7,14 @@ project(unittests VERSION 0.1.0)
 
 add_executable(unittests
     binary_image_test.cpp
+    filesys_test.cpp
     gray_image_test.cpp
     numeric_matrix_test.cpp
     point_test.cpp
     polygon_test.cpp
     prime_numbers_test.cpp
     rgb_image_test.cpp
+    string_aux_test.cpp
     vector_aux_test.cpp
     main.cpp
 )

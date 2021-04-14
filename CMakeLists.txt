@@ -4,22 +4,27 @@ project(CTK VERSION 0.1)
 
 add_subdirectory (ctk)
 add_subdirectory (ctkunittests)
+
 add_subdirectory (benchmark/image)
 add_subdirectory (benchmark/matrices)
 add_subdirectory (benchmark/primenumbers)
 
+add_subdirectory (demos/mosaic)
 
+# CTK Lib
 target_include_directories(ctklib
     PUBLIC
     ${PROJECT_SOURCE_DIR}
 )
 
+# Lib Unit tests
 target_include_directories(unittests
     PUBLIC
         ${PROJECT_SOURCE_DIR}/ctkunittests
         ${PROJECT_SOURCE_DIR}
 )
 
+# Lib Benchmark
 target_include_directories(imagebench
     PUBLIC
         ${PROJECT_SOURCE_DIR}
@@ -33,6 +38,13 @@ target_include_directories(matrixbench
 )
 
 target_include_directories(primenumbench
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}
+        ${PROJECT_SOURCE_DIR}/ctk
+)
+
+# Demos
+target_include_directories(mosaicdemo
     PUBLIC
         ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/ctk

@@ -4,36 +4,36 @@
 
 #define TEST_ALL 0
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_BINARY_IMAGE
 #endif
 
 
-#if ( TEST_ALL || 1)
+#if ( TEST_ALL || 0 )
 #define TEST_GRAY_IMAGE
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_PRIME_NUMBERS
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_NUMERIC_MATRICES
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_RGB_IMAGES
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_VEC_AUX
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_POLYGON
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_POINT
 #endif
 
