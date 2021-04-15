@@ -20,10 +20,10 @@ public:
     void CreateAndFill(int w, int h, bool v);
 
     void Fill(bool v);
-    void set(int x, int y, bool v);
+    void Set(int x, int y, bool v);
     bool get(int x, int y);
 
-    //TODO: implement safe_get and safe_set
+    //TODO: implement SafeGet and SafeSet
 
     BinaryImage Not();
     BinaryImage And(BinaryImage& that);

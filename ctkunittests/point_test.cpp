@@ -3,17 +3,17 @@
 #include "test_setup.h"
 
 void CtkPointTest::SetUp() {
-    Pi.set(1,2,3);
-    Pi_1.set(2,2);
-    Pi_2.set(4,5,3);
-    Pui.set(1,2,3);
-    Pl.set(1,2,3);
-    Pul.set(1,2,3);
-    Pll.set(1,2,3);
-    Pull.set(1,2,3);
-    Pd.set(1.1,2.1,3.1);
-    Pd_1.set(1,1,1);
-    Pd_2.set(1.1,5.5,6.6);
+    Pi.Set(1,2,3);
+    Pi_1.Set(2,2);
+    Pi_2.Set(4,5,3);
+    Pui.Set(1,2,3);
+    Pl.Set(1,2,3);
+    Pul.Set(1,2,3);
+    Pll.Set(1,2,3);
+    Pull.Set(1,2,3);
+    Pd.Set(1.1,2.1,3.1);
+    Pd_1.Set(1,1,1);
+    Pd_2.Set(1.1,5.5,6.6);
 }
 
 #ifdef TEST_POINT

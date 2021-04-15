@@ -77,7 +77,7 @@ Contours Contours::OrientedBoundingBoxes() {
  */
 void Contours::CalculateContours(BinaryImage &img) {
     std::vector<std::vector<cv::Point> > cv_contours;
-    cv::findContours(img.get_data(), cv_contours, hierarchy_,
+    cv::findContours(img.GetData(), cv_contours, hierarchy_,
                      cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
     polys_.resize(cv_contours.size());
     for (auto i = 0; i < cv_contours.size(); i++) {
@@ -93,7 +93,7 @@ void Contours::CalculateContours(BinaryImage &img) {
 void Contours::CalculateApproximateContours(BinaryImage &img, int eps) {
     std::vector<std::vector<cv::Point> > cv_contours;
     std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(img.get_data(), cv_contours, hierarchy,
+    cv::findContours(img.GetData(), cv_contours, hierarchy,
                      cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
     polys_.resize(cv_contours.size());
     for (auto i = 0; i < cv_contours.size(); i++) {
@@ -120,7 +120,7 @@ RgbImage Contours::Draw(BinaryImage &bin) {
  */
 RgbImage Contours::Draw(RgbImage &img) {
     RgbImage new_img = img;
-    cv::Mat &new_mat = new_img.get_data();
+    cv::Mat &new_mat = new_img.GetData();
     std::vector<std::vector<cv::Point>> cv_conts;
     cv_conts.resize(polys_.size());
     for (auto i = 0; i < polys_.size(); i++) {

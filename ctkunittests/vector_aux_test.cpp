@@ -52,8 +52,8 @@ TEST(CtkVecAuxTest, Test_Shuffle1) {
     EXPECT_NE(vec1gt, vec1sh);
     //
     int countDiff = 0;
-    for (int i=0; i<=maxV; i++) {
-        if (vec1sh[i]!=vec1gt[i]) countDiff++;
+    for (int i = 0; i <= maxV; ++i) {
+        if (vec1sh[i] != vec1gt[i]) countDiff++;
     }
     int rate = static_cast<int>(static_cast<float>(vec1gt.size())*0.8);
     EXPECT_GE(countDiff, rate);
@@ -68,8 +68,8 @@ TEST(CtkVecAuxTest, Test_Shuffle2) {
     EXPECT_NE(vec1gt, vec1sh);
     //
     int countDiff = 0;
-    for (int i=0; i<=maxV; i++) {
-        if (vec1sh[i]!=vec1gt[i]) countDiff++;
+    for (int i = 0; i <= maxV; ++i) {
+        if (vec1sh[i] != vec1gt[i]) countDiff++;
     }
     int rate = static_cast<int>(static_cast<float>(vec1gt.size())*0.8);
     EXPECT_GE(countDiff, rate);
@@ -84,10 +84,10 @@ TEST(CtkVecAuxTest, Test_Shuffle3) {
     EXPECT_NE(vec1gt, vec1sh);
     //
     int countDiff = 0;
-    for (int i=0; i<=maxV; i++) {
-        if (vec1sh[i]!=vec1gt[i]) countDiff++;
+    for (int i = 0; i <= maxV; ++i) {
+        if (vec1sh[i] != vec1gt[i]) countDiff++;
     }
-    int rate = static_cast<int>(static_cast<float>(vec1gt.size())*0.8);
+    int rate = static_cast<int>(static_cast<float>(vec1gt.size()) * 0.8);
     EXPECT_GE(countDiff, rate);
 }
 #endif

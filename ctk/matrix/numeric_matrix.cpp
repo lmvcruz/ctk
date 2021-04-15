@@ -150,7 +150,7 @@ void NumericMatrix::operator-=(const NumericMatrix &that) {
  * @return NumericMatrix resulting from the multiplication with the passed matrix
  */
 NumericMatrix NumericMatrix::operator*(const NumericMatrix &that) {
-    assert(data.cols == that.rows()); //TODO: replace with exception?
+    assert(data.cols == that.GetRows()); //TODO: replace with exception?
     cv::Mat res = data * that.data;
     return NumericMatrix(res);
 }
@@ -160,7 +160,7 @@ NumericMatrix NumericMatrix::operator*(const NumericMatrix &that) {
  * @param that  Reference to an existing NumericMatrix object
  */
 void NumericMatrix::operator*=(const NumericMatrix &that) {
-    assert(data.cols == that.rows()); //TODO: replace with exception?
+    assert(data.cols == that.GetRows()); //TODO: replace with exception?
     data *= that.data;
 }
 
@@ -170,8 +170,8 @@ void NumericMatrix::operator*=(const NumericMatrix &that) {
  * @return NumericMatrix resulting from the division with the passed matrix
  */
 NumericMatrix NumericMatrix::operator/(const NumericMatrix &that) {
-    assert(data.cols==that.rows());
-    assert(that.cols()==that.rows() && that.cols()>0);
+    assert(data.cols==that.GetRows());
+    assert(that.GetCols()==that.GetRows() && that.GetCols()>0);
     assert(std::fabs(cv::determinant(that.data))>FLT_EPSILON);
     cv::Mat res = data * that.data.inv();
     return NumericMatrix(res);
@@ -182,8 +182,8 @@ NumericMatrix NumericMatrix::operator/(const NumericMatrix &that) {
  * @param that  Reference to an existing NumericMatrix object
  */
 void NumericMatrix::operator/=(const NumericMatrix &that) {
-    assert(data.cols==that.rows());
-    assert(that.cols()==that.rows() && that.cols()>0);
+    assert(data.cols==that.GetRows());
+    assert(that.GetCols()==that.GetRows() && that.GetCols()>0);
     assert(std::fabs(cv::determinant(that.data))>FLT_EPSILON);
     data *= that.data.inv();
 }

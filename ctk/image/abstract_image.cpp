@@ -34,11 +34,11 @@ ColorImage::ColorImage(const ColorImage &that) {
  * @param that  reference to an AbstractImage
  */
 ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that) {
-    if (that.get_data().type()!=CV_8UC3 || that.get_data().channels()!=3) throw  incompatible_parameters();
+    if (that.GetData().type()!=CV_8UC3 || that.GetData().channels()!=3) throw  incompatible_parameters();
     type = CV_8UC3;
     ch_size = 3;
     invert_channels_ = false;
-    data = that.get_data().clone();
+    data = that.GetData().clone();
 }
 
 /**
@@ -53,7 +53,7 @@ ColorImage::ColorImage(cv::Mat &d) : AbstractImage<cv::Vec3b>(d) {
  * @brief ColorImage::channels Get color image channels
  * @return 3
  */
-int ColorImage::channels() {
+int ColorImage::GetChannels() {
     return 3;
 }
 

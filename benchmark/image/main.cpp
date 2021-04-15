@@ -21,7 +21,7 @@ void CreateBinaryImage(ctk::BinaryImage &bm, int w, int h) {
     bm.Create(w, h);
     for (auto x=0; x<w; x++) {
         for (auto y=0; y<h; y++) {
-            bm.set(x,y, std::rand() % 2 == 0);
+            bm.Set(x,y, std::rand() % 2 == 0);
         }
     }
 }
@@ -117,7 +117,7 @@ static void BM_CountTrues(benchmark::State& state) {
     for (auto _ : state) {
         bm.countTrues();
     }
-    state.SetComplexityN(bm.size());
+    state.SetComplexityN(bm.GetSize());
 }
 BENCHMARK(BM_CountTrues)
                 ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -129,7 +129,7 @@ static void BM_CountFalses(benchmark::State& state) {
     for (auto _ : state) {
         bm.countFalses();
     }
-    state.SetComplexityN(bm.size());
+    state.SetComplexityN(bm.GetSize());
 }
 BENCHMARK(BM_CountFalses)
                 ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -158,7 +158,7 @@ static void BM_Not(benchmark::State& state) {
     for (auto _ : state) {
         ctk::BinaryImage m2 = m1.Not();
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BM_Not)
             ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
@@ -172,7 +172,7 @@ static void BM_And(benchmark::State& state) {
     for (auto _ : state) {
         ctk::BinaryImage m3 = m1.And(m2);
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BM_And)
             ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
@@ -187,7 +187,7 @@ static void BM_Or(benchmark::State& state) {
     for (auto _ : state) {
         ctk::BinaryImage m3 = m1.Or(m2);
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BM_Or)
             ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
@@ -202,7 +202,7 @@ static void BM_Xor(benchmark::State& state) {
     for (auto _ : state) {
         ctk::BinaryImage m3 = m1.Xor(m2);
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BM_Xor)
             ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},

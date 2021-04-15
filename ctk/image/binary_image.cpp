@@ -31,10 +31,10 @@ BinaryImage::BinaryImage(const BinaryImage &that) {
  * @param that  Reference to an existing AbstractImage object
  */
 BinaryImage::BinaryImage(const AbstractImage<bool> &that) {
-    if (that.get_data().type()!=CV_8U || that.get_data().channels()!=1) throw  incompatible_parameters();
+    if (that.GetData().type()!=CV_8U || that.GetData().channels()!=1) throw  incompatible_parameters();
     type = CV_8U;
     ch_size = 1;
-    data = that.get_data().clone();
+    data = that.GetData().clone();
 }
 
 /**
@@ -102,12 +102,12 @@ void BinaryImage::Fill(bool v) {
     data = cv::Scalar::all(conv_val);
 }
 /**
- * @brief BinaryImage::set  Set value of a specific pixel in the image
+ * @brief BinaryImage::Set  Set value of a specific pixel in the image
  * @param x  int representing column index
  * @param y  int representing row index
  * @param v  bool representing the desired value
  */
-void BinaryImage::set(int x, int y, bool v) {
+void BinaryImage::Set(int x, int y, bool v) {
     data.at<uchar>(y,x) = v*255;
 }
 
@@ -129,7 +129,7 @@ BinaryImage BinaryImage::Not() {
     BinaryImage aux(*this);
     for (int x = 0; x < data.cols; x++) {
         for(int y = 0; y < data.rows; y++) {
-            aux.set(x,y, 1-get(x,y));
+            aux.Set(x,y, 1-get(x,y));
         }
     }
     return aux;
@@ -144,7 +144,7 @@ BinaryImage BinaryImage::And(BinaryImage &that) {
     BinaryImage aux(*this);
     for (int x = 0; x < data.cols; x++) {
         for(int y = 0; y < data.rows; y++) {
-            aux.set(x,y, get(x,y)&&that.get(x,y));
+            aux.Set(x,y, get(x,y)&&that.get(x,y));
         }
     }
     return aux;
@@ -159,7 +159,7 @@ BinaryImage BinaryImage::Or(BinaryImage &that) {
     BinaryImage aux(*this);
     for (int x = 0; x < data.cols; x++) {
         for(int y = 0; y < data.rows; y++) {
-            aux.set(x,y, get(x,y)||that.get(x,y));
+            aux.Set(x,y, get(x,y)||that.get(x,y));
         }
     }
     return aux;
@@ -174,7 +174,7 @@ BinaryImage BinaryImage::Xor(BinaryImage &that) {
     BinaryImage aux(*this);
     for (int x = 0; x < data.cols; x++) {
         for (int y = 0; y < data.rows; y++) {
-            aux.set(x,y, get(x,y)^that.get(x,y));
+            aux.Set(x,y, get(x,y)^that.get(x,y));
         }
     }
     return aux;
@@ -304,9 +304,9 @@ BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &ref
  */
 int BinaryImage::Compare(int x, int y, BinaryImage &that) {
     int dist = 0;
-    for (int xx=0; xx<that.width(); xx++) {
-        for (int yy=0; yy<that.height(); yy++) {
-            if ((x+xx>=width()) || (y+yy>=height())) dist++;
+    for (int xx=0; xx<that.GetWidth(); xx++) {
+        for (int yy=0; yy<that.GetHeight(); yy++) {
+            if ((x+xx>=GetWidth()) || (y+yy>=GetHeight())) dist++;
             else if (get(x+xx,y+yy)==that.get(xx,yy)) dist++;
         }
     }
@@ -322,12 +322,12 @@ int BinaryImage::Compare(int x, int y, BinaryImage &that) {
 PointI BinaryImage::FindBestMatch(BinaryImage &that) {
     PointI bp(-1,-1);
     int bd = INT_MAX;
-    for (int x=0; x<width()-that.width(); x++) {
-        for (int y=0; y<height()-that.height(); y++) {
+    for (int x=0; x<GetWidth()-that.GetWidth(); x++) {
+        for (int y=0; y<GetHeight()-that.GetHeight(); y++) {
             int d = Compare(x,y,that);
             if (d<bd) {
                 bd = d;
-                bp.set(x,y);
+                bp.Set(x,y);
             }
         }
     }
@@ -351,7 +351,7 @@ PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf, BinaryImage &t
             int d = Compare(x,y,that);
             if (d<bd) {
                 bd = d;
-                bp.set(x,y);
+                bp.Set(x,y);
             }
         }
     }
@@ -388,7 +388,7 @@ void BinaryImage::Show() {
  */
 RgbImage BinaryImage::toRgbImage() {
     RgbImage newImage;
-    cv::cvtColor(data, newImage.get_data(), cv::COLOR_GRAY2RGB);
+    cv::cvtColor(data, newImage.GetData(), cv::COLOR_GRAY2RGB);
     return newImage;
 
 }

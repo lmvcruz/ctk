@@ -5,8 +5,8 @@
 #include "ctk/misc/filesys.h"
 
 void processImage(ctk::RgbImage& img, int w, int h) {
-    int iw = img.width();
-    int ih = img.height();
+    int iw = img.GetWidth();
+    int ih = img.GetHeight();
     double expRatio = static_cast<double>(w) / static_cast<double>(h);
     double diw = static_cast<double>(iw);
     double dih = static_cast<double>(ih);

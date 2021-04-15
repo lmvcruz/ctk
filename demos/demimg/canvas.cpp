@@ -207,7 +207,7 @@ void Canvas::RestoreCache()
 
 QImage Canvas::CtkImage2QImage(ctk::RgbImage &rgb)
 {
-    cv::Mat &data = rgb.get_data();
+    cv::Mat &data = rgb.GetData();
     QImage dest((const uchar *) data.data, data.cols, data.rows, data.step, QImage::Format_RGB888);
     dest.bits();
     return dest;

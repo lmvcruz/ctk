@@ -9,15 +9,15 @@ void CtkBinaryImageTest::SetUp()
 
 #ifdef TEST_BINARY_IMAGE
 TEST_F(CtkBinaryImageTest, Test_Setup) {
-    EXPECT_EQ(CtkBinaryImageTest::binimg.width(), 200);
-    EXPECT_EQ(CtkBinaryImageTest::binimg.height(), 200);
-    EXPECT_EQ(CtkBinaryImageTest::binimg.channels(), 1);
+    EXPECT_EQ(CtkBinaryImageTest::binimg.GetWidth(), 200);
+    EXPECT_EQ(CtkBinaryImageTest::binimg.GetHeight(), 200);
+    EXPECT_EQ(CtkBinaryImageTest::binimg.GetChannels(), 1);
     EXPECT_EQ(CtkBinaryImageTest::binimg.CheckChannel(), true);
 }
 
 TEST_F(CtkBinaryImageTest, Test_Get) {
-    int w = CtkBinaryImageTest::binimg.width();
-    int h = CtkBinaryImageTest::binimg.height();
+    int w = CtkBinaryImageTest::binimg.GetWidth();
+    int h = CtkBinaryImageTest::binimg.GetHeight();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
@@ -32,12 +32,12 @@ TEST_F(CtkBinaryImageTest, Test_Get) {
 
 TEST_F(CtkBinaryImageTest, Test_ConstructorCopy) {
     ctk::BinaryImage bin(CtkBinaryImageTest::binimg);
-    EXPECT_EQ(bin.width(), 200);
-    EXPECT_EQ(bin.height(), 200);
-    EXPECT_EQ(bin.channels(), 1);
+    EXPECT_EQ(bin.GetWidth(), 200);
+    EXPECT_EQ(bin.GetHeight(), 200);
+    EXPECT_EQ(bin.GetChannels(), 1);
     EXPECT_EQ(bin.CheckChannel(), true);
-    int w = bin.width();
-    int h = bin.height();
+    int w = bin.GetWidth();
+    int h = bin.GetHeight();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
@@ -53,12 +53,12 @@ TEST_F(CtkBinaryImageTest, Test_ConstructorCopy) {
 TEST_F(CtkBinaryImageTest, Test_ConstructorMat) {
     cv::Mat matbin = cv::imread(INPUT_DIR+"mask.png", cv::IMREAD_UNCHANGED);
     ctk::BinaryImage bin(matbin);
-    EXPECT_EQ(bin.width(), 200);
-    EXPECT_EQ(bin.height(), 200);
-    EXPECT_EQ(bin.channels(), 1);
+    EXPECT_EQ(bin.GetWidth(), 200);
+    EXPECT_EQ(bin.GetHeight(), 200);
+    EXPECT_EQ(bin.GetChannels(), 1);
     EXPECT_EQ(bin.CheckChannel(), true);
-    int w = bin.width();
-    int h = bin.height();
+    int w = bin.GetWidth();
+    int h = bin.GetHeight();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
@@ -73,12 +73,12 @@ TEST_F(CtkBinaryImageTest, Test_ConstructorMat) {
 
 TEST_F(CtkBinaryImageTest, Test_OperatorCopy) {
     ctk::BinaryImage bin = CtkBinaryImageTest::binimg;
-    EXPECT_EQ(bin.width(), 200);
-    EXPECT_EQ(bin.height(), 200);
-    EXPECT_EQ(bin.channels(), 1);
+    EXPECT_EQ(bin.GetWidth(), 200);
+    EXPECT_EQ(bin.GetHeight(), 200);
+    EXPECT_EQ(bin.GetChannels(), 1);
     EXPECT_EQ(bin.CheckChannel(), true);
-    int w = bin.width();
-    int h = bin.height();
+    int w = bin.GetWidth();
+    int h = bin.GetHeight();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
@@ -94,13 +94,13 @@ TEST_F(CtkBinaryImageTest, Test_OperatorCopy) {
 TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     ctk::BinaryImage bin1;
     bin1.CreateAndFill(200,200,true);
-    EXPECT_EQ(bin1.width(), 200);
-    EXPECT_EQ(bin1.height(), 200);
-    EXPECT_EQ(bin1.channels(), 1);
+    EXPECT_EQ(bin1.GetWidth(), 200);
+    EXPECT_EQ(bin1.GetHeight(), 200);
+    EXPECT_EQ(bin1.GetChannels(), 1);
     EXPECT_EQ(bin1.CheckChannel(), true);
-    int w = bin1.width();
-    int h = bin1.height();
-    cv::Mat data = bin1.get_data();
+    int w = bin1.GetWidth();
+    int h = bin1.GetHeight();
+    cv::Mat data = bin1.GetData();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             EXPECT_EQ(bin1.get(x,y),true);
@@ -108,12 +108,12 @@ TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     }
     ctk::BinaryImage bin0;
     bin0.CreateAndFill(200,200,false);
-    EXPECT_EQ(bin0.width(), 200);
-    EXPECT_EQ(bin0.height(), 200);
-    EXPECT_EQ(bin0.channels(), 1);
+    EXPECT_EQ(bin0.GetWidth(), 200);
+    EXPECT_EQ(bin0.GetHeight(), 200);
+    EXPECT_EQ(bin0.GetChannels(), 1);
     EXPECT_EQ(bin0.CheckChannel(), true);
-    int w0 = bin0.width();
-    int h0 = bin0.height();
+    int w0 = bin0.GetWidth();
+    int h0 = bin0.GetHeight();
     for (int x=0; x<w0; x++) {
         for (int y=0; y<h0; y++) {
             EXPECT_EQ(bin0.get(x,y),false);
@@ -124,12 +124,12 @@ TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
 TEST_F(CtkBinaryImageTest, Test_OperatorNeg) {
     ctk::BinaryImage bin = CtkBinaryImageTest::binimg.Not();
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskinv.png");
-    EXPECT_EQ(bin.width(), 200);
-    EXPECT_EQ(bin.height(), 200);
-    EXPECT_EQ(bin.channels(), 1);
+    EXPECT_EQ(bin.GetWidth(), 200);
+    EXPECT_EQ(bin.GetHeight(), 200);
+    EXPECT_EQ(bin.GetChannels(), 1);
     EXPECT_EQ(bin.CheckChannel(), true);
-    int w = bin.width();
-    int h = bin.height();
+    int w = bin.GetWidth();
+    int h = bin.GetHeight();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
@@ -147,12 +147,12 @@ TEST_F(CtkBinaryImageTest, Test_OperatorAnd) {
     m2.Open(INPUT_DIR+"mask2.png");
     ctk::BinaryImage bin = CtkBinaryImageTest::binimg.And(m2);
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskM1AndM2.png");
-    EXPECT_EQ(bin.width(), 200);
-    EXPECT_EQ(bin.height(), 200);
-    EXPECT_EQ(bin.channels(), 1);
+    EXPECT_EQ(bin.GetWidth(), 200);
+    EXPECT_EQ(bin.GetHeight(), 200);
+    EXPECT_EQ(bin.GetChannels(), 1);
     EXPECT_EQ(bin.CheckChannel(), true);
-    int w = bin.width();
-    int h = bin.height();
+    int w = bin.GetWidth();
+    int h = bin.GetHeight();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x>=150 && y>=150){
@@ -173,12 +173,12 @@ TEST_F(CtkBinaryImageTest, Test_OperatorOr) {
     m2.Open(INPUT_DIR+"mask2.png");
     ctk::BinaryImage bin = CtkBinaryImageTest::binimg.Or(m2);
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskM1orM2.png");
-    EXPECT_EQ(bin.width(), 200);
-    EXPECT_EQ(bin.height(), 200);
-    EXPECT_EQ(bin.channels(), 1);
+    EXPECT_EQ(bin.GetWidth(), 200);
+    EXPECT_EQ(bin.GetHeight(), 200);
+    EXPECT_EQ(bin.GetChannels(), 1);
     EXPECT_EQ(bin.CheckChannel(), true);
-    int w = bin.width();
-    int h = bin.height();
+    int w = bin.GetWidth();
+    int h = bin.GetHeight();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
@@ -199,12 +199,12 @@ TEST_F(CtkBinaryImageTest, Test_OperatorXor) {
     m2.Open(INPUT_DIR+"mask2.png");
     ctk::BinaryImage bin = CtkBinaryImageTest::binimg.Xor(m2);
     if (SAVE_IMAGES) bin.Save(OUTPUT_DIR+"maskM1xorM2.png");
-    EXPECT_EQ(bin.width(), 200);
-    EXPECT_EQ(bin.height(), 200);
-    EXPECT_EQ(bin.channels(), 1);
+    EXPECT_EQ(bin.GetWidth(), 200);
+    EXPECT_EQ(bin.GetHeight(), 200);
+    EXPECT_EQ(bin.GetChannels(), 1);
     EXPECT_EQ(bin.CheckChannel(), true);
-    int w = bin.width();
-    int h = bin.height();
+    int w = bin.GetWidth();
+    int h = bin.GetHeight();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x>=50 && x<100 && y>=50 && y<100) {

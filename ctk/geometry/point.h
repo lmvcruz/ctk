@@ -60,9 +60,9 @@ public:
     */
     bool operator==(Point  const &that ) const  {
         if ((that.x_ != x_) || (that.y_ != y_) || (that.z_ != z_)) {
-            return(false);
+            return false;
         } else {
-            return(true);
+            return true;
         }
      //return (*this==that);
     }
@@ -74,7 +74,7 @@ public:
     * @return boolean indicating the result of the != comparison between the two Points
     */
     bool operator!=(Point const  &that) const {
-        return !(*this==that);
+        return !(*this == that);
     }
 
     /**
@@ -83,7 +83,7 @@ public:
      * @param y  desired value of y_
      * @param z  desired value of z_
      */
-    void set(T x, T y, T z=0) {
+    void Set(T x, T y, T z=0) {
         x_ = x;
         y_ = y;
         z_ = z;
@@ -144,7 +144,7 @@ public:
      * individual attributes x_, y_, z_
      */
     Point operator+(const Point &that) {
-        return Point(x_+that.x_, y_+that.y_, z_+that.z_);
+        return Point(x_ + that.x_, y_ + that.y_, z_ + that.z_);
     }
 
     /**
@@ -186,7 +186,7 @@ public:
      * individual attributes x_, y_, z_  .
      */
     Point operator-(const Point &that) {
-        return Point(x_-that.x_, y_-that.y_, z_-that.z_);
+        return Point(x_ - that.x_, y_ - that.y_, z_ - that.z_);
     }
 
     /**

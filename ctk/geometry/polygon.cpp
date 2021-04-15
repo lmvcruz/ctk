@@ -158,10 +158,10 @@ PointD &Polygon::point(int i) {
 }
 
 /**
- * @brief Polygon::get_data  Get the Point vector data_ of the Polygon
+ * @brief Polygon::GetData  Get the Point vector data_ of the Polygon
  * @return The Polygon attribute data_
  */
-std::vector<PointD> &Polygon::get_data() {
+std::vector<PointD> &Polygon::GetData() {
     return data_;
 }
 

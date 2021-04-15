@@ -23,7 +23,7 @@ public:
 
     void Open(std::string filename);
 
-    int channels();
+    int GetChannels();
 
     BinaryImage ApplyBinaryThreshold(int t=127);
     BinaryImage ApplyOtsuThreshold();

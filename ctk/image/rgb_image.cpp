@@ -33,11 +33,11 @@ RgbImage::RgbImage(const RgbImage &that) {
  * @param that  reference to an existing AbstractImage
  */
 RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that) {
-    if (that.get_data().type()!=CV_8UC3 || that.get_data().channels()!=3) throw  incompatible_parameters();
+    if (that.GetData().type()!=CV_8UC3 || that.GetData().channels()!=3) throw  incompatible_parameters();
     type = CV_8UC3;
     ch_size = 3;
     invert_channels_ = true;
-    data = that.get_data().clone();
+    data = that.GetData().clone();
 }
 
 /**
@@ -86,33 +86,33 @@ void RgbImage::CreateAndFill(int w, int h, int r, int g, int b) {
 }
 
 /**
- * @brief RgbImage::set - Set value of image pixel
+ * @brief RgbImage::Set - Set value of image pixel
  * @param x int representing the column index
  * @param y int representing the row index
  * @param r int representing the desired red value
  * @param g int representing the desired green value
  * @param b int representing the desired blue value
  */
-void RgbImage::set(int x, int y, int r, int g, int b) {
+void RgbImage::Set(int x, int y, int r, int g, int b) {
     unsigned char ucr = static_cast<unsigned char>(r);
     unsigned char ucg = static_cast<unsigned char>(g);
     unsigned char ucb = static_cast<unsigned char>(b);
-    AbstractMatrix<cv::Vec3b>::set(x, y, cv::Vec3b(ucr,ucg,ucb));
+    AbstractMatrix<cv::Vec3b>::Set(x, y, cv::Vec3b(ucr,ucg,ucb));
 }
 
 /**
- * @brief RgbImage::safe_set - Set value of image pixel
+ * @brief RgbImage::SafeSet - Set value of image pixel
  * @param x int representing the column index
  * @param y int representing the row index
  * @param r int representing the desired red value
  * @param g int representing the desired green value
  * @param b int representing the desired blue value
  */
-void RgbImage::safe_set(int x, int y, int r, int g, int b) {
+void RgbImage::SafeSet(int x, int y, int r, int g, int b) {
     unsigned char ucr = static_cast<unsigned char>(r);
     unsigned char ucg = static_cast<unsigned char>(g);
     unsigned char ucb = static_cast<unsigned char>(b);
-    AbstractMatrix<cv::Vec3b>::safe_set(x, y, cv::Vec3b(ucr,ucg,ucb));
+    AbstractMatrix<cv::Vec3b>::SafeSet(x, y, cv::Vec3b(ucr,ucg,ucb));
 }
 
 /**
@@ -130,13 +130,13 @@ void RgbImage::safe_iset(int i, int r, int g, int b) {
 }
 
 /**
- * @brief RgbImage::set
+ * @brief RgbImage::Set
  * @param i int representing the desired index in vector indices_
  * @param r int representing the desired red value
  * @param g int representing the desired green value
  * @param b int representing the desired blue value
  */
-void RgbImage::set(int i, int r, int g, int b) {
+void RgbImage::Set(int i, int r, int g, int b) {
     unsigned char ucr = static_cast<unsigned char>(r);
     unsigned char ucg = static_cast<unsigned char>(g);
     unsigned char ucb = static_cast<unsigned char>(b);
@@ -150,7 +150,7 @@ void RgbImage::set(int i, int r, int g, int b) {
  * @return int representing the red value of the pixel at (x,y)
  */
 int RgbImage::red(int x, int y) {
-    return AbstractMatrix<cv::Vec3b>::get(x,y)[0];
+    return AbstractMatrix<cv::Vec3b>::Get(x,y)[0];
 }
 
 /**
@@ -160,7 +160,7 @@ int RgbImage::red(int x, int y) {
  * @return int representing the green value of the pixel at (x,y)
  */
 int RgbImage::green(int x, int y) {
-    return AbstractMatrix<cv::Vec3b>::get(x,y)[1];
+    return AbstractMatrix<cv::Vec3b>::Get(x,y)[1];
 }
 
 
@@ -171,7 +171,7 @@ int RgbImage::green(int x, int y) {
  * @return int representing the blue value of the pixel at (x,y)
  */
 int RgbImage::blue(int x, int y) {
-    return AbstractMatrix<cv::Vec3b>::get(x,y)[2];
+    return AbstractMatrix<cv::Vec3b>::Get(x,y)[2];
 }
 
 /**
@@ -227,13 +227,13 @@ RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
  */
 BinaryImage RgbImage::PickColor(int r, int g, int b) {
     BinaryImage mask;
-    mask.Create(width(), height());
+    mask.Create(GetWidth(), GetHeight());
     for (auto x = 0; x < data.rows; x++) {
         for (auto y = 0; y < data.cols; y++) {
             if ((red(x,y) == r) && (green(x,y) == g) && (blue(x,y) == b)) {
-                mask.set(x,y,true);
+                mask.Set(x,y,true);
             } else {
-                mask.set(x,y,false);
+                mask.Set(x,y,false);
             }
         }
     }
@@ -248,7 +248,7 @@ BinaryImage RgbImage::PickColor(int r, int g, int b) {
 GrayImage RgbImage::Project(std::vector<PointI> &colors) {
     if (colors.size() > 256) throw incompatible_parameters();
     GrayImage mask;
-    mask.Create(width(), height());
+    mask.Create(GetWidth(), GetHeight());
     for (auto x = 0; x < data.rows; x++) {
         for (auto y = 0; y < data.cols; y++) {
             int idx = -1;
@@ -260,7 +260,7 @@ GrayImage RgbImage::Project(std::vector<PointI> &colors) {
                     idx = i;
                 }
             }
-            mask.set(x, y, idx);
+            mask.Set(x, y, idx);
         }
     }
     return mask;
@@ -275,7 +275,7 @@ std::vector<Polygon> RgbImage::Contours() {
 
     std::vector<std::vector<cv::Point> > cv_contours;
     std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(bin.get_data(), cv_contours, hierarchy,
+    cv::findContours(bin.GetData(), cv_contours, hierarchy,
                      cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
 
     std::vector<Polygon> ctk_contours;
@@ -296,7 +296,7 @@ std::vector<Polygon> RgbImage::ApproximateContours(int eps) {
 
     std::vector<std::vector<cv::Point> > cv_contours;
     std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(bin.get_data(), cv_contours, hierarchy,
+    cv::findContours(bin.GetData(), cv_contours, hierarchy,
                      cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
 
     std::vector<Polygon> ctk_contours;
@@ -340,7 +340,7 @@ RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int
     }
     //
     RgbImage rect;
-    cv::warpPerspective(data, rect.get_data(), homo_mat, cv::Size(w,h));
+    cv::warpPerspective(data, rect.GetData(), homo_mat, cv::Size(w,h));
     return rect;
 }
 
@@ -350,7 +350,7 @@ RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int
  */
 GrayImage RgbImage::toGrayImage() {
     GrayImage newImage;
-    cv::cvtColor(data, newImage.get_data(), cv::COLOR_RGB2GRAY);
+    cv::cvtColor(data, newImage.GetData(), cv::COLOR_RGB2GRAY);
     return newImage;
 }
 
@@ -366,7 +366,7 @@ RgbImage RgbImage::DrawPolygon(Polygon &pol) {
     std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0]) << std::endl;
 
     RgbImage new_img(data);
-    cv::Mat &new_mat = new_img.get_data();
+    cv::Mat &new_mat = new_img.GetData();
     const int  kThickness  = 2;
     const int  kLineType   = 8;
     cv::Scalar color = cv::Scalar(rand()%255, rand()%255, rand()%255);

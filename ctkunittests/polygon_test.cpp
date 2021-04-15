@@ -62,7 +62,7 @@ TEST_F(CtkPolygonTest, Test_Setup) {
 TEST_F(CtkPolygonTest,Test_GetData) {
     ctk::Polygon Poly1(CtkPolygonTest::p1);
 
-    std::vector<ctk::PointD> Data = Poly1.get_data();
+    std::vector<ctk::PointD> Data = Poly1.GetData();
     EXPECT_EQ(Data[0].getX(),0);
     EXPECT_EQ(Data[0].getY(),1);
     EXPECT_EQ(Data[1].getX(),1);
@@ -90,7 +90,7 @@ TEST_F(CtkPolygonTest,Test_GetCVData) {
 TEST_F(CtkPolygonTest,Test_ConstructorPointD) {
      ctk::Polygon Poly1(CtkPolygonTest::p1);
 
-    EXPECT_EQ(Poly1.get_data().size(),4);
+    EXPECT_EQ(Poly1.GetData().size(),4);
     EXPECT_EQ(Poly1.get_cvdata().size(),4);
 }
 
@@ -98,7 +98,7 @@ TEST_F(CtkPolygonTest,Test_ConstructorCopy) {
     ctk::Polygon Poly1(CtkPolygonTest::p1);
 
     ctk::Polygon polC(Poly1);
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),4);
@@ -128,7 +128,7 @@ TEST_F(CtkPolygonTest,Test_OperatorCopyPolygon) {
     ctk::Polygon Poly1(CtkPolygonTest::p1);
     ctk::Polygon polC=Poly1;
 
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),4);
@@ -156,7 +156,7 @@ TEST_F(CtkPolygonTest,Test_OperatorCopyPolygon) {
 TEST_F(CtkPolygonTest,Test_OperatorCopyPointD) {
     ctk::Polygon polC=CtkPolygonTest::p1;
 
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),4);
@@ -184,7 +184,7 @@ TEST_F(CtkPolygonTest,Test_OperatorCopyPointD) {
 TEST_F(CtkPolygonTest,Test_OperatorCopyCVPoint) {
     ctk::Polygon polC=CtkPolygonTest::p1cv;
 
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),4);
@@ -215,7 +215,7 @@ TEST_F(CtkPolygonTest,Test_AddPointPointD) {
 
     polC.add_point(n_point);
 
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),5);
@@ -231,7 +231,7 @@ TEST_F(CtkPolygonTest,Test_AddPointPointxy) {
     ctk::Polygon polC=CtkPolygonTest::p1cv;
     polC.add_point(2,3);
 
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),5);
@@ -248,7 +248,7 @@ TEST_F(CtkPolygonTest,Test_SetPointPointD) {
     ctk::Polygon polC = CtkPolygonTest::p1cv;
     polC.set_point(0,n_point);
 
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),4);
@@ -265,7 +265,7 @@ TEST_F(CtkPolygonTest,Test_SetPointPointxy) {
 
     polC.set_point(0,2,3);
 
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),4);
@@ -290,7 +290,7 @@ TEST_F(CtkPolygonTest,Test_Resize) {
     ctk::Polygon polC = CtkPolygonTest::p1cv;
     polC.Resize(6);
 
-    std::vector<ctk::PointD> Data = polC.get_data();
+    std::vector<ctk::PointD> Data = polC.GetData();
     std::vector<cv::Point> cvData = polC.get_cvdata();
 
     EXPECT_EQ(Data.size(),6);
@@ -298,7 +298,7 @@ TEST_F(CtkPolygonTest,Test_Resize) {
 
     polC.Resize(2);
 
-    std::vector<ctk::PointD> Data_1 = polC.get_data();
+    std::vector<ctk::PointD> Data_1 = polC.GetData();
     std::vector<cv::Point> cvData_1 = polC.get_cvdata();
 
     EXPECT_EQ(Data_1.size(),2);
@@ -362,8 +362,8 @@ TEST_F(CtkPolygonTest,Test_Shift) {
     std::vector<cv::Point> datacv=pol1.get_cvdata();
     std::vector<cv::Point> datascv=pol1s.get_cvdata();
 
-    std::vector<ctk::PointD> data=pol1.get_data();
-    std::vector<ctk::PointD> datas=pol1s.get_data();
+    std::vector<ctk::PointD> data=pol1.GetData();
+    std::vector<ctk::PointD> datas=pol1s.GetData();
 
     for(int i=0;i<pol1.size();i++) {
         if(i==0) {
@@ -391,8 +391,8 @@ TEST_F(CtkPolygonTest,SelfShift) {
     std::vector<cv::Point> datacv=pol1.get_cvdata();
     std::vector<cv::Point> datascv=pol1s.get_cvdata();
 
-    std::vector<ctk::PointD> data=pol1.get_data();
-    std::vector<ctk::PointD> datas=pol1s.get_data();
+    std::vector<ctk::PointD> data=pol1.GetData();
+    std::vector<ctk::PointD> datas=pol1s.GetData();
     for (int i = 0; i < pol1.size(); ++i) {
         if (i == 0) {
             EXPECT_EQ(datacv[i].x,datascv[pol1.size()-1].x);

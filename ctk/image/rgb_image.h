@@ -8,8 +8,8 @@ namespace ctk {
 
 class RgbImage : public ColorImage {
 public:
-    using AbstractMatrix<cv::Vec3b>::get;
-    using AbstractMatrix<cv::Vec3b>::set;
+    using AbstractMatrix<cv::Vec3b>::Get;
+    using AbstractMatrix<cv::Vec3b>::Set;
 
     RgbImage();
     RgbImage(const RgbImage& that);
@@ -20,10 +20,10 @@ public:
     void Fill(int r, int g, int b);
     void CreateAndFill(int w, int h, int r, int g, int b);
 
-    void set(int x, int y, int r, int g, int b);
-    void set(int i, int r, int g, int b);
+    void Set(int x, int y, int r, int g, int b);
+    void Set(int i, int r, int g, int b);
 
-    void safe_set(int x, int y, int r, int g, int b);
+    void SafeSet(int x, int y, int r, int g, int b);
     void safe_iset(int i, int r, int g, int b);
     int red(int x, int y);
     int green(int x, int y);

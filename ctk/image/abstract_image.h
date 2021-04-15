@@ -33,10 +33,11 @@ protected:
     bool invert_channels_;
 
 public:
-    using AbstractMatrix<T>::get;
-    using AbstractMatrix<T>::set;
-    using AbstractMatrix<T>::width;
-    using AbstractMatrix<T>::height;
+    using AbstractMatrix<T>::GetChannels;
+    using AbstractMatrix<T>::Get;
+    using AbstractMatrix<T>::Set;
+    using AbstractMatrix<T>::GetWidth;
+    using AbstractMatrix<T>::GetHeight;
 
     /**
      * @brief AbstractImage Default Constructor
@@ -69,9 +70,9 @@ public:
      */
     void StartScanIndices() {
         unsigned int w = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::width());
+                                    AbstractMatrix<T>::GetWidth());
         unsigned int h = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::height());
+                                    AbstractMatrix<T>::GetHeight());
         auto points = getScanOrderVector(w, h);
         InitIndicesFromPointVector(points);
     }
@@ -81,9 +82,9 @@ public:
      */
     void StartSnakeIndices() {
         unsigned int w = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::width());
+                                    AbstractMatrix<T>::GetWidth());
         unsigned int h = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::height());
+                                    AbstractMatrix<T>::GetHeight());
         auto points = getSnakeOrderVector(w, h);
         InitIndicesFromPointVector(points);
     }
@@ -93,9 +94,9 @@ public:
      */
     void StartSpiralIndices() {
         unsigned int w = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::width());
+                                    AbstractMatrix<T>::GetWidth());
         unsigned int h = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::height());
+                                    AbstractMatrix<T>::GetHeight());
         auto points = getSpiralOrderVector(w, h);
         InitIndicesFromPointVector(points);
     }
@@ -105,9 +106,9 @@ public:
      */
     void StartSnailIndices() {
         unsigned int w = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::width());
+                                    AbstractMatrix<T>::GetWidth());
         unsigned int h = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::height());
+                                    AbstractMatrix<T>::GetHeight());
         auto points = getSnailOrderVector(w, h);
         InitIndicesFromPointVector(points);
     }
@@ -149,11 +150,11 @@ public:
         int int_indx = static_cast<int>(indices_[ui]);
         int y = int_indx/AbstractMatrix<T>::data.cols;
         int x = int_indx%AbstractMatrix<T>::data.rows;
-        return AbstractMatrix<T>::get(x,y);
+        return AbstractMatrix<T>::Get(x,y);
     }
 
     /**
-     * @brief safe_get Get specific element in AbstractMatrix
+     * @brief SafeGet Get specific element in AbstractMatrix
      * @param i int representing the desired index in vector indices_
      * @return AbstractMatrix element at  position = indices_(i)
      */
@@ -161,17 +162,17 @@ public:
         if (!isIndices()) StartScanIndices();
         int isize = static_cast<int>(indices_.size());
         if (i<0 || i >= isize) {
-            throw std::out_of_range("Exception thrown in AbstractImage::safe_set");
+            throw std::out_of_range("Exception thrown in AbstractImage::SafeSet");
         }
         unsigned int ui = static_cast<unsigned int>(i);
         int int_indx = static_cast<int>(indices_[ui]);
         int y = int_indx/AbstractMatrix<T>::data.cols;
         int x = int_indx%AbstractMatrix<T>::data.rows;
-        return AbstractMatrix<T>::get(x,y);
+        return AbstractMatrix<T>::Get(x,y);
     }
 
     /**
-     * @brief set  Set specific element in AbstractMatrix
+     * @brief Set  Set specific element in AbstractMatrix
      * @param i int representing the desired index in vector indices_
      * @param v desired value
      */
@@ -180,7 +181,7 @@ public:
         int int_idx = static_cast<int>(indices_[ui]);
         int y = int_idx/AbstractMatrix<T>::data.cols;
         int x = int_idx%AbstractMatrix<T>::data.rows;
-        AbstractMatrix<T>::set(x,y,v);
+        AbstractMatrix<T>::Set(x,y,v);
     }
 
     /**
@@ -192,13 +193,13 @@ public:
         if (!isIndices()) StartScanIndices();
         int isize = static_cast<int>(indices_.size());
         if (i<0 || i>=isize) {
-            throw std::out_of_range("Exception thrown in AbstractImage::safe_set");
+            throw std::out_of_range("Exception thrown in AbstractImage::SafeSet");
         }
         unsigned int ui = static_cast<unsigned int>(i);
         int int_indx = static_cast<int>(indices_[ui]);
         int y = int_indx/AbstractMatrix<T>::data.cols;
         int x = int_indx%AbstractMatrix<T>::data.rows;
-        AbstractMatrix<T>::set(x,y,v);
+        AbstractMatrix<T>::Set(x,y,v);
     }
 
     /**
@@ -238,17 +239,17 @@ public:
      */
     void CopyFrom(AbstractImage<T>& that, int ox, int oy, int tx, int ty, int w=-1, int h=-1) {
         if (w==-1 or h==-1) {
-            w = that.width();
-            h = that.height();
+            w = that.GetWidth();
+            h = that.GetHeight();
         }
-        w = std::min(w, width() - ox);
-        w = std::min(w, that.width() - tx);
-        h = std::min(h, height() - oy);
-        h = std::min(h, that.height() - ty);
+        w = std::min(w, GetWidth() - ox);
+        w = std::min(w, that.GetWidth() - tx);
+        h = std::min(h, GetHeight() - oy);
+        h = std::min(h, that.GetHeight() - ty);
         // TODO: replace this loop by memcpy
         for (int x = 0; x < w; ++x) {
             for (int y = 0; y < h; ++y) {
-                set(ox + x, oy + y, that.get(tx + x, ty + y));
+                Set(ox + x, oy + y, that.Get(tx + x, ty + y));
             }
         }
     }
@@ -408,9 +409,9 @@ public:
 
 private:
     void InitIndicesFromPointVector(std::vector<PointI>& points) {
-        int w = AbstractMatrix<T>::width();
-        int h = AbstractMatrix<T>::height();
-        indices_.resize(static_cast<unsigned int>(AbstractMatrix<T>::size()));
+        int w = AbstractMatrix<T>::GetWidth();
+        int h = AbstractMatrix<T>::GetHeight();
+        indices_.resize(static_cast<unsigned int>(AbstractMatrix<T>::GetSize()));
         for (size_t ii = 0; ii < points.size(); ++ii) {
             int idx = points[ii].getY()*w+points[ii].getX();
             indices_[ii] = static_cast<unsigned int>(idx);
@@ -428,7 +429,7 @@ public:
 
     virtual ~ColorImage(){}
 
-    int channels();
+    int GetChannels();
 };
 
 //TODO: NEXT SPRINT
@@ -440,8 +441,8 @@ public:
 //    void create(int w, int h);
 
 //    using AbstractMatrix<cv::Vec3b>::set;
-//    void set(int x, int y, int h, int s, int v);
-//    void set(int i, int h, int s, int v);
+//    void Set(int x, int y, int h, int s, int v);
+//    void Set(int i, int h, int s, int v);
 //    int hue(int x, int y);
 //    int saturation(int x, int y);
 //    int value(int x, int y);
@@ -460,8 +461,8 @@ public:
 //    void create(int w, int h);
 
 //    using AbstractMatrix<cv::Vec3b>::set;
-//    void set(int x, int y, int h, int l, int s);
-//    void set(int i, int h, int l, int s);
+//    void Set(int x, int y, int h, int l, int s);
+//    void Set(int i, int h, int l, int s);
 //    int hue(int x, int y);
 //    int luminance(int x, int y);
 //    int saturation(int x, int y);
@@ -480,8 +481,8 @@ public:
 //    void create(int w, int h);
 
 //    using AbstractMatrix<cv::Vec3b>::set;
-//    void set(int x, int y, int l, int a, int b);
-//    void set(int i, int l, int a, int b);
+//    void Set(int x, int y, int l, int a, int b);
+//    void Set(int i, int l, int a, int b);
 //    int lightness(int x, int y);
 //    int a_value(int x, int y);
 //    int b_value(int x, int y);
@@ -498,7 +499,7 @@ public:
 //    ColorAlphaImage();
 //    virtual ~ColorAlphaImage(){}
 
-//    int channels();
+//    int GetChannels();
 
 //    void fill();
 //};
@@ -510,8 +511,8 @@ public:
 //    RgbaImage() = default;
 
 //    using AbstractMatrix<cv::Vec4b>::set;
-//    void set(int x, int y, int r, int g, int b, int a);
-//    void set(int i, int r, int g, int b, int a);
+//    void Set(int x, int y, int r, int g, int b, int a);
+//    void Set(int i, int r, int g, int b, int a);
 //    int red(int x, int y);
 //    int green(int x, int y);
 //    int blue(int x, int y);

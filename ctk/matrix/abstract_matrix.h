@@ -70,11 +70,11 @@ public:
      * @param h  int representing the number of rows
      */
     virtual void Create(int w, int h) {
-        if (w>0 && h>0) {
+        if (w > 0 && h > 0) {
             if (type == -1) throw invalid_type();
             data = cv::Mat(h, w, type);
         }
-        else if (w<0 || h<0) {
+        else if (w < 0 || h < 0) {
             throw std::bad_alloc();
         }
     }
@@ -86,30 +86,30 @@ public:
      * @param vec  vector with AbstractMatrix elements
      */
     virtual void Create(int w, int h, std::vector<T> &vec) {
-        if (w>0 && h>0) {
+        if (w > 0 && h > 0) {
             if (type == -1) throw invalid_type();
             data = cv::Mat(h, w, type);
             int i=-1;
             for (auto it=begin(); it!=end(); ++it) *it = vec[++i];
         }
-        else if (w<0 || h<0) {
+        else if ( w < 0 || h < 0) {
             throw std::bad_alloc();
         }
     }
 
     /**
-     * @brief get_data  Access AbstractMatrix data
+     * @brief GetData  Access AbstractMatrix data
      * @return data
      */
-    cv::Mat& get_data() {
+    cv::Mat& GetData() {
         return data;
     }
 
     /**
-     * @brief get_data  Access AbstractMatrix data
+     * @brief GetData  Access AbstractMatrix data
      * @return data
      */
-    const cv::Mat& get_data() const {
+    const cv::Mat& GetData() const {
         return data;
     }
 
@@ -117,7 +117,7 @@ public:
      * @brief cols  Get number of columns
      * @return  int representing the number of columns
      */
-    int cols() const{
+    int GetCols() const{
         return data.cols;
     }
 
@@ -125,23 +125,23 @@ public:
      * @brief width  Get AbstractMatrix width (number of columns)
      * @return int representing the number columns in matrix
      */
-    int width()  const{
+    int GetWidth()  const{
         return data.cols;
     }
 
     /**
-     * @brief rows  Ge tnumber of rows
+     * @brief GetRows  Get number of rows
      * @return int representing the number of rows
      */
-    int rows() const{
+    int GetRows() const{
         return data.rows;
     }
 
     /**
-     * @brief height  Get AbstractMatrix width (number of rows)
+     * @brief GetHeight  Get AbstractMatrix width (number of rows)
      * @return int representing the number of rows
      */
-    int height() const{
+    int GetHeight() const{
         return data.rows;
     }
 
@@ -149,15 +149,15 @@ public:
      * @brief size   Get AbstractMatrix size
      * @return int representing matrix size (nº of rows x nº of columns)
      */
-    int size() const{
-        return data.rows*data.cols;
+    int GetSize() const{
+        return data.rows * data.cols;
     }
 
     /**
      * @brief channels  Get number of channels
      * @return int representing the number of channels in matrix
      */
-    int channels() const{
+    int GetChannels() const{
         return ch_size;
     }
 
@@ -183,45 +183,45 @@ public:
      * @param y  int representing the row index
      * @return  AbstractMatrix element at row y and column x
      */
-    virtual T get(int x, int y) const {
-        return data.at<T>(y,x);
+    virtual T Get(int x, int y) const {
+        return data.at<T>(y, x);
     }
 
 
     /**
-     * @brief safe_get   Get a specific AbstractMatrix element with protections
+     * @brief SafeGet   Get a specific AbstractMatrix element with protections
      * @param x  int representing the column index
      * @param y  int representing the row index
      * @return  AbstractMatrix element at row y and column x
      */
-    virtual T safe_get(int x, int y) {
-        if (x<0 || x >= data.cols || y<0 || y >= data.rows) {
-            throw std::out_of_range("Exception thrown in AbstractMatyrix::safe_get");
+    virtual T SafeGet(int x, int y) {
+        if (x < 0 || x >= data.cols || y < 0 || y >= data.rows) {
+            throw std::out_of_range("Exception thrown in AbstractMatyrix::SafeGet");
         }
-        return data.at<T>(y,x);
+        return data.at<T>(y, x);
     }
 
     /**
-     * @brief set  Setting the value of a specific AbstractMatrix element
+     * @brief Set  Setting the value of a specific AbstractMatrix element
      * @param x  int representing the column index
      * @param y  int representing the row index
      * @param v  desired value
      */
-    virtual void set(int x, int y, T v) {
-        data.at<T>(y,x) = v;
+    virtual void Set(int x, int y, T v) {
+        data.at<T>(y, x) = v;
     }
 
     /**
-     * @brief safe_set  Setting the value of a specific AbstractMatrix element with protections
+     * @brief SafeSet  Setting the value of a specific AbstractMatrix element with protections
      * @param x  int representing the column index
      * @param y  int representing the row index
      * @param v  desired value
      */
-    virtual void safe_set(int x, int y, T v) {
-        if (x<0 || x >= data.cols || y<0 || y >= data.rows) {
-            throw std::out_of_range("Exception thrown in AbstractMatyrix::safe_set");
+    virtual void SafeSet(int x, int y, T v) {
+        if (x < 0 || x >= data.cols || y < 0 || y >= data.rows) {
+            throw std::out_of_range("Exception thrown in AbstractMatyrix::SafeSet");
         }
-        data.at<T>(y,x) = v;
+        data.at<T>(y, x) = v;
     }
 
     /**
@@ -229,7 +229,7 @@ public:
      * @return  AbstractMatrix element at position (0,0)
      */
     T* begin() {
-        return &data.at<T>(0,0);
+        return &data.at<T>(0, 0);
     }
 
     /**
@@ -237,7 +237,7 @@ public:
      * @return  AbstractMatrix element at position (nº rows , nº columns)
      */
     T* end() {
-        return &data.at<T>(data.rows*data.cols);
+        return &data.at<T>(data.rows * data.cols);
     }
 
     /**
@@ -246,11 +246,11 @@ public:
      * @return boolean, true if all elements in both AbstractMatrixes are equal.
      */
     bool operator==(const AbstractMatrix<T> &that) {
-        if (data.rows != that.rows()) return false;
-        if (data.cols != that.cols()) return false;
-        for (auto y = 0; y < data.rows; y++) {
-            for (auto x = 0; x < data.cols; x++) {
-                if (data.at<T>(y,x) != that.get(x, y)) return false;
+        if (data.rows != that.GetRows()) return false;
+        if (data.cols != that.GetCols()) return false;
+        for (auto y = 0; y < data.rows; ++y) {
+            for (auto x = 0; x < data.cols; ++x) {
+                if (data.at<T>(y, x) != that.Get(x, y)) return false;
             }
         }
         return true;
@@ -262,8 +262,9 @@ public:
      * @return boolean, false if all elements in both AbstractMatrixes are equal.
      */
     bool operator!=(const AbstractMatrix<T> &that) {
-        return !(*this==that);
+        return !(*this == that);
     }
+
     virtual void Open(std::string filename) = 0;
     virtual void Save(std::string filename) = 0;
     virtual void Show() = 0;
