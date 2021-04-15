@@ -7,11 +7,11 @@ namespace ctk {
 
 template<class T>
 /**
- * @brief countPrimeNumbersBf Count the prime numbers before a passed limit
+ * @brief CountPrimeNumbersBf Count the prime numbers before a passed limit
  * @param n count limit
  * @return number of primes befor n
  */
-T countPrimeNumbersBf(T n) {
+T CountPrimeNumbersBf(T n) {
     T count = 0;
     for (T i=2; i<n; i++) {
         bool isPrime = true;
@@ -28,11 +28,11 @@ T countPrimeNumbersBf(T n) {
 
 template<class T>
 /**
- * @brief countPrimeNumbersEs
+ * @brief CountPrimeNumbersEs
  * @param n
  * @return
  */
-T countPrimeNumbersEs(T n) {
+T CountPrimeNumbersEs(T n) {
     std::vector<bool> sieve;
     sieve.resize(n+1, true);
     sieve[0] = sieve[1] = false;
@@ -59,27 +59,27 @@ T countPrimeNumbersEs(T n) {
     return count;
 }
 
-int countPrimeNumbersBf(int n);
-unsigned int countPrimeNumbersBf(unsigned int n);
-long countPrimeNumbersBf(long n);
-unsigned long countPrimeNumbersBf(unsigned long n);
-long long countPrimeNumbersBf(long long n);
-unsigned long long countPrimeNumbersBf(unsigned long long n);
+int CountPrimeNumbersBf(int n);
+unsigned int CountPrimeNumbersBf(unsigned int n);
+long CountPrimeNumbersBf(long n);
+unsigned long CountPrimeNumbersBf(unsigned long n);
+long long CountPrimeNumbersBf(long long n);
+unsigned long long CountPrimeNumbersBf(unsigned long long n);
 
-int countPrimeNumbers(int n);
-unsigned int countPrimeNumbers(unsigned int n);
-long countPrimeNumbers(long n);
-unsigned long countPrimeNumbers(unsigned long n);
-long long countPrimeNumbers(long long n);
-unsigned long long countPrimeNumbers(unsigned long long n);
+int CountPrimeNumbers(int n);
+unsigned int CountPrimeNumbers(unsigned int n);
+long CountPrimeNumbers(long n);
+unsigned long CountPrimeNumbers(unsigned long n);
+long long CountPrimeNumbers(long long n);
+unsigned long long CountPrimeNumbers(unsigned long long n);
 
 template<class T>
 /**
- * @brief generatePrimeNumbersBf Get the prime numbers before a passed limit
+ * @brief GeneratePrimeNumbersBf Get the prime numbers before a passed limit
  * @param n  limit
  * @return vector with all prime numbers before n
  */
-std::vector<T> generatePrimeNumbersBf(T n) {
+std::vector<T> GeneratePrimeNumbersBf(T n) {
     std::vector<T> primes;
     for (int i=2; i<n; i++) {
         bool isPrime = true;
@@ -97,7 +97,7 @@ std::vector<T> generatePrimeNumbersBf(T n) {
 }
 
 template<class T>
-std::vector<T> generatePrimeNumbersEs(T n) {
+std::vector<T> GeneratePrimeNumbersEs(T n) {
     std::vector<bool> sieve;
     sieve.resize(n+1, true);
     sieve[0] = sieve[1] = false;
@@ -127,88 +127,88 @@ std::vector<T> generatePrimeNumbersEs(T n) {
 }
 
 /**
- * @brief generatePrimeNumbersBf
+ * @brief GeneratePrimeNumbersBf
  * @param n
  * @return
  */
-std::vector<int> generatePrimeNumbersBf(int n);
+std::vector<int> GeneratePrimeNumbersBf(int n);
 
 /**
- * @brief generatePrimeNumbersBf
+ * @brief GeneratePrimeNumbersBf
  * @param n
  * @return
  */
-std::vector<unsigned int> generatePrimeNumbersBf(unsigned int n);
+std::vector<unsigned int> GeneratePrimeNumbersBf(unsigned int n);
 
 /**
- * @brief generatePrimeNumbersBf
+ * @brief GeneratePrimeNumbersBf
  * @param n
  * @return
  */
-std::vector<long> generatePrimeNumbersBf(long n);
+std::vector<long> GeneratePrimeNumbersBf(long n);
 
 /**
- * @brief generatePrimeNumbersBf
+ * @brief GeneratePrimeNumbersBf
  * @param n
  * @return
  */
-std::vector<unsigned long> generatePrimeNumbersBf(unsigned long n);
+std::vector<unsigned long> GeneratePrimeNumbersBf(unsigned long n);
 
 /**
- * @brief generatePrimeNumbersBf
+ * @brief GeneratePrimeNumbersBf
  * @param n
  * @return
  */
-std::vector<long long> generatePrimeNumbersBf(long long n);
+std::vector<long long> GeneratePrimeNumbersBf(long long n);
 
 /**
- * @brief generatePrimeNumbersBf
+ * @brief GeneratePrimeNumbersBf
  * @param n
  * @return
  */
-std::vector<unsigned long long> generatePrimeNumbersBf(unsigned long long n);
+std::vector<unsigned long long> GeneratePrimeNumbersBf(unsigned long long n);
 
 
 /**
- * @brief generatePrimeNumbers
+ * @brief GeneratePrimeNumbers
  * @param n
  * @return
  */
-std::vector<int> generatePrimeNumbers(int n);
+std::vector<int> GeneratePrimeNumbers(int n);
 
 /**
- * @brief generatePrimeNumbers
+ * @brief GeneratePrimeNumbers
  * @param n
  * @return
  */
-std::vector<unsigned int> generatePrimeNumbers(unsigned int n);
+std::vector<unsigned int> GeneratePrimeNumbers(unsigned int n);
 
 /**
- * @brief generatePrimeNumbers
+ * @brief GeneratePrimeNumbers
  * @param n
  * @return
  */
-std::vector<long> generatePrimeNumbers(long n);
+std::vector<long> GeneratePrimeNumbers(long n);
 
 /**
- * @brief generatePrimeNumbers
+ * @brief GeneratePrimeNumbers
  * @param n
  * @return
  */
-std::vector<unsigned long> generatePrimeNumbers(unsigned long n);
+std::vector<unsigned long> GeneratePrimeNumbers(unsigned long n);
 
 /**
- * @brief generatePrimeNumbers
+ * @brief GeneratePrimeNumbers
  * @param n
  * @return
  */
-std::vector<long long> generatePrimeNumbers(long long n);
+std::vector<long long> GeneratePrimeNumbers(long long n);
 
 /**
- * @brief generatePrimeNumbers
+ * @brief GeneratePrimeNumbers
  * @param n
  * @return
  */
-std::vector<unsigned long long> generatePrimeNumbers(unsigned long long n);
+std::vector<unsigned long long> GeneratePrimeNumbers(unsigned long long n);
 
 };

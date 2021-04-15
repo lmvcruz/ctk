@@ -37,19 +37,19 @@ TEST_F(CtkMathTest, Test_CoutingPrimes) {
     unsigned long ul = 100;
     long long ll = 100;
     unsigned long long ull = 100;
-    EXPECT_EQ(ctk::countPrimeNumbersBf(i), 25);
-    EXPECT_EQ(ctk::countPrimeNumbersBf(ui), 25);
-    EXPECT_EQ(ctk::countPrimeNumbersBf(l), 25);
-    EXPECT_EQ(ctk::countPrimeNumbersBf(ul), 25);
-    EXPECT_EQ(ctk::countPrimeNumbersBf(ll), 25);
-    EXPECT_EQ(ctk::countPrimeNumbersBf(ull), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbersBf(i), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbersBf(ui), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbersBf(l), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbersBf(ul), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbersBf(ll), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbersBf(ull), 25);
     //
-    EXPECT_EQ(ctk::countPrimeNumbers(i), 25);
-    EXPECT_EQ(ctk::countPrimeNumbers(ui), 25);
-    EXPECT_EQ(ctk::countPrimeNumbers(l), 25);
-    EXPECT_EQ(ctk::countPrimeNumbers(ul), 25);
-    EXPECT_EQ(ctk::countPrimeNumbers(ll), 25);
-    EXPECT_EQ(ctk::countPrimeNumbers(ull), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbers(i), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbers(ui), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbers(l), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbers(ul), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbers(ll), 25);
+    EXPECT_EQ(ctk::CountPrimeNumbers(ull), 25);
 }
 
 TEST_F(CtkMathTest, Test_ListingPrimes) {
@@ -59,18 +59,18 @@ TEST_F(CtkMathTest, Test_ListingPrimes) {
     unsigned long ul = 100;
     long long ll = 100;
     unsigned long long ull = 100;
-    EXPECT_EQ(ctk::generatePrimeNumbersBf(i), some_primes_i);
-    EXPECT_EQ(ctk::generatePrimeNumbersBf(ui), some_primes_ui);
-    EXPECT_EQ(ctk::generatePrimeNumbersBf(l), some_primes_l);
-    EXPECT_EQ(ctk::generatePrimeNumbersBf(ul), some_primes_ul);
-    EXPECT_EQ(ctk::generatePrimeNumbersBf(ll), some_primes_ll);
-    EXPECT_EQ(ctk::generatePrimeNumbersBf(ull), some_primes_ull);
+    EXPECT_EQ(ctk::GeneratePrimeNumbersBf(i), some_primes_i);
+    EXPECT_EQ(ctk::GeneratePrimeNumbersBf(ui), some_primes_ui);
+    EXPECT_EQ(ctk::GeneratePrimeNumbersBf(l), some_primes_l);
+    EXPECT_EQ(ctk::GeneratePrimeNumbersBf(ul), some_primes_ul);
+    EXPECT_EQ(ctk::GeneratePrimeNumbersBf(ll), some_primes_ll);
+    EXPECT_EQ(ctk::GeneratePrimeNumbersBf(ull), some_primes_ull);
     //
-    EXPECT_EQ(ctk::generatePrimeNumbers(i), some_primes_i);
-    EXPECT_EQ(ctk::generatePrimeNumbers(ui), some_primes_ui);
-    EXPECT_EQ(ctk::generatePrimeNumbers(l), some_primes_l);
-    EXPECT_EQ(ctk::generatePrimeNumbers(ul), some_primes_ul);
-    EXPECT_EQ(ctk::generatePrimeNumbers(ll), some_primes_ll);
-    EXPECT_EQ(ctk::generatePrimeNumbers(ull), some_primes_ull);
+    EXPECT_EQ(ctk::GeneratePrimeNumbers(i), some_primes_i);
+    EXPECT_EQ(ctk::GeneratePrimeNumbers(ui), some_primes_ui);
+    EXPECT_EQ(ctk::GeneratePrimeNumbers(l), some_primes_l);
+    EXPECT_EQ(ctk::GeneratePrimeNumbers(ul), some_primes_ul);
+    EXPECT_EQ(ctk::GeneratePrimeNumbers(ll), some_primes_ll);
+    EXPECT_EQ(ctk::GeneratePrimeNumbers(ull), some_primes_ull);
 }
 #endif

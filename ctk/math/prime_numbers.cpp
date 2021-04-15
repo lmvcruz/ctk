@@ -2,100 +2,100 @@
 
 namespace ctk {
 
-int countPrimeNumbersBf(int n) {
-    return countPrimeNumbersBf<int>(n);
+int CountPrimeNumbersBf(int n) {
+    return CountPrimeNumbersBf<int>(n);
 }
 
-unsigned int countPrimeNumbersBf(unsigned int n) {
-    return countPrimeNumbersBf<unsigned int>(n);
+unsigned int CountPrimeNumbersBf(unsigned int n) {
+    return CountPrimeNumbersBf<unsigned int>(n);
 }
 
-long countPrimeNumbersBf(long n) {
-    return countPrimeNumbersBf<long>(n);
+long CountPrimeNumbersBf(long n) {
+    return CountPrimeNumbersBf<long>(n);
 }
 
-unsigned long countPrimeNumbersBf(unsigned long n) {
-    return countPrimeNumbersBf<unsigned long>(n);
+unsigned long CountPrimeNumbersBf(unsigned long n) {
+    return CountPrimeNumbersBf<unsigned long>(n);
 }
 
-long long countPrimeNumbersBf(long long n) {
-    return countPrimeNumbersBf<long long>(n);
+long long CountPrimeNumbersBf(long long n) {
+    return CountPrimeNumbersBf<long long>(n);
 }
 
-unsigned long long countPrimeNumbersBf(unsigned long long n) {
-    return countPrimeNumbersBf<unsigned long long>(n);
+unsigned long long CountPrimeNumbersBf(unsigned long long n) {
+    return CountPrimeNumbersBf<unsigned long long>(n);
 }
 
-int countPrimeNumbers(int n) {
-    return countPrimeNumbersEs<int>(n);
+int CountPrimeNumbers(int n) {
+    return CountPrimeNumbersEs<int>(n);
 }
 
-unsigned int countPrimeNumbers(unsigned int n) {
-    return countPrimeNumbersEs<unsigned int>(n);
+unsigned int CountPrimeNumbers(unsigned int n) {
+    return CountPrimeNumbersEs<unsigned int>(n);
 }
 
-long countPrimeNumbers(long n) {
-    return countPrimeNumbersEs<long>(n);
+long CountPrimeNumbers(long n) {
+    return CountPrimeNumbersEs<long>(n);
 }
 
-unsigned long countPrimeNumbers(unsigned long n) {
-    return countPrimeNumbersEs<unsigned long>(n);
+unsigned long CountPrimeNumbers(unsigned long n) {
+    return CountPrimeNumbersEs<unsigned long>(n);
 }
 
-long long countPrimeNumbers(long long n) {
-    return countPrimeNumbersEs<long long>(n);
+long long CountPrimeNumbers(long long n) {
+    return CountPrimeNumbersEs<long long>(n);
 }
 
-unsigned long long countPrimeNumbers(unsigned long long n) {
-    return countPrimeNumbersEs<unsigned long long>(n);
+unsigned long long CountPrimeNumbers(unsigned long long n) {
+    return CountPrimeNumbersEs<unsigned long long>(n);
 }
 
-std::vector<int> generatePrimeNumbersBf(int n) {
-    return generatePrimeNumbersBf<int>(n);
+std::vector<int> GeneratePrimeNumbersBf(int n) {
+    return GeneratePrimeNumbersBf<int>(n);
 }
 
-std::vector<unsigned int> generatePrimeNumbersBf(unsigned int n) {
-    return generatePrimeNumbersBf<unsigned int>(n);
+std::vector<unsigned int> GeneratePrimeNumbersBf(unsigned int n) {
+    return GeneratePrimeNumbersBf<unsigned int>(n);
 }
 
-std::vector<long> generatePrimeNumbersBf(long n) {
-    return generatePrimeNumbersBf<long>(n);
+std::vector<long> GeneratePrimeNumbersBf(long n) {
+    return GeneratePrimeNumbersBf<long>(n);
 }
 
-std::vector<unsigned long> generatePrimeNumbersBf(unsigned long n) {
-    return generatePrimeNumbersBf<unsigned long>(n);
+std::vector<unsigned long> GeneratePrimeNumbersBf(unsigned long n) {
+    return GeneratePrimeNumbersBf<unsigned long>(n);
 }
 
-std::vector<long long> generatePrimeNumbersBf(long long n) {
-    return generatePrimeNumbersBf<long long>(n);
+std::vector<long long> GeneratePrimeNumbersBf(long long n) {
+    return GeneratePrimeNumbersBf<long long>(n);
 }
 
-std::vector<unsigned long long> generatePrimeNumbersBf(unsigned long long n) {
-    return generatePrimeNumbersBf<unsigned long long>(n);
+std::vector<unsigned long long> GeneratePrimeNumbersBf(unsigned long long n) {
+    return GeneratePrimeNumbersBf<unsigned long long>(n);
 }
 
-std::vector<int> generatePrimeNumbers(int n) {
-    return generatePrimeNumbersEs<int>(n);
+std::vector<int> GeneratePrimeNumbers(int n) {
+    return GeneratePrimeNumbersEs<int>(n);
 }
 
-std::vector<unsigned int> generatePrimeNumbers(unsigned int n) {
-    return generatePrimeNumbersEs<unsigned int>(n);
+std::vector<unsigned int> GeneratePrimeNumbers(unsigned int n) {
+    return GeneratePrimeNumbersEs<unsigned int>(n);
 }
 
-std::vector<long> generatePrimeNumbers(long n) {
-    return generatePrimeNumbersEs<long>(n);
+std::vector<long> GeneratePrimeNumbers(long n) {
+    return GeneratePrimeNumbersEs<long>(n);
 }
 
-std::vector<unsigned long> generatePrimeNumbers(unsigned long n) {
-    return generatePrimeNumbersEs<unsigned long>(n);
+std::vector<unsigned long> GeneratePrimeNumbers(unsigned long n) {
+    return GeneratePrimeNumbersEs<unsigned long>(n);
 }
 
-std::vector<long long> generatePrimeNumbers(long long n) {
-    return generatePrimeNumbersEs<long long>(n);
+std::vector<long long> GeneratePrimeNumbers(long long n) {
+    return GeneratePrimeNumbersEs<long long>(n);
 }
 
-std::vector<unsigned long long> generatePrimeNumbers(unsigned long long n) {
-    return generatePrimeNumbersEs<unsigned long long>(n);
+std::vector<unsigned long long> GeneratePrimeNumbers(unsigned long long n) {
+    return GeneratePrimeNumbersEs<unsigned long long>(n);
 }
 
 }
