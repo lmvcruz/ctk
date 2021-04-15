@@ -35,6 +35,8 @@ protected:
 public:
     using AbstractMatrix<T>::get;
     using AbstractMatrix<T>::set;
+    using AbstractMatrix<T>::width;
+    using AbstractMatrix<T>::height;
 
     /**
      * @brief AbstractImage Default Constructor
@@ -223,6 +225,32 @@ public:
     void SelfCrop(int x, int y, int w, int h) {
         cv::Rect roi(x,y,w,h);
         AbstractMatrix<T>::data = AbstractMatrix<T>::data(roi).clone();
+    }
+
+    /**
+     * @brief CopyFrom Copy a block of a provided image into self data
+     * @param ox int the start x coordinate in this image where data will be placed
+     * @param oy int the start y coordinate in this image where data will be placed
+     * @param tx int the start x coordinate in that image where data will be gotten
+     * @param ty int the start y coordinate in that image where data will be gotten
+     * @param w width of the copied data (if -1 will be the entire image)
+     * @param h height of the copied data (if -1 will be the entire image)
+     */
+    void CopyFrom(AbstractImage<T>& that, int ox, int oy, int tx, int ty, int w=-1, int h=-1) {
+        if (w==-1 or h==-1) {
+            w = that.width();
+            h = that.height();
+        }
+        w = std::min(w, width() - ox);
+        w = std::min(w, that.width() - tx);
+        h = std::min(h, height() - oy);
+        h = std::min(h, that.height() - ty);
+        // TODO: replace this loop by memcpy
+        for (int x = 0; x < w; ++x) {
+            for (int y = 0; y < h; ++y) {
+                set(ox + x, oy + y, that.get(tx + x, ty + y));
+            }
+        }
     }
 
     /**
