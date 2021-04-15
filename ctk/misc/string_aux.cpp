@@ -4,7 +4,7 @@
 
 namespace ctk {
 
-std::vector< std::string > splitString(std::string str, std::string sep) {
+std::vector< std::string > SplitString(std::string str, std::string sep) {
     std::vector<std::string> splitted;
     std::string regex_sep_str = "[" + sep + "]+";
     std::regex regex_sep(regex_sep_str);

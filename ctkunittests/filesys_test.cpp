@@ -33,17 +33,17 @@ TEST_F(CtkFileSystemTest, Test_IsFileOrIsDir) {
 TEST_F(CtkFileSystemTest, Test_CurrentPath) {
     std::vector<std::string> splitted;
     // Query current path and does not change it
-    splitted = ctk::splitString(ctk::CurrentPath(), "/");
+    splitted = ctk::SplitString(ctk::CurrentPath(), "/");
     EXPECT_EQ(splitted.back(), "ctkunittests");
     // Query different path but does not change it 
     // So, CurrentPath() is still ctkunittests
-    splitted = ctk::splitString(ctk::CurrentPath(".."), "/");
+    splitted = ctk::SplitString(ctk::CurrentPath(".."), "/");
     EXPECT_EQ(splitted.back(), "build");
-    splitted = ctk::splitString(ctk::CurrentPath(), "/");
+    splitted = ctk::SplitString(ctk::CurrentPath(), "/");
     EXPECT_EQ(splitted.back(), "ctkunittests");
     // Change the path (and then CurrentPath())
     ctk::ChangeCurrentPath("..");
-    splitted = ctk::splitString(ctk::CurrentPath(), "/");
+    splitted = ctk::SplitString(ctk::CurrentPath(), "/");
     EXPECT_EQ(splitted.back(), "build");
 }
 

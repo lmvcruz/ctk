@@ -17,10 +17,12 @@ std::vector<int> RangeVector(int i, int e) {
     std::vector<int> v;
     long lsize = std::abs(static_cast<long>(e) - static_cast<long>(i))+1;
     v.resize(static_cast<unsigned int>(lsize));
-    if (i < e)
+    if (i < e) {
         std::generate(v.begin(), v.end(), [n = i] () mutable { return n++; });
-    else
+    }
+    else {
         std::generate(v.begin(), v.end(), [n = i] () mutable { return n--; });
+    }
     return v;
 }
 

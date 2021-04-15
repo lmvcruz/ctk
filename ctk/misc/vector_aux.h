@@ -24,10 +24,10 @@ template<class T>
  */
 double Distance(std::vector<T> &vec1, std::vector<T> &vec2)
 {
-    if(vec1.size()!=vec2.size()) throw  incompatible_parameters();
+    if (vec1.size() != vec2.size()) throw  incompatible_parameters();
     //
     double dist = 0.0;
-    for (auto i=0; i<vec1.size(); i++) {
+    for (auto i = 0; i < vec1.size(); ++i) {
         double d = vec1[i] - vec2[d];
         dist += d*d;
     }
