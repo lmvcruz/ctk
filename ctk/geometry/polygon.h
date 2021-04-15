@@ -10,7 +10,7 @@ namespace ctk {
 
 class Polygon {
 public:
-    Polygon();
+    Polygon() = default;
     Polygon(const Polygon &that);
     Polygon(std::vector<PointD> &d);
     Polygon(std::vector<cv::Point> &cvd);
@@ -22,14 +22,14 @@ public:
 
     PointD& operator[](int i);
 
-    void add_point(PointD &pt);
-    void add_point(double x, double y);
-    void set_point(int idx, PointD &pt);
-    void set_point(int idx, double x, double y);
-    PointD &point(int i);
+    void AddPoint(PointD &pt);
+    void AddPoint(double x, double y);
+    void SetPoint(int idx, PointD &pt);
+    void SetPoint(int idx, double x, double y);
+    PointD &GetPoint(int i);
 
     std::vector<PointD> &GetData();
-    std::vector<cv::Point> &get_cvdata();
+    std::vector<cv::Point> &GetCvData();
 
     void Resize(int s);
     int size();
@@ -44,8 +44,8 @@ public:
     void SelfShift(int sh);
 
 protected:
-    std::vector<PointD> data_; /*!< Vector of 2D Point objects as defined in ctkpoint.h */
-    std::vector<cv::Point> cvdata_;  /*!< Vector of 2D Point objects from the openCV template class Point */
+    std::vector<PointD> points; /*!< Vector of 2D Point objects as defined in ctkpoint.h */
+    std::vector<cv::Point> cvpoints;  /*!< Vector of 2D Point objects from the openCV template class Point */
 };
 
 }

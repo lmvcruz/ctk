@@ -398,7 +398,7 @@ private:
         int h = AbstractMatrix<T>::GetHeight();
         indices.resize(static_cast<unsigned int>(AbstractMatrix<T>::GetSize()));
         for (size_t ii = 0; ii < points.size(); ++ii) {
-            int idx = points[ii].getY()*w+points[ii].getX();
+            int idx = points[ii].GetY()*w+points[ii].GetX();
             indices[ii] = static_cast<unsigned int>(idx);
         }
     }

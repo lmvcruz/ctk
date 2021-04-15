@@ -59,13 +59,13 @@ Contours Contours::OrientedBoundingBoxes() {
     boxes.resize(polys_.size());
     for (auto i = 0; i < polys_.size(); i++) {
         cv::RotatedRect cv_box;
-        cv_box = cv::minAreaRect(cv::Mat(polys_[i].get_cvdata()));
+        cv_box = cv::minAreaRect(cv::Mat(polys_[i].GetCvData()));
         cv::Point2f vertices[4];
         cv_box.points(vertices);
         Polygon &pol = boxes.polygon(i);
         pol.Resize(4);
         for (int j = 0; j < 4; j++) {
-            pol.set_point(j, vertices[j].x, vertices[j].y);
+            pol.SetPoint(j, vertices[j].x, vertices[j].y);
         }
     }
     return boxes;
@@ -124,7 +124,7 @@ RgbImage Contours::Draw(RgbImage &img) {
     std::vector<std::vector<cv::Point>> cv_conts;
     cv_conts.resize(polys_.size());
     for (auto i = 0; i < polys_.size(); i++) {
-        cv_conts[i] = polys_[i].get_cvdata();
+        cv_conts[i] = polys_[i].GetCvData();
     }
     srand(12345);
     for (int i = 0; i < polys_.size(); i++) {

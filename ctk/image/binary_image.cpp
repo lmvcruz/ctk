@@ -274,10 +274,10 @@ BinaryImage BinaryImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &ref
     std::vector<cv::Point2f> cv_refs;
     cv_refs.resize(refs.size());
     for (auto i = 0; i < pts.size(); i++) {
-        cv_pts[i].x = pts[i].getX();
-        cv_pts[i].y = pts[i].getY();
-        cv_refs[i].x = refs[i].getX();
-        cv_refs[i].y = refs[i].getY();
+        cv_pts[i].x = pts[i].GetX();
+        cv_pts[i].y = pts[i].GetY();
+        cv_refs[i].x = refs[i].GetX();
+        cv_refs[i].y = refs[i].GetY();
     }
     cv::Mat homo_mat;
     // We assume that size>=4 (verified in the begining of the method)

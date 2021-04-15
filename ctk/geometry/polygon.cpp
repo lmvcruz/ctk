@@ -5,31 +5,25 @@
 namespace ctk {
 
 /**
- * @brief Polygon::Polygon  Default constructor.
- */
-Polygon::Polygon() {
-}
-
-/**
  * @brief Polygon::Polygon  Copy constructor. Takes a reference to an existing polygon object as input
  * and uses it to intialize another polygon object
  * @param that  reference to an existing polygon object
  */
 Polygon::Polygon(const Polygon &that) {
-    data_ = that.data_;
-    cvdata_ = that.cvdata_;
+    points = that.points;
+    cvpoints = that.cvpoints;
 }
 
 /**
  * @brief Polygon::Polygon  Parameterized constructor.
- * @param d  vector of Point objects
+ * @param pts  vector of Point objects
  */
-Polygon::Polygon(std::vector<PointD> &d) {
-    data_ = d;
-    cvdata_.resize(d.size());
-    for (auto i = 0; i < d.size(); i++) {
-        cvdata_[i].x = d[i].getX();
-        cvdata_[i].y = d[i].getY();
+Polygon::Polygon(std::vector<PointD> &pts) {
+    points = pts;
+    cvpoints.resize(pts.size());
+    for (auto i = 0; i < pts.size(); i++) {
+        cvpoints[i].x = pts[i].GetX();
+        cvpoints[i].y = pts[i].GetY();
     }
 }
 
@@ -38,11 +32,11 @@ Polygon::Polygon(std::vector<PointD> &d) {
  * @param cvd  vector of cv::Points
  */
 Polygon::Polygon(std::vector<cv::Point> &cvd) {
-    cvdata_ = cvd;
-    data_.resize(cvd.size());
+    cvpoints = cvd;
+    points.resize(cvd.size());
     for (auto i  =0; i < cvd.size(); i++) {
-        data_[i].setX(cvd[i].x);
-        data_[i].setY(cvd[i].y);
+        points[i].SetX(cvd[i].x);
+        points[i].SetY(cvd[i].y);
     }
 }
 
@@ -50,8 +44,8 @@ Polygon::Polygon(std::vector<cv::Point> &cvd) {
  * @brief Polygon::~Polygon Destructor
  */
 Polygon::~Polygon() {
-    data_.clear();
-    cvdata_.clear();
+    points.clear();
+    cvpoints.clear();
 }
 
 
@@ -61,22 +55,22 @@ Polygon::~Polygon() {
  * @return the  updated Polygon object
  */
 Polygon &Polygon::operator=(const Polygon &that) {
-    data_ = that.data_;
-    cvdata_ = that.cvdata_;
+    points = that.points;
+    cvpoints = that.cvpoints;
     return *this;
 }
 
 /**
  * @brief Polygon::operator =  Copy operator given a polgygon
- * @param d  vector of Point objects
+ * @param pts  vector of Point objects
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(std::vector<PointD> &d) {
-    data_ = d;
-    cvdata_.resize(d.size());
-    for (auto i = 0; i < d.size(); i++) {
-        cvdata_[i].x = d[i].getX();
-        cvdata_[i].y = d[i].getY();
+Polygon &Polygon::operator=(std::vector<PointD> &pts) {
+    points = pts;
+    cvpoints.resize(pts.size());
+    for (auto i = 0; i < pts.size(); ++i) {
+        cvpoints[i].x = pts[i].GetX();
+        cvpoints[i].y = pts[i].GetY();
     }
     return *this;
 }
@@ -87,11 +81,11 @@ Polygon &Polygon::operator=(std::vector<PointD> &d) {
  * @return the  updated Polygon object
  */
 Polygon &Polygon::operator=(std::vector<cv::Point> &cvd) {
-    cvdata_ = cvd;
-    data_.resize(cvd.size());
-    for (auto i = 0; i < cvd.size(); i++) {
-        data_[i].setX(cvd[i].x);
-        data_[i].setY(cvd[i].y);
+    cvpoints = cvd;
+    points.resize(cvd.size());
+    for (auto i = 0; i < cvd.size(); ++i) {
+        points[i].SetX(cvd[i].x);
+        points[i].SetY(cvd[i].y);
     }
     return *this;
 }
@@ -103,74 +97,75 @@ Polygon &Polygon::operator=(std::vector<cv::Point> &cvd) {
  */
 PointD &Polygon::operator[](int i)
 {
-    //TODO: test it
-    return data_[i];
+    // TODO: test it
+    // TODO: Safe access?
+    return points[i];
 }
 
 /**
- * @brief Polygon::add_point  Add a Point to the Polygon
+ * @brief Polygon::AddPoint  Add a Point to the Polygon
  * @param pt  reference to the Point object to be added.
  */
-void Polygon::add_point(PointD &pt) {
-    data_.push_back(pt);
-    cvdata_.push_back(cv::Point(pt.getX(), pt.getY()));
+void Polygon::AddPoint(PointD &pt) {
+    points.push_back(pt);
+    cvpoints.push_back(cv::Point(pt.GetX(), pt.GetY()));
 }
 
 /**
- * @brief Polygon::add_point  Add a Point to the Polygon
+ * @brief Polygon::AddPoint  Add a Point to the Polygon
  * @param x  a double indicating the x coordinate of the new Point.
  * @param y  a double indicating the y coordinate of the new Point.
  */
-void Polygon::add_point(double x, double y) {
-    data_.push_back(PointD(x,y));
-    cvdata_.push_back(cv::Point(x, y));
+void Polygon::AddPoint(double x, double y) {
+    points.push_back(PointD(x, y));
+    cvpoints.push_back(cv::Point(x, y));
 }
 
 /**
- * @brief Polygon::set_point  Set a Point in the Polygon
+ * @brief Polygon::SetPoint  Set a Point in the Polygon
  * @param idx  an int indicating the index of the point to be set.
  * @param pt  reference to the Point object with the new information.
  */
-void Polygon::set_point(int idx, PointD &pt) {
-    data_[idx] = pt;
-    cvdata_[idx] = cv::Point(pt.getX(), pt.getY());
+void Polygon::SetPoint(int idx, PointD &pt) {
+    points[idx] = pt;
+    cvpoints[idx] = cv::Point(pt.GetX(), pt.GetY());
 }
 
 
 /**
- * @brief Polygon::set_point  Set a Point in the Polygon
+ * @brief Polygon::SetPoint  Set a Point in the Polygon
  * @param idx  an int indicating the index of the point to be set.
  * @param x  double indicating the new x coordinate.
  * @param y  double indicating the new y coordinate.
  */
-void Polygon::set_point(int idx, double x, double y) {
-    data_[idx] = PointD(x,y);
-    cvdata_[idx] = cv::Point(x,y);
+void Polygon::SetPoint(int idx, double x, double y) {
+    points[idx] = PointD(x, y);
+    cvpoints[idx] = cv::Point(x, y);
 }
 
 /**
- * @brief Polygon::point  Get a Point in the Polygon
+ * @brief Polygon::GetPoint  Get a Point in the Polygon
  * @param i  an int indicating the index of the point to get.
- * @return The de point at index i in data_
+ * @return The de point at index i in points
  */
-PointD &Polygon::point(int i) {
-    return data_[i];
+PointD &Polygon::GetPoint(int i) {
+    return points[i];
 }
 
 /**
- * @brief Polygon::GetData  Get the Point vector data_ of the Polygon
- * @return The Polygon attribute data_
+ * @brief Polygon::GetData  Get the Point vector points of the Polygon
+ * @return The Polygon attribute points
  */
 std::vector<PointD> &Polygon::GetData() {
-    return data_;
+    return points;
 }
 
 /**
- * @brief Polygon::get_cvdata  Get the cv::Point vector cvdata_ of the Polygon
- * @return The Polygon attribute cvdata_
+ * @brief Polygon::GetCvData  Get the cv::Point vector cvpoints of the Polygon
+ * @return The Polygon attribute cvpoints
  */
-std::vector<cv::Point> &Polygon::get_cvdata() {
-    return cvdata_;
+std::vector<cv::Point> &Polygon::GetCvData() {
+    return cvpoints;
 }
 
 /**
@@ -178,16 +173,16 @@ std::vector<cv::Point> &Polygon::get_cvdata() {
  * @param s  an int indicating the new size of the polygon.
  */
 void Polygon::Resize(int s) {
-    data_.resize(s);
-    cvdata_.resize(s);
+    points.resize(s);
+    cvpoints.resize(s);
 }
 
 /**
  * @brief Polygon::size  Get the size of the Polygon
- * @return The size of the vector data_
+ * @return The size of the vector points
  */
 int Polygon::size() {
-    return data_.size();
+    return points.size();
 }
 
 /**
@@ -195,7 +190,7 @@ int Polygon::size() {
  * @return The contour area of the Polygon.
  */
 double Polygon::Area() {
-    return contourArea(cvdata_);
+    return contourArea(cvpoints);
 }
 
 /**
@@ -203,7 +198,7 @@ double Polygon::Area() {
  * @return  The perimeter of the Polygon.
  */
 double Polygon::Perimeter() {
-    return arcLength(cvdata_, true);
+    return arcLength(cvpoints, true);
 }
 
 /**
@@ -213,11 +208,14 @@ double Polygon::Perimeter() {
  */
 Polygon Polygon::Reduce(int epsilon) {
     Polygon new_poly;
-    approxPolyDP(cv::Mat(cvdata_), new_poly.cvdata_, epsilon, true); //approximate a curve or a polygon with another curve/polygon with less vertices so that the distance between them is less or equal to the specified precision
-    new_poly.data_.resize(new_poly.cvdata_.size());
-    for (auto i = 0; i < new_poly.cvdata_.size(); i++) {
-        new_poly.data_[i].setX(new_poly.cvdata_[i].x);
-        new_poly.data_[i].setX(new_poly.cvdata_[i].x);
+    // Approximate a curve or a polygon with another curve/polygon 
+    // with less vertices so that the distance between them is less or 
+    // equal to the specified precision
+    approxPolyDP(cv::Mat(cvpoints), new_poly.cvpoints, epsilon, true); 
+    new_poly.points.resize(new_poly.cvpoints.size());
+    for (auto i = 0; i < new_poly.cvpoints.size(); ++i) {
+        new_poly.points[i].SetX(new_poly.cvpoints[i].x);
+        new_poly.points[i].SetX(new_poly.cvpoints[i].x);
     }
     return new_poly;
 }
@@ -227,35 +225,35 @@ Polygon Polygon::Reduce(int epsilon) {
  * @param epsilon  int specifying the approximation accuracy. The maximum distance between the original polygon and its approximation.
  */
 void Polygon::SelfReduce(int epsilon) {
-    approxPolyDP(cv::Mat(cvdata_), cvdata_, epsilon, true);
-    data_.resize(cvdata_.size());
-    for (auto i = 0; i < cvdata_.size(); i++) {
-        data_[i].setX(cvdata_[i].x);
-        data_[i].setX(cvdata_[i].x);
+    approxPolyDP(cv::Mat(cvpoints), cvpoints, epsilon, true);
+    points.resize(cvpoints.size());
+    for (auto i = 0; i < cvpoints.size(); ++i) {
+        points[i].SetX(cvpoints[i].x);
+        points[i].SetX(cvpoints[i].x);
     }
 }
 
 
 /**
- * @brief Polygon::Shift  Shifts the order (arrangement) Polygon vertices in the vectors data_ and cvdata_
+ * @brief Polygon::Shift  Shifts the order (arrangement) Polygon vertices in the vectors points and cvpoints
  * @param sh  int specifying the desired shift
- * @return Polygon with the reordered data_ and cvdata_ vectors
+ * @return Polygon with the reordered points and cvpoints vectors
  */
 Polygon Polygon::Shift(int sh) {
     Polygon new_poly(*this);
-    std::rotate(new_poly.data_.begin(), new_poly.data_.begin()+sh, new_poly.data_.end());
-    std::rotate(new_poly.cvdata_.begin(), new_poly.cvdata_.begin()+sh, new_poly.cvdata_.end());
+    std::rotate(new_poly.points.begin(), new_poly.points.begin()+sh, new_poly.points.end());
+    std::rotate(new_poly.cvpoints.begin(), new_poly.cvpoints.begin()+sh, new_poly.cvpoints.end());
     return new_poly;
 }
 
 
 /**
- * @brief Polygon::SelfShift  Shifts the order (arrangement) Polygon vertices in the vectors data_ and cvdata_
+ * @brief Polygon::SelfShift  Shifts the order (arrangement) Polygon vertices in the vectors points and cvpoints
  * @param sh  int specifying the desired shift
  */
 void Polygon::SelfShift(int sh) {
-    std::rotate(data_.begin(), data_.begin()+sh, data_.end());
-    std::rotate(cvdata_.begin(), cvdata_.begin()+sh, cvdata_.end());
+    std::rotate(points.begin(), points.begin() + sh, points.end());
+    std::rotate(cvpoints.begin(), cvpoints.begin() + sh, cvpoints.end());
 }
 
 }

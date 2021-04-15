@@ -21,8 +21,8 @@ std::vector<PointI> getScanOrderVector(PointI &origin,
     indices.resize(w*h);
     for (unsigned int y=0; y<h; y++) {
         for (unsigned int x=0; x<w; x++) {
-            indices[y*w+x] = PointI( origin.getX() + static_cast<int>(x),
-                                          origin.getY() + static_cast<int>(y));
+            indices[y*w+x] = PointI( origin.GetX() + static_cast<int>(x),
+                                          origin.GetY() + static_cast<int>(y));
         }
     }
     return indices;
@@ -58,8 +58,8 @@ std::vector<PointI> getSnakeOrderVector(PointI &origin,
           y++;
           if (y<h) {
               for (unsigned int x=0; x<w; x++) {
-                  indices[y*w+x] = PointI( origin.getX() + static_cast<int>(w-1-x),
-                                                origin.getY() + static_cast<int>(y));
+                  indices[y*w+x] = PointI( origin.GetX() + static_cast<int>(w-1-x),
+                                                origin.GetY() + static_cast<int>(y));
               }
           }
       }
@@ -109,8 +109,8 @@ std::vector<PointI> getSpiralOrderVector(PointI &origin,
         if (x>=w || y>=h) {
             continue;
         }
-        indices[ptIndex] = PointI( origin.getX() + static_cast<int>(x),
-                                        origin.getY() + static_cast<int>(y));
+        indices[ptIndex] = PointI( origin.GetX() + static_cast<int>(x),
+                                        origin.GetY() + static_cast<int>(y));
         ptIndex++;
     }
     return indices;
@@ -166,7 +166,7 @@ std::vector<PointI> getSnailOrderVector(PointI &origin,
     for (unsigned int i=0; i<w*h; i++) {
         c += inc_c;
         r += inc_r;
-        indices[i] = PointI(origin.getX() + c, origin.getY() + r);
+        indices[i] = PointI(origin.GetX() + c, origin.GetY() + r);
         if (i == nextturn-1) {
             turns += 1;
             if (turns%2==0) {
