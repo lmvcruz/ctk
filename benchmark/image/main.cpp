@@ -115,7 +115,7 @@ static void BM_CountTrues(benchmark::State& state) {
     ctk::BinaryImage bm;
     CreateBinaryImage(bm, state.range(0), state.range(0));
     for (auto _ : state) {
-        bm.countTrues();
+        bm.CountTrues();
     }
     state.SetComplexityN(bm.GetSize());
 }
@@ -127,7 +127,7 @@ static void BM_CountFalses(benchmark::State& state) {
     ctk::BinaryImage bm;
     CreateBinaryImage(bm, state.range(0), state.range(0));
     for (auto _ : state) {
-        bm.countFalses();
+        bm.CountFalses();
     }
     state.SetComplexityN(bm.GetSize());
 }
@@ -139,7 +139,7 @@ static void BM_CountTrues2(benchmark::State& state) {
     ctk::BinaryImage bm;
     CreateBinaryImage(bm, state.range(0), state.range(1));
     for (auto _ : state) {
-        bm.countTrues();
+        bm.CountTrues();
     }
 }
 BENCHMARK(BM_CountTrues2)

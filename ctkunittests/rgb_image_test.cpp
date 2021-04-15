@@ -244,34 +244,34 @@ TEST_F(CtkRgbImageTest, Test_startScanIndices) {
         img.Set(i, i%255, 0, 0);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-scan.png");
-    EXPECT_EQ(img.red(10, 2), 90);
-    EXPECT_EQ(img.green(10, 2), 0);
-    EXPECT_EQ(img.blue(10, 2), 0);
-    EXPECT_EQ(img.red(10, 5), 210);
-    EXPECT_EQ(img.green(10, 5), 0);
-    EXPECT_EQ(img.blue(10, 5), 0);
-    EXPECT_EQ(img.red(10, 10), 155);
-    EXPECT_EQ(img.red(10, 20), 45);
-    EXPECT_EQ(img.red(10, 25), 245);
-    EXPECT_EQ(img.red(10, 35), 135);
+    EXPECT_EQ(img.Red(10, 2), 90);
+    EXPECT_EQ(img.Green(10, 2), 0);
+    EXPECT_EQ(img.Blue(10, 2), 0);
+    EXPECT_EQ(img.Red(10, 5), 210);
+    EXPECT_EQ(img.Green(10, 5), 0);
+    EXPECT_EQ(img.Blue(10, 5), 0);
+    EXPECT_EQ(img.Red(10, 10), 155);
+    EXPECT_EQ(img.Red(10, 20), 45);
+    EXPECT_EQ(img.Red(10, 25), 245);
+    EXPECT_EQ(img.Red(10, 35), 135);
 }
 
 TEST_F(CtkRgbImageTest, Test_startScanIndices_Not_Init) {
     ctk::RgbImage img;
     img.Create(40, 40);
     for (int i=0; i<img.GetSize(); i++) {
-        img.safe_iset(i, i%255,0,0);
+        img.SafeISet(i, i%255,0,0);
     }
-    EXPECT_EQ(img.red(10, 2), 90);
-    EXPECT_EQ(img.green(10, 2), 0);
-    EXPECT_EQ(img.blue(10, 2), 0);
-    EXPECT_EQ(img.red(10, 5), 210);
-    EXPECT_EQ(img.green(10, 5), 0);
-    EXPECT_EQ(img.blue(10, 5), 0);
-    EXPECT_EQ(img.red(10, 10), 155);
-    EXPECT_EQ(img.red(10, 20), 45);
-    EXPECT_EQ(img.red(10, 25), 245);
-    EXPECT_EQ(img.red(10, 35), 135);
+    EXPECT_EQ(img.Red(10, 2), 90);
+    EXPECT_EQ(img.Green(10, 2), 0);
+    EXPECT_EQ(img.Blue(10, 2), 0);
+    EXPECT_EQ(img.Red(10, 5), 210);
+    EXPECT_EQ(img.Green(10, 5), 0);
+    EXPECT_EQ(img.Blue(10, 5), 0);
+    EXPECT_EQ(img.Red(10, 10), 155);
+    EXPECT_EQ(img.Red(10, 20), 45);
+    EXPECT_EQ(img.Red(10, 25), 245);
+    EXPECT_EQ(img.Red(10, 35), 135);
 }
 
 TEST_F(CtkRgbImageTest, Test_Safe_Set) {
@@ -279,21 +279,21 @@ TEST_F(CtkRgbImageTest, Test_Safe_Set) {
     img.Create(40, 40);
     for (int i=0; i<img.GetSize()+2; i++) {
         try {
-            img.safe_iset(i, i%255,0,0);
+            img.SafeISet(i, i%255,0,0);
         } catch (std::exception& e){
             std::cout << e.what() << std::endl;
         }
     }
-    EXPECT_EQ(img.red(10, 2), 90);
-    EXPECT_EQ(img.green(10, 2), 0);
-    EXPECT_EQ(img.blue(10, 2), 0);
-    EXPECT_EQ(img.red(10, 5), 210);
-    EXPECT_EQ(img.green(10, 5), 0);
-    EXPECT_EQ(img.blue(10, 5), 0);
-    EXPECT_EQ(img.red(10, 10), 155);
-    EXPECT_EQ(img.red(10, 20), 45);
-    EXPECT_EQ(img.red(10, 25), 245);
-    EXPECT_EQ(img.red(10, 35), 135);
+    EXPECT_EQ(img.Red(10, 2), 90);
+    EXPECT_EQ(img.Green(10, 2), 0);
+    EXPECT_EQ(img.Blue(10, 2), 0);
+    EXPECT_EQ(img.Red(10, 5), 210);
+    EXPECT_EQ(img.Green(10, 5), 0);
+    EXPECT_EQ(img.Blue(10, 5), 0);
+    EXPECT_EQ(img.Red(10, 10), 155);
+    EXPECT_EQ(img.Red(10, 20), 45);
+    EXPECT_EQ(img.Red(10, 25), 245);
+    EXPECT_EQ(img.Red(10, 35), 135);
 }
 
 TEST_F(CtkRgbImageTest, Test_startSnakeIndices) {
@@ -304,14 +304,14 @@ TEST_F(CtkRgbImageTest, Test_startSnakeIndices) {
         img.Set(i, i%255, 0, 0);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-snake.png");
-    EXPECT_EQ(img.red(10, 2), 90);
-    EXPECT_EQ(img.green(10, 2), 0);
-    EXPECT_EQ(img.blue(10, 2), 0);
-    EXPECT_EQ(img.red(10, 5), 229);
-    EXPECT_EQ(img.red(10, 10), 155);
-    EXPECT_EQ(img.red(10, 20), 45);
-    EXPECT_EQ(img.red(10, 25), 9);
-    EXPECT_EQ(img.red(10, 35), 154);
+    EXPECT_EQ(img.Red(10, 2), 90);
+    EXPECT_EQ(img.Green(10, 2), 0);
+    EXPECT_EQ(img.Blue(10, 2), 0);
+    EXPECT_EQ(img.Red(10, 5), 229);
+    EXPECT_EQ(img.Red(10, 10), 155);
+    EXPECT_EQ(img.Red(10, 20), 45);
+    EXPECT_EQ(img.Red(10, 25), 9);
+    EXPECT_EQ(img.Red(10, 35), 154);
 }
 
 TEST_F(CtkRgbImageTest, Test_startSpiralIndices) {
@@ -322,14 +322,14 @@ TEST_F(CtkRgbImageTest, Test_startSpiralIndices) {
         img.Set(i, i%255, 0, 0);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-spiral.png");
-    EXPECT_EQ(img.red(10, 2), 102);
-    EXPECT_EQ(img.green(10, 2), 0);
-    EXPECT_EQ(img.blue(10, 2), 0);
-    EXPECT_EQ(img.red(10, 5), 105);
-    EXPECT_EQ(img.red(10, 10), 110);
-    EXPECT_EQ(img.red(10, 20), 175);
-    EXPECT_EQ(img.red(10, 25), 125);
-    EXPECT_EQ(img.red(10, 35), 215);
+    EXPECT_EQ(img.Red(10, 2), 102);
+    EXPECT_EQ(img.Green(10, 2), 0);
+    EXPECT_EQ(img.Blue(10, 2), 0);
+    EXPECT_EQ(img.Red(10, 5), 105);
+    EXPECT_EQ(img.Red(10, 10), 110);
+    EXPECT_EQ(img.Red(10, 20), 175);
+    EXPECT_EQ(img.Red(10, 25), 125);
+    EXPECT_EQ(img.Red(10, 35), 215);
 }
 
 TEST_F(CtkRgbImageTest, Test_startSnailIndices) {
@@ -340,14 +340,14 @@ TEST_F(CtkRgbImageTest, Test_startSnailIndices) {
         img.Set(i, i%255, 0, 0);
     }
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-snail.png");
-    EXPECT_EQ(img.red(10, 2), 57);
-    EXPECT_EQ(img.green(10, 2), 0);
-    EXPECT_EQ(img.blue(10, 2), 0);
-    EXPECT_EQ(img.red(10, 5), 195);
-    EXPECT_EQ(img.red(10, 10), 180);
-    EXPECT_EQ(img.red(10, 20), 246);
-    EXPECT_EQ(img.red(10, 25), 241);
-    EXPECT_EQ(img.red(10, 35), 153);
+    EXPECT_EQ(img.Red(10, 2), 57);
+    EXPECT_EQ(img.Green(10, 2), 0);
+    EXPECT_EQ(img.Blue(10, 2), 0);
+    EXPECT_EQ(img.Red(10, 5), 195);
+    EXPECT_EQ(img.Red(10, 10), 180);
+    EXPECT_EQ(img.Red(10, 20), 246);
+    EXPECT_EQ(img.Red(10, 25), 241);
+    EXPECT_EQ(img.Red(10, 35), 153);
 }
 
 TEST_F(CtkRgbImageTest, Test_startCustomIndices) {
@@ -362,19 +362,19 @@ TEST_F(CtkRgbImageTest, Test_startCustomIndices) {
     if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-custom.png");
 
     //TODO - verificar geração de num pseudo aleatorios em SO diferentes
-    /**EXPECT_EQ(img.red(10, 2), 208);
+    /**EXPECT_EQ(img.Red(10, 2), 208);
     EXPECT_EQ(img.green(10, 2), 0);
-    EXPECT_EQ(img.blue(10, 2), 0);
-    EXPECT_EQ(img.red(10, 5), 64);
-    EXPECT_EQ(img.red(10, 10), 96);
-    EXPECT_EQ(img.red(10, 20), 192);
-    EXPECT_EQ(img.red(10, 25), 138);
-    EXPECT_EQ(img.red(10, 35), 214);**/
+    EXPECT_EQ(img.Blue(10, 2), 0);
+    EXPECT_EQ(img.Red(10, 5), 64);
+    EXPECT_EQ(img.Red(10, 10), 96);
+    EXPECT_EQ(img.Red(10, 20), 192);
+    EXPECT_EQ(img.Red(10, 25), 138);
+    EXPECT_EQ(img.Red(10, 35), 214);**/
 }
 
 TEST_F(CtkRgbImageTest, Test_toGrayImage) {
     ctk::RgbImage rgb = CtkRgbImageTest::rgbimg;
-    ctk::GrayImage gray = rgb.toGrayImage();
+    ctk::GrayImage gray = rgb.ToGrayImage();
     if (SAVE_IMAGES) gray.Save(OUTPUT_DIR+"rgb2gray.jpg");
     EXPECT_EQ(gray.GetWidth(), rgb.GetWidth());
     EXPECT_EQ(gray.GetHeight(), rgb.GetHeight());
@@ -388,7 +388,7 @@ TEST_F(CtkRgbImageTest, Test_toGrayImage) {
             color.Set(x, y, x+y, 0, 0);
         }
     }
-    ctk::GrayImage color2gray = color.toGrayImage();
+    ctk::GrayImage color2gray = color.ToGrayImage();
     for (int x=0; x<color2gray.GetWidth(); x++) {
         for (int y=0; y<color2gray.GetHeight(); y++) {
             int v = static_cast<int>(static_cast<float>(x+y)*0.299);

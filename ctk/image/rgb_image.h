@@ -24,13 +24,13 @@ public:
     void Set(int i, int r, int g, int b);
 
     void SafeSet(int x, int y, int r, int g, int b);
-    void safe_iset(int i, int r, int g, int b);
-    int red(int x, int y);
-    int green(int x, int y);
-    int blue(int x, int y);
+    void SafeISet(int i, int r, int g, int b);
+    int Red(int x, int y);
+    int Green(int x, int y);
+    int Blue(int x, int y);
 
     //TODO: test and benchmark these methods;
-    PointI get_pixel(int x, int y);
+    PointI GetPixel(int x, int y);
 
     //TODO: test and benchmark these methods;
     //TODO: replace type by an internal enum
@@ -50,7 +50,7 @@ public:
     std::vector<Polygon> ApproximateContours(int eps=3);
     RgbImage Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h);
 
-    GrayImage toGrayImage();
+    GrayImage ToGrayImage();
 
     RgbImage DrawPolygon(Polygon &pol);
 

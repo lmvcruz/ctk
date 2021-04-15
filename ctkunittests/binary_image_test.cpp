@@ -21,10 +21,10 @@ TEST_F(CtkBinaryImageTest, Test_Get) {
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(CtkBinaryImageTest::binimg.get(x,y), true);
+                EXPECT_EQ(CtkBinaryImageTest::binimg.Get(x,y), true);
             }
             else {
-                EXPECT_EQ(CtkBinaryImageTest::binimg.get(x,y), false);
+                EXPECT_EQ(CtkBinaryImageTest::binimg.Get(x,y), false);
             }
         }
     }
@@ -41,10 +41,10 @@ TEST_F(CtkBinaryImageTest, Test_ConstructorCopy) {
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
             else {
-                EXPECT_EQ(bin.get(x,y), false);
+                EXPECT_EQ(bin.Get(x,y), false);
             }
         }
     }
@@ -62,10 +62,10 @@ TEST_F(CtkBinaryImageTest, Test_ConstructorMat) {
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
             else {
-                EXPECT_EQ(bin.get(x,y), false);
+                EXPECT_EQ(bin.Get(x,y), false);
             }
         }
     }
@@ -82,10 +82,10 @@ TEST_F(CtkBinaryImageTest, Test_OperatorCopy) {
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
             else {
-                EXPECT_EQ(bin.get(x,y), false);
+                EXPECT_EQ(bin.Get(x,y), false);
             }
         }
     }
@@ -103,7 +103,7 @@ TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     cv::Mat data = bin1.GetData();
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
-            EXPECT_EQ(bin1.get(x,y),true);
+            EXPECT_EQ(bin1.Get(x,y),true);
         }
     }
     ctk::BinaryImage bin0;
@@ -116,7 +116,7 @@ TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     int h0 = bin0.GetHeight();
     for (int x=0; x<w0; x++) {
         for (int y=0; y<h0; y++) {
-            EXPECT_EQ(bin0.get(x,y),false);
+            EXPECT_EQ(bin0.Get(x,y),false);
         }
     }
 }
@@ -133,10 +133,10 @@ TEST_F(CtkBinaryImageTest, Test_OperatorNeg) {
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.get(x,y), false);
+                EXPECT_EQ(bin.Get(x,y), false);
             }
             else {
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
         }
     }
@@ -156,13 +156,13 @@ TEST_F(CtkBinaryImageTest, Test_OperatorAnd) {
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x>=150 && y>=150){
-                EXPECT_EQ(bin.get(x,y), false);
+                EXPECT_EQ(bin.Get(x,y), false);
             }
             else if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
             else {
-                EXPECT_EQ(bin.get(x,y), false);
+                EXPECT_EQ(bin.Get(x,y), false);
             }
         }
     }
@@ -182,13 +182,13 @@ TEST_F(CtkBinaryImageTest, Test_OperatorOr) {
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
             else if (x>=50 && x<100 && y>=50 && y<100) {
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
             else {
-                EXPECT_EQ(bin.get(x,y), false);
+                EXPECT_EQ(bin.Get(x,y), false);
             }
         }
     }
@@ -208,13 +208,13 @@ TEST_F(CtkBinaryImageTest, Test_OperatorXor) {
     for (int x=0; x<w; x++) {
         for (int y=0; y<h; y++) {
             if (x>=50 && x<100 && y>=50 && y<100) {
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
             else if (x>=150 && y>=150){
-                EXPECT_EQ(bin.get(x,y), true);
+                EXPECT_EQ(bin.Get(x,y), true);
             }
             else {
-                EXPECT_EQ(bin.get(x,y), false);
+                EXPECT_EQ(bin.Get(x,y), false);
             }
         }
     }
@@ -228,12 +228,12 @@ TEST_F(CtkBinaryImageTest, Test_CountTrues) {
     m4.Open(INPUT_DIR+"maskM1orM2.png");
     m5.Open(INPUT_DIR+"maskM1xorM2.png");
     m6.Open(INPUT_DIR+"maskinv.png");
-    EXPECT_EQ(m1.countTrues(), 30000);
-    EXPECT_EQ(m2.countTrues(), 30000);
-    EXPECT_EQ(m3.countTrues(), 27500);
-    EXPECT_EQ(m4.countTrues(), 32500);
-    EXPECT_EQ(m5.countTrues(), 5000);
-    EXPECT_EQ(m6.countTrues(), 10000);
+    EXPECT_EQ(m1.CountTrues(), 30000);
+    EXPECT_EQ(m2.CountTrues(), 30000);
+    EXPECT_EQ(m3.CountTrues(), 27500);
+    EXPECT_EQ(m4.CountTrues(), 32500);
+    EXPECT_EQ(m5.CountTrues(), 5000);
+    EXPECT_EQ(m6.CountTrues(), 10000);
 }
 
 TEST_F(CtkBinaryImageTest, Test_CountFalses) {
@@ -244,11 +244,11 @@ TEST_F(CtkBinaryImageTest, Test_CountFalses) {
     m4.Open(INPUT_DIR+"maskM1orM2.png");
     m5.Open(INPUT_DIR+"maskM1xorM2.png");
     m6.Open(INPUT_DIR+"maskinv.png");
-    EXPECT_EQ(m1.countFalses(), 10000);
-    EXPECT_EQ(m2.countFalses(), 10000);
-    EXPECT_EQ(m3.countFalses(), 12500);
-    EXPECT_EQ(m4.countFalses(), 7500);
-    EXPECT_EQ(m5.countFalses(), 35000);
-    EXPECT_EQ(m6.countFalses(), 30000);
+    EXPECT_EQ(m1.CountFalses(), 10000);
+    EXPECT_EQ(m2.CountFalses(), 10000);
+    EXPECT_EQ(m3.CountFalses(), 12500);
+    EXPECT_EQ(m4.CountFalses(), 7500);
+    EXPECT_EQ(m5.CountFalses(), 35000);
+    EXPECT_EQ(m6.CountFalses(), 30000);
 }
 #endif

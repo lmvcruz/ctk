@@ -28,12 +28,11 @@ class BgraImage;
 template <class T>
 class AbstractImage : public AbstractMatrix<T> {
 protected:
-    std::vector<unsigned int> indices_;
+    std::vector<unsigned int> indices;
     int curr_iter_idx;
-    bool invert_channels_;
+    bool invert_channels = false;
 
 public:
-    using AbstractMatrix<T>::GetChannels;
     using AbstractMatrix<T>::Get;
     using AbstractMatrix<T>::Set;
     using AbstractMatrix<T>::GetWidth;
@@ -42,28 +41,21 @@ public:
     /**
      * @brief AbstractImage Default Constructor
      */
-    AbstractImage() {
-        AbstractMatrix<T>::type = -1;
-        AbstractMatrix<T>::ch_size = -1;
-
-        invert_channels_ = false;
-    }
+    AbstractImage() = default;
 
     /**
      * @brief AbstractImage Parameterized Constructor
      * @param d matrix
      */
-    AbstractImage(cv::Mat &d) : AbstractMatrix<T>(d){
+    AbstractImage(cv::Mat &d) : AbstractMatrix<T>(d) {
         AbstractMatrix<T>::type = d.type();
         AbstractMatrix<T>::ch_size = d.channels();
-
-        invert_channels_ = false;
     }
 
     /**
      * @brief ~AbstractImage Destructor
      */
-    virtual ~AbstractImage(){}
+    virtual ~AbstractImage() = default;
 
     /**
      * @brief startScanIndices Generate scan indices
@@ -118,7 +110,7 @@ public:
      * @param vec vector of unsigned int with the desired indices
      */
     void StartCustomIndices(std::vector<unsigned int> &vec) {
-        indices_ = vec;
+        indices = vec;
     }
 
     /**
@@ -126,84 +118,85 @@ public:
      * @param vec  vector of int with the desired indices
      */
     void StartCustomIndices(std::vector<int> &vec) {
-        indices_.resize(vec.size());
-        for (auto i = 0; i < vec.size(); i++) {
-            indices_[i] = static_cast<unsigned int>(vec[i]);
+        indices.resize(vec.size());
+        for (auto i = 0; i < vec.size(); ++i) {
+            indices[i] = static_cast<unsigned int>(vec[i]);
         }
     }
 
     /**
-     * @brief isIndices check if indices_ contains indices
-     * @return  true if the size of vector indices_>0
+     * @brief IsIndices checks the object will iterate over 
+     * pre-defined indices
+     * @return  true if the attribute indices is filled
      */
-    bool isIndices() {
-        return (indices_.size() > 0);
+    bool IsIndices() {
+        return (indices.size() > 0);
     }
 
     /**
-     * @brief get  Get specific element in AbstractMatrix
-     * @param i int representing the desired index in vector indices_
-     * @return AbstractMatrix element at  position = indices_(i)
+     * @brief Get  Get specific element in AbstractMatrix
+     * @param i int representing the desired index in vector indices
+     * @return AbstractMatrix element at  position = indices(i)
      */
-    T iget(int i) {
+    T IGet(int i) {
         unsigned int ui = static_cast<unsigned int>(i);
-        int int_indx = static_cast<int>(indices_[ui]);
+        int int_indx = static_cast<int>(indices[ui]);
         int y = int_indx/AbstractMatrix<T>::data.cols;
         int x = int_indx%AbstractMatrix<T>::data.rows;
-        return AbstractMatrix<T>::Get(x,y);
+        return AbstractMatrix<T>::Get(x, y);
     }
 
     /**
      * @brief SafeGet Get specific element in AbstractMatrix
-     * @param i int representing the desired index in vector indices_
-     * @return AbstractMatrix element at  position = indices_(i)
+     * @param i int representing the desired index in vector indices
+     * @return AbstractMatrix element at  position = indices(i)
      */
-    T safe_iget(int i) {
-        if (!isIndices()) StartScanIndices();
-        int isize = static_cast<int>(indices_.size());
-        if (i<0 || i >= isize) {
+    T SafeIGet(int i) {
+        if (!IsIndices()) StartScanIndices();
+        int isize = static_cast<int>(indices.size());
+        if (i < 0 || i >= isize) {
             throw std::out_of_range("Exception thrown in AbstractImage::SafeSet");
         }
         unsigned int ui = static_cast<unsigned int>(i);
-        int int_indx = static_cast<int>(indices_[ui]);
-        int y = int_indx/AbstractMatrix<T>::data.cols;
-        int x = int_indx%AbstractMatrix<T>::data.rows;
-        return AbstractMatrix<T>::Get(x,y);
+        int iidx = static_cast<int>(indices[ui]);
+        int x = iidx % AbstractMatrix<T>::data.rows;
+        int y = iidx / AbstractMatrix<T>::data.cols;
+        return AbstractMatrix<T>::Get(x, y);
     }
 
     /**
      * @brief Set  Set specific element in AbstractMatrix
-     * @param i int representing the desired index in vector indices_
+     * @param i int representing the desired index in vector indices
      * @param v desired value
      */
-    void iset(int i, T v) {
+    void ISet(int i, T v) {
         unsigned int ui = static_cast<unsigned int>(i);
-        int int_idx = static_cast<int>(indices_[ui]);
-        int y = int_idx/AbstractMatrix<T>::data.cols;
-        int x = int_idx%AbstractMatrix<T>::data.rows;
-        AbstractMatrix<T>::Set(x,y,v);
+        int iidx = static_cast<int>(indices[ui]);
+        int y = iidx / AbstractMatrix<T>::data.cols;
+        int x = iidx % AbstractMatrix<T>::data.rows;
+        AbstractMatrix<T>::Set(x, y, v);
     }
 
     /**
      * @brief safe_iset  Set specific element in AbstractMatrix
-     * @param i int representing the desired index in vector indices_
+     * @param i int representing the desired index in vector indices
      * @param v desired value
      */
-    void safe_iset(int i, T v) {
-        if (!isIndices()) StartScanIndices();
-        int isize = static_cast<int>(indices_.size());
-        if (i<0 || i>=isize) {
+    void SafeISet(int i, T v) {
+        if (!IsIndices()) StartScanIndices();
+        int isize = static_cast<int>(indices.size());
+        if (i < 0 || i >= isize) {
             throw std::out_of_range("Exception thrown in AbstractImage::SafeSet");
         }
         unsigned int ui = static_cast<unsigned int>(i);
-        int int_indx = static_cast<int>(indices_[ui]);
-        int y = int_indx/AbstractMatrix<T>::data.cols;
-        int x = int_indx%AbstractMatrix<T>::data.rows;
-        AbstractMatrix<T>::Set(x,y,v);
+        int iidx = static_cast<int>(indices[ui]);
+        int y = iidx / AbstractMatrix<T>::data.cols;
+        int x = iidx % AbstractMatrix<T>::data.rows;
+        AbstractMatrix<T>::Set(x, y, v);
     }
 
     /**
-     * @brief Crop
+     * @brief Crop the image according to the region of interest
      * @param x int representing the x coordinate of the top-left corner
      * @param y int representing the y coordinate of the top-left corner
      * @param w width of the rectangle
@@ -211,20 +204,20 @@ public:
      * @return  Cropped image containing the desired rgion
      */
     AbstractImage<T> Crop(int x, int y, int w, int h) {
-        cv::Rect roi(x,y,w,h);
+        cv::Rect roi(x, y, w, h);
         cv::Mat aux = AbstractMatrix<T>::data(roi);
         return AbstractImage<T>(aux);
     }
 
     /**
-     * @brief SelfCrop TODO
+     * @brief SelfCrop the image according to the region of interest
      * @param x int representing the x coordinate of the top-left corner
      * @param y int representing the y coordinate of the top-left corner
      * @param w width of the rectangle
      * @param h height of the rectangle
      */
     void SelfCrop(int x, int y, int w, int h) {
-        cv::Rect roi(x,y,w,h);
+        cv::Rect roi(x, y, w, h);
         AbstractMatrix<T>::data = AbstractMatrix<T>::data(roi).clone();
     }
 
@@ -238,7 +231,7 @@ public:
      * @param h height of the copied data (if -1 will be the entire image)
      */
     void CopyFrom(AbstractImage<T>& that, int ox, int oy, int tx, int ty, int w=-1, int h=-1) {
-        if (w==-1 or h==-1) {
+        if (w == -1 or h == -1) {
             w = that.GetWidth();
             h = that.GetHeight();
         }
@@ -361,12 +354,12 @@ public:
     }
 
     /**
-     * @brief resize - change image size
+     * @brief Resize - change image size
      * @param nw int representing new width
      * @param nh int representing new hight
      * @return Resized image
      */
-    AbstractImage<T> resize(int nw, int nh) {
+    AbstractImage<T> Resize(int nw, int nh) {
         cv::Mat aux;
         cv::resize(AbstractMatrix<T>::data, aux, cv::Size(nw,nh), cv::INTER_CUBIC);
         return AbstractImage<T>(aux);
@@ -378,7 +371,7 @@ public:
      */
     void Open(std::string filename) {
         AbstractMatrix<T>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
-        if (invert_channels_) {
+        if (invert_channels) {
             cv::cvtColor(AbstractMatrix<T>::data,
                          AbstractMatrix<T>::data,
                          cv::COLOR_RGB2BGR);
@@ -391,7 +384,7 @@ public:
      */
     void Save(std::string filename) {
         cv::imwrite(filename, AbstractMatrix<T>::data);
-        if(invert_channels_) {
+        if(invert_channels) {
             cv::Mat aux;
             cv::cvtColor(AbstractMatrix<T>::data,
                          aux, cv::COLOR_RGB2BGR);
@@ -399,22 +392,14 @@ public:
         }
     }
 
-    /**
-     * @brief Show TODO
-     */
-    void Show() {
-        //TODO: implement it
-        std::cout << "TODO" << std::endl;
-    }
-
 private:
     void InitIndicesFromPointVector(std::vector<PointI>& points) {
         int w = AbstractMatrix<T>::GetWidth();
         int h = AbstractMatrix<T>::GetHeight();
-        indices_.resize(static_cast<unsigned int>(AbstractMatrix<T>::GetSize()));
+        indices.resize(static_cast<unsigned int>(AbstractMatrix<T>::GetSize()));
         for (size_t ii = 0; ii < points.size(); ++ii) {
             int idx = points[ii].getY()*w+points[ii].getX();
-            indices_[ii] = static_cast<unsigned int>(idx);
+            indices[ii] = static_cast<unsigned int>(idx);
         }
     }
 };
@@ -447,7 +432,7 @@ public:
 //    int saturation(int x, int y);
 //    int value(int x, int y);
 
-//    RgbImage toRgbImage();
+//    RgbImage ToRgbImage();
 
 //    friend class RgbImage;
 //};
@@ -467,7 +452,7 @@ public:
 //    int luminance(int x, int y);
 //    int saturation(int x, int y);
 
-//    RgbImage toRgbImage();
+//    RgbImage ToRgbImage();
 
 //    friend class RgbImage;
 //};
@@ -487,7 +472,7 @@ public:
 //    int a_value(int x, int y);
 //    int b_value(int x, int y);
 
-//    RgbImage toRgbImage();
+//    RgbImage ToRgbImage();
 
 //    friend class RgbImage;
 //};
@@ -514,12 +499,12 @@ public:
 //    void Set(int x, int y, int r, int g, int b, int a);
 //    void Set(int i, int r, int g, int b, int a);
 //    int red(int x, int y);
-//    int green(int x, int y);
-//    int blue(int x, int y);
+//    int Green(int x, int y);
+//    int Blue(int x, int y);
 //    int alpha(int x, int y);
 
-//    GrayImage toGrayImage();
-//    RgbImage toRgbImage();
+//    GrayImage ToGrayImage();
+//    RgbImage ToRgbImage();
 
 //    friend class RgbImage;
 //};

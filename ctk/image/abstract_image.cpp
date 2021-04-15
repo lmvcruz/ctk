@@ -14,7 +14,7 @@ namespace ctk {
 ColorImage::ColorImage() {
     type = CV_8UC3;
     ch_size = 3;
-    invert_channels_ = false;
+    invert_channels = false;
 }
 
 /**
@@ -25,7 +25,7 @@ ColorImage::ColorImage(const ColorImage &that) {
     if (that.data.type()!=CV_8UC3 || that.data.channels()!=3) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
-    invert_channels_ = false;
+    invert_channels = false;
     data = that.data.clone();
 }
 
@@ -37,7 +37,7 @@ ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that) {
     if (that.GetData().type()!=CV_8UC3 || that.GetData().channels()!=3) throw  incompatible_parameters();
     type = CV_8UC3;
     ch_size = 3;
-    invert_channels_ = false;
+    invert_channels = false;
     data = that.GetData().clone();
 }
 

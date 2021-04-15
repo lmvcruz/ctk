@@ -112,12 +112,12 @@ void BinaryImage::Set(int x, int y, bool v) {
 }
 
 /**
- * @brief BinaryImage::get  Get value of a specific pixel in the image
+ * @brief BinaryImage::Get  Get value of a specific pixel in the image
  * @param x  int representing column index
  * @param y  int representing row index
  * @return image value at position (y,x)
  */
-bool BinaryImage::get(int x, int y) {
+bool BinaryImage::Get(int x, int y) {
     return (static_cast<int>(data.at<uchar>(y,x))>128);
 }
 
@@ -129,7 +129,7 @@ BinaryImage BinaryImage::Not() {
     BinaryImage aux(*this);
     for (int x = 0; x < data.cols; x++) {
         for(int y = 0; y < data.rows; y++) {
-            aux.Set(x,y, 1-get(x,y));
+            aux.Set(x,y, 1-Get(x,y));
         }
     }
     return aux;
@@ -144,7 +144,7 @@ BinaryImage BinaryImage::And(BinaryImage &that) {
     BinaryImage aux(*this);
     for (int x = 0; x < data.cols; x++) {
         for(int y = 0; y < data.rows; y++) {
-            aux.Set(x,y, get(x,y)&&that.get(x,y));
+            aux.Set(x,y, Get(x,y)&&that.Get(x,y));
         }
     }
     return aux;
@@ -159,7 +159,7 @@ BinaryImage BinaryImage::Or(BinaryImage &that) {
     BinaryImage aux(*this);
     for (int x = 0; x < data.cols; x++) {
         for(int y = 0; y < data.rows; y++) {
-            aux.Set(x,y, get(x,y)||that.get(x,y));
+            aux.Set(x,y, Get(x,y)||that.Get(x,y));
         }
     }
     return aux;
@@ -174,35 +174,35 @@ BinaryImage BinaryImage::Xor(BinaryImage &that) {
     BinaryImage aux(*this);
     for (int x = 0; x < data.cols; x++) {
         for (int y = 0; y < data.rows; y++) {
-            aux.Set(x,y, get(x,y)^that.get(x,y));
+            aux.Set(x,y, Get(x,y)^that.Get(x,y));
         }
     }
     return aux;
 }
 
 /**
- * @brief BinaryImage::countTrues
+ * @brief BinaryImage::CountTrues
  * @return  int representing the number of image pixels with true value (>0)
  */
-int BinaryImage::countTrues() {
+int BinaryImage::CountTrues() {
     int count = 0;
     for (int x = 0; x < data.cols; x++) {
         for (int y = 0; y < data.rows; y++) {
-            if (get(x,y)) count++;
+            if (Get(x,y)) count++;
         }
     }
     return count;
 }
 
 /**
- * @brief BinaryImage::countFalses
+ * @brief BinaryImage::CountFalses
  * @return  int representing the number of image pixels with false value (0)
  */
-int BinaryImage::countFalses() {
+int BinaryImage::CountFalses() {
     int count = 0;
     for (int x = 0; x < data.cols; x++) {
         for(int y = 0; y < data.rows; y++) {
-            if (!get(x,y)) count++;
+            if (!Get(x,y)) count++;
         }
     }
     return count;
@@ -307,7 +307,7 @@ int BinaryImage::Compare(int x, int y, BinaryImage &that) {
     for (int xx=0; xx<that.GetWidth(); xx++) {
         for (int yy=0; yy<that.GetHeight(); yy++) {
             if ((x+xx>=GetWidth()) || (y+yy>=GetHeight())) dist++;
-            else if (get(x+xx,y+yy)==that.get(xx,yy)) dist++;
+            else if (Get(x+xx,y+yy)==that.Get(xx,yy)) dist++;
         }
     }
     return dist;
@@ -375,18 +375,10 @@ void BinaryImage::Save(std::string filename) {
 }
 
 /**
- * @brief BinaryImage::Show  Show BinaryImage TODO
- */
-void BinaryImage::Show() {
-    std::cout << "TODO" << std::endl;
-    //cv::imshow("test",data);
-}
-
-/**
- * @brief BinaryImage::toRgbImage  Convert BinaryImage to RGB Image
+ * @brief BinaryImage::ToRgbImage  Convert BinaryImage to RGB Image
  * @return Resulting RGB Image
  */
-RgbImage BinaryImage::toRgbImage() {
+RgbImage BinaryImage::ToRgbImage() {
     RgbImage newImage;
     cv::cvtColor(data, newImage.GetData(), cv::COLOR_GRAY2RGB);
     return newImage;

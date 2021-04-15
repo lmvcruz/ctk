@@ -14,7 +14,7 @@ namespace ctk
 GrayImage::GrayImage() {
     type = CV_8UC1;
     ch_size = 1;
-    invert_channels_ = false;
+    invert_channels = false;
 }
 
 /**
@@ -25,7 +25,7 @@ GrayImage::GrayImage(const GrayImage &that) {
     if (that.data.type()!=CV_8UC1 || that.data.channels()!=1) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
-    invert_channels_ = false;
+    invert_channels = false;
     data = that.data.clone();
 }
 
@@ -41,7 +41,7 @@ GrayImage::GrayImage(const AbstractImage<uchar> &that) {
     }
     type = CV_8UC1;
     ch_size = 1;
-    invert_channels_ = false;
+    invert_channels = false;
     if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
 }
 
@@ -58,7 +58,7 @@ GrayImage::GrayImage(cv::Mat &d)  {
     }
     type = CV_8UC1;
     ch_size = 1;
-    invert_channels_ = false;
+    invert_channels = false;
     if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
 }
 
@@ -72,7 +72,7 @@ GrayImage &GrayImage::operator=(const GrayImage &that) {
     if (that.data.type()!=CV_8UC1 || that.data.channels()!=1) throw  incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
-    invert_channels_ = false;
+    invert_channels = false;
     data = that.data.clone();
     return *this;
 }
@@ -90,7 +90,7 @@ GrayImage &GrayImage::operator=(const cv::Mat &that) {
     }
     type = that.type();
     ch_size = that.channels();
-    invert_channels_ = false;
+    invert_channels = false;
     if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
     return *this;
 }
@@ -108,7 +108,7 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that) {
     }
     type = CV_8UC1;
     ch_size = 1;
-    invert_channels_ = false;
+    invert_channels = false;
     if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
     return *this;
 }
@@ -133,10 +133,10 @@ int GrayImage::GetChannels() {
 }
 
 /**
- * @brief GrayImage::toRgbImage - Convert gray image to RGB image
+ * @brief GrayImage::ToRgbImage - Convert gray image to RGB image
  * @return RGB Image
  */
-RgbImage GrayImage::toRgbImage() {
+RgbImage GrayImage::ToRgbImage() {
     RgbImage newImage;
     cv::cvtColor(data, newImage.GetData(), cv::COLOR_GRAY2BGR);
     return newImage;

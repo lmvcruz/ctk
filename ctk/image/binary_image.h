@@ -21,7 +21,7 @@ public:
 
     void Fill(bool v);
     void Set(int x, int y, bool v);
-    bool get(int x, int y);
+    bool Get(int x, int y);
 
     //TODO: implement SafeGet and SafeSet
 
@@ -32,8 +32,8 @@ public:
 
     //TODO: Implement Self methods of Logic Operations
 
-    int countTrues();
-    int countFalses();
+    int CountTrues();
+    int CountFalses();
 
     //TODO: test and benchmark these methods;
     //TODO: replace type by an internal enum
@@ -50,9 +50,8 @@ public:
 
     void Open(std::string filename);
     void Save(std::string filename);
-    void Show();
 
-    RgbImage toRgbImage();
+    RgbImage ToRgbImage();
 };
 
 } // namespace ctk 

@@ -34,7 +34,7 @@ public:
     GrayImage Normalize(int minv, int maxv);
     BinaryImage PickColor(int c);
 
-    RgbImage toRgbImage();
+    RgbImage ToRgbImage();
 };
 
 } // namespace ctk 

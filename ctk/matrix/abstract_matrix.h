@@ -18,12 +18,12 @@ protected:
     /**
      * @brief AbstractMatrix elements type
      */
-    int type;
+    int type = -1;
 
     /**
      * @brief ch_size number of AbstractMatrix channels
      */
-    int ch_size;
+    int ch_size = -1;
 
     /**
      * @brief data AbstractMatrix data
@@ -34,10 +34,7 @@ public:
     /**
      * @brief Default Constructor
      */
-    AbstractMatrix() {
-        type = -1;
-        ch_size = -1;
-    }
+    AbstractMatrix() = default;
 
     /**
      * @brief Parameterized Constructor
@@ -62,7 +59,7 @@ public:
     /**
      * @brief ~CtkAbstractMatrix Destructor
      */
-    virtual ~AbstractMatrix() {}
+    virtual ~AbstractMatrix() = default;
 
     /**
      * @brief Create  Create AbstractMatrix
@@ -178,7 +175,7 @@ public:
     }
 
     /**
-     * @brief get  Get a specific AbstractMatrix element
+     * @brief Get  Get a specific AbstractMatrix element
      * @param x  int representing the column index
      * @param y  int representing the row index
      * @return  AbstractMatrix element at row y and column x
@@ -267,6 +264,6 @@ public:
 
     virtual void Open(std::string filename) = 0;
     virtual void Save(std::string filename) = 0;
-    virtual void Show() = 0;
 };
+
 }

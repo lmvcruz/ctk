@@ -104,7 +104,7 @@ void Canvas::keyPressEvent(QKeyEvent *event)
     case 'L': {
         RestoreCache();
         ctk::RgbImage rgb = QImage2CtkImage();
-        ctk::RgbImage gray = rgb.toGrayImage().toRgbImage();
+        ctk::RgbImage gray = rgb.ToGrayImage().ToRgbImage();
         m_img = CtkImage2QImage(gray);
         qDebug() << "Luminosity: " << m_img.width() << m_img.height();
         break;
@@ -114,7 +114,7 @@ void Canvas::keyPressEvent(QKeyEvent *event)
         ctk::RgbImage rgb = QImage2CtkImage();
         for (int x=0; x<rgb.width(); x++) {
             for (int y=0; y<rgb.height(); y++) {
-                m_img.setPixel(x, y, qRgb(rgb.red(x,y), 0, 0));
+                m_img.setPixel(x, y, qRgb(rgb.Red(x,y), 0, 0));
             }
         }
         qDebug() << "Red: " << m_img.width() << m_img.height();
@@ -125,7 +125,7 @@ void Canvas::keyPressEvent(QKeyEvent *event)
         ctk::RgbImage rgb = QImage2CtkImage();
         for (int x=0; x<rgb.width(); x++) {
             for (int y=0; y<rgb.height(); y++) {
-                m_img.setPixel(x, y, qRgb(0, rgb.green(x,y), 0));
+                m_img.setPixel(x, y, qRgb(0, rgb.Green(x,y), 0));
             }
         }
         qDebug() << "Green: " << m_img.width() << m_img.height();
@@ -136,7 +136,7 @@ void Canvas::keyPressEvent(QKeyEvent *event)
         ctk::RgbImage rgb = QImage2CtkImage();
         for (int x=0; x<rgb.width(); x++) {
             for (int y=0; y<rgb.height(); y++) {
-                m_img.setPixel(x, y, qRgb(0, 0, rgb.blue(x,y)));
+                m_img.setPixel(x, y, qRgb(0, 0, rgb.Blue(x,y)));
             }
         }
         qDebug() << "Green: " << m_img.width() << m_img.height();

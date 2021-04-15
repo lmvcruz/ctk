@@ -109,7 +109,7 @@ void Contours::CalculateApproximateContours(BinaryImage &img, int eps) {
  * @return RgbImage with drawn contours
  */
 RgbImage Contours::Draw(BinaryImage &bin) {
-    RgbImage rgb = bin.toRgbImage();
+    RgbImage rgb = bin.ToRgbImage();
     return Draw(rgb);
 }
 

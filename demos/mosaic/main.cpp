@@ -23,7 +23,7 @@ void processImage(ctk::RgbImage& img, int w, int h) {
         oy = (ih - nih) / 2;
     }
     img.SelfCrop(ox, oy, niw, nih);
-    img = img.resize(w, h);
+    img = img.Resize(w, h);
 }
 
 void createRegularMosaic(std::vector<std::string>& imgDb) {
