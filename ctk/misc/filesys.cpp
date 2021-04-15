@@ -4,50 +4,50 @@
 
 namespace ctk {
 
-bool exists(std::string filename) {
+bool Exists(std::string filename) {
     return std::filesystem::exists(filename);
 }
 
-bool isFile(std::string filename) {
+bool IsFile(std::string filename) {
     return std::filesystem::is_regular_file(filename);
 }
 
-bool isDir(std::string dirname) {
+bool IsDir(std::string dirname) {
     return std::filesystem::is_directory(dirname);
 }
 
 // Checks if a file or directory is empty
-bool isEmpty(std::string name) {
+bool IsEmpty(std::string name) {
     return std::filesystem::is_empty(name);
 }
 
-void changeCurrentPath(std::string cur) {
+void ChangeCurrentPath(std::string cur) {
     std::filesystem::current_path(cur);
 }
 
-std::string currentPath(std::string cur) {
+std::string CurrentPath(std::string cur) {
     // The method current_path(NEW_PATH) changes the value 
     // of current path. Thus, aux is used to restore it.
     auto aux = std::filesystem::current_path();
-    changeCurrentPath(cur);
+    ChangeCurrentPath(cur);
     std::string path = std::filesystem::current_path();
-    changeCurrentPath(aux);
+    ChangeCurrentPath(aux);
     return path;
 }
 
-std::string absolutePath(std::string name) {
+std::string AbsolutePath(std::string name) {
     return std::filesystem::canonical(name);
 }
 
-bool containsFileOrDir(std::string curdir, std::string filename) {
+bool ContainsFileOrDir(std::string curdir, std::string filename) {
     auto aux = std::filesystem::current_path();
-    changeCurrentPath(curdir);
-    bool ret = exists(filename);
-    changeCurrentPath(aux);
+    ChangeCurrentPath(curdir);
+    bool ret = Exists(filename);
+    ChangeCurrentPath(aux);
     return ret;
 }
 
-std::vector<std::string> listDir(std::string cur) {
+std::vector<std::string> ListDir(std::string cur) {
     std::vector<std::string> files;
     for (auto& p: std::filesystem::directory_iterator(cur)) {
         files.push_back(p.path());
@@ -56,7 +56,7 @@ std::vector<std::string> listDir(std::string cur) {
 }
 
 // The filename must contain all provided expressions
-std::vector<std::string> listFilesContainingAllExpressions(std::string cur,
+std::vector<std::string> ListFilesContainingAllExpressions(std::string cur,
                                     const std::vector<std::string>& exps) 
 {
     std::vector<std::string> files;
@@ -74,7 +74,7 @@ std::vector<std::string> listFilesContainingAllExpressions(std::string cur,
     return files;
 }
 
-std::vector<std::string> listFilesContainingAnyExpressions(std::string cur,
+std::vector<std::string> ListFilesContainingAnyExpressions(std::string cur,
                                     const std::vector<std::string>& exps) 
 {
     std::vector<std::string> files;

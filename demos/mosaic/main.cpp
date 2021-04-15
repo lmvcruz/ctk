@@ -51,7 +51,7 @@ void createRegularMosaic(std::vector<std::string>& imgDb) {
 int main(int argc, char *argv[]) {
     std::vector<std::string> filters = {"png", "PNG", "jpg", "jpeg", "JPEG", "JPG"};
     std::vector<std::string> imgDb = 
-                            ctk::listFilesContainingAnyExpressions(
+                            ctk::ListFilesContainingAnyExpressions(
                                         "../../../../imgdb/dogs", filters);
     createRegularMosaic(imgDb);
     return 0;

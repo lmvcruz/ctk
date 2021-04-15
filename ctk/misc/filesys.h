@@ -5,20 +5,20 @@
 
 namespace ctk {
 
-bool exists(std::string filename);
-bool isFile(std::string filename);
-bool isDir(std::string dirname);
-bool isEmpty(std::string name);
+bool Exists(std::string filename);
+bool IsFile(std::string filename);
+bool IsDir(std::string dirname);
+bool IsEmpty(std::string name);
 
-void changeCurrentPath(std::string cur);
-std::string currentPath(std::string cur=".");
-std::string absolutePath(std::string name);
+void ChangeCurrentPath(std::string cur);
+std::string CurrentPath(std::string cur=".");
+std::string AbsolutePath(std::string name);
 
-bool containsFileOrDir(std::string curdir, std::string filename);
-std::vector<std::string> listDir(std::string cur = ".");
-std::vector<std::string> listFilesContainingAllExpressions(std::string cur,
+bool ContainsFileOrDir(std::string curdir, std::string filename);
+std::vector<std::string> ListDir(std::string cur = ".");
+std::vector<std::string> ListFilesContainingAllExpressions(std::string cur,
                                     const std::vector<std::string>& exps);
-std::vector<std::string> listFilesContainingAnyExpressions(std::string cur,
+std::vector<std::string> ListFilesContainingAnyExpressions(std::string cur,
                                     const std::vector<std::string>& exps);
 
 }
