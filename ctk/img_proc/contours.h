@@ -10,14 +10,15 @@ namespace ctk {
 
 class Contours {
 public:
-    Contours();
+    Contours() = default;
+    ~Contours() = default;
 
-    void resize(int s);
-    int size();
+    void Resize(int s);
+    int GetSize();
 
-    void add_polygon(Polygon &pol);
-    void set_polygon(int idx, Polygon &pol);
-    Polygon &polygon(int idx);
+    void AddPolygon(Polygon &pol);
+    void SetPolygon(int idx, Polygon &pol);
+    Polygon &GetPolygon(int idx);
 
     Contours OrientedBoundingBoxes();
 
@@ -28,8 +29,8 @@ public:
     RgbImage Draw(RgbImage &img);
 
 protected:
-    std::vector<Polygon> polys_;
-    std::vector<cv::Vec4i> hierarchy_;
+    std::vector<Polygon> polys;
+    std::vector<cv::Vec4i> hierarchy;
 };
 
 } // namespace ctk 
