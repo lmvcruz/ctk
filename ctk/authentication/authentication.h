@@ -7,16 +7,15 @@ namespace ctk {
 class Authentication
 {
 public:
-    Authentication();
+    Authentication() = default;
     Authentication(const Authentication &that);
 
     Authentication& operator=(const Authentication &that);
 
-    void set_db(AuthDb &db);
-    AuthDb &db();
+    void SetDb(AuthDb &db);
+    AuthDb &GetDb();
 
-    void set_verification_threshold(double thresh);
-
+    void SetVerificationThreshold(double thresh);
     void DefineThreshold(double vi, double vf, double inc);
     bool IsSeparable();
 

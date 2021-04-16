@@ -11,8 +11,6 @@ namespace ctk {
 /**
  * @brief AuthObject::AuthObject
  */
-AuthObject::AuthObject() {
-}
 
 AuthObject::AuthObject(const AuthObject &that) {
     m_data = that.m_data;
@@ -27,24 +25,24 @@ AuthObject &AuthObject::operator=(const AuthObject &that) {
     return *this;
 }
 
-void AuthObject::setup(int s) {
+void AuthObject::Setup(int s) {
     m_data.resize(s);
 }
 
-void AuthObject::set_data(std::vector<float> &d) {
+void AuthObject::SetData(std::vector<float> &d) {
     m_data = d;
 }
 
-std::vector<float> &AuthObject::data() {
+std::vector<float> &AuthObject::GetData() {
     return m_data;
 }
 
-void AuthObject::set_feature(int i, float v) {
+void AuthObject::SetFeature(int i, float v) {
    //TODO: input v
     m_data[i] = 0;
 }
 
-float AuthObject::get_feature(int i) {
+float AuthObject::GetFeature(int i) {
     return m_data[i];
 }
 
@@ -80,41 +78,41 @@ AuthSet &AuthSet::operator=(const AuthSet &that) {
     return *this;
 }
 
-void AuthSet::setup(int set_size, int smp_size) {
+void AuthSet::Setup(int set_size, int smp_size) {
     m_samples.resize(set_size);
-    for (auto &s: m_samples) s.setup(smp_size);
+    for (auto &s: m_samples) s.Setup(smp_size);
 }
 
-void AuthSet::set_reference(AuthObject &ref) {
+void AuthSet::SetReference(AuthObject &ref) {
     m_reference = ref;
 }
 
-void AuthSet::set_reference(std::vector<float> &data) {
-    m_reference.set_data(data);
+void AuthSet::SetReference(std::vector<float> &data) {
+    m_reference.SetData(data);
 }
 
-AuthObject &AuthSet::reference() {
+AuthObject &AuthSet::GetReference() {
     return m_reference;
 }
 
-void AuthSet::add_sample(AuthObject &smp) {
+void AuthSet::AddSample(AuthObject &smp) {
     m_samples.push_back(smp);
 }
 
-void AuthSet::add_sample(std::vector<float> &data) {
+void AuthSet::AddSample(std::vector<float> &data) {
     m_samples.push_back( AuthObject(data) );
 }
 
-void AuthSet::set_sample(int i, AuthObject &smp) {
+void AuthSet::SetSample(int i, AuthObject &smp) {
     m_samples[i] = smp;
 }
 
-AuthObject &AuthSet::sample(int i) {
+AuthObject &AuthSet::GetSample(int i) {
     return m_samples[i];
 }
 
-std::vector<float> &AuthSet::get_sample_data(int i) {
-    return m_samples[i].data();
+std::vector<float> &AuthSet::GetSampleData(int i) {
+    return m_samples[i].GetData();
 }
 
 double AuthSet::Distance(AuthObject &sample) {
@@ -156,28 +154,28 @@ AuthDb &AuthDb::operator=(const AuthDb &that) {
     return *this;
 }
 
-void AuthDb::setup(int db_size, double thresh) {
+void AuthDb::Setup(int db_size, double thresh) {
     m_sets.resize(db_size);
     m_threshold = thresh;
 }
 
-void AuthDb::setup_sets(int set_size, int smp_size) {
-    for (auto &s: m_sets) s.setup(set_size, smp_size);
+void AuthDb::SetupSets(int set_size, int smp_size) {
+    for (auto &s: m_sets) s.Setup(set_size, smp_size);
 }
 
-void AuthDb::setup_set(int setIdx, int set_size, int smp_size) {
-    m_sets[setIdx].setup(set_size, smp_size);
+void AuthDb::SetupSet(int setIdx, int set_size, int smp_size) {
+    m_sets[setIdx].Setup(set_size, smp_size);
 }
 
-void AuthDb::add_authset(AuthSet &set) {
+void AuthDb::AddAuthset(AuthSet &set) {
     m_sets.push_back(set);
 }
 
-void AuthDb::set_authset(int i, AuthSet &set) {
+void AuthDb::SetAuthset(int i, AuthSet &set) {
     m_sets[i] = set;
 }
 
-AuthSet &AuthDb::authset(int i) {
+AuthSet &AuthDb::GetAuthset(int i) {
     return m_sets[i];
 }
 
@@ -185,28 +183,28 @@ AuthSet &AuthDb::operator[](int i) {
     return m_sets[i];
 }
 
-void AuthDb::set_reference(int setIdx, AuthObject &ref) {
-    m_sets[setIdx].set_reference(ref);
+void AuthDb::SetReference(int setIdx, AuthObject &ref) {
+    m_sets[setIdx].SetReference(ref);
 }
 
-AuthObject &AuthDb::reference(int setIdx) {
-    return m_sets[setIdx].reference();
+AuthObject &AuthDb::GetReference(int setIdx) {
+    return m_sets[setIdx].GetReference();
 }
 
-void AuthDb::add_sample(int setIdx, AuthObject &smp) {
-    m_sets[setIdx].add_sample(smp);
+void AuthDb::AddSample(int setIdx, AuthObject &smp) {
+    m_sets[setIdx].AddSample(smp);
 }
 
-void AuthDb::set_sample(int setIdx, int smpIdx, AuthObject &smp) {
+void AuthDb::SetSample(int setIdx, int smpIdx, AuthObject &smp) {
     m_sets[setIdx][smpIdx] = smp;
 }
 
-AuthObject &AuthDb::sample(int setIdx, int smpIdx) {
+AuthObject &AuthDb::GetSample(int setIdx, int smpIdx) {
     return m_sets[setIdx][smpIdx];
 }
 
-std::vector<float> &AuthDb::get_sample_data(int setIdx, int smpIdx) {
-    return m_sets[setIdx][smpIdx].data();
+std::vector<float> &AuthDb::GetSampleData(int setIdx, int smpIdx) {
+    return m_sets[setIdx][smpIdx].GetData();
 }
 
 double AuthDb::Distance(int setIdx, AuthObject &smp) {
@@ -218,11 +216,11 @@ double AuthDb::Distance(int setIdx, std::vector<float> &data) {
 }
 
 bool AuthDb::Validate(int setIdx, AuthObject &smp, double t) {
-    return (m_sets[setIdx].Distance(smp)<t);
+    return (m_sets[setIdx].Distance(smp) < t);
 }
 
 bool AuthDb::Validate(int setIdx, std::vector<float> &data, double t) {
-    return (m_sets[setIdx].Distance(data)<t);
+    return (m_sets[setIdx].Distance(data) < t);
 }
 
 }

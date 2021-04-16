@@ -4,26 +4,31 @@
 
 namespace ctk {
 
+// TODO: 
+//  - create unit tests
+//  - rename attribute data and its methods
+//  - create demo for authentication
 class AuthObject {
 public:
-    AuthObject();
+    AuthObject() = default;
     AuthObject(const AuthObject &that);
     AuthObject(std::vector<float> &d);
 
     AuthObject& operator=(const AuthObject &that);
 
-    void setup(int s);
+    void Setup(int s);
 
-    void set_data(std::vector<float> &d);
-    std::vector<float>& data();
+    void SetData(std::vector<float> &d);
+    std::vector<float>& GetData();
 
-    void set_feature(int i, float v);
-    float get_feature(int i);
+    void SetFeature(int i, float v);
+    float GetFeature(int i);
 
     double Compare(AuthObject &that);
     double Compare(std::vector<float> &that);
 
 protected:
+    // TODO: rename this attribute - data it too generic
     std::vector<float> m_data;
 };
 
@@ -35,19 +40,19 @@ public:
     AuthSet& operator=(const AuthSet &that);
 
 
-    void setup(int set_size, int smp_size);
+    void Setup(int set_size, int smp_size);
 
-    void set_reference(AuthObject &obj);
-    void set_reference(std::vector<float> &data);
-    AuthObject &reference();
+    void SetReference(AuthObject &obj);
+    void SetReference(std::vector<float> &data);
+    AuthObject &GetReference();
 
-    void add_sample(AuthObject &smp);
-    void add_sample(std::vector<float> &data);
+    void AddSample(AuthObject &smp);
+    void AddSample(std::vector<float> &data);
 
-    void set_sample(int i, AuthObject &smp);
+    void SetSample(int i, AuthObject &smp);
 
-    AuthObject &sample(int i);
-    std::vector<float> &get_sample_data(int i);
+    AuthObject &GetSample(int i);
+    std::vector<float> &GetSampleData(int i);
     AuthObject &operator[](int i);
 
     double Distance(AuthObject &sample);
@@ -70,22 +75,22 @@ public:
 
     AuthDb& operator=(const AuthDb &that);
 
-    void setup(int db_size, double thresh);
-    void setup_sets(int set_size, int smp_size);
-    void setup_set(int setIdx, int set_size, int smp_size);
+    void Setup(int db_size, double thresh);
+    void SetupSets(int set_size, int smp_size);
+    void SetupSet(int setIdx, int set_size, int smp_size);
 
-    void add_authset(AuthSet& set);
-    void set_authset(int i, AuthSet& set);
-    AuthSet& authset(int i);
+    void AddAuthset(AuthSet& set);
+    void SetAuthset(int i, AuthSet& set);
+    AuthSet& GetAuthset(int i);
     AuthSet &operator[](int i);
 
-    void set_reference(int setIdx, AuthObject &ref);
-    AuthObject &reference(int setIdx);
+    void SetReference(int setIdx, AuthObject &ref);
+    AuthObject &GetReference(int setIdx);
 
-    void add_sample(int setIdx, AuthObject &smp);
-    void set_sample(int setIdx, int smpIdx, AuthObject &smp);
-    AuthObject &sample(int setIdx, int smpIdx);
-    std::vector<float> &get_sample_data(int setIdx, int smpIdx);
+    void AddSample(int setIdx, AuthObject &smp);
+    void SetSample(int setIdx, int smpIdx, AuthObject &smp);
+    AuthObject &GetSample(int setIdx, int smpIdx);
+    std::vector<float> &GetSampleData(int setIdx, int smpIdx);
 
     double Distance(int setIdx, AuthObject &smp);
     double Distance(int setIdx, std::vector<float> &data);
@@ -98,4 +103,4 @@ protected:
     double m_threshold;
 };
 
-};
+}
