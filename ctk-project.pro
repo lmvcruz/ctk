@@ -5,7 +5,6 @@ CONFIG += ordered
 
 SUBDIRS = \
     ctk \
-    utils/filesys \
     ctkunittests \
 #    benchmark/matrices \
 #    benchmark/image \
