@@ -1,13 +1,10 @@
 #include <benchmark/benchmark.h>
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
-#include "ctkmath.h"
-//#include "ctkbinarymatrix.h"
-#include "ctkimage.h"
-#include "ctknumericmatrix.h"
+#include "ctk/matrix/numeric_matrix.h"
 
 const int LARGE_RANGE_MIN = 8;
 const int LARGE_RANGE_MAX = 8<<2;
@@ -23,7 +20,7 @@ void CreateNumericMatrix(ctk::NumericMatrix &m, int w, int h)
     m.Create(w, h);
     for (auto x=0; x<w; x++) {
         for (auto y=0; y<h; y++) {
-            m.set(x,y, std::rand()%10);
+            m.Set(x,y, std::rand()%10);
         }
     }
 }
@@ -122,7 +119,7 @@ static void NM_Sum(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m3 = m1 + m2;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_Sum)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -150,7 +147,7 @@ static void NM_Diff(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m3 = m1 - m2;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_Diff)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -177,7 +174,7 @@ static void NM_Mult(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m3 = m1 * m2;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_Mult)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -205,7 +202,7 @@ static void NM_Div(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m3 = m1 / m2;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_Div)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -238,7 +235,7 @@ static void NM_SelfSum(benchmark::State& state) {
     for (auto _ : state) {
         m1 += m2;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfSum)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -265,7 +262,7 @@ static void NM_SelfDiff(benchmark::State& state) {
     for (auto _ : state) {
         m1 -= m2;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfDiff)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -293,7 +290,7 @@ static void NM_SelfMult(benchmark::State& state) {
     for (auto _ : state) {
         m1 *= m2;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfMult)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -319,7 +316,7 @@ static void NM_SelfDiv(benchmark::State& state) {
     for (auto _ : state) {
         m1 /= m2;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfDiv)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -352,7 +349,7 @@ static void NM_SumScalar(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m2 = m1 + NUMERIC_SCALAR;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SumScalar)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -378,7 +375,7 @@ static void NM_DiffScalar(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m2 = m1 - NUMERIC_SCALAR;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_DiffScalar)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -403,7 +400,7 @@ static void NM_MultScalar(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m2 = m1 * NUMERIC_SCALAR;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_MultScalar)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -428,7 +425,7 @@ static void NM_DivScalar(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m2 = m1 / NUMERIC_SCALAR;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_DivScalar)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -459,7 +456,7 @@ static void NM_SelfSumScalar(benchmark::State& state) {
     for (auto _ : state) {
         m1 += NUMERIC_SCALAR;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfSumScalar)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -484,7 +481,7 @@ static void NM_SelfDiffScalar(benchmark::State& state) {
     for (auto _ : state) {
         m1 -= NUMERIC_SCALAR;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfDiffScalar)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -509,7 +506,7 @@ static void NM_SelfMultScalar(benchmark::State& state) {
     for (auto _ : state) {
         m1 *= NUMERIC_SCALAR;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfMultScalar)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -534,7 +531,7 @@ static void NM_SelfDivScalar(benchmark::State& state) {
     for (auto _ : state) {
         m1 /= NUMERIC_SCALAR;
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfDivScalar)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -566,7 +563,7 @@ static void NM_Determinant(benchmark::State& state) {
     for (auto _ : state) {
         m1.Determinant();
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_Determinant)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -592,7 +589,7 @@ static void NM_Invert(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m2 = m1.Invert();
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_Invert)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -624,7 +621,7 @@ static void NM_SelfInvert(benchmark::State& state) {
         m2 = m1;
         m2.SelfInvert();
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfInvert)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -652,7 +649,7 @@ static void NM_Transpose(benchmark::State& state) {
     for (auto _ : state) {
         ctk::NumericMatrix m2 = m1.Transpose();
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_Transpose)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -684,7 +681,7 @@ static void NM_SelfTranspose(benchmark::State& state) {
         m2 = m1;
         m2.SelfTranspose();
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(NM_SelfTranspose)
             ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)

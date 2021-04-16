@@ -1,16 +1,16 @@
 #include <benchmark/benchmark.h>
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
-#include "ctkmath.h"
-#include "ctkimage.h"
-#include "ctknumericmatrix.h"
+#include <opencv2/highgui.hpp>
+
+#include "ctk/image/binary_image.h"
+#include "ctk/matrix/numeric_matrix.h"
 
 const int LARGE_RANGE_MIN = 8;
 const int LARGE_RANGE_MAX = 8<<2;
-
 const double NUMERIC_SCALAR = 1000.0;
 
 
@@ -21,7 +21,7 @@ void CreateBinaryImage(ctk::BinaryImage &bm, int w, int h) {
     bm.Create(w, h);
     for (auto x=0; x<w; x++) {
         for (auto y=0; y<h; y++) {
-            bm.set(x,y, std::rand() % 2 == 0);
+            bm.Set(x,y, std::rand() % 2 == 0);
         }
     }
 }
@@ -115,9 +115,9 @@ static void BM_CountTrues(benchmark::State& state) {
     ctk::BinaryImage bm;
     CreateBinaryImage(bm, state.range(0), state.range(0));
     for (auto _ : state) {
-        bm.countTrues();
+        bm.CountTrues();
     }
-    state.SetComplexityN(bm.size());
+    state.SetComplexityN(bm.GetSize());
 }
 BENCHMARK(BM_CountTrues)
                 ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -127,9 +127,9 @@ static void BM_CountFalses(benchmark::State& state) {
     ctk::BinaryImage bm;
     CreateBinaryImage(bm, state.range(0), state.range(0));
     for (auto _ : state) {
-        bm.countFalses();
+        bm.CountFalses();
     }
-    state.SetComplexityN(bm.size());
+    state.SetComplexityN(bm.GetSize());
 }
 BENCHMARK(BM_CountFalses)
                 ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
@@ -139,7 +139,7 @@ static void BM_CountTrues2(benchmark::State& state) {
     ctk::BinaryImage bm;
     CreateBinaryImage(bm, state.range(0), state.range(1));
     for (auto _ : state) {
-        bm.countTrues();
+        bm.CountTrues();
     }
 }
 BENCHMARK(BM_CountTrues2)
@@ -158,7 +158,7 @@ static void BM_Not(benchmark::State& state) {
     for (auto _ : state) {
         ctk::BinaryImage m2 = m1.Not();
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BM_Not)
             ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
@@ -172,7 +172,7 @@ static void BM_And(benchmark::State& state) {
     for (auto _ : state) {
         ctk::BinaryImage m3 = m1.And(m2);
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BM_And)
             ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
@@ -187,7 +187,7 @@ static void BM_Or(benchmark::State& state) {
     for (auto _ : state) {
         ctk::BinaryImage m3 = m1.Or(m2);
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BM_Or)
             ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
@@ -202,13 +202,12 @@ static void BM_Xor(benchmark::State& state) {
     for (auto _ : state) {
         ctk::BinaryImage m3 = m1.Xor(m2);
     }
-    state.SetComplexityN(m1.size());
+    state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BM_Xor)
             ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
                      {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
             ->Complexity(benchmark::oN);
 #endif
-
 
 BENCHMARK_MAIN();
