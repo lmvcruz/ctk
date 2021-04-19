@@ -14,6 +14,10 @@ void CtkFileSystemTest::SetUp() {
     ctk::ChangeCurrentPath(curPath);
 }
 
+TEST_F(CtkFileSystemTest, Test_EnvVar) {
+    EXPECT_EQ(ctk::GetEnvironmentVariable("CTK_ENV_VAR_TEST"), "Test");
+}
+
 TEST_F(CtkFileSystemTest, Test_Exists) {
     EXPECT_TRUE(ctk::Exists("../../ctkunittests"));
     EXPECT_FALSE(ctk::Exists("../../ctkunitte"));
@@ -47,14 +51,12 @@ TEST_F(CtkFileSystemTest, Test_CurrentPath) {
     EXPECT_EQ(splitted.back(), "build");
 }
 
-// TODO: This test has to be changed
-// We can define an environment variable with the $WORKSPACE 
-// and concate the expect value from it
 TEST_F(CtkFileSystemTest, Test_AbsolutePath) {
+    auto home = ctk::GetEnvironmentVariable("CTK_WORKSPACE");
     auto absPath = ctk::AbsolutePath("../../ctkunittests");
-    EXPECT_EQ(absPath, "/home/leandroc_local/Workspace/github/ctk/ctkunittests");
+    EXPECT_EQ(absPath, home + "/ctkunittests");
     absPath = ctk::AbsolutePath("../../ctkunittests/filesys_test.cpp");
-    EXPECT_EQ(absPath, "/home/leandroc_local/Workspace/github/ctk/ctkunittests/filesys_test.cpp");
+    EXPECT_EQ(absPath, home + "/ctkunittests/filesys_test.cpp");
 }
 
 TEST_F(CtkFileSystemTest, Test_ContainsFile) {

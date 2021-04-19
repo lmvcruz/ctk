@@ -5,6 +5,8 @@
 
 namespace ctk {
 
+std::string GetEnvironmentVariable(std::string varname);
+
 bool Exists(std::string filename);
 bool IsFile(std::string filename);
 bool IsDir(std::string dirname);

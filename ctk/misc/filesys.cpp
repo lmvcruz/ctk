@@ -1,8 +1,14 @@
 #include "ctk/misc/filesys.h"
 
 #include <filesystem>
+#include <cstdlib>
 
 namespace ctk {
+
+std::string GetEnvironmentVariable(std::string varname) {
+    const char* envVar = std::getenv(varname.c_str());
+    return std::string(envVar);
+}
 
 bool Exists(std::string filename) {
     return std::filesystem::exists(filename);
