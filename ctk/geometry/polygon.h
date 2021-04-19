@@ -12,13 +12,13 @@ class Polygon {
 public:
     Polygon() = default;
     Polygon(const Polygon &that);
-    Polygon(std::vector<PointD> &d);
-    Polygon(std::vector<cv::Point> &cvd);
+    Polygon(const std::vector<PointD> &d);
+    Polygon(const std::vector<cv::Point> &cvd);
     ~Polygon();
 
     Polygon &operator=(const Polygon &that);
-    Polygon &operator=(std::vector<PointD> &d);
-    Polygon &operator=(std::vector<cv::Point> &cvd);
+    Polygon &operator=(const std::vector<PointD> &d);
+    Polygon &operator=(const std::vector<cv::Point> &cvd);
 
     PointD& operator[](int i);
 

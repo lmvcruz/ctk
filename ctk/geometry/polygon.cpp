@@ -18,7 +18,7 @@ Polygon::Polygon(const Polygon &that) {
  * @brief Polygon::Polygon  Parameterized constructor.
  * @param pts  vector of Point objects
  */
-Polygon::Polygon(std::vector<PointD> &pts) {
+Polygon::Polygon(const std::vector<PointD> &pts) {
     points = pts;
     cvpoints.resize(pts.size());
     for (auto i = 0; i < pts.size(); i++) {
@@ -31,7 +31,7 @@ Polygon::Polygon(std::vector<PointD> &pts) {
  * @brief Polygon::Polygon  Parameterized constructor
  * @param cvd  vector of cv::Points
  */
-Polygon::Polygon(std::vector<cv::Point> &cvd) {
+Polygon::Polygon(const std::vector<cv::Point> &cvd) {
     cvpoints = cvd;
     points.resize(cvd.size());
     for (auto i  =0; i < cvd.size(); i++) {
@@ -65,7 +65,7 @@ Polygon &Polygon::operator=(const Polygon &that) {
  * @param pts  vector of Point objects
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(std::vector<PointD> &pts) {
+Polygon &Polygon::operator=(const std::vector<PointD> &pts) {
     points = pts;
     cvpoints.resize(pts.size());
     for (auto i = 0; i < pts.size(); ++i) {
@@ -80,7 +80,7 @@ Polygon &Polygon::operator=(std::vector<PointD> &pts) {
  * @param cvd  vector of cv::Points
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(std::vector<cv::Point> &cvd) {
+Polygon &Polygon::operator=(const std::vector<cv::Point> &cvd) {
     cvpoints = cvd;
     points.resize(cvd.size());
     for (auto i = 0; i < cvd.size(); ++i) {

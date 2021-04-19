@@ -8,17 +8,15 @@
 
 class CtkPointTest : public ::testing::Test {
 public:
-    void SetUp() override;
-    ctk::PointI Pi;
-    ctk::PointI Pi_1;
-    ctk::PointI Pi_2;
-    ctk::PointI Pi_3;
-    ctk::PointD Pd;
-    ctk::PointD Pd_1;
-    ctk::PointD Pd_2;
-    ctk::Point<unsigned int> Pui;
-    ctk::Point<long> Pl;
-    ctk::Point<unsigned long> Pul;
-    ctk::Point<long long> Pll;
-    ctk::Point<unsigned long long> Pull;
+    const ctk::PointI Pi = {1, 2, 3};
+    const ctk::PointI Pi_1 = {2, 2};
+    const ctk::PointI Pi_2 = {4, 5, 3};
+    const ctk::Point<unsigned int> Pui = {1, 2, 3};
+    const ctk::Point<long> Pl = {1, 2, 3};
+    const ctk::Point<unsigned long> Pul = {1, 2, 3};
+    const ctk::Point<long long> Pll = {1, 2, 3};
+    const ctk::Point<unsigned long long> Pull = {1, 2, 3};
+    const ctk::PointD Pd = {1.1, 2.1, 3.1};
+    const ctk::PointD Pd_1 = {1, 1, 1};
+    const ctk::PointD Pd_2 = {1.1, 5.5, 6.6};
 };

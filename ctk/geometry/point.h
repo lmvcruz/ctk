@@ -139,7 +139,7 @@ public:
      * @return The sum of two Point objects corresponds to the sum of their corresponding
      * individual attributes x, y, z
      */
-    Point operator+(const Point &that) {
+    Point operator+(const Point &that) const {
         return Point(x + that.x, y + that.y, z + that.z);
     }
 
@@ -160,7 +160,7 @@ public:
      * @return  The sum of a Point object and a variable of type T corresponds to the sum of their corresponding
      * individual attributes x, y, z
      */
-    Point operator+(T v) {
+    Point operator+(T v) const {
         return Point(x + v.x, y + v.y, z + v.z);
     }
 
@@ -181,7 +181,7 @@ public:
      * @return  The subtraction of two Point objects corresponds to the subtracton of their corresponding
      * individual attributes x, y, z  .
      */
-    Point operator-(const Point &that) {
+    Point operator-(const Point &that) const {
         return Point(x - that.x, y - that.y, z - that.z);
     }
 
@@ -202,7 +202,7 @@ public:
      * @return The subtraction of a Point object and a variable of type T corresponds to the subtraction of their corresponding
      * individual attributes x, y, z
      */
-    Point operator-(T v) {
+    Point operator-(T v) const {
         return Point(x - v.x, y - v.y, z - v.z);
     }
 
@@ -223,7 +223,7 @@ public:
      * @return The multiplication of two Point objects corresponds to the multiplication of their corresponding
      * individual attributes x, y, z  .
      */
-    Point operator*(const Point &that) {
+    Point operator*(const Point &that) const {
         return Point(x * that.x, y * that.y, z * that.z);
     }
 
@@ -244,7 +244,7 @@ public:
      * @return The multiplication of a Point object and a variable of type T corresponds to the multiplication of their corresponding
      * individual attributes x, y, z
      */
-    Point operator*(T v) {
+    Point operator*(T v) const {
         return Point(x * v.x, y * v.y, z * v.z);
     }
 
@@ -265,7 +265,7 @@ public:
      * @return The division of two Point objects corresponds to the division of their corresponding
      * individual attributes x, y, z .
      */
-    Point operator/(const Point &that) {
+    Point operator/(const Point &that) const {
         if (that.x == 0 || that.y == 0 || that.z == 0) {
             throw division_per_zero();
         }
@@ -293,7 +293,7 @@ public:
      * @return The division of a Point object and a variable of type T corresponds to the division of their corresponding
      * individual attributes x, y, z
      */
-    Point operator/(T v) {
+    Point operator/(T v) const {
         if (v == 0) {
             throw division_per_zero();
         }
@@ -317,7 +317,7 @@ public:
      * @brief ManhattanLength
      * @return the Manhattam length of the Point
      */
-    int ManhattanLength() {
+    int ManhattanLength() const {
         int ml = std::fabs(x) + std::fabs(y) + std::fabs(z);
         return static_cast<int>(ml);
     }
@@ -326,7 +326,7 @@ public:
      * @brief Norm
      * @return the L^2 norm of the point
      */
-    double Norm() {
+    double Norm() const {
         return std::sqrt(x*x + y*y + z*z) ;
     }
 
@@ -335,7 +335,7 @@ public:
     * @param p  Reference to an existing point object
     * @return inner product of the two points
     */
-    double Inner(const Point &p) {
+    double Inner(const Point &p) const {
         return x*p.x + y*p.y + z*p.z;
     }
 
@@ -344,7 +344,7 @@ public:
     * @param p  Reference to an existing point object
     * @return outter product of the two points
     */
-    Point Outter(const Point &p) {
+    Point Outter(const Point &p) const {
         return Point(y*p.z - z*p.y,
                      -1 * (x*p.z - z*p.x),
                      x*p.y - y*p.x );
@@ -355,7 +355,7 @@ public:
      * @param p  Reference to an existing point object
      * @return euclidean distance between the two points
      */
-    double Distance(const Point &p) {
+    double Distance(const Point &p) const {
         return std::sqrt((x - p.x) * (x - p.x) + 
                          (y - p.y) * (y - p.y) + 
                          (z - p.z) * (z - p.z) );
@@ -367,7 +367,7 @@ public:
     * @param pb  Reference to an existing point object
     * @return double representing the Angle formed with the two Points in radians
     */
-     double Angle (Point &pa,  Point &pb) {
+     double Angle (Point &pa,  Point &pb) const {
         double p_pa = Distance(pa);
         double p_pb = Distance(pb);
         double pa_pb = (pa-pb).Norm();
@@ -379,7 +379,7 @@ public:
      * @brief Normalize  Normalizes the point dividing it by its norm
      * @return normalized point
      */
-    Point Normalize() {
+    Point Normalize() const {
         double n = Norm();
         return *this / n;
     }

@@ -53,12 +53,12 @@ void CtkNumericMatrixTest::SetUp() {
     double v;
     int idx;
     double imd = static_cast<double>(INT_MAX);
-    for (int y=0; y<mat2_h; y++) {
-        for (int x=0; x<mat2_w; x++) {
+    for (int y = 0; y < mat2_h; ++y) {
+        for (int x = 0; x < mat2_w; ++x) {
             idx = y*mat2_w + x;
             v = imd+static_cast<double>(-50+(rand()%100));
             data2a[idx] = v;
-            mat2a.Set(x,y, v);
+            mat2a.Set(x, y, v);
         }
     }
     //
@@ -122,11 +122,11 @@ TEST_F(CtkNumericMatrixTest, Test_Setup) {
     EXPECT_EQ(CtkNumericMatrixTest::mat1a.GetChannels(), 1);
     EXPECT_EQ(CtkNumericMatrixTest::mat1a.CheckChannel(), true);
 
-    for (int y=0; y<CtkNumericMatrixTest::mat1a_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat1a_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat1a_w + x;
-            EXPECT_EQ(CtkNumericMatrixTest::mat1a.Get(x,y),
-                      CtkNumericMatrixTest::data1a[idx]);
+    for (int y = 0; y < CtkNumericMatrixTest::mat1a_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat1a_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat1a_w) + x;
+            EXPECT_DOUBLE_EQ(CtkNumericMatrixTest::mat1a.Get(x, y),
+                             CtkNumericMatrixTest::data1a[idx]);
         }
     }
 }
@@ -148,11 +148,11 @@ TEST_F(CtkNumericMatrixTest, Test_Setup2) {
     EXPECT_EQ(CtkNumericMatrixTest::mat2a.CheckChannel(), true);
     //
     int idx;
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(CtkNumericMatrixTest::mat2a.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(CtkNumericMatrixTest::mat2a.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]);
         }
     }
 }
@@ -168,11 +168,11 @@ TEST_F(CtkNumericMatrixTest, Test_OpenSave) {
     EXPECT_EQ(mat_b.GetSize(), 15);
     EXPECT_EQ(mat_b.GetChannels(), 1);
     EXPECT_EQ(mat_b.CheckChannel(), true);
-    for (int y=0; y<CtkNumericMatrixTest::mat1a_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat1a_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat1a_w + x;
-            EXPECT_EQ(mat_b.Get(x,y),
-                      CtkNumericMatrixTest::data1a[idx]);
+    for (int y = 0; y < CtkNumericMatrixTest::mat1a_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat1a_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat1a_w) + x;
+            EXPECT_DOUBLE_EQ(mat_b.Get(x, y),
+                             CtkNumericMatrixTest::data1a[idx]);
         }
     }
 }
@@ -185,14 +185,14 @@ TEST_F(CtkNumericMatrixTest, Test_ContructorCopy) {
     EXPECT_EQ(mat_b.GetHeight(), CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetRows(), CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetSize(),
-              CtkNumericMatrixTest::mat2_w*CtkNumericMatrixTest::mat2_h);
+              CtkNumericMatrixTest::mat2_w * CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetChannels(), 1);
     EXPECT_EQ(mat_b.CheckChannel(), true);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(mat_b.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(mat_b.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]);
         }
     }
 }
@@ -205,14 +205,14 @@ TEST_F(CtkNumericMatrixTest, Test_OperatorAtt) {
     EXPECT_EQ(mat_b.GetHeight(), CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetRows(), CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetSize(),
-              CtkNumericMatrixTest::mat2_w*CtkNumericMatrixTest::mat2_h);
+              CtkNumericMatrixTest::mat2_w * CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetChannels(), 1);
     EXPECT_EQ(mat_b.CheckChannel(), true);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(mat_b.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(mat_b.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]);
         }
     }
 }
@@ -225,14 +225,14 @@ TEST_F(CtkNumericMatrixTest, Test_ConstructorMat) {
     EXPECT_EQ(mat_b.GetHeight(), CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetRows(), CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetSize(),
-              CtkNumericMatrixTest::mat2_w*CtkNumericMatrixTest::mat2_h);
+              CtkNumericMatrixTest::mat2_w * CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetChannels(), 1);
     EXPECT_EQ(mat_b.CheckChannel(), true);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(mat_b.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(mat_b.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]);
         }
     }
 }
@@ -250,11 +250,11 @@ TEST_F(CtkNumericMatrixTest, Test_ConstructorVector) {
               CtkNumericMatrixTest::mat2_w*CtkNumericMatrixTest::mat2_h);
     EXPECT_EQ(mat_b.GetChannels(), 1);
     EXPECT_EQ(mat_b.CheckChannel(), true);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(mat_b.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(mat_b.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]);
         }
     }
 }
@@ -263,14 +263,14 @@ TEST_F(CtkNumericMatrixTest, Test_Equals) {
     ctk::NumericMatrix mat_b;
     int i=-1;
     mat_b.Create(mat1a_w,mat1a_h);
-    for (auto it=mat_b.begin(); it!=mat_b.end(); it++) {
+    for (auto it = mat_b.begin(); it != mat_b.end(); ++it) {
         *it = data1a[++i];
     }
     //
-    EXPECT_EQ(mat_b==CtkNumericMatrixTest::mat1a, true);
-    EXPECT_EQ(mat_b==CtkNumericMatrixTest::mat2a, false);
-    EXPECT_EQ(mat_b!=CtkNumericMatrixTest::mat1a, false);
-    EXPECT_EQ(mat_b!=CtkNumericMatrixTest::mat2a, true);
+    EXPECT_TRUE(mat_b == CtkNumericMatrixTest::mat1a);
+    EXPECT_FALSE(mat_b == CtkNumericMatrixTest::mat2a);
+    EXPECT_FALSE(mat_b != CtkNumericMatrixTest::mat1a);
+    EXPECT_TRUE(mat_b != CtkNumericMatrixTest::mat2a);
 }
 
 TEST_F(CtkNumericMatrixTest, Test_Sum) {
@@ -279,15 +279,15 @@ TEST_F(CtkNumericMatrixTest, Test_Sum) {
                              CtkNumericMatrixTest::data2b);
     ctk::NumericMatrix mat_c = CtkNumericMatrixTest::mat2a + mat_b;
     //
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(mat_c.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]
-                      +CtkNumericMatrixTest::data2b[idx]);
-            EXPECT_EQ(mat_c.Get(x,y),
-                      CtkNumericMatrixTest::mat2a.Get(x,y)
-                      +mat_b.Get(x,y));
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(mat_c.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]
+                             + CtkNumericMatrixTest::data2b[idx]);
+            EXPECT_DOUBLE_EQ(mat_c.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y)
+                             + mat_b.Get(x, y));
         }
     }
 }
@@ -300,15 +300,15 @@ TEST_F(CtkNumericMatrixTest, Test_SelfSum) {
     //
     mat_a += mat_b;
     //
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(mat_a.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]
-                      +CtkNumericMatrixTest::data2b[idx]);
-            EXPECT_EQ(mat_a.Get(x,y),
-                      CtkNumericMatrixTest::mat2a.Get(x,y)
-                      +mat_b.Get(x,y));
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]
+                             + CtkNumericMatrixTest::data2b[idx]);
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y)
+                             + mat_b.Get(x, y));
         }
     }
 }
@@ -319,15 +319,15 @@ TEST_F(CtkNumericMatrixTest, Test_Diff) {
                              CtkNumericMatrixTest::data2b);
     ctk::NumericMatrix mat_c = CtkNumericMatrixTest::mat2a - mat_b;
     //
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(mat_c.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]
-                      - CtkNumericMatrixTest::data2b[idx]);
-            EXPECT_EQ(mat_c.Get(x,y),
-                      CtkNumericMatrixTest::mat2a.Get(x,y)
-                      - mat_b.Get(x,y));
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(mat_c.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]
+                             - CtkNumericMatrixTest::data2b[idx]);
+            EXPECT_DOUBLE_EQ(mat_c.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y)
+                             - mat_b.Get(x, y));
         }
     }
 }
@@ -340,29 +340,29 @@ TEST_F(CtkNumericMatrixTest, Test_SelfDiff) {
     //
     mat_a -= mat_b;
     //
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            int idx = y*CtkNumericMatrixTest::mat2_w + x;
-            EXPECT_EQ(mat_a.Get(x,y),
-                      CtkNumericMatrixTest::data2a[idx]
-                      - CtkNumericMatrixTest::data2b[idx]);
-            EXPECT_EQ(mat_a.Get(x,y),
-                      CtkNumericMatrixTest::mat2a.Get(x,y)
-                      - mat_b.Get(x,y));
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            int idx = (y * CtkNumericMatrixTest::mat2_w) + x;
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::data2a[idx]
+                             - CtkNumericMatrixTest::data2b[idx]);
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y)
+                             - mat_b.Get(x, y));
         }
     }
 }
 
 TEST_F(CtkNumericMatrixTest, Test_Mult) {
     ctk::NumericMatrix mat_c = CtkNumericMatrixTest::mat1a
-            * CtkNumericMatrixTest::mat1b;
+                               * CtkNumericMatrixTest::mat1b;
     //
     EXPECT_EQ(mat_c.GetWidth(), CtkNumericMatrixTest::mat1b_w);
     EXPECT_EQ(mat_c.GetHeight(), CtkNumericMatrixTest::mat1a_h);
-    for (int y=0; y<mat_c.GetHeight(); y++) {
-        for (int x=0; x<mat_c.GetWidth(); x++) {
-            EXPECT_EQ(mat_c.Get(x,y),
-                      CtkNumericMatrixTest::mat1c.Get(x,y));
+    for (int y = 0; y < mat_c.GetHeight(); ++y) {
+        for (int x = 0; x < mat_c.GetWidth(); ++x) {
+            EXPECT_DOUBLE_EQ(mat_c.Get(x, y),
+                             CtkNumericMatrixTest::mat1c.Get(x, y));
         }
     }
 }
@@ -373,23 +373,23 @@ TEST_F(CtkNumericMatrixTest, Test_SelfMult) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat1b_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat1a_h);
-    for (int y=0; y<mat_a.GetHeight(); y++) {
-        for (int x=0; x<mat_a.GetWidth(); x++) {
-            EXPECT_EQ(mat_a.Get(x,y),
-                      CtkNumericMatrixTest::mat1c.Get(x,y));
+    for (int y = 0; y < mat_a.GetHeight(); ++y) {
+        for (int x = 0; x < mat_a.GetWidth(); ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat1c.Get(x, y));
         }
     }
 }
 
 TEST_F(CtkNumericMatrixTest, Test_DivDiffSizes) {
     ctk::NumericMatrix mat_c = CtkNumericMatrixTest::mat4
-            / CtkNumericMatrixTest::mat3;
+                               / CtkNumericMatrixTest::mat3;
     EXPECT_EQ(mat_c.GetWidth(), CtkNumericMatrixTest::mat3_w);
     EXPECT_EQ(mat_c.GetHeight(), CtkNumericMatrixTest::mat4_h);
-    for (int y=0; y<mat_c.GetHeight(); y++) {
-        for (int x=0; x<mat_c.GetWidth(); x++) {
-            EXPECT_EQ(mat_c.Get(x,y),
-                      CtkNumericMatrixTest::mat_4_div_3.Get(x,y));
+    for (int y = 0; y < mat_c.GetHeight(); ++y) {
+        for (int x = 0; x < mat_c.GetWidth(); ++x) {
+            EXPECT_DOUBLE_EQ(mat_c.Get(x, y),
+                             CtkNumericMatrixTest::mat_4_div_3.Get(x, y));
         }
     }
 }
@@ -400,10 +400,10 @@ TEST_F(CtkNumericMatrixTest, Test_SelfDiv) {
     //
     EXPECT_EQ(mat_c.GetWidth(), CtkNumericMatrixTest::mat3_w);
     EXPECT_EQ(mat_c.GetHeight(), CtkNumericMatrixTest::mat4_h);
-    for (int y=0; y<mat_c.GetHeight(); y++) {
-        for (int x=0; x<mat_c.GetWidth(); x++) {
-            EXPECT_EQ(mat_c.Get(x,y),
-                      CtkNumericMatrixTest::mat_4_div_3.Get(x,y));
+    for (int y = 0; y < mat_c.GetHeight(); ++y) {
+        for (int x = 0; x < mat_c.GetWidth(); ++x) {
+            EXPECT_DOUBLE_EQ(mat_c.Get(x, y),
+                             CtkNumericMatrixTest::mat_4_div_3.Get(x, y));
         }
     }
 }
@@ -414,10 +414,10 @@ TEST_F(CtkNumericMatrixTest, Test_SumNumDouble) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_EQ(mat_a.Get(x,y),
-                      CtkNumericMatrixTest::mat2a.Get(x,y) + v);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) + v);
         }
     }
 }
@@ -428,10 +428,10 @@ TEST_F(CtkNumericMatrixTest, Test_SumNumInt) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_EQ(mat_a.Get(x,y),
-                      CtkNumericMatrixTest::mat2a.Get(x,y) + v);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) + v);
         }
     }
 }
@@ -442,11 +442,10 @@ TEST_F(CtkNumericMatrixTest, Test_SumNumBig) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            (CtkNumericMatrixTest::mat2a.Get(x,y) + v)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) + v);
         }
     }
 }
@@ -458,11 +457,10 @@ TEST_F(CtkNumericMatrixTest, Test_SelfSumNum) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            (CtkNumericMatrixTest::mat2a.Get(x,y) + v)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) + v);
         }
     }
 }
@@ -473,11 +471,10 @@ TEST_F(CtkNumericMatrixTest, Test_DiffNum) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            (CtkNumericMatrixTest::mat2a.Get(x,y) - v)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) - v);
         }
     }
 }
@@ -489,11 +486,10 @@ TEST_F(CtkNumericMatrixTest, Test_SelfDiffNum) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            (CtkNumericMatrixTest::mat2a.Get(x,y) - v)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) - v);
         }
     }
 }
@@ -504,11 +500,10 @@ TEST_F(CtkNumericMatrixTest, Test_MultNum) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            (CtkNumericMatrixTest::mat2a.Get(x,y) * v)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) * v);
         }
     }
 }
@@ -520,11 +515,10 @@ TEST_F(CtkNumericMatrixTest, Test_SelfMultNum) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            (CtkNumericMatrixTest::mat2a.Get(x,y) * v)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) * v);
         }
     }
 }
@@ -535,11 +529,10 @@ TEST_F(CtkNumericMatrixTest, Test_DivNum) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            (CtkNumericMatrixTest::mat2a.Get(x,y) / v)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) / v);
         }
     }
 }
@@ -551,32 +544,28 @@ TEST_F(CtkNumericMatrixTest, Test_SelfDivNum) {
     //
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat2_w);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat2_h);
-    for (int y=0; y<CtkNumericMatrixTest::mat2_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat2_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            (CtkNumericMatrixTest::mat2a.Get(x,y) / v)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat2_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat2_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat2a.Get(x, y) / v);
         }
     }
 }
 
 TEST_F(CtkNumericMatrixTest, Test_Determinant) {
-    EXPECT_LE(std::fabs(CtkNumericMatrixTest::mat3.Determinant()-2.0),
-              FLT_EPSILON);
-    EXPECT_LE(std::fabs(CtkNumericMatrixTest::mat3i.Determinant()-0.5),
-              FLT_EPSILON);
-    ctk::NumericMatrix mat = CtkNumericMatrixTest::mat3 *
-            CtkNumericMatrixTest::mat3i;
-    EXPECT_LE(std::fabs(mat.Determinant()-1.0), FLT_EPSILON);
+    EXPECT_DOUBLE_EQ(CtkNumericMatrixTest::mat3.Determinant(), 2.0);
+    EXPECT_DOUBLE_EQ(CtkNumericMatrixTest::mat3i.Determinant(), 0.5);
+    ctk::NumericMatrix mat = CtkNumericMatrixTest::mat3 
+                             * CtkNumericMatrixTest::mat3i;
+    EXPECT_DOUBLE_EQ(mat.Determinant(), 1.0);
 }
 
 TEST_F(CtkNumericMatrixTest, Test_Inv) {
     ctk::NumericMatrix mat_a = CtkNumericMatrixTest::mat3.Invert();
-    for (int y=0; y<CtkNumericMatrixTest::mat3_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat3_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            CtkNumericMatrixTest::mat3i.Get(x,y)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat3_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat3_w; ++x) {
+           EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                            CtkNumericMatrixTest::mat3i.Get(x, y));
         }
     }
 }
@@ -584,11 +573,10 @@ TEST_F(CtkNumericMatrixTest, Test_Inv) {
 TEST_F(CtkNumericMatrixTest, Test_SelfInv) {
     ctk::NumericMatrix mat_a = CtkNumericMatrixTest::mat3;
     mat_a.SelfInvert();
-    for (int y=0; y<CtkNumericMatrixTest::mat3_h; y++) {
-        for (int x=0; x<CtkNumericMatrixTest::mat3_w; x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            CtkNumericMatrixTest::mat3i.Get(x,y)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < CtkNumericMatrixTest::mat3_h; ++y) {
+        for (int x = 0; x < CtkNumericMatrixTest::mat3_w; ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat3i.Get(x, y));
         }
     }
 }
@@ -597,11 +585,10 @@ TEST_F(CtkNumericMatrixTest, Test_Transpose) {
     ctk::NumericMatrix mat_a = CtkNumericMatrixTest::mat4.Transpose();
     EXPECT_EQ(mat_a.GetWidth(), CtkNumericMatrixTest::mat4_h);
     EXPECT_EQ(mat_a.GetHeight(), CtkNumericMatrixTest::mat4_w);
-    for (int y=0; y<mat_a.GetHeight(); y++) {
-        for (int x=0; x<mat_a.GetWidth(); x++) {
-            EXPECT_LE(fabs( mat_a.Get(x,y) -
-                            CtkNumericMatrixTest::mat4.Get(y,x)
-                          ), FLT_EPSILON);
+    for (int y = 0; y < mat_a.GetHeight(); ++y) {
+        for (int x = 0; x < mat_a.GetWidth(); ++x) {
+            EXPECT_DOUBLE_EQ(mat_a.Get(x, y),
+                             CtkNumericMatrixTest::mat4.Get(y, x));
         }
     }
 }
@@ -609,8 +596,8 @@ TEST_F(CtkNumericMatrixTest, Test_Transpose) {
 TEST_F(CtkNumericMatrixTest, Test_SelfTranspose) {
     ctk::NumericMatrix mat_a = CtkNumericMatrixTest::mat4;
     mat_a.SelfTranspose();
-    for (int y=0; y<mat_a.GetHeight(); y++) {
-        for (int x=0; x<mat_a.GetWidth(); x++) {
+    for (int y = 0; y < mat_a.GetHeight(); ++y) {
+        for (int x = 0; x < mat_a.GetWidth(); ++x) {
             EXPECT_DOUBLE_EQ(mat_a.Get(x, y), 
                              CtkNumericMatrixTest::mat4.Get(y, x));
         }

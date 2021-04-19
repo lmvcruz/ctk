@@ -2,8 +2,7 @@
 
 #include "test_setup.h"
 
-void CtkBinaryImageTest::SetUp()
-{
+void CtkBinaryImageTest::SetUp() {
     binimg.Open(INPUT_DIR+"mask.png");
 }
 
@@ -18,13 +17,13 @@ TEST_F(CtkBinaryImageTest, Test_Setup) {
 TEST_F(CtkBinaryImageTest, Test_Get) {
     int w = CtkBinaryImageTest::binimg.GetWidth();
     int h = CtkBinaryImageTest::binimg.GetHeight();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(CtkBinaryImageTest::binimg.Get(x,y), true);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            if (x < 50 || x >= 150 || y < 50 || y >= 150) {
+                EXPECT_EQ(CtkBinaryImageTest::binimg.Get(x, y), true);
             }
             else {
-                EXPECT_EQ(CtkBinaryImageTest::binimg.Get(x,y), false);
+                EXPECT_EQ(CtkBinaryImageTest::binimg.Get(x, y), false);
             }
         }
     }
@@ -38,13 +37,13 @@ TEST_F(CtkBinaryImageTest, Test_ConstructorCopy) {
     EXPECT_EQ(bin.CheckChannel(), true);
     int w = bin.GetWidth();
     int h = bin.GetHeight();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.Get(x,y), true);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            if (x < 50 || x >= 150 || y < 50 || y >= 150) {
+                EXPECT_EQ(bin.Get(x, y), true);
             }
             else {
-                EXPECT_EQ(bin.Get(x,y), false);
+                EXPECT_EQ(bin.Get(x, y), false);
             }
         }
     }
@@ -59,13 +58,13 @@ TEST_F(CtkBinaryImageTest, Test_ConstructorMat) {
     EXPECT_EQ(bin.CheckChannel(), true);
     int w = bin.GetWidth();
     int h = bin.GetHeight();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.Get(x,y), true);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            if (x < 50 || x >= 150 || y < 50 || y >= 150) {
+                EXPECT_EQ(bin.Get(x, y), true);
             }
             else {
-                EXPECT_EQ(bin.Get(x,y), false);
+                EXPECT_EQ(bin.Get(x, y), false);
             }
         }
     }
@@ -79,13 +78,13 @@ TEST_F(CtkBinaryImageTest, Test_OperatorCopy) {
     EXPECT_EQ(bin.CheckChannel(), true);
     int w = bin.GetWidth();
     int h = bin.GetHeight();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.Get(x,y), true);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            if (x < 50 || x >= 150 || y < 50 || y >= 150) {
+                EXPECT_EQ(bin.Get(x, y), true);
             }
             else {
-                EXPECT_EQ(bin.Get(x,y), false);
+                EXPECT_EQ(bin.Get(x, y), false);
             }
         }
     }
@@ -101,9 +100,9 @@ TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     int w = bin1.GetWidth();
     int h = bin1.GetHeight();
     cv::Mat data = bin1.GetData();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            EXPECT_EQ(bin1.Get(x,y),true);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            EXPECT_EQ(bin1.Get(x, y),true);
         }
     }
     ctk::BinaryImage bin0;
@@ -116,7 +115,7 @@ TEST_F(CtkBinaryImageTest, Test_CreateAndFill) {
     int h0 = bin0.GetHeight();
     for (int x=0; x<w0; x++) {
         for (int y=0; y<h0; y++) {
-            EXPECT_EQ(bin0.Get(x,y),false);
+            EXPECT_EQ(bin0.Get(x, y),false);
         }
     }
 }
@@ -130,13 +129,13 @@ TEST_F(CtkBinaryImageTest, Test_OperatorNeg) {
     EXPECT_EQ(bin.CheckChannel(), true);
     int w = bin.GetWidth();
     int h = bin.GetHeight();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.Get(x,y), false);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            if (x < 50 || x >= 150 || y < 50 || y >= 150) {
+                EXPECT_EQ(bin.Get(x, y), false);
             }
             else {
-                EXPECT_EQ(bin.Get(x,y), true);
+                EXPECT_EQ(bin.Get(x, y), true);
             }
         }
     }
@@ -153,16 +152,16 @@ TEST_F(CtkBinaryImageTest, Test_OperatorAnd) {
     EXPECT_EQ(bin.CheckChannel(), true);
     int w = bin.GetWidth();
     int h = bin.GetHeight();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            if (x>=150 && y>=150){
-                EXPECT_EQ(bin.Get(x,y), false);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            if (x >= 150 && y >= 150){
+                EXPECT_EQ(bin.Get(x, y), false);
             }
-            else if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.Get(x,y), true);
+            else if (x < 50 || x >= 150 || y < 50 || y >= 150) {
+                EXPECT_EQ(bin.Get(x, y), true);
             }
             else {
-                EXPECT_EQ(bin.Get(x,y), false);
+                EXPECT_EQ(bin.Get(x, y), false);
             }
         }
     }
@@ -179,16 +178,16 @@ TEST_F(CtkBinaryImageTest, Test_OperatorOr) {
     EXPECT_EQ(bin.CheckChannel(), true);
     int w = bin.GetWidth();
     int h = bin.GetHeight();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            if (x<50 || x>=150 || y<50 || y>=150) {
-                EXPECT_EQ(bin.Get(x,y), true);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            if (x < 50 || x >= 150 || y < 50 || y >= 150) {
+                EXPECT_EQ(bin.Get(x, y), true);
             }
-            else if (x>=50 && x<100 && y>=50 && y<100) {
-                EXPECT_EQ(bin.Get(x,y), true);
+            else if (x >= 50 && x < 100 && y >= 50 && y < 100) {
+                EXPECT_EQ(bin.Get(x, y), true);
             }
             else {
-                EXPECT_EQ(bin.Get(x,y), false);
+                EXPECT_EQ(bin.Get(x, y), false);
             }
         }
     }
@@ -205,16 +204,16 @@ TEST_F(CtkBinaryImageTest, Test_OperatorXor) {
     EXPECT_EQ(bin.CheckChannel(), true);
     int w = bin.GetWidth();
     int h = bin.GetHeight();
-    for (int x=0; x<w; x++) {
-        for (int y=0; y<h; y++) {
-            if (x>=50 && x<100 && y>=50 && y<100) {
-                EXPECT_EQ(bin.Get(x,y), true);
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            if (x >= 50 && x < 100 && y >= 50 && y < 100) {
+                EXPECT_EQ(bin.Get(x, y), true);
             }
-            else if (x>=150 && y>=150){
-                EXPECT_EQ(bin.Get(x,y), true);
+            else if (x >= 150 && y >= 150){
+                EXPECT_EQ(bin.Get(x, y), true);
             }
             else {
-                EXPECT_EQ(bin.Get(x,y), false);
+                EXPECT_EQ(bin.Get(x, y), false);
             }
         }
     }
