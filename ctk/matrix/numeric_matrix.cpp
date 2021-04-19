@@ -19,7 +19,7 @@ NumericMatrix::NumericMatrix() {
  * @brief NumericMatrix::NumericMatrix
  * @param d
  */
-NumericMatrix::NumericMatrix(cv::Mat &d) : AbstractMatrix<double>(d) {
+NumericMatrix::NumericMatrix(const cv::Mat &d) : AbstractMatrix<double>(d) {
     assert(d.type() == CV_64F && d.channels()==1); //TODO: replace with exception ?
 }
 
@@ -29,7 +29,7 @@ NumericMatrix::NumericMatrix(cv::Mat &d) : AbstractMatrix<double>(d) {
  * @param h  int indicating the number of columns
  * @param d  vector of double with matrix elements
  */
-NumericMatrix::NumericMatrix(int w, int h, std::vector<double> &d) {
+NumericMatrix::NumericMatrix(int w, int h, const std::vector<double> &d) {
     type = CV_64F;
     ch_size = 1;
     Create(w, h);
@@ -67,7 +67,7 @@ NumericMatrix &NumericMatrix::operator=(const NumericMatrix &that) {
  * @param h  int indicating the number of coumns
  * @param vec  vector of ints with matrix elements
  */
-void NumericMatrix::Create(int w, int h, std::vector<int> &vec) {
+void NumericMatrix::Create(int w, int h, const std::vector<double> &vec) {
     if (w > 0 && h > 0) {
         if (type == -1) throw invalid_type();
         data = cv::Mat(h, w, type);
@@ -90,14 +90,14 @@ void NumericMatrix::Open(std::string filename) {
  * @brief NumericMatrix::Save  Save data of the numeric matrix into a file
  * @param filename
  */
-void NumericMatrix::Save(std::string filename) {
+void NumericMatrix::Save(std::string filename) const {
     cv::imwrite(filename, data);
 }
 
 /**
  * @brief NumericMatrix::Show  Print elements in the Numeric Matrix
  */
-void NumericMatrix::Show() {
+void NumericMatrix::Show() const {
     for (int y = 0; y < data.rows; y++) {
         std::cout << "{";
         for (int x = 0; x < data.cols; x++) {
@@ -113,7 +113,7 @@ void NumericMatrix::Show() {
  * @param that  Reference to an existing NumericMatrix object
  * @return NumericMatrix resulting from the sum with the passed matrix
  */
-NumericMatrix NumericMatrix::operator+(const NumericMatrix &that) {
+NumericMatrix NumericMatrix::operator+(const NumericMatrix &that) const {
     cv::Mat res = data + that.data;
     return NumericMatrix(res);
 }
@@ -131,7 +131,7 @@ void NumericMatrix::operator+=(const NumericMatrix &that) {
  * @param that  Reference to an existing NumericMatrix object
  * @return NumericMatrix resulting from the subtraction with the passed matrix
  */
-NumericMatrix NumericMatrix::operator-(const NumericMatrix &that) {
+NumericMatrix NumericMatrix::operator-(const NumericMatrix &that) const {
     cv::Mat res = data - that.data;
     return NumericMatrix(res);
 }
@@ -149,7 +149,7 @@ void NumericMatrix::operator-=(const NumericMatrix &that) {
  * @param that  Reference to an existing NumericMatrix object
  * @return NumericMatrix resulting from the multiplication with the passed matrix
  */
-NumericMatrix NumericMatrix::operator*(const NumericMatrix &that) {
+NumericMatrix NumericMatrix::operator*(const NumericMatrix &that) const {
     assert(data.cols == that.GetRows()); //TODO: replace with exception?
     cv::Mat res = data * that.data;
     return NumericMatrix(res);
@@ -169,7 +169,7 @@ void NumericMatrix::operator*=(const NumericMatrix &that) {
  * @param that  Reference to an existing NumericMatrix object
  * @return NumericMatrix resulting from the division with the passed matrix
  */
-NumericMatrix NumericMatrix::operator/(const NumericMatrix &that) {
+NumericMatrix NumericMatrix::operator/(const NumericMatrix &that) const {
     assert(data.cols==that.GetRows());
     assert(that.GetCols()==that.GetRows() && that.GetCols()>0);
     assert(std::fabs(cv::determinant(that.data))>FLT_EPSILON);
@@ -193,7 +193,8 @@ void NumericMatrix::operator/=(const NumericMatrix &that) {
  * @param v  double constant
  * @return NumericMatrix resulting from the addition of v to each element in the matrix
  */
-NumericMatrix NumericMatrix::operator+(const double v) {
+NumericMatrix NumericMatrix::operator+(const double v) const {
+    // TODO: use move constructor
     cv::Mat res = data + v;
     return NumericMatrix(res);
 }
@@ -211,7 +212,8 @@ void NumericMatrix::operator+=(const double v) {
  * @param v double constant
  * @return  NumericMatrix resulting from the subtraction of v to each element in the matrix
  */
-NumericMatrix NumericMatrix::operator-(const double v) {
+NumericMatrix NumericMatrix::operator-(const double v) const {
+    // TODO: use move constructor
     cv::Mat res = data - v;
     return NumericMatrix(res);
 }
@@ -229,7 +231,8 @@ void NumericMatrix::operator-=(const double v) {
  * @param v double constant
  * @return NumericMatrix resulting from the multiplication of v and each element in the matrix
  */
-NumericMatrix NumericMatrix::operator*(const double v) {
+NumericMatrix NumericMatrix::operator*(const double v) const {
+    // TODO: use move constructor
     cv::Mat res = data * v;
     return NumericMatrix(res);
 }
@@ -247,9 +250,10 @@ void NumericMatrix::operator*=(const double v) {
  * @param v  double constant
  * @return NumericMatrix resulting from the diovision of each element in the matrix by v
  */
-NumericMatrix NumericMatrix::operator/(const double v) {
+NumericMatrix NumericMatrix::operator/(const double v) const {
     assert(std::fabs(v)>FLT_EPSILON); //TODO: replace with exception?
     cv::Mat res = data / v;
+    // TODO: use move constructor
     return NumericMatrix(res);
 }
 
@@ -266,7 +270,7 @@ void NumericMatrix::operator/=(const double v) {
  * @brief NumericMatrix::Determinant
  * @return the determinant of the Numeric Matrix (double)
  */
-double NumericMatrix::Determinant() {
+double NumericMatrix::Determinant() const {
     return cv::determinant(data);
 }
 
@@ -274,9 +278,10 @@ double NumericMatrix::Determinant() {
  * @brief NumericMatrix::Invert
  * @return The NumericMatrix resulting from the inversion of a given NumericMatrix
  */
-NumericMatrix NumericMatrix::Invert() {
+NumericMatrix NumericMatrix::Invert() const {
     assert(std::fabs(Determinant())>FLT_EPSILON); //TODO: replace with exception?
     cv::Mat res = data.inv();
+    // TODO: use move constructor
     return NumericMatrix(res);
 }
 
@@ -292,8 +297,9 @@ void NumericMatrix::SelfInvert() {
  * @brief NumericMatrix::Transpose
  * @return The NumericMatrix resulting from the transpose of a given NumericMatrix
  */
-NumericMatrix NumericMatrix::Transpose() {
+NumericMatrix NumericMatrix::Transpose() const {
     cv::Mat res = data.t();
+    // TODO: use move constructor
     return NumericMatrix(res);
 }
 

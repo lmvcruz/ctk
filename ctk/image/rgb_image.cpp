@@ -46,7 +46,7 @@ RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that) {
  * @brief RgbImage::RgbImage
  * @param d
  */
-RgbImage::RgbImage(cv::Mat &d) : ColorImage(d) {
+RgbImage::RgbImage(const cv::Mat &d) : ColorImage(d) {
     if (d.type() != CV_8UC3 || d.channels() != 3) {
         throw  incompatible_parameters();
     }
@@ -154,7 +154,7 @@ void RgbImage::Set(int i, int r, int g, int b) {
  * @param y int representing the column index
  * @return int representing the red value of the pixel at (x,y)
  */
-int RgbImage::Red(int x, int y) {
+int RgbImage::Red(int x, int y) const {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[0];
 }
 
@@ -164,7 +164,7 @@ int RgbImage::Red(int x, int y) {
  * @param y int representing the column index
  * @return int representing the green value of the pixel at (x,y)
  */
-int RgbImage::Green(int x, int y) {
+int RgbImage::Green(int x, int y) const {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[1];
 }
 
@@ -175,7 +175,7 @@ int RgbImage::Green(int x, int y) {
  * @param y int representing the column index
  * @return int representing the blue value of the pixel at (x,y)
  */
-int RgbImage::Blue(int x, int y) {
+int RgbImage::Blue(int x, int y) const {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[2];
 }
 
@@ -185,7 +185,7 @@ int RgbImage::Blue(int x, int y) {
  * @param y int representing the column index
  * @return Point representing the pixel at (x,y)
  */
-PointI RgbImage::GetPixel(int x, int y) {
+PointI RgbImage::GetPixel(int x, int y) const {
     return PointI(Red(x, y), Green(x, y), Blue(x, y));
 }
 
@@ -198,7 +198,8 @@ PointI RgbImage::GetPixel(int x, int y) {
  * @param qtype int specifying the method of selecting the first centers
  * @return RgbImage obtained after kmeans clustering of original image
  */
-RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype) {
+RgbImage RgbImage::Quantize(int q, int iter, float eps, 
+                            int attempts, int qtype) const {
     RgbImage cluster(data);
     cv::Mat vals;
     cluster.data.convertTo(vals, CV_32F);
@@ -213,14 +214,20 @@ RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
     // replace pixel values with their center value:
     cv::Vec3f *p = vals.ptr<cv::Vec3f>();
     for (size_t i = 0; i < vals.rows; ++i) {
-       int center_id = labels.at<int>(i);
-       p[i] = centers.at<cv::Vec3f>(center_id);
+       p[i] = centers.at<cv::Vec3f>(labels.at<int>(i));
     }
     // back to 2d, and uchar:
     cluster.data = vals.reshape(3, cluster.data.rows);
     cluster.data.convertTo(cluster.data, CV_8U);
     cv::cvtColor(cluster.data, cluster.data, cv::COLOR_BGR2RGB);
     return cluster;
+}
+
+RgbImage RgbImage::Quantize(const std::vector<PointI> &centers, int iter,
+                            float eps, int attempts) const {
+    // TODO: implement this method
+    assert(false);
+    return RgbImage();
 }
 
 /**
@@ -230,7 +237,7 @@ RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype)
  * @param b int representing the blue value
  * @return BinaryImage consisting of a mask of the original image which is 1 for the passed color and 0 otherwise
  */
-BinaryImage RgbImage::PickColor(int r, int g, int b) {
+BinaryImage RgbImage::PickColor(int r, int g, int b) const {
     BinaryImage mask;
     mask.Create(GetWidth(), GetHeight());
     for (auto x = 0; x < data.rows; ++x) {
@@ -250,7 +257,7 @@ BinaryImage RgbImage::PickColor(int r, int g, int b) {
  * @param colors vector of PointI where each element represents a color
  * @return GrayImage for each pixel in the original image assigns the index of the most similar color in the passed vector
  */
-GrayImage RgbImage::Project(std::vector<PointI> &colors) {
+GrayImage RgbImage::Project(const std::vector<PointI> &colors) const {
     if (colors.size() > 256) throw incompatible_parameters();
     GrayImage mask;
     mask.Create(GetWidth(), GetHeight());
@@ -275,7 +282,7 @@ GrayImage RgbImage::Project(std::vector<PointI> &colors) {
  * @brief RgbImage::Contours Get image contours
  * @return vector of Polygons with the image contours
  */
-std::vector<Polygon> RgbImage::Contours() {
+std::vector<Polygon> RgbImage::Contours() const {
     BinaryImage bin = ToGrayImage().ApplyOtsuThreshold();
 
     std::vector<std::vector<cv::Point> > cv_contours;
@@ -323,7 +330,8 @@ std::vector<Polygon> RgbImage::ApproximateContours(int eps) {
  * @param h  int representing the hight of the output image
  * @return RgbImage resulting of the transformation
  */
-RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h) {
+RgbImage RgbImage::Warp(const std::vector<PointD> &pts, 
+                        const std::vector<PointD> &refs, int w, int h) const {
     if (pts.size() != refs.size()) throw  incompatible_parameters();
     if (pts.size() < 4) throw  incompatible_parameters();
     std::vector<cv::Point2f> cv_pts;
@@ -353,7 +361,7 @@ RgbImage RgbImage::Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int
  * @brief RgbImage::ToGrayImage  convert to gray image
  * @return GrayImage
  */
-GrayImage RgbImage::ToGrayImage() {
+GrayImage RgbImage::ToGrayImage() const {
     GrayImage newImage;
     cv::cvtColor(data, newImage.GetData(), cv::COLOR_RGB2GRAY);
     return newImage;
@@ -364,17 +372,18 @@ GrayImage RgbImage::ToGrayImage() {
  * @param pol  Polygon respresenting the contour to draw
  * @return RgbImage image with drawn contour
  */
-RgbImage RgbImage::DrawPolygon(Polygon &pol) {
+RgbImage RgbImage::DrawPolygon(Polygon &pol) const {
     std::vector<std::vector<cv::Point>> cv_conts;
     cv_conts.resize(1);
     cv_conts[0] = pol.GetCvData();
-    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0]) << std::endl;
+    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0]) 
+              << std::endl;
 
     RgbImage new_img(data);
     cv::Mat &new_mat = new_img.GetData();
     const int kThickness = 2;
     const int kLineType = 8;
-    cv::Scalar color = cv::Scalar(rand()%255, rand()%255, rand()%255);
+    cv::Scalar color = cv::Scalar(rand() % 255, rand() % 255, rand() % 255);
     cv::drawContours(new_mat,cv_conts, 0, color, kThickness, kLineType);
     return new_img;
 }

@@ -161,10 +161,26 @@ std::vector<PointD> &Polygon::GetData() {
 }
 
 /**
+ * @brief Polygon::GetData  Get the Point vector points of the Polygon
+ * @return The Polygon attribute points
+ */
+const std::vector<PointD> &Polygon::GetData() const {
+    return points;
+}
+
+/**
  * @brief Polygon::GetCvData  Get the cv::Point vector cvpoints of the Polygon
  * @return The Polygon attribute cvpoints
  */
 std::vector<cv::Point> &Polygon::GetCvData() {
+    return cvpoints;
+}
+
+/**
+ * @brief Polygon::GetCvData  Get the cv::Point vector cvpoints of the Polygon
+ * @return The Polygon attribute cvpoints
+ */
+const std::vector<cv::Point> &Polygon::GetCvData() const {
     return cvpoints;
 }
 

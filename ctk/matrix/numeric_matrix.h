@@ -8,50 +8,51 @@ namespace ctk {
 
 class NumericMatrix : public AbstractMatrix<double> {
 public:
+    using AbstractMatrix<double>::Create;
+
     NumericMatrix();
     NumericMatrix(const NumericMatrix& that);
-    NumericMatrix(cv::Mat& d);
-    NumericMatrix(int w, int h, std::vector<double>& d);
+    NumericMatrix(const cv::Mat& d);
+    NumericMatrix(int w, int h, const std::vector<double>& d);
 
     NumericMatrix& operator=(const NumericMatrix& that);
 
-    using AbstractMatrix<double>::Create;
-    virtual void Create(int w, int h, std::vector<int> &vec);
+    void Create(int w, int h, const std::vector<double> &vec) override;
 
     void Open(std::string filename);
-    void Save(std::string filename);
-    void Show();
+    void Save(std::string filename) const;
+    void Show() const;
 
-    NumericMatrix operator+(const NumericMatrix &that);
+    NumericMatrix operator+(const NumericMatrix &that) const;
     void operator+=(const NumericMatrix &that);
 
-    NumericMatrix operator-(const NumericMatrix &that);
+    NumericMatrix operator-(const NumericMatrix &that) const;
     void operator-=(const NumericMatrix &that);
 
-    NumericMatrix operator*(const NumericMatrix &that);
+    NumericMatrix operator*(const NumericMatrix &that) const;
     void operator*=(const NumericMatrix &that);
 
-    NumericMatrix operator/(const NumericMatrix &that);
+    NumericMatrix operator/(const NumericMatrix &that) const;
     void operator/=(const NumericMatrix &that);
 
-    NumericMatrix operator+(const double v);
+    NumericMatrix operator+(const double v) const;
     void operator+=(const double v);
 
-    NumericMatrix operator-(const double v);
+    NumericMatrix operator-(const double v) const;
     void operator-=(const double v);
 
-    NumericMatrix operator*(const double v);
+    NumericMatrix operator*(const double v) const;
     void operator*=(const double v);
 
-    NumericMatrix operator/(const double v);
+    NumericMatrix operator/(const double v) const;
     void operator/=(const double v);
 
-    double Determinant();
+    double Determinant() const;
 
-    NumericMatrix Invert();
+    NumericMatrix Invert() const;
     void SelfInvert();
 
-    NumericMatrix Transpose();
+    NumericMatrix Transpose() const;
     void SelfTranspose();
 };
 

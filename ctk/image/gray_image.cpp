@@ -1,5 +1,7 @@
 #include "ctk/image/gray_image.h"
 
+#include <assert.h>
+
 #include <opencv2/highgui.hpp>
 
 #include "ctk/image/binary_image.h"
@@ -22,7 +24,9 @@ GrayImage::GrayImage() {
  * @param that reference to existing GrayImage object
  */
 GrayImage::GrayImage(const GrayImage &that) {
-    if (that.data.type()!=CV_8UC1 || that.data.channels()!=1) throw  incompatible_parameters();
+    if (that.data.type() != CV_8UC1 || that.data.channels() != 1) {
+        throw  incompatible_parameters();
+    }
     type = that.type;
     ch_size = that.ch_size;
     invert_channels = false;
@@ -34,7 +38,7 @@ GrayImage::GrayImage(const GrayImage &that) {
  * @param that  reference to existing AbstractImage object
  */
 GrayImage::GrayImage(const AbstractImage<uchar> &that) {
-    if (that.GetData().channels()==3) {
+    if (that.GetData().channels() == 3) {
         cv::cvtColor(that.GetData(), data, cv::COLOR_RGB2GRAY);
     } else {
         data = that.GetData().clone();
@@ -42,15 +46,17 @@ GrayImage::GrayImage(const AbstractImage<uchar> &that) {
     type = CV_8UC1;
     ch_size = 1;
     invert_channels = false;
-    if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
+    if (data.type() != CV_8UC1 || data.channels() != 1) {
+        throw  incompatible_parameters();
+    }
 }
 
 /**
  * @brief GrayImage::GrayImage
  * @param d
  */
-GrayImage::GrayImage(cv::Mat &d)  {
-    if (d.channels()==3) {
+GrayImage::GrayImage(const cv::Mat &d)  {
+    if (d.channels() == 3) {
         cv::cvtColor(d, data, cv::COLOR_RGB2GRAY);
     }
     else {
@@ -59,7 +65,9 @@ GrayImage::GrayImage(cv::Mat &d)  {
     type = CV_8UC1;
     ch_size = 1;
     invert_channels = false;
-    if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
+    if (data.type() != CV_8UC1 || data.channels() != 1) {
+        throw  incompatible_parameters();
+    }
 }
 
 
@@ -69,7 +77,9 @@ GrayImage::GrayImage(cv::Mat &d)  {
  * @return Updated GrayImage
  */
 GrayImage &GrayImage::operator=(const GrayImage &that) {
-    if (that.data.type()!=CV_8UC1 || that.data.channels()!=1) throw  incompatible_parameters();
+    if (that.data.type() != CV_8UC1 || that.data.channels() != 1) {
+        throw  incompatible_parameters();
+    }
     type = that.type;
     ch_size = that.ch_size;
     invert_channels = false;
@@ -83,7 +93,7 @@ GrayImage &GrayImage::operator=(const GrayImage &that) {
  * @return Updated GrayImage
  */
 GrayImage &GrayImage::operator=(const cv::Mat &that) {
-    if (that.channels()==3) {
+    if (that.channels() == 3) {
         cv::cvtColor(that, data, cv::COLOR_RGB2GRAY);
     } else {
         data = that.clone();
@@ -91,7 +101,9 @@ GrayImage &GrayImage::operator=(const cv::Mat &that) {
     type = that.type();
     ch_size = that.channels();
     invert_channels = false;
-    if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
+    if (data.type() != CV_8UC1 || data.channels() != 1) {
+        throw  incompatible_parameters();
+    }
     return *this;
 }
 
@@ -101,7 +113,7 @@ GrayImage &GrayImage::operator=(const cv::Mat &that) {
  * @return Updated GrayImage
  */
 GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that) {
-    if (that.GetData().channels()==3) {
+    if (that.GetData().channels() == 3) {
         cv::cvtColor(that.GetData(), data, cv::COLOR_RGB2GRAY);
     } else {
         data = that.GetData().clone();
@@ -109,7 +121,9 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that) {
     type = CV_8UC1;
     ch_size = 1;
     invert_channels = false;
-    if (data.type()!=CV_8UC1 || data.channels()!=1) throw  incompatible_parameters();
+    if (data.type() != CV_8UC1 || data.channels() != 1) {
+        throw  incompatible_parameters();
+    }
     return *this;
 }
 
@@ -119,7 +133,7 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that) {
  */
 void GrayImage::Open(std::string filename) {
     data = cv::imread(filename, cv::IMREAD_UNCHANGED);
-    if (data.channels()==3) {
+    if (data.channels() == 3) {
         cv::cvtColor(data, data, cv::COLOR_RGB2GRAY);
     }
 }
@@ -128,18 +142,8 @@ void GrayImage::Open(std::string filename) {
  * @brief GrayImage::GetChannels  Get gray image channels
  * @return 1
  */
-int GrayImage::GetChannels() {
+int GrayImage::GetChannels() const {
     return 1;
-}
-
-/**
- * @brief GrayImage::ToRgbImage - Convert gray image to RGB image
- * @return RGB Image
- */
-RgbImage GrayImage::ToRgbImage() {
-    RgbImage newImage;
-    cv::cvtColor(data, newImage.GetData(), cv::COLOR_GRAY2BGR);
-    return newImage;
 }
 
 /**
@@ -147,7 +151,7 @@ RgbImage GrayImage::ToRgbImage() {
  * @param t  int representing the desired threshold
  * @return Binary Image resulting from the application of t to the original image
  */
-BinaryImage GrayImage::ApplyBinaryThreshold(int t) {
+BinaryImage GrayImage::ApplyBinaryThreshold(int t) const {
     BinaryImage newImage;
     threshold(data, newImage.GetData(), t, 255, 0);
     return newImage;
@@ -158,7 +162,7 @@ BinaryImage GrayImage::ApplyBinaryThreshold(int t) {
  * @brief GrayImage::ApplyOtsuThreshold- use Otsu algorithm to choose the optimal threshold value
  * @return Binary Image resulting from the application of the Otsu threshold to the original image
  */
-BinaryImage GrayImage::ApplyOtsuThreshold() {
+BinaryImage GrayImage::ApplyOtsuThreshold() const {
     BinaryImage newImage;
     threshold(data, newImage.GetData(), 0, 255, cv::THRESH_OTSU);
     return newImage;
@@ -171,7 +175,7 @@ BinaryImage GrayImage::ApplyOtsuThreshold() {
  * @return Binary Image resulting from the adaptive thresholding of the original image
  */
 
-BinaryImage GrayImage::ApplyAdaptativeThreshold(int bs, int c) {
+BinaryImage GrayImage::ApplyAdaptativeThreshold(int bs, int c) const {
     cv::Mat aux;
     data.convertTo(aux, CV_8UC1);
     cv::adaptiveThreshold(data, aux, 255,
@@ -180,33 +184,40 @@ BinaryImage GrayImage::ApplyAdaptativeThreshold(int bs, int c) {
     return BinaryImage(aux);
 }
 
+GrayImage GrayImage::Truncate(int t) const {
+    // TODO: Implement this method
+    assert(false);
+    return GrayImage();
+}
+
 /**
  * @brief GrayImage::Normalize - Normalize image into a given range
  * @param minv int representing the lower bound of the range
  * @param maxv  int representing the upper bound of the range
  * @return Normalized image
  */
-GrayImage GrayImage::Normalize(int minv, int maxv) {
-    if (minv < 0) throw  incompatible_parameters();
-    if (maxv > 255) throw  incompatible_parameters();
-    if (minv<maxv) throw  incompatible_parameters();
+GrayImage GrayImage::Normalize(int minv, int maxv) const {
+    if (minv < 0) throw incompatible_parameters();
+    if (maxv > 255) throw incompatible_parameters();
+    if (minv < maxv) throw incompatible_parameters();
     GrayImage norm;
     norm.Create(GetWidth(), GetHeight());
     int cmin = 255;
     int cmax = 0;
-    for (auto x = 0; x < data.rows; x++) {
-        for (auto y = 0; y < data.cols; y++) {
-            int ic = static_cast<int>(Get(x,y));
+    for (auto x = 0; x < data.rows; ++x) {
+        for (auto y = 0; y < data.cols; ++y) {
+            int ic = static_cast<int>(Get(x, y));
             cmin = std::min(cmin, ic);
             cmax = std::max(cmax, ic);
         }
     }
-    float scale = static_cast<float>(maxv-minv) / static_cast<float>(cmax-cmin);
-    for (auto x = 0; x < data.rows; x++) {
-        for (auto y = 0; y < data.cols; y++) {
-            int ic = static_cast<int>(Get(x,y));
-            float c = static_cast<float>(ic-cmin+minv)*scale;
-            norm.Set(x,y,static_cast<uchar>(c));
+    float scale = static_cast<float>(maxv - minv) 
+                   / static_cast<float>(cmax - cmin);
+    for (auto x = 0; x < data.rows; ++x) {
+        for (auto y = 0; y < data.cols; ++y) {
+            int ic = static_cast<int>(Get(x, y));
+            float c = static_cast<float>(ic - cmin + minv) * scale;
+            norm.Set(x, y, static_cast<uchar>(c));
         }
     }
     return norm;
@@ -217,19 +228,29 @@ GrayImage GrayImage::Normalize(int minv, int maxv) {
  * @param c int representing the desired gray value
  * @return BinaryImage representing a mask of the original image that is 1 when the gray value is c and 0 otherwise
  */
-BinaryImage GrayImage::PickColor(int c) {
+BinaryImage GrayImage::PickColor(int c) const {
     BinaryImage mask;
     mask.Create(GetWidth(), GetHeight());
-    for (auto x = 0; x < data.rows; x++) {
-        for (auto y = 0; y < data.cols; y++) {
-            if (static_cast<int>(Get(x,y)) == c) {
-                mask.Set(x,y,true);
+    for (auto x = 0; x < data.rows; ++x) {
+        for (auto y = 0; y < data.cols; ++y) {
+            if (static_cast<int>(Get(x, y)) == c) {
+                mask.Set(x, y, true);
             } else {
-                mask.Set(x,y,false);
+                mask.Set(x, y, false);
             }
         }
     }
     return mask;
 }
-    
+
+/**
+ * @brief GrayImage::ToRgbImage - Convert gray image to RGB image
+ * @return RGB Image
+ */
+RgbImage GrayImage::ToRgbImage() const {
+    RgbImage newImage;
+    cv::cvtColor(data, newImage.GetData(), cv::COLOR_GRAY2BGR);
+    return newImage;
+}
+
 } // namespace ctk

@@ -14,27 +14,27 @@ public:
     GrayImage();
     GrayImage(const GrayImage& that);
     GrayImage(const AbstractImage<uchar>& that);
-    GrayImage(cv::Mat& d);
-    virtual ~GrayImage(){}
+    GrayImage(const cv::Mat& d);
+    virtual ~GrayImage() = default;
 
-    GrayImage &operator=(const GrayImage& that);
+    GrayImage& operator=(const GrayImage& that);
     GrayImage& operator=(const cv::Mat& that);
-    GrayImage &operator=(const AbstractImage<uchar>& that);
+    GrayImage& operator=(const AbstractImage<uchar>& that);
 
     void Open(std::string filename);
 
-    int GetChannels();
+    int GetChannels() const;
 
-    BinaryImage ApplyBinaryThreshold(int t=127);
-    BinaryImage ApplyOtsuThreshold();
-    BinaryImage ApplyAdaptativeThreshold(int bs=5, int c=1);
+    BinaryImage ApplyBinaryThreshold(int t=127) const;
+    BinaryImage ApplyOtsuThreshold() const;
+    BinaryImage ApplyAdaptativeThreshold(int bs=5, int c=1) const;
 
-    GrayImage Truncate(int t=128);
+    GrayImage Truncate(int t=128) const;
 
-    GrayImage Normalize(int minv, int maxv);
-    BinaryImage PickColor(int c);
+    GrayImage Normalize(int minv, int maxv) const;
+    BinaryImage PickColor(int c) const;
 
-    RgbImage ToRgbImage();
+    RgbImage ToRgbImage() const;
 };
 
 } // namespace ctk 

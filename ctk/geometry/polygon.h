@@ -29,7 +29,9 @@ public:
     PointD &GetPoint(int i);
 
     std::vector<PointD> &GetData();
+    const std::vector<PointD> &GetData() const;
     std::vector<cv::Point> &GetCvData();
+    const std::vector<cv::Point> &GetCvData() const;
 
     void Resize(int s);
     int size();

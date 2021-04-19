@@ -14,7 +14,7 @@ public:
     RgbImage();
     RgbImage(const RgbImage& that);
     RgbImage(const AbstractImage<cv::Vec3b>& that);
-    RgbImage(cv::Mat& d);
+    RgbImage(const cv::Mat& d);
 
     void Create(int w, int h);
     void Fill(int r, int g, int b);
@@ -25,34 +25,35 @@ public:
 
     void SafeSet(int x, int y, int r, int g, int b);
     void SafeISet(int i, int r, int g, int b);
-    int Red(int x, int y);
-    int Green(int x, int y);
-    int Blue(int x, int y);
+    int Red(int x, int y) const;
+    int Green(int x, int y) const;
+    int Blue(int x, int y) const;
 
     //TODO: test and benchmark these methods;
-    PointI GetPixel(int x, int y);
+    PointI GetPixel(int x, int y) const;
 
     //TODO: test and benchmark these methods;
     //TODO: replace type by an internal enum
     RgbImage Quantize(int q, int iter=10, float eps=1.0, int attempts=3,
-                      int qtype=cv::KMEANS_PP_CENTERS);
-    RgbImage Quantize(std::vector<PointI> &centers, int iter=10,
-                      float eps=1.0, int attempts=3);
+                      int qtype=cv::KMEANS_PP_CENTERS) const;
+    RgbImage Quantize(const std::vector<PointI> &centers, int iter=10,
+                      float eps=1.0, int attempts=3) const;
 
 
     //TODO: evaluate if this method can be in Image (generic for all types of images)
-    BinaryImage PickColor(int r, int g, int b);
+    BinaryImage PickColor(int r, int g, int b) const;
     //TODO: look for a better name for this function
-    GrayImage Project(std::vector<PointI> &centers);
+    GrayImage Project(const std::vector<PointI> &centers) const;
 
     // TODO: create a classe for contours (avoiding copy to PointI)
-    std::vector<Polygon> Contours();
+    std::vector<Polygon> Contours() const;
     std::vector<Polygon> ApproximateContours(int eps=3);
-    RgbImage Warp(std::vector<PointD> &pts, std::vector<PointD> &refs, int w, int h);
+    RgbImage Warp(const std::vector<PointD> &pts, 
+                  const std::vector<PointD> &refs, int w, int h) const;
 
-    GrayImage ToGrayImage();
+    GrayImage ToGrayImage() const;
 
-    RgbImage DrawPolygon(Polygon &pol);
+    RgbImage DrawPolygon(Polygon &pol) const;
 
     //RgbImage PutText(std::string content, ctk::PointI position)
 

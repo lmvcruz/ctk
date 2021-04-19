@@ -14,19 +14,19 @@ public:
     ~Contours() = default;
 
     void Resize(int s);
-    int GetSize();
+    int GetSize() const;
 
-    void AddPolygon(Polygon &pol);
-    void SetPolygon(int idx, Polygon &pol);
+    void AddPolygon(const Polygon &pol);
+    void SetPolygon(int idx, const Polygon &pol);
     Polygon &GetPolygon(int idx);
 
-    Contours OrientedBoundingBoxes();
+    Contours OrientedBoundingBoxes() const;
 
-    void CalculateContours(BinaryImage &img);
-    void CalculateApproximateContours(BinaryImage &img, int eps=3);
+    void CalculateContours(const BinaryImage &img);
+    void CalculateApproximateContours(const BinaryImage &img, int eps=3);
 
-    RgbImage Draw(BinaryImage &img);
-    RgbImage Draw(RgbImage &img);
+    RgbImage Draw(const BinaryImage &img) const;
+    RgbImage Draw(const RgbImage &img) const;
 
 protected:
     std::vector<Polygon> polys;

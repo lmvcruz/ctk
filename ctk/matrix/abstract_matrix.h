@@ -40,7 +40,7 @@ public:
      * @brief Parameterized Constructor
      * @param d Reference to a cv::Mat array
      */
-    AbstractMatrix(cv::Mat& d) {
+    AbstractMatrix(const cv::Mat& d) {
         type = d.type();
         ch_size = d.channels();
         data = d.clone();
@@ -82,7 +82,7 @@ public:
      * @param h  int representing the number of rows
      * @param vec  vector with AbstractMatrix elements
      */
-    virtual void Create(int w, int h, std::vector<T> &vec) {
+    virtual void Create(int w, int h, const std::vector<T> &vec) {
         if (w > 0 && h > 0) {
             if (type == -1) throw invalid_type();
             data = cv::Mat(h, w, type);
@@ -114,7 +114,7 @@ public:
      * @brief cols  Get number of columns
      * @return  int representing the number of columns
      */
-    int GetCols() const{
+    int GetCols() const {
         return data.cols;
     }
 
@@ -122,7 +122,7 @@ public:
      * @brief width  Get AbstractMatrix width (number of columns)
      * @return int representing the number columns in matrix
      */
-    int GetWidth()  const{
+    int GetWidth() const {
         return data.cols;
     }
 
@@ -130,7 +130,7 @@ public:
      * @brief GetRows  Get number of rows
      * @return int representing the number of rows
      */
-    int GetRows() const{
+    int GetRows() const {
         return data.rows;
     }
 
@@ -146,7 +146,7 @@ public:
      * @brief size   Get AbstractMatrix size
      * @return int representing matrix size (nº of rows x nº of columns)
      */
-    int GetSize() const{
+    int GetSize() const {
         return data.rows * data.cols;
     }
 
@@ -154,7 +154,7 @@ public:
      * @brief channels  Get number of channels
      * @return int representing the number of channels in matrix
      */
-    int GetChannels() const{
+    int GetChannels() const {
         return ch_size;
     }
 
@@ -162,8 +162,8 @@ public:
      * @brief checkChannel  Check if ch_size parameter is correctly assigned
      * @return  boolean true if ch_size corresponds to number of channels in AbstractMatrix.
      */
-    bool CheckChannel() const{
-        return (ch_size == data.channels());
+    bool CheckChannel() const {
+        return ch_size == data.channels();
     }
 
     /**
@@ -191,7 +191,7 @@ public:
      * @param y  int representing the row index
      * @return  AbstractMatrix element at row y and column x
      */
-    virtual T SafeGet(int x, int y) {
+    virtual T SafeGet(int x, int y) const {
         if (x < 0 || x >= data.cols || y < 0 || y >= data.rows) {
             throw std::out_of_range("Exception thrown in AbstractMatyrix::SafeGet");
         }
@@ -242,7 +242,7 @@ public:
      * @param that  reference to an existing AbstractMatrix
      * @return boolean, true if all elements in both AbstractMatrixes are equal.
      */
-    bool operator==(const AbstractMatrix<T> &that) {
+    bool operator==(const AbstractMatrix<T> &that) const {
         if (data.rows != that.GetRows()) return false;
         if (data.cols != that.GetCols()) return false;
         for (auto y = 0; y < data.rows; ++y) {
@@ -258,12 +258,12 @@ public:
      * @param that reference to an existing AbstractMatrix
      * @return boolean, false if all elements in both AbstractMatrixes are equal.
      */
-    bool operator!=(const AbstractMatrix<T> &that) {
+    bool operator!=(const AbstractMatrix<T> &that) const {
         return !(*this == that);
     }
 
     virtual void Open(std::string filename) = 0;
-    virtual void Save(std::string filename) = 0;
+    virtual void Save(std::string filename) const = 0;
 };
 
 }

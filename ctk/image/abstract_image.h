@@ -47,7 +47,7 @@ public:
      * @brief AbstractImage Parameterized Constructor
      * @param d matrix
      */
-    AbstractImage(cv::Mat &d) : AbstractMatrix<T>(d) {
+    AbstractImage(const cv::Mat &d) : AbstractMatrix<T>(d) {
         AbstractMatrix<T>::type = d.type();
         AbstractMatrix<T>::ch_size = d.channels();
     }
@@ -109,7 +109,7 @@ public:
      * @brief startCustomIndices Generate Custom indices
      * @param vec vector of unsigned int with the desired indices
      */
-    void StartCustomIndices(std::vector<unsigned int> &vec) {
+    void StartCustomIndices(const std::vector<unsigned int> &vec) {
         indices = vec;
     }
 
@@ -117,7 +117,7 @@ public:
      * @brief StartCustomIndices  Generate Custom indices
      * @param vec  vector of int with the desired indices
      */
-    void StartCustomIndices(std::vector<int> &vec) {
+    void StartCustomIndices(const std::vector<int> &vec) {
         indices.resize(vec.size());
         for (auto i = 0; i < vec.size(); ++i) {
             indices[i] = static_cast<unsigned int>(vec[i]);
@@ -129,8 +129,8 @@ public:
      * pre-defined indices
      * @return  true if the attribute indices is filled
      */
-    bool IsIndices() {
-        return (indices.size() > 0);
+    bool IsIndices() const {
+        return indices.size() > 0;
     }
 
     /**
@@ -138,7 +138,7 @@ public:
      * @param i int representing the desired index in vector indices
      * @return AbstractMatrix element at  position = indices(i)
      */
-    T IGet(int i) {
+    T IGet(int i) const {
         unsigned int ui = static_cast<unsigned int>(i);
         int int_indx = static_cast<int>(indices[ui]);
         int y = int_indx/AbstractMatrix<T>::data.cols;
@@ -151,7 +151,7 @@ public:
      * @param i int representing the desired index in vector indices
      * @return AbstractMatrix element at  position = indices(i)
      */
-    T SafeIGet(int i) {
+    T SafeIGet(int i) const {
         if (!IsIndices()) StartScanIndices();
         int isize = static_cast<int>(indices.size());
         if (i < 0 || i >= isize) {
@@ -203,9 +203,10 @@ public:
      * @param h height of the rectangle
      * @return  Cropped image containing the desired rgion
      */
-    AbstractImage<T> Crop(int x, int y, int w, int h) {
+    AbstractImage<T> Crop(int x, int y, int w, int h) const {
         cv::Rect roi(x, y, w, h);
         cv::Mat aux = AbstractMatrix<T>::data(roi);
+        // TODO: use move constructor
         return AbstractImage<T>(aux);
     }
 
@@ -219,6 +220,9 @@ public:
     void SelfCrop(int x, int y, int w, int h) {
         cv::Rect roi(x, y, w, h);
         AbstractMatrix<T>::data = AbstractMatrix<T>::data(roi).clone();
+        // TODO: evaluate if worth to use swap
+        // auto aux = AbstractMatrix<T>::data(roi);
+        // std::swap(AbstractMatrix<T>::data, aux);
     }
 
     /**
@@ -239,7 +243,7 @@ public:
         w = std::min(w, that.GetWidth() - tx);
         h = std::min(h, GetHeight() - oy);
         h = std::min(h, that.GetHeight() - ty);
-        // TODO: replace this loop by memcpy
+        // TODO: replace this loop by Crop approach (with swap or move)
         for (int x = 0; x < w; ++x) {
             for (int y = 0; y < h; ++y) {
                 Set(ox + x, oy + y, that.Get(tx + x, ty + y));
@@ -251,9 +255,10 @@ public:
      * @brief FlipHorizontally
      * @return  Image flipped arround the horizontal axis
      */
-    AbstractImage<T> FlipHorizontally() {
+    AbstractImage<T> FlipHorizontally() const {
         cv::Mat aux;
         cv::flip(AbstractMatrix<T>::data, aux, +1);
+        // TODO: use move constructor
         return AbstractImage<T>(aux);
     }
 
@@ -268,9 +273,10 @@ public:
      * @brief FlipVertically
      * @return  Image flipped arround the vertical axis
      */
-    AbstractImage<T> FlipVertically() {
+    AbstractImage<T> FlipVertically() const {
         cv::Mat aux;
         cv::flip(AbstractMatrix<T>::data, aux, 0);
+        // TODO: use move constructor
         return AbstractImage<T>(aux);
     }
 
@@ -285,9 +291,10 @@ public:
      * @brief FlipBoth
      * @return  Image flipped arround both the vertical and horizontal axis
      */
-    AbstractImage<T> FlipBoth() {
+    AbstractImage<T> FlipBoth() const {
         cv::Mat aux;
         cv::flip(AbstractMatrix<T>::data, aux, -1);
+        // TODO: use move constructor
         return AbstractImage<T>(aux);
     }
 
@@ -302,10 +309,11 @@ public:
      * @brief Rotate90
      * @return  Image rotated by 90º clockwise
      */
-    AbstractImage<T> Rotate90() {
+    AbstractImage<T> Rotate90() const {
         cv::Mat aux;
         cv::transpose(AbstractMatrix<T>::data, aux);
         cv::flip(aux, aux, +1);
+        // TODO: use move constructor
         return AbstractImage<T>(aux);
     }
 
@@ -321,9 +329,10 @@ public:
      * @brief Rotate180
      * @return  Image rotated by 180º clockwise
      */
-    AbstractImage<T> Rotate180() {
+    AbstractImage<T> Rotate180() const {
         cv::Mat aux;
         cv::flip(AbstractMatrix<T>::data, aux, -1);
+        // TODO: use move constructor
         return AbstractImage<T>(aux);
     }
 
@@ -338,10 +347,11 @@ public:
      * @brief Rotate270 TODO
      * @return  Image rotated by 270º clockwise
      */
-    AbstractImage<T> Rotate270() {
+    AbstractImage<T> Rotate270() const {
         cv::Mat aux;
         cv::transpose(AbstractMatrix<T>::data, aux);
         cv::flip(aux, aux, 0);
+        // TODO: use move constructor
         return AbstractImage<T>(aux);
     }
 
@@ -359,9 +369,10 @@ public:
      * @param nh int representing new hight
      * @return Resized image
      */
-    AbstractImage<T> Resize(int nw, int nh) {
+    AbstractImage<T> Resize(int nw, int nh) const {
         cv::Mat aux;
         cv::resize(AbstractMatrix<T>::data, aux, cv::Size(nw,nh), cv::INTER_CUBIC);
+        // TODO: use move constructor
         return AbstractImage<T>(aux);
     }
 
@@ -382,7 +393,7 @@ public:
      * @brief Save Save information to file
      * @param filename string with filename
      */
-    void Save(std::string filename) {
+    void Save(std::string filename) const {
         cv::imwrite(filename, AbstractMatrix<T>::data);
         if(invert_channels) {
             cv::Mat aux;
@@ -414,7 +425,7 @@ public:
 
     virtual ~ColorImage(){}
 
-    int GetChannels();
+    int GetChannels() const;
 };
 
 //TODO: NEXT SPRINT
