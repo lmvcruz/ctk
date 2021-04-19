@@ -98,4 +98,12 @@ std::vector<std::string> ListFilesContainingAnyExpressions(std::string cur,
     return files;
 }
 
+void CreateDir(std::string dirname) {
+    std::filesystem::create_directories(dirname);
+}
+
+void RemoveDir(std::string dirname) {
+    std::filesystem::remove_all(dirname);
+}
+
 }

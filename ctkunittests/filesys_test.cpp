@@ -101,3 +101,12 @@ TEST_F(CtkFileSystemTest, Test_FileNamesAnyFiltered) {
     }
     EXPECT_TRUE(containsFyleSys);
 }
+
+TEST_F(CtkFileSystemTest, Test_CreateDir) {
+    std::string dirname = "tcharam";
+    EXPECT_FALSE(ctk::Exists(dirname));
+    ctk::CreateDir(dirname);
+    EXPECT_TRUE(ctk::Exists(dirname));
+    ctk::RemoveDir(dirname);
+    EXPECT_FALSE(ctk::Exists(dirname));
+}
