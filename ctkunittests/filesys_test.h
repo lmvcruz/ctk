@@ -6,6 +6,8 @@ class CtkFileSystemTest : public ::testing::Test {
 public:
     void SetUp() override;
 
+    std::string workspacePath;
+    std::string sourcePath;
     static std::string curPath;
 };
 

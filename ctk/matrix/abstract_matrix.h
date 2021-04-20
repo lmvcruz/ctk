@@ -184,7 +184,6 @@ public:
         return data.at<T>(y, x);
     }
 
-
     /**
      * @brief SafeGet   Get a specific AbstractMatrix element with protections
      * @param x  int representing the column index
