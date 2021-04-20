@@ -25,7 +25,7 @@
 #define TEST_RGB_IMAGES
 #endif
 
-#if ( TEST_ALL || 0 )
+#if ( TEST_ALL || 1 )
 #define TEST_VEC_AUX
 #endif
 
@@ -37,11 +37,11 @@
 #define TEST_POINT
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_FILESYS
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_STRING_AUX
 #endif
 
