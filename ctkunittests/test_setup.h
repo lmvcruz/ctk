@@ -2,7 +2,7 @@
 
 #include <string>
 
-#define TEST_ALL 1
+#define TEST_ALL 0
 
 #if ( TEST_ALL || 0 )
 #define TEST_BINARY_IMAGE
@@ -37,8 +37,12 @@
 #define TEST_POINT
 #endif
 
-#if ( TEST_ALL || 0 )
+#if ( TEST_ALL || 1 )
 #define TEST_FILESYS
+#endif
+
+#if ( TEST_ALL || 1 )
+#define TEST_STRING_AUX
 #endif
 
 const std::string INPUT_DIR = "../../data/test/";

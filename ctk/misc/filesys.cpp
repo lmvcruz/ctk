@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <cstdlib>
 
+#include "ctk/misc/string_aux.h"
+
 namespace ctk {
 
 std::string GetEnvironmentVariable(std::string varname) {
@@ -69,8 +71,8 @@ std::vector<std::string> ListFilesContainingAllExpressions(std::string cur,
     for (auto& path: std::filesystem::directory_iterator(cur)) {
         std::string name = path.path();
         bool valid = true;
-        for (auto& exp : exps) {
-            if (name.find(exp) == std::string::npos) {
+        for (auto& exp: exps) {
+            if (not Contains(name, exp)) {
                 valid = false;
                 break;
             }
@@ -86,14 +88,8 @@ std::vector<std::string> ListFilesContainingAnyExpressions(std::string cur,
     std::vector<std::string> files;
     for (auto& path: std::filesystem::directory_iterator(cur)) {
         std::string name = path.path();
-        bool valid = false;
-        for (auto& exp : exps) {
-            if (name.find(exp) != std::string::npos) {
-                valid = true;
-                break;
-            }
-        }
-        if (valid) files.push_back(name);
+        auto indices = ContainsIndices(name, exps);
+        if (indices.size() > 0) files.push_back(name);
     }
     return files;
 }
@@ -107,8 +103,7 @@ std::vector<std::string> ListFilesWithoutAllExpressions(
         std::string name = path.path();
         bool valid = true;
         for (auto& exp : exps) {
-            // TODO: replace to Contains function
-            if (name.find(exp) != std::string::npos) {
+            if (Contains(name, exp)) {
                 valid = false;
                 break;
             }
