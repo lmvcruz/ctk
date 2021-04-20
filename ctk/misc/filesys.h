@@ -22,6 +22,8 @@ std::vector<std::string> ListFilesContainingAllExpressions(std::string cur,
                                     const std::vector<std::string>& exps);
 std::vector<std::string> ListFilesContainingAnyExpressions(std::string cur,
                                     const std::vector<std::string>& exps);
+std::vector<std::string> ListFilesWithoutAllExpressions(std::string cur,
+                                    const std::vector<std::string>& exps);
 
 void CreateDir(std::string dirname);
 void RemoveDir(std::string dirname);

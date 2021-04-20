@@ -98,6 +98,26 @@ std::vector<std::string> ListFilesContainingAnyExpressions(std::string cur,
     return files;
 }
 
+std::vector<std::string> ListFilesWithoutAllExpressions(
+            std::string cur,
+            const std::vector<std::string>& exps) 
+{
+    std::vector<std::string> files;
+    for (auto& path: std::filesystem::directory_iterator(cur)) {
+        std::string name = path.path();
+        bool valid = true;
+        for (auto& exp : exps) {
+            // TODO: replace to Contains function
+            if (name.find(exp) != std::string::npos) {
+                valid = false;
+                break;
+            }
+        }
+        if (valid) files.push_back(name);
+    }
+    return files;    
+}
+
 void CreateDir(std::string dirname) {
     std::filesystem::create_directories(dirname);
 }

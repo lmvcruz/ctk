@@ -7,6 +7,7 @@
 
 #include "test_setup.h"
 
+#ifdef TEST_FILESYS 
 void CtkFileSystemTest::SetUp() {
     if (curPath == "") {
         curPath = ctk::CurrentPath();
@@ -94,7 +95,7 @@ TEST_F(CtkFileSystemTest, Test_ListDirRelativePath) {
     EXPECT_TRUE(containsFyleSys);
 }
 
-TEST_F(CtkFileSystemTest, Test_FileNamesAllFiltered) {
+TEST_F(CtkFileSystemTest, Test_FileNamesWithAllFilters) {
     const std::vector<std::string> filters = {"cpp", "_test"};
     auto files = ctk::ListFilesContainingAllExpressions(sourcePath, 
                                                      filters);
@@ -107,11 +108,24 @@ TEST_F(CtkFileSystemTest, Test_FileNamesAllFiltered) {
     EXPECT_TRUE(containsFyleSys);
 }
 
-TEST_F(CtkFileSystemTest, Test_FileNamesAnyFiltered) {
+TEST_F(CtkFileSystemTest, Test_FileNamesWithAnyFilter) {
     const std::vector<std::string> filters = {"cpp", "_test"};
     auto files = ctk::ListFilesContainingAnyExpressions(sourcePath, 
                                                      filters);
     EXPECT_EQ(files.size(), 21);
+    bool containsFyleSys = false;
+    for (auto &fn : files) {
+        if (fn == sourcePath + "/filesys_test.cpp")
+            containsFyleSys = true;
+    }
+    EXPECT_TRUE(containsFyleSys);
+}
+
+TEST_F(CtkFileSystemTest, Test_FileNamesWithoutAllFilters) {
+    const std::vector<std::string> filters = {".pri", ".h"};
+    auto files = ctk::ListFilesWithoutAllExpressions(sourcePath, 
+                                                     filters);
+    EXPECT_EQ(files.size(), 13);
     bool containsFyleSys = false;
     for (auto &fn : files) {
         if (fn == sourcePath + "/filesys_test.cpp")
@@ -128,3 +142,4 @@ TEST_F(CtkFileSystemTest, Test_CreateDir) {
     ctk::RemoveDir(dirname);
     EXPECT_FALSE(ctk::Exists(dirname));
 }
+#endif

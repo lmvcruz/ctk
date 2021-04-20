@@ -37,6 +37,10 @@
 #define TEST_POINT
 #endif
 
+#if ( TEST_ALL || 0 )
+#define TEST_FILESYS
+#endif
+
 const std::string INPUT_DIR = "../../data/test/";
 const std::string OUTPUT_DIR = "test_out/";
 const bool SAVE_IMAGES = true;
