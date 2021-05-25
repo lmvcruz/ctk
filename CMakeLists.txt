@@ -19,6 +19,7 @@ add_subdirectory (benchmark/matrices)
 add_subdirectory (benchmark/primenumbers)
 
 add_subdirectory (demos/mosaic)
+add_subdirectory (demos/gauss_elimination)
 
 # CTK Lib
 target_include_directories(ctklib
@@ -58,4 +59,10 @@ target_include_directories(mosaicdemo
         ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/ctk
         ${PROJECT_SOURCE_DIR}/../ext/rapidjson/include
+)
+
+target_include_directories(gauss_elimination
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}
+        ${PROJECT_SOURCE_DIR}/ctk
 )
