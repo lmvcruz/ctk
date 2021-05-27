@@ -13,6 +13,7 @@ public:
 
     RgbImage();
     RgbImage(const RgbImage& that);
+    // TODO: add constructor from vector (update benchmark)
     RgbImage(const AbstractImage<cv::Vec3b>& that);
     RgbImage(const cv::Mat& d);
 

@@ -15,6 +15,7 @@ add_subdirectory (ctk)
 add_subdirectory (ctkunittests)
 
 add_subdirectory (benchmark/image/binimage)
+add_subdirectory (benchmark/image/rgbimage)
 add_subdirectory (benchmark/matrices)
 add_subdirectory (benchmark/primenumbers)
 
@@ -36,6 +37,12 @@ target_include_directories(unittests
 
 # Lib Benchmark
 target_include_directories(binimagebench
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}
+        ${PROJECT_SOURCE_DIR}/ctk
+)
+
+target_include_directories(rgbimagebench
     PUBLIC
         ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/ctk
