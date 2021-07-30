@@ -74,7 +74,8 @@ std::vector<int> generateUniqueRandomNumbs(int n, int s, int e) {
     for (int i =s; i<e; i++) {
         numbers.push_back(i);
     }
-    std::random_shuffle(numbers.begin(), numbers.end());
+    std::mt19937 g(0);
+    std::shuffle(numbers.begin(), numbers.end(), g);
     std::vector<int> random_numbers;
     for (int i = 0; i < n; i++) {
         random_numbers.push_back(numbers[i]);

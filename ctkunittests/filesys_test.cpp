@@ -7,7 +7,7 @@
 
 #include "test_setup.h"
 
-#ifdef TEST_FILESYS 
+#ifdef TEST_FILESYS
 void CtkFileSystemTest::SetUp() {
     if (curPath == "") {
         curPath = ctk::CurrentPath();
@@ -74,7 +74,7 @@ TEST_F(CtkFileSystemTest, Test_ContainsFile) {
 
 TEST_F(CtkFileSystemTest, Test_ListDirAbsolutePath) {
     auto files = ctk::ListDir(sourcePath);
-    EXPECT_EQ(files.size(), 25);
+    EXPECT_EQ(files.size(), 27);
     bool containsFyleSys = false;
     for (auto &fn : files) {
         if (fn == sourcePath + "/filesys_test.cpp")
@@ -86,7 +86,7 @@ TEST_F(CtkFileSystemTest, Test_ListDirAbsolutePath) {
 // See coment before test CtkFileSystemTest::Test_AbsolutePath
 TEST_F(CtkFileSystemTest, Test_ListDirRelativePath) {
     auto files = ctk::ListDir("../../ctkunittests");
-    EXPECT_EQ(files.size(), 25);
+    EXPECT_EQ(files.size(), 27);
     bool containsFyleSys = false;
     for (auto &fn : files) {
         if (fn == "../../ctkunittests/filesys_test.cpp")
@@ -99,7 +99,7 @@ TEST_F(CtkFileSystemTest, Test_FileNamesWithAllFilters) {
     const std::vector<std::string> filters = {"cpp", "_test"};
     auto files = ctk::ListFilesContainingAllExpressions(sourcePath, 
                                                      filters);
-    EXPECT_EQ(files.size(), 10);
+    EXPECT_EQ(files.size(), 11);
     bool containsFyleSys = false;
     for (auto &fn : files) {
         if (fn == sourcePath + "/filesys_test.cpp")
@@ -112,7 +112,7 @@ TEST_F(CtkFileSystemTest, Test_FileNamesWithAnyFilter) {
     const std::vector<std::string> filters = {"cpp", "_test"};
     auto files = ctk::ListFilesContainingAnyExpressions(sourcePath, 
                                                      filters);
-    EXPECT_EQ(files.size(), 21);
+    EXPECT_EQ(files.size(), 23);
     bool containsFyleSys = false;
     for (auto &fn : files) {
         if (fn == sourcePath + "/filesys_test.cpp")
@@ -125,7 +125,7 @@ TEST_F(CtkFileSystemTest, Test_FileNamesWithoutAllFilters) {
     const std::vector<std::string> filters = {".pri", ".h"};
     auto files = ctk::ListFilesWithoutAllExpressions(sourcePath, 
                                                      filters);
-    EXPECT_EQ(files.size(), 13);
+    EXPECT_EQ(files.size(), 14);    
     bool containsFyleSys = false;
     for (auto &fn : files) {
         if (fn == sourcePath + "/filesys_test.cpp")

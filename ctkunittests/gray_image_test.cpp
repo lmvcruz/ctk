@@ -9,11 +9,11 @@
 
 #include "test_setup.h"
 
+#ifdef TEST_GRAY_IMAGE 
 void CtkGrayImageTest::SetUp() {
     grayimg.Open(grayname);
 }
 
-#ifdef TEST_GRAY_IMAGE 
 TEST_F(CtkGrayImageTest, Test_Setup) {
     EXPECT_EQ(CtkGrayImageTest::grayimg.GetWidth(), 640);
     EXPECT_EQ(CtkGrayImageTest::grayimg.GetHeight(), 427);

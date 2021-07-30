@@ -2,11 +2,11 @@
 
 #include "test_setup.h"
 
+#ifdef TEST_BINARY_IMAGE
 void CtkBinaryImageTest::SetUp() {
     binimg.Open(INPUT_DIR+"mask.png");
 }
 
-#ifdef TEST_BINARY_IMAGE
 TEST_F(CtkBinaryImageTest, Test_Setup) {
     EXPECT_EQ(CtkBinaryImageTest::binimg.GetWidth(), 200);
     EXPECT_EQ(CtkBinaryImageTest::binimg.GetHeight(), 200);

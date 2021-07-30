@@ -9,6 +9,7 @@ namespace ctk {
 
 std::string GetEnvironmentVariable(std::string varname) {
     const char* envVar = std::getenv(varname.c_str());
+    if (!envVar) return ""; 
     return std::string(envVar);
 }
 

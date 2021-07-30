@@ -5,11 +5,11 @@
 #include "ctk/image/gray_image.h"
 #include "ctk/misc/vector_aux.h"
 
+#ifdef TEST_RGB_IMAGES
 void CtkRgbImageTest::SetUp() {
     rgbimg.Open(rgbname);
 }
 
-#ifdef TEST_RGB_IMAGES
 TEST_F(CtkRgbImageTest, Test_Setup) {
     EXPECT_EQ(CtkRgbImageTest::rgbimg.GetWidth(), 640);
     EXPECT_EQ(CtkRgbImageTest::rgbimg.GetHeight(), 427);

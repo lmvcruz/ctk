@@ -20,6 +20,7 @@ ctk::BinaryImage ReadBinaryImage(std::string filename) {
     return img;
 }
 
+#ifdef TEST_IMAGE_COMPARATOR
 void CtkImageComparatorTest::SetUp() {
     rgbimg.Open(INPUT_DIR + "rgb_img.jpg");
     grayimg.Open(INPUT_DIR + "gray_img.jpg");
@@ -138,3 +139,4 @@ TEST_F(CtkImageComparatorTest, Test_ComparePixelDistance) {
     EXPECT_FLOAT_EQ(ctk::ComparePixelRelativeDistance(bin1, bin2), 0.0625);
     EXPECT_FLOAT_EQ(ctk::ComparePixelRelativeDistance(bin1, bin3), 1.0);
 }
+#endif
