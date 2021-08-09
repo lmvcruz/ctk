@@ -8,7 +8,7 @@
 #define TEST_BINARY_IMAGE
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_GRAY_IMAGE
 #endif
 
@@ -40,7 +40,7 @@
 #define TEST_POINT
 #endif
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_FILESYS
 #endif
 

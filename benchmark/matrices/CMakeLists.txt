@@ -15,6 +15,8 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 find_package(benchmark REQUIRED)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+
 target_link_libraries(${PROJECT_NAME} 
     ${OpenCV_LIBS}
     ${GTEST_LIBRARIES} 
