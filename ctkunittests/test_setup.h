@@ -2,9 +2,9 @@
 
 #include <string>
 
-#define TEST_ALL 1
+#define TEST_ALL 0
 
-#if ( TEST_ALL || 1 )
+#if ( TEST_ALL || 0 )
 #define TEST_BINARY_IMAGE
 #endif
 
@@ -18,6 +18,10 @@
 
 #if ( TEST_ALL || 0 )
 #define TEST_PRIME_NUMBERS
+#endif
+
+#if ( TEST_ALL || 1 )
+#define TEST_BYTE_NUMBERS
 #endif
 
 #if ( TEST_ALL || 0 )

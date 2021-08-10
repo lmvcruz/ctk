@@ -7,6 +7,7 @@ project(unittests VERSION 0.1.0)
 
 add_executable(unittests
     binary_image_test.cpp
+    byte_numbers_test.cpp
     filesys_test.cpp
     image_comparator_test.cpp
     gray_image_test.cpp

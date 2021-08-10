@@ -14,6 +14,7 @@ image/gray_image.cpp
 image/rgb_image.cpp
 img_proc/contours.cpp
 math/prime_numbers.cpp
+math/byte_numbers.cpp
 matrix/abstract_matrix.cpp
 matrix/numeric_matrix.cpp
 misc/filesys.cpp
