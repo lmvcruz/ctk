@@ -16,7 +16,7 @@
 #define TEST_IMAGE_COMPARATOR
 #endif
 
-#if ( TEST_ALL || 0 )
+#if ( TEST_ALL || 1 )
 #define TEST_PRIME_NUMBERS
 #endif
 
@@ -44,7 +44,7 @@
 #define TEST_POINT
 #endif
 
-#if ( TEST_ALL || 0 )
+#if ( TEST_ALL || 1 )
 #define TEST_FILESYS
 #endif
 

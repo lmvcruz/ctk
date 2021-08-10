@@ -73,3 +73,7 @@ target_include_directories(gauss_elimination
         ${PROJECT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/ctk
 )
+
+add_custom_target(ctkunittests
+    COMMAND ${PROJECT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/ctkunittests/unittests
+)

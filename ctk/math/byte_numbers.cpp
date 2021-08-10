@@ -26,8 +26,8 @@ std::vector<int> int2bits(int num) {
 int bits2int(std::vector<int> bits) {
     int num = 0;
     int base = 1;
-    for (auto i=bits.size()-1; i>=0; --i) {
-        num += bits[i] * base;
+    for (size_t i=0; i<bits.size(); ++i) {
+        num += bits[bits.size()-1-i] * base;
         base <<= 1;
     }
     return num;
