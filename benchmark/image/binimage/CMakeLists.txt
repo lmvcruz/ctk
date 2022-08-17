@@ -21,6 +21,6 @@ target_link_libraries(${PROJECT_NAME}
     ${OpenCV_LIBS}
     ${GTEST_LIBRARIES} 
     -lpthread
+    benchmark::benchmark
     ctklib
-    benchmark
 )

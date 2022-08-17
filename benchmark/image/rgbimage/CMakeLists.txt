@@ -22,5 +22,5 @@ target_link_libraries(${PROJECT_NAME}
     ${GTEST_LIBRARIES} 
     -lpthread
     ctklib
-    benchmark
+    benchmark::benchmark
 )
