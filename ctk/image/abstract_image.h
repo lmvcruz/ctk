@@ -11,513 +11,582 @@
 #include "ctk/matrix/abstract_matrix.h"
 #include "ctk/misc/spatial_ordering.h"
 
-namespace ctk {
+namespace ctk
+{
 
-class BinaryImage;
-class GrayImage;
-class RgbImage;
-class HsvImage;
-class HlsImage;
-class LabImage;
-class RgbaImage;
-class BgraImage;
-
-/**
- * @brief The AbstractImage class
- */
-template <class T>
-class AbstractImage : public AbstractMatrix<T> {
-protected:
-    std::vector<unsigned int> indices;
-    int curr_iter_idx;
-    bool invert_channels = false;
-
-public:
-    using AbstractMatrix<T>::Get;
-    using AbstractMatrix<T>::Set;
-    using AbstractMatrix<T>::GetWidth;
-    using AbstractMatrix<T>::GetHeight;
+    class BinaryImage;
+    class GrayImage;
+    class RgbImage;
+    class HsvImage;
+    class HlsImage;
+    class LabImage;
+    class RgbaImage;
+    class BgraImage;
 
     /**
-     * @brief AbstractImage Default Constructor
+     * @brief The AbstractImage class
      */
-    AbstractImage() = default;
+    template <class T>
+    class AbstractImage : public AbstractMatrix<T>
+    {
+    protected:
+        std::vector<unsigned int> indices;
+        int curr_iter_idx;
+        bool invert_channels = false;
 
-    /**
-     * @brief AbstractImage Parameterized Constructor
-     * @param d matrix
-     */
-    AbstractImage(const cv::Mat &d) : AbstractMatrix<T>(d) {
-        AbstractMatrix<T>::type = d.type();
-        AbstractMatrix<T>::ch_size = d.channels();
-    }
+    public:
+        using AbstractMatrix<T>::Get;
+        using AbstractMatrix<T>::Set;
+        using AbstractMatrix<T>::GetWidth;
+        using AbstractMatrix<T>::GetHeight;
 
-    /**
-     * @brief ~AbstractImage Destructor
-     */
-    virtual ~AbstractImage() = default;
+        /**
+         * @brief AbstractImage Default Constructor
+         */
+        AbstractImage() = default;
 
-    /**
-     * @brief startScanIndices Generate scan indices
-     */
-    void StartScanIndices() {
-        unsigned int w = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::GetWidth());
-        unsigned int h = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::GetHeight());
-        auto points = getScanOrderVector(w, h);
-        InitIndicesFromPointVector(points);
-    }
-
-    /**
-     * @brief startSnakeIndices Generate snake indices
-     */
-    void StartSnakeIndices() {
-        unsigned int w = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::GetWidth());
-        unsigned int h = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::GetHeight());
-        auto points = getSnakeOrderVector(w, h);
-        InitIndicesFromPointVector(points);
-    }
-
-    /**
-     * @brief startSpiralIndices Generate spiral indices
-     */
-    void StartSpiralIndices() {
-        unsigned int w = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::GetWidth());
-        unsigned int h = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::GetHeight());
-        auto points = getSpiralOrderVector(w, h);
-        InitIndicesFromPointVector(points);
-    }
-
-    /**
-     * @brief startSnailIndices Generate snail indices
-     */
-    void StartSnailIndices() {
-        unsigned int w = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::GetWidth());
-        unsigned int h = static_cast<unsigned int>(
-                                    AbstractMatrix<T>::GetHeight());
-        auto points = getSnailOrderVector(w, h);
-        InitIndicesFromPointVector(points);
-    }
-
-    /**
-     * @brief startCustomIndices Generate Custom indices
-     * @param vec vector of unsigned int with the desired indices
-     */
-    void StartCustomIndices(const std::vector<unsigned int> &vec) {
-        indices = vec;
-    }
-
-    /**
-     * @brief StartCustomIndices  Generate Custom indices
-     * @param vec  vector of int with the desired indices
-     */
-    void StartCustomIndices(const std::vector<int> &vec) {
-        indices.resize(vec.size());
-        for (auto i = 0; i < vec.size(); ++i) {
-            indices[i] = static_cast<unsigned int>(vec[i]);
+        /**
+         * @brief AbstractImage Parameterized Constructor
+         * @param d matrix
+         */
+        AbstractImage(const cv::Mat &d) : AbstractMatrix<T>(d)
+        {
+            AbstractMatrix<T>::type = d.type();
+            AbstractMatrix<T>::ch_size = d.channels();
         }
-    }
 
-    /**
-     * @brief IsIndices checks the object will iterate over 
-     * pre-defined indices
-     * @return  true if the attribute indices is filled
-     */
-    bool IsIndices() const {
-        return indices.size() > 0;
-    }
+        /**
+         * @brief ~AbstractImage Destructor
+         */
+        virtual ~AbstractImage() = default;
 
-    /**
-     * @brief Get  Get specific element in AbstractMatrix
-     * @param i int representing the desired index in vector indices
-     * @return AbstractMatrix element at  position = indices(i)
-     */
-    T IGet(int i) const {
-        unsigned int ui = static_cast<unsigned int>(i);
-        int int_indx = static_cast<int>(indices[ui]);
-        int y = int_indx/AbstractMatrix<T>::data.cols;
-        int x = int_indx%AbstractMatrix<T>::data.rows;
-        return AbstractMatrix<T>::Get(x, y);
-    }
-
-    /**
-     * @brief SafeGet Get specific element in AbstractMatrix
-     * @param i int representing the desired index in vector indices
-     * @return AbstractMatrix element at  position = indices(i)
-     */
-    T SafeIGet(int i) const {
-        if (!IsIndices()) StartScanIndices();
-        int isize = static_cast<int>(indices.size());
-        if (i < 0 || i >= isize) {
-            throw std::out_of_range("Exception thrown in AbstractImage::SafeSet");
+        /**
+         * @brief startScanIndices Generate scan indices
+         */
+        void StartScanIndices()
+        {
+            unsigned int w = static_cast<unsigned int>(
+                AbstractMatrix<T>::GetWidth());
+            unsigned int h = static_cast<unsigned int>(
+                AbstractMatrix<T>::GetHeight());
+            auto points = getScanOrderVector(w, h);
+            InitIndicesFromPointVector(points);
         }
-        unsigned int ui = static_cast<unsigned int>(i);
-        int iidx = static_cast<int>(indices[ui]);
-        int x = iidx % AbstractMatrix<T>::data.rows;
-        int y = iidx / AbstractMatrix<T>::data.cols;
-        return AbstractMatrix<T>::Get(x, y);
-    }
 
-    /**
-     * @brief Set  Set specific element in AbstractMatrix
-     * @param i int representing the desired index in vector indices
-     * @param v desired value
-     */
-    void ISet(int i, T v) {
-        unsigned int ui = static_cast<unsigned int>(i);
-        int iidx = static_cast<int>(indices[ui]);
-        int y = iidx / AbstractMatrix<T>::data.cols;
-        int x = iidx % AbstractMatrix<T>::data.rows;
-        AbstractMatrix<T>::Set(x, y, v);
-    }
-
-    /**
-     * @brief safe_iset  Set specific element in AbstractMatrix
-     * @param i int representing the desired index in vector indices
-     * @param v desired value
-     */
-    void SafeISet(int i, T v) {
-        if (!IsIndices()) StartScanIndices();
-        int isize = static_cast<int>(indices.size());
-        if (i < 0 || i >= isize) {
-            throw std::out_of_range("Exception thrown in AbstractImage::SafeSet");
+        /**
+         * @brief startSnakeIndices Generate snake indices
+         */
+        void StartSnakeIndices()
+        {
+            unsigned int w = static_cast<unsigned int>(
+                AbstractMatrix<T>::GetWidth());
+            unsigned int h = static_cast<unsigned int>(
+                AbstractMatrix<T>::GetHeight());
+            auto points = getSnakeOrderVector(w, h);
+            InitIndicesFromPointVector(points);
         }
-        unsigned int ui = static_cast<unsigned int>(i);
-        int iidx = static_cast<int>(indices[ui]);
-        int y = iidx / AbstractMatrix<T>::data.cols;
-        int x = iidx % AbstractMatrix<T>::data.rows;
-        AbstractMatrix<T>::Set(x, y, v);
-    }
 
-    /**
-     * @brief Crop the image according to the region of interest
-     * @param x int representing the x coordinate of the top-left corner
-     * @param y int representing the y coordinate of the top-left corner
-     * @param w width of the rectangle
-     * @param h height of the rectangle
-     * @return  Cropped image containing the desired rgion
-     */
-    AbstractImage<T> Crop(int x, int y, int w, int h) const {
-        cv::Rect roi(x, y, w, h);
-        cv::Mat aux = AbstractMatrix<T>::data(roi);
-        // TODO: use move constructor
-        return AbstractImage<T>(aux);
-    }
-
-    /**
-     * @brief SelfCrop the image according to the region of interest
-     * @param x int representing the x coordinate of the top-left corner
-     * @param y int representing the y coordinate of the top-left corner
-     * @param w width of the rectangle
-     * @param h height of the rectangle
-     */
-    void SelfCrop(int x, int y, int w, int h) {
-        cv::Rect roi(x, y, w, h);
-        AbstractMatrix<T>::data = AbstractMatrix<T>::data(roi).clone();
-        // TODO: evaluate if worth to use swap
-        // auto aux = AbstractMatrix<T>::data(roi);
-        // std::swap(AbstractMatrix<T>::data, aux);
-    }
-
-    /**
-     * @brief CopyFrom Copy a block of a provided image into self data
-     * @param ox int the start x coordinate in this image where data will be placed
-     * @param oy int the start y coordinate in this image where data will be placed
-     * @param tx int the start x coordinate in that image where data will be gotten
-     * @param ty int the start y coordinate in that image where data will be gotten
-     * @param w width of the copied data (if -1 will be the entire image)
-     * @param h height of the copied data (if -1 will be the entire image)
-     */
-    void CopyFrom(AbstractImage<T>& that, int ox, int oy, int tx, int ty, int w=-1, int h=-1) {
-        if (w == -1 or h == -1) {
-            w = that.GetWidth();
-            h = that.GetHeight();
+        /**
+         * @brief startSpiralIndices Generate spiral indices
+         */
+        void StartSpiralIndices()
+        {
+            unsigned int w = static_cast<unsigned int>(
+                AbstractMatrix<T>::GetWidth());
+            unsigned int h = static_cast<unsigned int>(
+                AbstractMatrix<T>::GetHeight());
+            auto points = getSpiralOrderVector(w, h);
+            InitIndicesFromPointVector(points);
         }
-        w = std::min(w, GetWidth() - ox);
-        w = std::min(w, that.GetWidth() - tx);
-        h = std::min(h, GetHeight() - oy);
-        h = std::min(h, that.GetHeight() - ty);
-        // TODO: replace this loop by Crop approach (with swap or move)
-        for (int x = 0; x < w; ++x) {
-            for (int y = 0; y < h; ++y) {
-                Set(ox + x, oy + y, that.Get(tx + x, ty + y));
+
+        /**
+         * @brief startSnailIndices Generate snail indices
+         */
+        void StartSnailIndices()
+        {
+            unsigned int w = static_cast<unsigned int>(
+                AbstractMatrix<T>::GetWidth());
+            unsigned int h = static_cast<unsigned int>(
+                AbstractMatrix<T>::GetHeight());
+            auto points = getSnailOrderVector(w, h);
+            InitIndicesFromPointVector(points);
+        }
+
+        /**
+         * @brief startCustomIndices Generate Custom indices
+         * @param vec vector of unsigned int with the desired indices
+         */
+        void StartCustomIndices(const std::vector<unsigned int> &vec)
+        {
+            indices = vec;
+        }
+
+        /**
+         * @brief StartCustomIndices  Generate Custom indices
+         * @param vec  vector of int with the desired indices
+         */
+        void StartCustomIndices(const std::vector<int> &vec)
+        {
+            indices.resize(vec.size());
+            for (auto i = 0; i < vec.size(); ++i)
+            {
+                indices[i] = static_cast<unsigned int>(vec[i]);
             }
         }
-    }
 
-    /**
-     * @brief FlipHorizontally
-     * @return  Image flipped arround the horizontal axis
-     */
-    AbstractImage<T> FlipHorizontally() const {
-        cv::Mat aux;
-        cv::flip(AbstractMatrix<T>::data, aux, +1);
-        // TODO: use move constructor
-        return AbstractImage<T>(aux);
-    }
-
-    /**
-     * @brief SelfFlipHorizontally - flips the image arround the horizontal axis
-     */
-    void SelfFlipHorizontally() {
-        cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, +1);
-    }
-
-    /**
-     * @brief FlipVertically
-     * @return  Image flipped arround the vertical axis
-     */
-    AbstractImage<T> FlipVertically() const {
-        cv::Mat aux;
-        cv::flip(AbstractMatrix<T>::data, aux, 0);
-        // TODO: use move constructor
-        return AbstractImage<T>(aux);
-    }
-
-    /**
-     * @brief SelfFlipVertically flips the image arround the vertical axis
-     */
-    void SelfFlipVertically() {
-        cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, 0);
-    }
-
-    /**
-     * @brief FlipBoth
-     * @return  Image flipped arround both the vertical and horizontal axis
-     */
-    AbstractImage<T> FlipBoth() const {
-        cv::Mat aux;
-        cv::flip(AbstractMatrix<T>::data, aux, -1);
-        // TODO: use move constructor
-        return AbstractImage<T>(aux);
-    }
-
-    /**
-     * @brief SelfFlipBoth flips image arround both the vertical and horizontal axis
-     */
-    void SelfFlipBoth() {
-        cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, -1);
-    }
-
-    /**
-     * @brief Rotate90
-     * @return  Image rotated by 90º clockwise
-     */
-    AbstractImage<T> Rotate90() const {
-        cv::Mat aux;
-        cv::transpose(AbstractMatrix<T>::data, aux);
-        cv::flip(aux, aux, +1);
-        // TODO: use move constructor
-        return AbstractImage<T>(aux);
-    }
-
-    /**
-     * @brief SelfRotate90 rotates image by 90º clockwise
-     */
-    void SelfRotate90() {
-        cv::transpose(AbstractMatrix<T>::data, AbstractMatrix<T>::data);
-        cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, +1);
-    }
-
-    /**
-     * @brief Rotate180
-     * @return  Image rotated by 180º clockwise
-     */
-    AbstractImage<T> Rotate180() const {
-        cv::Mat aux;
-        cv::flip(AbstractMatrix<T>::data, aux, -1);
-        // TODO: use move constructor
-        return AbstractImage<T>(aux);
-    }
-
-    /**
-     * @brief SelfRotate180 rotates image by 180º clockwise
-     */
-    void SelfRotate180() {
-        cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, -1);
-    }
-
-    /**
-     * @brief Rotate270 TODO
-     * @return  Image rotated by 270º clockwise
-     */
-    AbstractImage<T> Rotate270() const {
-        cv::Mat aux;
-        cv::transpose(AbstractMatrix<T>::data, aux);
-        cv::flip(aux, aux, 0);
-        // TODO: use move constructor
-        return AbstractImage<T>(aux);
-    }
-
-    /**
-     * @brief SelfRotate270 rotates image by 270º clockwise
-     */
-    void SelfRotate270() {
-        cv::transpose(AbstractMatrix<T>::data, AbstractMatrix<T>::data);
-        cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, 0);
-    }
-
-    /**
-     * @brief Resize - change image size
-     * @param nw int representing new width
-     * @param nh int representing new hight
-     * @return Resized image
-     */
-    AbstractImage<T> Resize(int nw, int nh) const {
-        cv::Mat aux;
-        cv::resize(AbstractMatrix<T>::data, aux, cv::Size(nw,nh), cv::INTER_CUBIC);
-        // TODO: use move constructor
-        return AbstractImage<T>(aux);
-    }
-
-    /**
-     * @brief Open Read information from file
-     * @param filename TODO
-     */
-    void Open(std::string filename) {
-        AbstractMatrix<T>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
-        if (invert_channels) {
-            cv::cvtColor(AbstractMatrix<T>::data,
-                         AbstractMatrix<T>::data,
-                         cv::COLOR_RGB2BGR);
+        /**
+         * @brief IsIndices checks the object will iterate over
+         * pre-defined indices
+         * @return  true if the attribute indices is filled
+         */
+        bool IsIndices() const
+        {
+            return indices.size() > 0;
         }
-    }
 
-    /**
-     * @brief Save Save information to file
-     * @param filename string with filename
-     */
-    void Save(std::string filename) const {
-        cv::imwrite(filename, AbstractMatrix<T>::data);
-        if(invert_channels) {
+        /**
+         * @brief Get  Get specific element in AbstractMatrix
+         * @param i int representing the desired index in vector indices
+         * @return AbstractMatrix element at  position = indices(i)
+         */
+        T IGet(int i) const
+        {
+            unsigned int ui = static_cast<unsigned int>(i);
+            int int_indx = static_cast<int>(indices[ui]);
+            int y = int_indx / AbstractMatrix<T>::data.cols;
+            int x = int_indx % AbstractMatrix<T>::data.rows;
+            return AbstractMatrix<T>::Get(x, y);
+        }
+
+        /**
+         * @brief SafeGet Get specific element in AbstractMatrix
+         * @param i int representing the desired index in vector indices
+         * @return AbstractMatrix element at  position = indices(i)
+         */
+        T SafeIGet(int i) const
+        {
+            if (!IsIndices())
+                StartScanIndices();
+            int isize = static_cast<int>(indices.size());
+            if (i < 0 || i >= isize)
+            {
+                throw std::out_of_range("Exception thrown in AbstractImage::SafeSet");
+            }
+            unsigned int ui = static_cast<unsigned int>(i);
+            int iidx = static_cast<int>(indices[ui]);
+            int x = iidx % AbstractMatrix<T>::data.rows;
+            int y = iidx / AbstractMatrix<T>::data.cols;
+            return AbstractMatrix<T>::Get(x, y);
+        }
+
+        /**
+         * @brief Set  Set specific element in AbstractMatrix
+         * @param i int representing the desired index in vector indices
+         * @param v desired value
+         */
+        void ISet(int i, T v)
+        {
+            unsigned int ui = static_cast<unsigned int>(i);
+            int iidx = static_cast<int>(indices[ui]);
+            int y = iidx / AbstractMatrix<T>::data.cols;
+            int x = iidx % AbstractMatrix<T>::data.rows;
+            AbstractMatrix<T>::Set(x, y, v);
+        }
+
+        /**
+         * @brief safe_iset  Set specific element in AbstractMatrix
+         * @param i int representing the desired index in vector indices
+         * @param v desired value
+         */
+        void SafeISet(int i, T v)
+        {
+            if (!IsIndices())
+                StartScanIndices();
+            int isize = static_cast<int>(indices.size());
+            if (i < 0 || i >= isize)
+            {
+                throw std::out_of_range("Exception thrown in AbstractImage::SafeSet");
+            }
+            unsigned int ui = static_cast<unsigned int>(i);
+            int iidx = static_cast<int>(indices[ui]);
+            int y = iidx / AbstractMatrix<T>::data.cols;
+            int x = iidx % AbstractMatrix<T>::data.rows;
+            AbstractMatrix<T>::Set(x, y, v);
+        }
+
+        bool GetInvertedChannels()
+        {
+            return invert_channels;
+        }
+
+        void SetInvertedChannels(bool isInverted)
+        {
+            invert_channels = isInverted;
+        }
+
+        /**
+         * @brief Crop the image according to the region of interest
+         * @param x int representing the x coordinate of the top-left corner
+         * @param y int representing the y coordinate of the top-left corner
+         * @param w width of the rectangle
+         * @param h height of the rectangle
+         * @return  Cropped image containing the desired rgion
+         */
+        AbstractImage<T> Crop(int x, int y, int w, int h) const
+        {
+            cv::Rect roi(x, y, w, h);
+            // TODO: use move constructor
+            AbstractImage<T> cropped(AbstractMatrix<T>::data(roi).clone());
+            cropped.SetInvertedChannels(invert_channels);
+            return cropped;
+        }
+
+        /**
+         * @brief SelfCrop the image according to the region of interest
+         * @param x int representing the x coordinate of the top-left corner
+         * @param y int representing the y coordinate of the top-left corner
+         * @param w width of the rectangle
+         * @param h height of the rectangle
+         */
+        void SelfCrop(int x, int y, int w, int h)
+        {
+            cv::Rect roi(x, y, w, h);
+            AbstractMatrix<T>::data = AbstractMatrix<T>::data(roi).clone();
+            // TODO: evaluate if worth to use swap
+            // auto aux = AbstractMatrix<T>::data(roi);
+            // std::swap(AbstractMatrix<T>::data, aux);
+        }
+
+        /**
+         * @brief CopyFrom Copy a block of a provided image into self data
+         * @param ox int the start x coordinate in this image where data will be placed
+         * @param oy int the start y coordinate in this image where data will be placed
+         * @param tx int the start x coordinate in that image where data will be gotten
+         * @param ty int the start y coordinate in that image where data will be gotten
+         * @param w width of the copied data (if -1 will be the entire image)
+         * @param h height of the copied data (if -1 will be the entire image)
+         */
+        void CopyFrom(AbstractImage<T> &that, int ox, int oy, int tx, int ty, int w = -1, int h = -1)
+        {
+            if (w == -1 or h == -1)
+            {
+                w = that.GetWidth();
+                h = that.GetHeight();
+            }
+            w = std::min(w, GetWidth() - ox);
+            w = std::min(w, that.GetWidth() - tx);
+            h = std::min(h, GetHeight() - oy);
+            h = std::min(h, that.GetHeight() - ty);
+            // TODO: replace this loop by Crop approach (with swap or move)
+            for (int x = 0; x < w; ++x)
+            {
+                for (int y = 0; y < h; ++y)
+                {
+                    Set(ox + x, oy + y, that.Get(tx + x, ty + y));
+                }
+            }
+        }
+
+        /**
+         * @brief FlipHorizontally
+         * @return  Image flipped arround the horizontal axis
+         */
+        AbstractImage<T> FlipHorizontally() const
+        {
             cv::Mat aux;
-            cv::cvtColor(AbstractMatrix<T>::data,
-                         aux, cv::COLOR_RGB2BGR);
-            cv::imwrite(filename, aux);
+            cv::flip(AbstractMatrix<T>::data, aux, +1);
+            // TODO: use move constructor
+            AbstractImage<T> flipped(aux);
+            flipped.SetInvertedChannels(invert_channels);
+            return flipped;
         }
-    }
 
-private:
-    void InitIndicesFromPointVector(std::vector<PointI>& points) {
-        int w = AbstractMatrix<T>::GetWidth();
-        int h = AbstractMatrix<T>::GetHeight();
-        indices.resize(static_cast<unsigned int>(AbstractMatrix<T>::GetSize()));
-        for (size_t ii = 0; ii < points.size(); ++ii) {
-            int idx = points[ii].GetY()*w+points[ii].GetX();
-            indices[ii] = static_cast<unsigned int>(idx);
+        /**
+         * @brief SelfFlipHorizontally - flips the image arround the horizontal axis
+         */
+        void SelfFlipHorizontally()
+        {
+            cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, +1);
         }
-    }
-};
 
+        /**
+         * @brief FlipVertically
+         * @return  Image flipped arround the vertical axis
+         */
+        AbstractImage<T> FlipVertically() const
+        {
+            cv::Mat aux;
+            cv::flip(AbstractMatrix<T>::data, aux, 0);
+            // TODO: use move constructor
+            AbstractImage<T> flipped(aux);
+            flipped.SetInvertedChannels(invert_channels);
+            return flipped;
+        }
 
-class ColorImage : public AbstractImage<cv::Vec3b> {
-public:
-    ColorImage();
-    ColorImage(const ColorImage& that);
-    ColorImage(const AbstractImage<cv::Vec3b>& that);
-    ColorImage(cv::Mat& d);
+        /**
+         * @brief SelfFlipVertically flips the image arround the vertical axis
+         */
+        void SelfFlipVertically()
+        {
+            cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, 0);
+        }
 
-    virtual ~ColorImage(){}
+        /**
+         * @brief FlipBoth
+         * @return  Image flipped arround both the vertical and horizontal axis
+         */
+        AbstractImage<T> FlipBoth() const
+        {
+            cv::Mat aux;
+            cv::flip(AbstractMatrix<T>::data, aux, -1);
+            // TODO: use move constructor
+            AbstractImage<T> flipped(aux);
+            flipped.SetInvertedChannels(invert_channels);
+            return flipped;
+        }
 
-    int GetChannels() const;
-};
+        /**
+         * @brief SelfFlipBoth flips image arround both the vertical and horizontal axis
+         */
+        void SelfFlipBoth()
+        {
+            cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, -1);
+        }
 
-//TODO: NEXT SPRINT
-//class HsvImage : public ColorImage
-//{
-//public:
-//    HsvImage() = default;
+        /**
+         * @brief Rotate90
+         * @return  Image rotated by 90º clockwise
+         */
+        AbstractImage<T> Rotate90() const
+        {
+            cv::Mat aux;
+            cv::transpose(AbstractMatrix<T>::data, aux);
+            cv::flip(aux, aux, +1);
+            // TODO: use move constructor
+            AbstractImage<T> rotated(aux);
+            rotated.SetInvertedChannels(invert_channels);
+            return rotated;
+        }
 
-//    void create(int w, int h);
+        /**
+         * @brief SelfRotate90 rotates image by 90º clockwise
+         */
+        void SelfRotate90()
+        {
+            cv::transpose(AbstractMatrix<T>::data, AbstractMatrix<T>::data);
+            cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, +1);
+        }
 
-//    using AbstractMatrix<cv::Vec3b>::set;
-//    void Set(int x, int y, int h, int s, int v);
-//    void Set(int i, int h, int s, int v);
-//    int hue(int x, int y);
-//    int saturation(int x, int y);
-//    int value(int x, int y);
+        /**
+         * @brief Rotate180
+         * @return  Image rotated by 180º clockwise
+         */
+        AbstractImage<T> Rotate180() const
+        {
+            cv::Mat aux;
+            cv::flip(AbstractMatrix<T>::data, aux, -1);
+            // TODO: use move constructor
+            AbstractImage<T> rotated(aux);
+            rotated.SetInvertedChannels(invert_channels);
+            return rotated;
+        }
 
-//    RgbImage ToRgbImage();
+        /**
+         * @brief SelfRotate180 rotates image by 180º clockwise
+         */
+        void SelfRotate180()
+        {
+            cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, -1);
+        }
 
-//    friend class RgbImage;
-//};
+        /**
+         * @brief Rotate270 TODO
+         * @return  Image rotated by 270º clockwise
+         */
+        AbstractImage<T> Rotate270() const
+        {
+            cv::Mat aux;
+            cv::transpose(AbstractMatrix<T>::data, aux);
+            cv::flip(aux, aux, 0);
+            // TODO: use move constructor
+            AbstractImage<T> rotated(aux);
+            rotated.SetInvertedChannels(invert_channels);
+            return rotated;
+        }
 
-//TODO: NEXT SPRINT
-//class HlsImage : public ColorImage
-//{
-//public:
-//    HlsImage() = default;
+        /**
+         * @brief SelfRotate270 rotates image by 270º clockwise
+         */
+        void SelfRotate270()
+        {
+            cv::transpose(AbstractMatrix<T>::data, AbstractMatrix<T>::data);
+            cv::flip(AbstractMatrix<T>::data, AbstractMatrix<T>::data, 0);
+        }
 
-//    void create(int w, int h);
+        /**
+         * @brief Resize - change image size
+         * @param nw int representing new width
+         * @param nh int representing new hight
+         * @return Resized image
+         */
+        AbstractImage<T> Resize(int nw, int nh) const
+        {
+            cv::Mat aux;
+            cv::resize(AbstractMatrix<T>::data, aux, cv::Size(nw, nh), cv::INTER_CUBIC);
+            // TODO: use move constructor
+            AbstractImage<T> resized(aux);
+            resized.SetInvertedChannels(invert_channels);
+            return resized;
+        }
 
-//    using AbstractMatrix<cv::Vec3b>::set;
-//    void Set(int x, int y, int h, int l, int s);
-//    void Set(int i, int h, int l, int s);
-//    int hue(int x, int y);
-//    int luminance(int x, int y);
-//    int saturation(int x, int y);
+        /**
+         * @brief Open Read information from file
+         * @param filename TODO
+         */
+        void Open(std::string filename)
+        {
+            AbstractMatrix<T>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
+            if (invert_channels)
+            {
+                cv::cvtColor(AbstractMatrix<T>::data,
+                             AbstractMatrix<T>::data,
+                             cv::COLOR_RGB2BGR);
+            }
+        }
 
-//    RgbImage ToRgbImage();
+        /**
+         * @brief Save Save information to file
+         * @param filename string with filename
+         */
+        void Save(std::string filename) const
+        {
+            cv::imwrite(filename, AbstractMatrix<T>::data);
+            if (invert_channels)
+            {
+                cv::Mat aux;
+                cv::cvtColor(AbstractMatrix<T>::data,
+                             aux, cv::COLOR_RGB2BGR);
+                cv::imwrite(filename, aux);
+            }
+        }
 
-//    friend class RgbImage;
-//};
+    private:
+        void InitIndicesFromPointVector(std::vector<PointI> &points)
+        {
+            int w = AbstractMatrix<T>::GetWidth();
+            int h = AbstractMatrix<T>::GetHeight();
+            indices.resize(static_cast<unsigned int>(AbstractMatrix<T>::GetSize()));
+            for (size_t ii = 0; ii < points.size(); ++ii)
+            {
+                int idx = points[ii].GetY() * w + points[ii].GetX();
+                indices[ii] = static_cast<unsigned int>(idx);
+            }
+        }
+    };
 
-//TODO: NEXT SPRINT
-//class LabImage : public ColorImage
-//{
-//public:
-//    LabImage() = default;
+    class ColorImage : public AbstractImage<cv::Vec3b>
+    {
+    public:
+        ColorImage();
+        ColorImage(const ColorImage &that);
+        ColorImage(const AbstractImage<cv::Vec3b> &that);
+        ColorImage(cv::Mat &d);
 
-//    void create(int w, int h);
+        virtual ~ColorImage() {}
 
-//    using AbstractMatrix<cv::Vec3b>::set;
-//    void Set(int x, int y, int l, int a, int b);
-//    void Set(int i, int l, int a, int b);
-//    int lightness(int x, int y);
-//    int a_value(int x, int y);
-//    int b_value(int x, int y);
+        int GetChannels() const;
+    };
 
-//    RgbImage ToRgbImage();
+    // TODO: NEXT SPRINT
+    // class HsvImage : public ColorImage
+    //{
+    // public:
+    //     HsvImage() = default;
 
-//    friend class RgbImage;
-//};
+    //    void create(int w, int h);
 
-//TODO: NEXT SPRINT (Use only one RgbaImage class
-//class ColorAlphaImage : public AbstractImage<cv::Vec4b>
-//{
-//public:
-//    ColorAlphaImage();
-//    virtual ~ColorAlphaImage(){}
+    //    using AbstractMatrix<cv::Vec3b>::set;
+    //    void Set(int x, int y, int h, int s, int v);
+    //    void Set(int i, int h, int s, int v);
+    //    int hue(int x, int y);
+    //    int saturation(int x, int y);
+    //    int value(int x, int y);
 
-//    int GetChannels();
+    //    RgbImage ToRgbImage();
 
-//    void fill();
-//};
+    //    friend class RgbImage;
+    //};
 
-//TODO: NEXT SPRINT
-//class RgbaImage : public ColorAlphaImage
-//{
-//public:
-//    RgbaImage() = default;
+    // TODO: NEXT SPRINT
+    // class HlsImage : public ColorImage
+    //{
+    // public:
+    //     HlsImage() = default;
 
-//    using AbstractMatrix<cv::Vec4b>::set;
-//    void Set(int x, int y, int r, int g, int b, int a);
-//    void Set(int i, int r, int g, int b, int a);
-//    int red(int x, int y);
-//    int Green(int x, int y);
-//    int Blue(int x, int y);
-//    int alpha(int x, int y);
+    //    void create(int w, int h);
 
-//    GrayImage ToGrayImage();
-//    RgbImage ToRgbImage();
+    //    using AbstractMatrix<cv::Vec3b>::set;
+    //    void Set(int x, int y, int h, int l, int s);
+    //    void Set(int i, int h, int l, int s);
+    //    int hue(int x, int y);
+    //    int luminance(int x, int y);
+    //    int saturation(int x, int y);
 
-//    friend class RgbImage;
-//};
+    //    RgbImage ToRgbImage();
+
+    //    friend class RgbImage;
+    //};
+
+    // TODO: NEXT SPRINT
+    // class LabImage : public ColorImage
+    //{
+    // public:
+    //     LabImage() = default;
+
+    //    void create(int w, int h);
+
+    //    using AbstractMatrix<cv::Vec3b>::set;
+    //    void Set(int x, int y, int l, int a, int b);
+    //    void Set(int i, int l, int a, int b);
+    //    int lightness(int x, int y);
+    //    int a_value(int x, int y);
+    //    int b_value(int x, int y);
+
+    //    RgbImage ToRgbImage();
+
+    //    friend class RgbImage;
+    //};
+
+    // TODO: NEXT SPRINT (Use only one RgbaImage class
+    // class ColorAlphaImage : public AbstractImage<cv::Vec4b>
+    //{
+    // public:
+    //     ColorAlphaImage();
+    //     virtual ~ColorAlphaImage(){}
+
+    //    int GetChannels();
+
+    //    void fill();
+    //};
+
+    // TODO: NEXT SPRINT
+    // class RgbaImage : public ColorAlphaImage
+    //{
+    // public:
+    //     RgbaImage() = default;
+
+    //    using AbstractMatrix<cv::Vec4b>::set;
+    //    void Set(int x, int y, int r, int g, int b, int a);
+    //    void Set(int i, int r, int g, int b, int a);
+    //    int red(int x, int y);
+    //    int Green(int x, int y);
+    //    int Blue(int x, int y);
+    //    int alpha(int x, int y);
+
+    //    GrayImage ToGrayImage();
+    //    RgbImage ToRgbImage();
+
+    //    friend class RgbImage;
+    //};
 
 } // namespace ctk

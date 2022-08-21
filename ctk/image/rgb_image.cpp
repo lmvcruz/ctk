@@ -200,7 +200,7 @@ PointI RgbImage::GetPixel(int x, int y) const {
  */
 RgbImage RgbImage::Quantize(int q, int iter, float eps, 
                             int attempts, int qtype) const {
-    RgbImage cluster(data);
+    RgbImage cluster(data.clone());
     cv::Mat vals;
     cluster.data.convertTo(vals, CV_32F);
     vals = vals.reshape(1, vals.total());
@@ -219,7 +219,7 @@ RgbImage RgbImage::Quantize(int q, int iter, float eps,
     // back to 2d, and uchar:
     cluster.data = vals.reshape(3, cluster.data.rows);
     cluster.data.convertTo(cluster.data, CV_8U);
-    cv::cvtColor(cluster.data, cluster.data, cv::COLOR_BGR2RGB);
+    //cv::cvtColor(cluster.data, cluster.data, cv::COLOR_BGR2RGB);
     return cluster;
 }
 
