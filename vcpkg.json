@@ -2,6 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "ctk",
   "version-string": "1.0.0",
+  "builtin-baseline": "3508985146f1b1d248c67aca75be93accef9e11b",
   "dependencies": [
     "opencv4",
     "gtest",
