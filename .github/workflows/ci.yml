@@ -82,6 +82,8 @@ jobs:
 
     - name: Install dependencies via vcpkg (Windows)
       if: runner.os == 'Windows'
+      env:
+        VCPKG_BINARY_SOURCES: 'clear;files,D:\a\ctk\ctk\vcpkg_cache,readwrite'  # Override x-gha with files provider
       run: |
         vcpkg install opencv4:x64-windows gtest:x64-windows benchmark:x64-windows
       shell: pwsh
