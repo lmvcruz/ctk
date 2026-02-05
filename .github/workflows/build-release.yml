@@ -1,0 +1,172 @@
+name: Build Release Artifacts
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
+        default: 'v0.1.0'
+
+env:
+  OPENCV_VERSION: '4.10.0'
+  GTEST_VERSION: '1.15.2'
+  BENCHMARK_VERSION: '1.9.0'
+
+jobs:
+  build-release:
+    name: Build Release for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: ctk-windows-x64
+            cmake_generator: "Visual Studio 17 2022"
+
+          - os: ubuntu-latest
+            artifact_name: ctk-linux-x64
+            cmake_generator: "Unix Makefiles"
+
+          - os: macos-latest
+            artifact_name: ctk-macos-arm64
+            cmake_generator: "Unix Makefiles"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Cache dependencies
+    - name: Cache OpenCV
+      id: cache-opencv
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/opencv-build
+        key: ${{ runner.os }}-opencv-${{ env.OPENCV_VERSION }}-release
+
+    - name: Build OpenCV
+      if: steps.cache-opencv.outputs.cache-hit != 'true'
+      run: |
+        git clone --depth 1 --branch ${{ env.OPENCV_VERSION }} https://github.com/opencv/opencv.git
+        cd opencv
+        mkdir build
+        cd build
+        cmake .. \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/opencv-build \
+          -DBUILD_TESTS=OFF \
+          -DBUILD_PERF_TESTS=OFF \
+          -DBUILD_EXAMPLES=OFF \
+          -DBUILD_DOCS=OFF \
+          -DWITH_CUDA=OFF \
+          -DBUILD_opencv_apps=OFF
+        cmake --build . --config Release --parallel 2
+        cmake --install . --config Release
+      shell: bash
+
+    - name: Cache GTest
+      id: cache-gtest
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/gtest-install
+        key: ${{ runner.os }}-gtest-${{ env.GTEST_VERSION }}-release
+
+    - name: Build GTest
+      if: steps.cache-gtest.outputs.cache-hit != 'true'
+      run: |
+        git clone --depth 1 --branch v${{ env.GTEST_VERSION }} https://github.com/google/googletest.git
+        cd googletest
+        mkdir build
+        cd build
+        cmake .. \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/gtest-install
+        cmake --build . --config Release --parallel 2
+        cmake --install . --config Release
+      shell: bash
+
+    - name: Cache Google Benchmark
+      id: cache-benchmark
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/benchmark-install
+        key: ${{ runner.os }}-benchmark-${{ env.BENCHMARK_VERSION }}-release
+
+    - name: Build Google Benchmark
+      if: steps.cache-benchmark.outputs.cache-hit != 'true'
+      run: |
+        git clone --depth 1 --branch v${{ env.BENCHMARK_VERSION }} https://github.com/google/benchmark.git
+        cd benchmark
+        mkdir build
+        cd build
+        cmake .. \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/benchmark-install \
+          -DBENCHMARK_ENABLE_TESTING=OFF
+        cmake --build . --config Release --parallel 2
+        cmake --install . --config Release
+      shell: bash
+
+    # Configure and build CTK
+    - name: Configure and Build CTK
+      run: |
+        mkdir build
+        cd build
+        cmake .. \
+          -G "${{ matrix.cmake_generator }}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DOpenCV_DIR=${{ github.workspace }}/opencv-build \
+          -DGTest_DIR=${{ github.workspace }}/gtest-install/lib/cmake/GTest \
+          -Dbenchmark_DIR=${{ github.workspace }}/benchmark-install/lib/cmake/benchmark \
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
+        cmake --build . --config Release --parallel 2
+        cmake --install . --config Release
+      shell: bash
+
+    # Package artifacts
+    - name: Package Release (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        mkdir -p artifact
+        cp -r install/* artifact/
+        cp README.md artifact/
+        cp LICENSE artifact/ 2>/dev/null || echo "No LICENSE file"
+      shell: bash
+
+    - name: Package Release (Linux/macOS)
+      if: runner.os != 'Windows'
+      run: |
+        mkdir -p artifact
+        cp -r install/* artifact/
+        cp README.md artifact/
+        cp LICENSE artifact/ 2>/dev/null || echo "No LICENSE file"
+      shell: bash
+
+    - name: Create archive
+      run: |
+        cd artifact
+        tar -czf ../${{ matrix.artifact_name }}.tar.gz *
+      shell: bash
+
+    # Upload artifacts
+    - name: Upload Release Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: ${{ matrix.artifact_name }}.tar.gz
+        retention-days: 30
+
+    # Upload to release if this was triggered by a release event
+    - name: Upload to Release
+      if: github.event_name == 'release'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./${{ matrix.artifact_name }}.tar.gz
+        asset_name: ${{ matrix.artifact_name }}.tar.gz
+        asset_content_type: application/gzip
