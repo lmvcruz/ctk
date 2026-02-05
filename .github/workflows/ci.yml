@@ -9,6 +9,10 @@ on:
     branches: [ develop, main ]
   workflow_dispatch:
 
+permissions:
+  actions: read
+  contents: read
+
 env:
   # Use system packages where possible for speed
   # Only build from source as fallback
@@ -131,21 +135,21 @@ jobs:
       if: runner.os == 'Windows' && matrix.compiler == 'msvc'
       run: |
         cd build
-        cmake --build . --config ${{ matrix.build_type }} --parallel 2
+        cmake --build . --config ${{ matrix.build_type }} --parallel 4
       shell: pwsh
 
     - name: Build CTK (Windows Clang)
       if: runner.os == 'Windows' && matrix.compiler == 'clang'
       run: |
         cd build
-        ninja -j 2
+        ninja -j 4
       shell: pwsh
 
     - name: Build CTK (Linux)
       if: runner.os == 'Linux'
       run: |
         cd build
-        cmake --build . --parallel 2
+        cmake --build . --parallel 4
       shell: bash
 
     # Run tests
