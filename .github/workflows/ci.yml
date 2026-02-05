@@ -72,12 +72,13 @@ jobs:
           libgtest-dev \
           libbenchmark-dev
 
-    # Windows: Use vcpkg for pre-built binaries with automatic caching
+    # Windows: Use vcpkg for pre-built binaries (caching disabled due to x-gha deprecation)
     - name: Setup vcpkg (Windows)
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgGitCommitId: 'a7b6122f6b6504d16d96117336a0562693579933'  # Latest stable
+        doNotCache: true  # Disable automatic caching to avoid x-gha binary provider error
 
     - name: Install dependencies via vcpkg (Windows)
       if: runner.os == 'Windows'
