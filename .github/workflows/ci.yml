@@ -87,8 +87,7 @@ jobs:
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: '71b0a7e48e0096c731048ee8cda9cf0e0f1d87bb'  # vcpkg 2024.12.16 release
-        doNotCache: true  # Disable built-in caching, we use actions/cache instead
+        doNotCache: true  # Disable x-gha provider (deprecated), using actions/cache + files provider instead
 
     - name: Install dependencies via vcpkg (Windows)
       if: runner.os == 'Windows'
