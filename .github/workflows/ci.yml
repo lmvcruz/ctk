@@ -72,29 +72,17 @@ jobs:
           libgtest-dev \
           libbenchmark-dev
 
-    # Windows: Use vcpkg for pre-built binaries with GitHub Actions caching
-    - name: Cache vcpkg binary packages (Windows)
-      if: runner.os == 'Windows'
-      uses: actions/cache@v4
-      with:
-        path: D:\a\ctk\ctk\vcpkg_cache
-        key: vcpkg-${{ runner.os }}-${{ matrix.compiler }}-${{ hashFiles('**/vcpkg.json', '.github/workflows/ci.yml') }}
-        restore-keys: |
-          vcpkg-${{ runner.os }}-${{ matrix.compiler }}-
-          vcpkg-${{ runner.os }}-
-
+    # Windows: Use vcpkg for dependencies (simple mode, no caching)
     - name: Setup vcpkg (Windows)
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
       with:
-        doNotCache: true  # Disable x-gha provider (deprecated), using actions/cache + files provider instead
+        vcpkgGitCommitId: 'd54dc2c36fadc3f475aa49e37a73eea5c1e5e5ad'  # 2024.12.16 release
 
     - name: Install dependencies via vcpkg (Windows)
       if: runner.os == 'Windows'
-      env:
-        VCPKG_BINARY_SOURCES: 'clear;files,D:\a\ctk\ctk\vcpkg_cache,readwrite'  # Use files provider with GitHub Actions cache
       run: |
-        vcpkg install
+        vcpkg install opencv4:x64-windows gtest:x64-windows benchmark:x64-windows
       shell: pwsh
 
     # Install LLVM/Clang for Windows Clang builds
