@@ -268,7 +268,7 @@ namespace ctk
          */
         void CopyFrom(AbstractImage<T> &that, int ox, int oy, int tx, int ty, int w = -1, int h = -1)
         {
-            if (w == -1 or h == -1)
+            if (w == -1 || h == -1)
             {
                 w = that.GetWidth();
                 h = that.GetHeight();

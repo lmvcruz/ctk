@@ -27,10 +27,10 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
 
 enable_testing()
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} 
-${GTEST_LIBRARIES} 
--lpthread)
+find_package(GTest REQUIRED CONFIG)
 
-target_link_libraries(${PROJECT_NAME} ctklib)
+target_link_libraries(${PROJECT_NAME}
+    GTest::gtest
+    GTest::gtest_main
+    ctklib
+)

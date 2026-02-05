@@ -15,12 +15,17 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 find_package(benchmark REQUIRED)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+if(NOT WIN32)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+endif()
 
-target_link_libraries(${PROJECT_NAME} 
+target_link_libraries(${PROJECT_NAME}
     ${OpenCV_LIBS}
-    ${GTEST_LIBRARIES} 
-    -lpthread
+    ${GTEST_LIBRARIES}
     benchmark::benchmark
     ctklib
 )
+
+if(NOT WIN32)
+    target_link_libraries(${PROJECT_NAME} pthread)
+endif()

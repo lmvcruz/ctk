@@ -41,10 +41,17 @@ Makefile
 
 #Folders
 build
+build-msvc
+build-clang
 doc
 .tmp
 .vscode
 tmp
+
+# Environment files
+.env
+.venv/
+venv/
 
 #Qt Files
 moc_*

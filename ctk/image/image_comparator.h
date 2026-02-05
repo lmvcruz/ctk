@@ -5,10 +5,10 @@
 namespace ctk {
 
 template<class T>
-bool CompareAbsoluteImages(AbstractImage<T>& img1, AbstractImage<T>& img2) {    
-    if (img1.GetWidth() != img2.GetWidth() or 
-        img1.GetHeight() != img2.GetHeight() or
-        img1.GetChannels() != img2.GetChannels() ) 
+bool CompareAbsoluteImages(AbstractImage<T>& img1, AbstractImage<T>& img2) {
+    if (img1.GetWidth() != img2.GetWidth() ||
+        img1.GetHeight() != img2.GetHeight() ||
+        img1.GetChannels() != img2.GetChannels() )
     {
         return false;
     }
@@ -35,8 +35,8 @@ int CountDifferentPixels(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     int diff = 0;
     for (int x = 0; x < maxWidth; ++x) {
         for (int y = 0; y < maxHeight; ++y) {
-            if (x >= minWidth or y >= minHeight 
-                or img1.Get(x, y) != img2.Get(x, y)) {
+            if (x >= minWidth || y >= minHeight
+                || img1.Get(x, y) != img2.Get(x, y)) {
                 diff++;
             }
         }
@@ -70,7 +70,7 @@ int PixelL1Distance(uchar px1, uchar px2) {
 }
 
 int PixelL1Distance(bool px1, bool px2) {
-    return static_cast<float>(px1 xor px2);
+    return static_cast<float>(px1 ^ px2);
 }
 
 int GetDefaultDistance(cv::Vec3b) {
@@ -85,7 +85,7 @@ int GetDefaultDistance(bool) {
     return 1.0;
 }
 
-template<class T>    
+template<class T>
 int ComparePixelAbsoluteDistance(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     int maxWidth = std::max(img1.GetWidth(), img2.GetWidth());
     int minWidth = std::min(img1.GetWidth(), img2.GetWidth());
@@ -99,7 +99,7 @@ int ComparePixelAbsoluteDistance(AbstractImage<T>& img1, AbstractImage<T>& img2)
     int diff = 0.0;
     for (int x = 0; x < maxWidth; ++x) {
         for (int y = 0; y < maxHeight; ++y) {
-            if (x >= minWidth or y >= minHeight) {
+            if (x >= minWidth || y >= minHeight) {
                 diff += pixel;
             }
             else if (img1.Get(x, y) != img2.Get(x, y)) {
@@ -110,7 +110,7 @@ int ComparePixelAbsoluteDistance(AbstractImage<T>& img1, AbstractImage<T>& img2)
     return diff;
 }
 
-template<class T>    
+template<class T>
 double ComparePixelRelativeDistance(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     int maxWidth = std::max(img1.GetWidth(), img2.GetWidth());
     int minWidth = std::min(img1.GetWidth(), img2.GetWidth());
