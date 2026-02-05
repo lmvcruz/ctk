@@ -94,7 +94,7 @@ jobs:
       env:
         VCPKG_BINARY_SOURCES: 'clear;files,D:\a\ctk\ctk\vcpkg_cache,readwrite'  # Use files provider with GitHub Actions cache
       run: |
-        vcpkg install opencv4:x64-windows gtest:x64-windows benchmark:x64-windows
+        vcpkg install
       shell: pwsh
 
     # Install LLVM/Clang for Windows Clang builds
