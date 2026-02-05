@@ -76,8 +76,7 @@ jobs:
     - name: Install vcpkg (Windows)
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgJsonGlob: 'ctk/vcpkg.json'
+
 
     - name: Install dependencies via vcpkg (Windows)
       if: runner.os == 'Windows'
