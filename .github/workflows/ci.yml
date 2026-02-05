@@ -87,6 +87,7 @@ jobs:
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
       with:
+        vcpkgGitCommitId: '2024.12.16'  # Use recent stable vcpkg release
         doNotCache: true  # Disable built-in caching, we use actions/cache instead
 
     - name: Install dependencies via vcpkg (Windows)
