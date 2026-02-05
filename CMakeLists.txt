@@ -10,6 +10,11 @@ else ()
     set (CMAKE_CXX_STANDARD 17)
 endif ()
 
+# Use dynamic runtime library on Windows with Clang to match dependencies
+if (MSVC OR (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+endif()
+
 
 add_subdirectory (ctk)
 add_subdirectory (ctkunittests)

@@ -181,8 +181,48 @@ class CTKBuilder:
             cmake_args.extend(['-G', generator])
         elif self.args.clang:
             # Clang configuration
-            clang_c = os.getenv('CLANG_C_COMPILER', 'clang')
-            clang_cxx = os.getenv('CLANG_CXX_COMPILER', 'clang++')
+            clang_c = os.getenv('CLANG_C_COMPILER')
+            clang_cxx = os.getenv('CLANG_CXX_COMPILER')
+
+            # Auto-detect Clang on Windows if not specified
+            if not clang_c or not clang_cxx:
+                if sys.platform == 'win32':
+                    # Try common Clang installation paths on Windows
+                    possible_paths = [
+                        r'C:\Program Files\LLVM\bin\clang.exe',
+                        r'C:\Program Files (x86)\LLVM\bin\clang.exe',
+                    ]
+                    for path in possible_paths:
+                        if Path(path).exists():
+                            clang_c = clang_c or path
+                            clang_cxx = clang_cxx or path.replace(
+                                'clang.exe', 'clang++.exe')
+                            self.logger.info(f"Auto-detected Clang at: {path}")
+                            break
+                    else:
+                        # Try to find in PATH
+                        try:
+                            result = subprocess.run(['where', 'clang'],
+                                                    capture_output=True,
+                                                    text=True,
+                                                    check=True)
+                            clang_path = result.stdout.strip().split('\n')[0]
+                            clang_c = clang_c or clang_path
+                            clang_cxx = clang_cxx or clang_path.replace(
+                                'clang.exe', 'clang++.exe')
+                            self.logger.info(
+                                f"Found Clang in PATH: {clang_path}")
+                        except subprocess.CalledProcessError:
+                            self.logger.error(
+                                "Clang not found! Please install LLVM/Clang or set "
+                                "CLANG_C_COMPILER and CLANG_CXX_COMPILER in .env"
+                            )
+                            sys.exit(1)
+                else:
+                    # On Linux/macOS, use defaults
+                    clang_c = clang_c or 'clang'
+                    clang_cxx = clang_cxx or 'clang++'
+
             cmake_args.extend([
                 '-G', 'Ninja',
                 f'-DCMAKE_C_COMPILER={clang_c}',
