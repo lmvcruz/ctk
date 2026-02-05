@@ -140,10 +140,7 @@ jobs:
         cd build
         cmake .. \
           -G "${{ matrix.cmake_generator }}" \
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-          -DOpenCV_DIR=${{ github.workspace }}/opencv-build \
-          -DGTest_DIR=${{ github.workspace }}/gtest-install/lib/cmake/GTest \
-          -Dbenchmark_DIR=${{ github.workspace }}/benchmark-install/lib/cmake/benchmark
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
       shell: bash
 
     # Build CTK project
@@ -212,14 +209,10 @@ jobs:
     if: always()
 
     steps:
-    - name: CMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
-      shell: pwsh
-
-    - name: Configure CTK (Linux/macOS)
-      if: runner.os != 'Windows'
+    - name: Check build status
       run: |
-        mkdir build
-        cd build
-        cmake .. \
-          -G "${{ matrix.cmake_generator }}" \
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        if [ "${{ needs.build-and-test.result }}" != "success" ]; then
+          echo "One or more builds failed!"
+          exit 1
+        fi
+        echo "All builds passed successfully!"
