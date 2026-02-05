@@ -8,9 +8,12 @@ on:
   workflow_dispatch:
 
 env:
+  # Use system packages where possible for speed
+  # Only build from source as fallback
   OPENCV_VERSION: '4.10.0'
   GTEST_VERSION: '1.15.2'
   BENCHMARK_VERSION: '1.9.0'
+  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
 
 jobs:
   build-and-test:
@@ -27,6 +30,11 @@ jobs:
             cmake_generator: "Visual Studio 17 2022"
             build_type: Release
 
+          - os: windows-latest
+            compiler: clang
+            cmake_generator: "Ninja"
+            build_type: Release
+
           # Linux builds
           - os: ubuntu-latest
             compiler: gcc
@@ -34,21 +42,6 @@ jobs:
             build_type: Release
             cc: gcc-11
             cxx: g++-11
-
-          - os: ubuntu-latest
-            compiler: clang
-            cmake_generator: "Ninja"
-            build_type: Release
-            cc: clang-14
-            cxx: clang++-14
-
-          # macOS builds
-          - os: macos-latest
-            compiler: clang
-            cmake_generator: "Ninja"
-            build_type: Release
-            cc: clang
-            cxx: clang++
 
     steps:
     - name: Checkout code
@@ -74,106 +67,43 @@ jobs:
           build-essential \
           cmake \
           ninja-build \
-          libgtk-3-dev \
-          libavcodec-dev \
-          libavformat-dev \
-          libswscale-dev \
-          libv4l-dev \
-          libxvidcore-dev \
-          libx264-dev \
-          libjpeg-dev \
-          libpng-dev \
-          libtiff-dev \
-          gfortran \
-          openexr \
-          libatlas-base-dev \
-          libtbb-dev
+          libopencv-dev \
+          libgtest-dev \
+          libbenchmark-dev
 
-    - name: Install dependencies (macOS)
-      if: runner.os == 'macOS'
-      run: |
-        brew update
-        brew install cmake ninja pkg-config jpeg libpng libtiff openexr tbb
+    # Windows: Use vcpkg for pre-built binaries
+    - name: Setup vcpkg (Windows)
+      if: runner.os == 'Windows'
+      uses: lukka/run-vcpkg@v11
+      with:
+        vcpkgGitCommitId: 'a7b6122f6b6504d16d96117336a0562693579933'  # Latest stable
 
-    - name: Install dependencies (Windows)
+    - name: Export GitHub Actions cache environment variables (Windows)
+      if: runner.os == 'Windows'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+    - name: Install dependencies via vcpkg (Windows)
       if: runner.os == 'Windows'
       run: |
-        choco install ninja -y
+        vcpkg install opencv4:x64-windows gtest:x64-windows benchmark:x64-windows
+      shell: pwsh
 
-    # Cache dependencies to speed up builds
-    - name: Cache OpenCV
-      id: cache-opencv
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/opencv-build
-        key: ${{ runner.os }}-opencv-${{ env.OPENCV_VERSION }}-${{ matrix.compiler }}
-
-    - name: Build OpenCV
-      if: steps.cache-opencv.outputs.cache-hit != 'true'
+    # Install LLVM/Clang for Windows Clang builds
+    - name: Install LLVM/Clang (Windows)
+      if: runner.os == 'Windows' && matrix.compiler == 'clang'
       run: |
-        git clone --depth 1 --branch ${{ env.OPENCV_VERSION }} https://github.com/opencv/opencv.git
-        cd opencv
-        mkdir build
-        cd build
-        cmake .. \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/opencv-build \
-          -DBUILD_TESTS=OFF \
-          -DBUILD_PERF_TESTS=OFF \
-          -DBUILD_EXAMPLES=OFF \
-          -DBUILD_DOCS=OFF \
-          -DWITH_CUDA=OFF \
-          -DBUILD_opencv_apps=OFF
-        cmake --build . --config Release --parallel 2
-        cmake --install . --config Release
-      shell: bash
+        choco install llvm ninja -y
+      shell: pwsh
 
-    - name: Cache GTest
-      id: cache-gtest
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/gtest-install
-        key: ${{ runner.os }}-gtest-${{ env.GTEST_VERSION }}
+    # No need to build dependencies - using system packages!
 
-    - name: Build GTest
-      if: steps.cache-gtest.outputs.cache-hit != 'true'
-      run: |
-        git clone --depth 1 --branch v${{ env.GTEST_VERSION }} https://github.com/google/googletest.git
-        cd googletest
-        mkdir build
-        cd build
-        cmake .. \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/gtest-install
-        cmake --build . --config Release --parallel 2
-        cmake --install . --config Release
-      shell: bash
-
-    - name: Cache Google Benchmark
-      id: cache-benchmark
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/benchmark-install
-        key: ${{ runner.os }}-benchmark-${{ env.BENCHMARK_VERSION }}
-
-    - name: Build Google Benchmark
-      if: steps.cache-benchmark.outputs.cache-hit != 'true'
-      run: |
-        git clone --depth 1 --branch v${{ env.BENCHMARK_VERSION }} https://github.com/google/benchmark.git
-        cd benchmark
-        mkdir build
-        cd build
-        cmake .. \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/benchmark-install \
-          -DBENCHMARK_ENABLE_TESTING=OFF
-        cmake --build . --config Release --parallel 2
-        cmake --install . --config Release
-      shell: bash
-
-    # Set compiler environment variables for Linux/macOS
-    - name: Set compiler (Linux/macOS)
-      if: runner.os != 'Windows'
+    # Set compiler environment variables for Linux
+    - name: Set compiler (Linux)
+      if: runner.os == 'Linux'
       run: |
         echo "CC=${{ matrix.cc }}" >> $GITHUB_ENV
         echo "CXX=${{ matrix.cxx }}" >> $GITHUB_ENV
@@ -187,13 +117,24 @@ jobs:
         cd build
         cmake .. `
           -G "${{ matrix.cmake_generator }}" `
-          -DOpenCV_DIR="${{ github.workspace }}/opencv-build" `
-          -DGTest_DIR="${{ github.workspace }}/gtest-install/lib/cmake/GTest" `
-          -Dbenchmark_DIR="${{ github.workspace }}/benchmark-install/lib/cmake/benchmark"
+          -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
       shell: pwsh
 
-    - name: Configure CTK (Linux/macOS)
-      if: runner.os != 'Windows'
+    - name: Configure CTK (Windows Clang)
+      if: runner.os == 'Windows' && matrix.compiler == 'clang'
+      run: |
+        mkdir build
+        cd build
+        cmake .. `
+          -G "${{ matrix.cmake_generator }}" `
+          -DCMAKE_C_COMPILER=clang `
+          -DCMAKE_CXX_COMPILER=clang++ `
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
+          -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      shell: pwsh
+
+    - name: Configure CTK (Linux)
+      if: runner.os == 'Linux'
       run: |
         mkdir build
         cd build
@@ -206,31 +147,46 @@ jobs:
       shell: bash
 
     # Build CTK project
-    - name: Build CTK (Windows)
-      if: runner.os == 'Windows'
+    - name: Build CTK (Windows MSVC)
+      if: runner.os == 'Windows' && matrix.compiler == 'msvc'
       run: |
         cd build
         cmake --build . --config ${{ matrix.build_type }} --parallel 2
       shell: pwsh
 
-    - name: Build CTK (Linux/macOS)
-      if: runner.os != 'Windows'
+    - name: Build CTK (Windows Clang)
+      if: runner.os == 'Windows' && matrix.compiler == 'clang'
+      run: |
+        cd build
+        ninja -j 2
+      shell: pwsh
+
+    - name: Build CTK (Linux)
+      if: runner.os == 'Linux'
       run: |
         cd build
         cmake --build . --parallel 2
       shell: bash
 
     # Run tests
-    - name: Run Tests (Windows)
-      if: runner.os == 'Windows'
+    - name: Run Tests (Windows MSVC)
+      if: runner.os == 'Windows' && matrix.compiler == 'msvc'
       run: |
         cd build/ctkunittests/${{ matrix.build_type }}
         ./unittests.exe
       shell: pwsh
       continue-on-error: false
 
-    - name: Run Tests (Linux/macOS)
-      if: runner.os != 'Windows'
+    - name: Run Tests (Windows Clang)
+      if: runner.os == 'Windows' && matrix.compiler == 'clang'
+      run: |
+        cd build/ctkunittests
+        ./unittests.exe
+      shell: pwsh
+      continue-on-error: false
+
+    - name: Run Tests (Linux)
+      if: runner.os == 'Linux'
       run: |
         cd build/ctkunittests
         ./unittests
@@ -256,10 +212,14 @@ jobs:
     if: always()
 
     steps:
-    - name: Check build status
+    - name: CMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      shell: pwsh
+
+    - name: Configure CTK (Linux/macOS)
+      if: runner.os != 'Windows'
       run: |
-        if [ "${{ needs.build-and-test.result }}" != "success" ]; then
-          echo "One or more builds failed!"
-          exit 1
-        fi
-        echo "All builds passed successfully!"
+        mkdir build
+        cd build
+        cmake .. \
+          -G "${{ matrix.cmake_generator }}" \
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}

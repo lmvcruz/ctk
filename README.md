@@ -1,6 +1,19 @@
 # ctk
 Cross Toolkit
 
+[![CI Build and Test](https://github.com/lmvcruz/ctk/actions/workflows/ci.yml/badge.svg)](https://github.com/lmvcruz/ctk/actions/workflows/ci.yml)
+[![Code Quality](https://github.com/lmvcruz/ctk/actions/workflows/code-quality.yml/badge.svg)](https://github.com/lmvcruz/ctk/actions/workflows/code-quality.yml)
+
+## Overview
+
+A cross-platform C++ toolkit featuring image processing, matrix operations, geometry utilities, and more.
+
+**Platforms:** Windows | Linux
+**Compilers:** MSVC | GCC | Clang
+**Build Systems:** CMake | Qt (.pro)
+
+## Quick Start
+
 Two environment variables has to be created:
 export CTK_ENV_VAR_TEST=Test
 export CTK_WORKSPACE=<CODE_FOLDER>

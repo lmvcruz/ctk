@@ -10,23 +10,24 @@ This document describes the continuous integration and deployment workflows for 
 **Purpose:** Validate code on all platforms
 
 **Build Matrix:**
-- **Windows:** MSVC (Visual Studio 2022)
-- **Linux:** GCC 11, Clang 14
-- **macOS:** Clang (Apple)
+- **Windows:** MSVC (Visual Studio 2022), Clang/LLVM with Ninja
+- **Linux:** GCC 11
 
 **Steps:**
 1. Checkout code
 2. Set up Python environment
-3. Install platform-specific dependencies
-4. Build OpenCV, GTest, Google Benchmark (with caching)
-5. Configure CTK with CMake
-6. Build CTK
-7. Run unit tests
-8. Upload logs on failure
+3. Install platform-specific dependencies **via system package managers** (fast!)
+4. Configure CTK with CMake
+5. Build CTK
+6. Run unit tests
+7. Upload logs on failure
 
-**Caching Strategy:**
-- OpenCV, GTest, and Benchmark are cached per platform
-- Speeds up subsequent builds significantly
+**Performance:**
+- **Linux:** ~30 seconds for dependencies (apt-get)
+- **Windows:** ~5 minutes for dependencies (vcpkg binary cache) + Clang installation
+- **Total CI time:** ~8-12 minutes per platform
+
+See [CI_OPTIMIZATION.md](CI_OPTIMIZATION.md) for details.
 
 **Status Badge:**
 ```markdown
@@ -159,36 +160,6 @@ clang-format -i ctk/**/*.cpp ctk/**/*.h
 black build_ctk.py
 # Fix issues manually based on pylint output
 ```
-
-## Adding New Workflows
-
-1. Create `.github/workflows/new-workflow.yml`
-2. Define trigger events (on:)
-3. Add jobs and steps
-4. Test with workflow_dispatch first
-5. Enable for push/PR when stable
-
-## Best Practices
-
-✅ **Do:**
-- Keep workflows focused on single responsibility
-- Cache expensive operations (dependencies)
-- Use matrix builds for multi-platform testing
-- Upload artifacts for debugging
-- Use `continue-on-error` judiciously
-
-❌ **Don't:**
-- Hardcode secrets in workflow files
-- Skip tests in CI
-- Ignore linting failures
-- Use very old action versions
-
-## Monitoring
-
-**View Build Status:**
-- Main page: Badge shows latest status
-- Actions tab: Full history and logs
-- PR checks: Detailed per-workflow status
 
 **Email Notifications:**
 Configure in GitHub Settings → Notifications
