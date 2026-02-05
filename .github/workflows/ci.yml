@@ -72,17 +72,21 @@ jobs:
           libgtest-dev \
           libbenchmark-dev
 
-    # Windows: Use vcpkg for dependencies (simple mode, no caching)
-    - name: Setup vcpkg (Windows)
-      if: runner.os == 'Windows'
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgGitCommitId: 'd54dc2c36fadc3f475aa49e37a73eea5c1e5e5ad'  # 2024.12.16 release
-
-    - name: Install dependencies via vcpkg (Windows)
+    # Windows: Use Chocolatey for dependencies (simple and reliable)
+    - name: Install dependencies via Chocolatey (Windows)
       if: runner.os == 'Windows'
       run: |
-        vcpkg install opencv4:x64-windows gtest:x64-windows benchmark:x64-windows
+        choco install opencv -y --version 4.10.0.20240616
+        choco install googlebenchmark -y
+      shell: pwsh
+
+    - name: Install Google Test (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        git clone https://github.com/google/googletest.git -b v1.15.2 --depth 1
+        cd googletest
+        cmake -B build -G "Visual Studio 17 2022" -DCMAKE_INSTALL_PREFIX="C:/Program Files/googletest"
+        cmake --build build --config Release --target install
       shell: pwsh
 
     # Install LLVM/Clang for Windows Clang builds
@@ -110,7 +114,7 @@ jobs:
         cd build
         cmake .. `
           -G "${{ matrix.cmake_generator }}" `
-          -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          -DGTest_DIR="C:/Program Files/googletest/lib/cmake/GTest"
       shell: pwsh
 
     - name: Configure CTK (Windows Clang)
@@ -123,7 +127,7 @@ jobs:
           -DCMAKE_C_COMPILER=clang `
           -DCMAKE_CXX_COMPILER=clang++ `
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
-          -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          -DGTest_DIR="C:/Program Files/googletest/lib/cmake/GTest"
       shell: pwsh
 
     - name: Configure CTK (Linux)
