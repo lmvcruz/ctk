@@ -1,3 +1,5 @@
+# CI Build and Test Workflow
+# This workflow builds and tests the CTK project on multiple platforms
 name: CI Build and Test
 
 on:
