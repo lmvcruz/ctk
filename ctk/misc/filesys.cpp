@@ -9,8 +9,14 @@ namespace ctk {
 
 std::string GetEnvironmentVariable(std::string varname) {
     const char* envVar = std::getenv(varname.c_str());
-    if (!envVar) return "";
+    if (!envVar)
+        return "";
     return std::string(envVar);
+}
+
+std::string NormalizePath(const std::string& path)
+{
+   return std::filesystem::path(path).generic_string();
 }
 
 bool Exists(std::string filename) {
@@ -41,7 +47,7 @@ std::string CurrentPath(std::string cur) {
     ChangeCurrentPath(cur);
     std::string path = std::filesystem::current_path().string();
     ChangeCurrentPath(aux.string());
-    return path;
+    return NormalizePath(path);
 }
 
 std::string AbsolutePath(std::string name) {
@@ -59,7 +65,7 @@ bool ContainsFileOrDir(std::string curdir, std::string filename) {
 std::vector<std::string> ListDir(std::string cur) {
     std::vector<std::string> files;
     for (auto& p: std::filesystem::directory_iterator(cur)) {
-        files.push_back(p.path().string());
+        files.push_back( NormalizePath(p.path().string()) ) ;
     }
     return files;
 }
@@ -78,7 +84,8 @@ std::vector<std::string> ListFilesContainingAllExpressions(std::string cur,
                 break;
             }
         }
-        if (valid) files.push_back(name);
+        if (valid)
+            files.push_back( NormalizePath(name) );
     }
     return files;
 }
@@ -90,7 +97,8 @@ std::vector<std::string> ListFilesContainingAnyExpressions(std::string cur,
     for (auto& path: std::filesystem::directory_iterator(cur)) {
         std::string name = path.path().string();
         auto indices = ContainsIndices(name, exps);
-        if (indices.size() > 0) files.push_back(name);
+        if (indices.size() > 0)
+            files.push_back( NormalizePath(name) );
     }
     return files;
 }
@@ -109,7 +117,8 @@ std::vector<std::string> ListFilesWithoutAllExpressions(
                 break;
             }
         }
-        if (valid) files.push_back(name);
+        if (valid)
+            files.push_back( NormalizePath(name) );
     }
     return files;
 }

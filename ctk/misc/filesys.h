@@ -6,6 +6,7 @@
 namespace ctk {
 
 std::string GetEnvironmentVariable(std::string varname);
+std::string NormalizePath(const std::string& path);
 
 bool Exists(std::string filename);
 bool IsFile(std::string filename);
