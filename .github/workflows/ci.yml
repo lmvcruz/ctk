@@ -9,12 +9,18 @@ on:
     branches: [ develop, main ]
   workflow_dispatch:
 
+permissions:
+  actions: write
+  contents: read
+
 env:
   # Use system packages where possible for speed
   # Only build from source as fallback
   OPENCV_VERSION: '4.10.0'
   GTEST_VERSION: '1.15.2'
   BENCHMARK_VERSION: '1.9.0'
+  # Enable vcpkg binary caching for faster builds
+  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
 
 jobs:
   build-and-test:
@@ -41,8 +47,8 @@ jobs:
             compiler: gcc
             cmake_generator: "Unix Makefiles"
             build_type: Release
-            cc: gcc-11
-            cxx: g++-11
+            cc: gcc
+            cxx: g++
 
     steps:
     - name: Checkout code
@@ -72,18 +78,21 @@ jobs:
           libgtest-dev \
           libbenchmark-dev
 
-    # Windows: Use vcpkg for pre-built binaries with automatic caching
-    - name: Setup vcpkg (Windows)
+# Windows: Export GitHub Actions cache environment variables for vcpkg
+    - name: Export GitHub Actions cache environment variables
+      if: runner.os == 'Windows'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+    # Windows: Use vcpkg (let action manage version)
+    - name: Install vcpkg (Windows)
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: 'a7b6122f6b6504d16d96117336a0562693579933'  # Latest stable
-
-    - name: Install dependencies via vcpkg (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        vcpkg install opencv4:x64-windows gtest:x64-windows benchmark:x64-windows
-      shell: pwsh
+        doNotCache: false
 
     # Install LLVM/Clang for Windows Clang builds
     - name: Install LLVM/Clang (Windows)
@@ -106,24 +115,20 @@ jobs:
     - name: Configure CTK (Windows MSVC)
       if: runner.os == 'Windows' && matrix.compiler == 'msvc'
       run: |
-        mkdir build
-        cd build
-        cmake .. `
+        cmake -B build `
           -G "${{ matrix.cmake_generator }}" `
-          -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake"
       shell: pwsh
 
     - name: Configure CTK (Windows Clang)
       if: runner.os == 'Windows' && matrix.compiler == 'clang'
       run: |
-        mkdir build
-        cd build
-        cmake .. `
+        cmake -B build `
           -G "${{ matrix.cmake_generator }}" `
           -DCMAKE_C_COMPILER=clang `
           -DCMAKE_CXX_COMPILER=clang++ `
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
-          -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake"
       shell: pwsh
 
     - name: Configure CTK (Linux)
@@ -141,21 +146,21 @@ jobs:
       if: runner.os == 'Windows' && matrix.compiler == 'msvc'
       run: |
         cd build
-        cmake --build . --config ${{ matrix.build_type }} --parallel 2
+        cmake --build . --config ${{ matrix.build_type }} --parallel 4
       shell: pwsh
 
     - name: Build CTK (Windows Clang)
       if: runner.os == 'Windows' && matrix.compiler == 'clang'
       run: |
         cd build
-        ninja -j 2
+        ninja -j 4
       shell: pwsh
 
     - name: Build CTK (Linux)
       if: runner.os == 'Linux'
       run: |
         cd build
-        cmake --build . --parallel 2
+        cmake --build . --parallel 4
       shell: bash
 
     # Run tests

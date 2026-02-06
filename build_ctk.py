@@ -299,10 +299,45 @@ class CTKBuilder:
             self.logger.info("Build the project first.")
             sys.exit(1)
 
-        result = subprocess.run([str(test_exe)])
+        # Set up environment variables for tests
+        test_env = os.environ.copy()
+        test_env['CTK_ENV_VAR_TEST'] = 'Test'
+        test_env['CTK_WORKSPACE'] = str(self.project_root)
+
+        # Add DLL paths to PATH for runtime dependencies
+        dll_paths = []
+        if self.opencv_dir:
+            # OpenCV_DIR points to build directory, DLLs are in build/bin/Release or build/bin/Debug
+            opencv_build_root = Path(self.opencv_dir)
+            opencv_bin = opencv_build_root / 'bin' / self.build_type
+            if opencv_bin.exists():
+                dll_paths.append(str(opencv_bin))
+                self.logger.debug(f"Added OpenCV DLL path: {opencv_bin}")
+            else:
+                self.logger.warning(
+                    f"OpenCV bin directory not found: {opencv_bin}")
+
+        if dll_paths:
+            current_path = test_env.get('PATH', '')
+            test_env['PATH'] = os.pathsep.join(dll_paths + [current_path])
+            self.logger.debug(f"Updated PATH with DLL directories")
+
+        self.logger.info(f"Running: {test_exe}")
+        try:
+            result = subprocess.run(
+                [str(test_exe)],
+                env=test_env,
+                cwd=self.build_dir,
+                capture_output=False,  # Show output directly
+                text=True
+            )
+        except Exception as e:
+            self.logger.error(f"Failed to run tests: {e}")
+            sys.exit(1)
 
         if result.returncode != 0:
-            self.logger.error("Some tests failed")
+            self.logger.error(
+                f"Tests failed with exit code {result.returncode}")
             sys.exit(1)
 
         self.logger.success("All tests passed")
