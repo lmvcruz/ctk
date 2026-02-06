@@ -47,8 +47,8 @@ jobs:
             compiler: gcc
             cmake_generator: "Unix Makefiles"
             build_type: Release
-            cc: gcc-11
-            cxx: g++-11
+            cc: gcc
+            cxx: g++
 
     steps:
     - name: Checkout code
