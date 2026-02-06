@@ -52,7 +52,57 @@ python build_ctk.py --msvc --clean
 
 ### Build and Run Tests
 ```powershell
+# Build and run all tests
 python build_ctk.py --clang --test
+```
+
+## Test Runner (run_tests.py)
+
+For more control over test execution, use the dedicated test runner:
+
+### Run Specific Test
+```powershell
+# Run a single test by name
+python run_tests.py --msvc --filter CtkFileSystemTest.Test_CurrentPath
+
+# Run with Clang build
+python run_tests.py --clang --filter CtkFileSystemTest.Test_CurrentPath
+```
+
+### Run Test Suite
+```powershell
+# Run all tests in a specific test suite
+python run_tests.py --msvc --filter CtkFileSystemTest.*
+
+# Run all image-related tests
+python run_tests.py --clang --filter "*Image*"
+```
+
+### List Available Tests
+```powershell
+# List all tests (MSVC)
+python run_tests.py --msvc --list
+
+# List all tests (Clang)
+python run_tests.py --clang --list
+```
+
+### Advanced Test Options
+```powershell
+# Run tests in Debug configuration (MSVC only)
+python run_tests.py --msvc --config Debug --filter CtkFileSystemTest.*
+
+# Repeat tests multiple times
+python run_tests.py --clang --filter "*Fast*" --repeat 5
+
+# Shuffle test order
+python run_tests.py --msvc --shuffle
+
+# Generate XML report
+python run_tests.py --clang --output xml:test_results.xml
+
+# Exclude certain tests
+python run_tests.py --msvc --filter "*:-*Slow*"
 ```
 
 ### Configure Only (no build)

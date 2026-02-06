@@ -16,6 +16,15 @@ std::vector< std::string > SplitString(std::string str, std::string sep) {
     return splitted;
 }
 
+void Replace(std::string& str, const std::string& oldPattern, const std::string& newPattern)
+{
+    size_t pos = 0;
+    while ((pos = str.find(oldPattern, pos)) != std::string::npos) {
+        str.replace(pos, oldPattern.length(), newPattern);
+        pos += newPattern.length();
+    }
+}
+
 bool Contains(std::string str, std::string exp) {
     return str.find(exp) != std::string::npos;
 }
@@ -42,9 +51,9 @@ std::vector<int> ContainsIndices(std::string str, std::string exp) {
     return indices;
 }
 
-// Since the indices are sorted, the occurence in the returned 
+// Since the indices are sorted, the occurence in the returned
 // vector are not related to the expressions order
-std::vector<int> ContainsIndices(std::string str, 
+std::vector<int> ContainsIndices(std::string str,
             const std::vector<std::string>& exps) {
     std::vector<int> indices;
     for (auto& exp: exps) {

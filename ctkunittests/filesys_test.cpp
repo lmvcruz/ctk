@@ -1,6 +1,7 @@
 #include "filesys_test.h"
 
 #include <iostream>
+#include <string>
 
 #include "ctk/misc/filesys.h"
 #include "ctk/misc/string_aux.h"
@@ -14,6 +15,10 @@ void CtkFileSystemTest::SetUp() {
     }
     ctk::ChangeCurrentPath(curPath);
     workspacePath = ctk::GetEnvironmentVariable("CTK_WORKSPACE");
+
+    // Ensure an uniform path separator for cross-platform compatibility
+    workspacePath = ctk::NormalizePath(workspacePath);
+
     sourcePath = workspacePath + "/ctkunittests";
 }
 
@@ -48,9 +53,9 @@ TEST_F(CtkFileSystemTest, Test_CurrentPath) {
     EXPECT_EQ(splitted.back(), "ctkunittests");
 }
 
-// This test only works if the test is run from 
+// This test only works if the test is run from
 // $CTK_WORKSPACE/build/ctkunittest (or any folder at the same level)
-// TODO: figure out a generic way to test 
+// TODO: figure out a generic way to test
 // TEST_F(CtkFileSystemTest, Test_AbsolutePath) {
 //     auto home = ctk::GetEnvironmentVariable("CTK_WORKSPACE");
 //     auto absPath = ctk::AbsolutePath("../../ctkunittests");
@@ -67,17 +72,19 @@ TEST_F(CtkFileSystemTest, Test_ContainsFile) {
 
 TEST_F(CtkFileSystemTest, Test_ListDirAbsolutePath) {
     auto files = ctk::ListDir(sourcePath);
+    const auto expected = ctk::NormalizePath(sourcePath + "/filesys_test.cpp");
+
     EXPECT_EQ(files.size(), 29);
     bool containsFyleSys = false;
     for (auto &fn : files) {
-        if (fn == sourcePath + "/filesys_test.cpp")
+        if (fn == expected)
             containsFyleSys = true;
     }
     EXPECT_TRUE(containsFyleSys);
 }
 
-// See coment before test CtkFileSystemTest::Test_AbsolutePath
-// TODO: figure out a generic way to test 
+// See comment before test CtkFileSystemTest::Test_AbsolutePath
+// TODO: figure out a generic way to test
 // TEST_F(CtkFileSystemTest, Test_ListDirRelativePath) {
 //     auto files = ctk::ListDir("../../ctkunittests");
 //     EXPECT_EQ(files.size(), 29);
@@ -91,12 +98,13 @@ TEST_F(CtkFileSystemTest, Test_ListDirAbsolutePath) {
 
 TEST_F(CtkFileSystemTest, Test_FileNamesWithAllFilters) {
     const std::vector<std::string> filters = {"cpp", "_test"};
-    auto files = ctk::ListFilesContainingAllExpressions(sourcePath, 
-                                                     filters);
+    auto files = ctk::ListFilesContainingAllExpressions(sourcePath, filters);
+    const auto expected = ctk::NormalizePath(sourcePath + "/filesys_test.cpp");
+
     EXPECT_EQ(files.size(), 12);
     bool containsFyleSys = false;
     for (auto &fn : files) {
-        if (fn == sourcePath + "/filesys_test.cpp")
+        if (fn == expected)
             containsFyleSys = true;
     }
     EXPECT_TRUE(containsFyleSys);
@@ -104,25 +112,27 @@ TEST_F(CtkFileSystemTest, Test_FileNamesWithAllFilters) {
 
 TEST_F(CtkFileSystemTest, Test_FileNamesWithAnyFilter) {
     const std::vector<std::string> filters = {"cpp", "_test"};
-    auto files = ctk::ListFilesContainingAnyExpressions(sourcePath, 
-                                                     filters);
+    auto files = ctk::ListFilesContainingAnyExpressions(sourcePath, filters);
+    const auto expected = ctk::NormalizePath(sourcePath + "/filesys_test.cpp");
+
     EXPECT_EQ(files.size(), 25);
     bool containsFyleSys = false;
     for (auto &fn : files) {
-        if (fn == sourcePath + "/filesys_test.cpp")
-            containsFyleSys = true;
+         if (fn == expected)
+             containsFyleSys = true;
     }
     EXPECT_TRUE(containsFyleSys);
 }
 
 TEST_F(CtkFileSystemTest, Test_FileNamesWithoutAllFilters) {
     const std::vector<std::string> filters = {".pri", ".h"};
-    auto files = ctk::ListFilesWithoutAllExpressions(sourcePath, 
-                                                     filters);
-    EXPECT_EQ(files.size(), 15);    
+    auto files = ctk::ListFilesWithoutAllExpressions(sourcePath, filters);
+    const auto expected = ctk::NormalizePath(sourcePath + "/filesys_test.cpp");
+
+    EXPECT_EQ(files.size(), 15);
     bool containsFyleSys = false;
     for (auto &fn : files) {
-        if (fn == sourcePath + "/filesys_test.cpp")
+        if (fn == expected)
             containsFyleSys = true;
     }
     EXPECT_TRUE(containsFyleSys);

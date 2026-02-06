@@ -15,6 +15,7 @@ if (MSVC OR (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif()
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory (ctk)
 add_subdirectory (ctkunittests)
