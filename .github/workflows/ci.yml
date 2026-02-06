@@ -78,7 +78,16 @@ jobs:
           libgtest-dev \
           libbenchmark-dev
 
-# Windows: Use vcpkg (let action manage version)
+# Windows: Export GitHub Actions cache environment variables for vcpkg
+    - name: Export GitHub Actions cache environment variables
+      if: runner.os == 'Windows'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+    # Windows: Use vcpkg (let action manage version)
     - name: Install vcpkg (Windows)
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
