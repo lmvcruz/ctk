@@ -91,6 +91,8 @@ jobs:
     - name: Install vcpkg (Windows)
       if: runner.os == 'Windows'
       uses: lukka/run-vcpkg@v11
+      with:
+        doNotCache: false
 
     # Install LLVM/Clang for Windows Clang builds
     - name: Install LLVM/Clang (Windows)
