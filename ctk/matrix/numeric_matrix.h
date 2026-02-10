@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 #include "ctk/matrix/abstract_matrix.h"
 
@@ -19,8 +20,8 @@ public:
 
     void Create(int w, int h, const std::vector<double> &vec) override;
 
-    void Open(std::string filename);
-    void Save(std::string filename) const;
+    void Open(std::string_view filename) override;
+    void Save(std::string_view filename) const override;
     void Show() const;
 
     NumericMatrix operator+(const NumericMatrix &that) const;

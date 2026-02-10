@@ -21,7 +21,7 @@ public:
     GrayImage& operator=(const cv::Mat& that);
     GrayImage& operator=(const AbstractImage<uchar>& that);
 
-    void Open(std::string filename);
+    void Open(std::string_view filename) override;
 
     int GetChannels() const;
 
@@ -37,4 +37,4 @@ public:
     RgbImage ToRgbImage() const;
 };
 
-} // namespace ctk 
+} // namespace ctk

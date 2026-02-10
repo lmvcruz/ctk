@@ -42,18 +42,18 @@ public:
     BinaryImage Dilate(int size, int etype=cv::MORPH_RECT) const;
     void SelfDilate(int size, int etype=cv::MORPH_RECT);
 
-    BinaryImage Warp(const std::vector<PointD> &pts, 
+    BinaryImage Warp(const std::vector<PointD> &pts,
                 const std::vector<PointD> &refs, int w, int h) const;
 
     int Compare(int x, int y, const ctk::BinaryImage &that) const;
     ctk::PointI FindBestMatch(const ctk::BinaryImage &that) const;
-    ctk::PointI FindBestMatch(int xi, int xf, int yi, int yf, 
+    ctk::PointI FindBestMatch(int xi, int xf, int yi, int yf,
                               const ctk::BinaryImage &that) const;
 
-    void Open(std::string filename);
-    void Save(std::string filename) const override;
+    void Open(std::string_view filename) override;
+    void Save(std::string_view filename) const override;
 
     RgbImage ToRgbImage() const;
 };
 
-} // namespace ctk 
+} // namespace ctk

@@ -82,16 +82,16 @@ void NumericMatrix::Create(int w, int h, const std::vector<double> &vec) {
  * @brief NumericMatrix::Open  Read data from a file into the NumeriMatrix
  * @param filename
  */
-void NumericMatrix::Open(std::string filename) {
-    data = cv::imread(filename, cv::IMREAD_ANYDEPTH);
+void NumericMatrix::Open(std::string_view filename) {
+    data = cv::imread(std::string(filename), cv::IMREAD_ANYDEPTH);
 }
 
 /**
  * @brief NumericMatrix::Save  Save data of the numeric matrix into a file
  * @param filename
  */
-void NumericMatrix::Save(std::string filename) const {
-    cv::imwrite(filename, data);
+void NumericMatrix::Save(std::string_view filename) const {
+    cv::imwrite(std::string(filename), data);
 }
 
 /**

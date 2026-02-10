@@ -224,7 +224,7 @@ int BinaryImage::CountFalses() const {
  */
 BinaryImage BinaryImage::Erode(int size, int etype) const {
     cv::Size elsize(2 * size + 1, 2 * size + 1);
-    cv::Mat element = getStructuringElement(etype, elsize, 
+    cv::Mat element = getStructuringElement(etype, elsize,
                                             cv::Point(size, size));
     BinaryImage aux;
     cv::erode(data, aux.data, element);
@@ -238,7 +238,7 @@ BinaryImage BinaryImage::Erode(int size, int etype) const {
  */
 void BinaryImage::SelfErode(int size, int etype) {
     cv::Size elsize(2 * size + 1, 2 * size + 1);
-    cv::Mat element = getStructuringElement(etype, elsize, 
+    cv::Mat element = getStructuringElement(etype, elsize,
                                             cv::Point(size, size));
     cv::erode(data, data, element);
 }
@@ -251,7 +251,7 @@ void BinaryImage::SelfErode(int size, int etype) {
  */
 BinaryImage BinaryImage::Dilate(int size, int etype) const {
     cv::Size elsize(2 * size + 1, 2 * size + 1);
-    cv::Mat element = getStructuringElement(etype, elsize, 
+    cv::Mat element = getStructuringElement(etype, elsize,
                                             cv::Point(size, size));
     BinaryImage aux;
     cv::dilate(data, aux.data, element);
@@ -265,7 +265,7 @@ BinaryImage BinaryImage::Dilate(int size, int etype) const {
  */
 void BinaryImage::SelfDilate(int size, int etype) {
     cv::Size elsize(2 * size + 1, 2 * size + 1);
-    cv::Mat element = getStructuringElement(etype, elsize, 
+    cv::Mat element = getStructuringElement(etype, elsize,
                                             cv::Point(size, size));
     cv::dilate(data, data, element);
 }
@@ -278,7 +278,7 @@ void BinaryImage::SelfDilate(int size, int etype) {
  * @param h  int representing the hight of the output image
  * @return BinaryImage resulting of the transformation
  */
-BinaryImage BinaryImage::Warp(const std::vector<PointD> &pts, 
+BinaryImage BinaryImage::Warp(const std::vector<PointD> &pts,
             const std::vector<PointD> &refs, int w, int h) const {
     if (pts.size() != refs.size()) throw  incompatible_parameters();
     if (pts.size() < 4) throw  incompatible_parameters();
@@ -356,7 +356,7 @@ PointI BinaryImage::FindBestMatch(const BinaryImage &that) const {
  * @param that
  * @return
  */
-PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf, 
+PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf,
                                   const BinaryImage &that) const {
     PointI bp(-1,-1);
     int bd = INT_MAX;
@@ -376,16 +376,16 @@ PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf,
  * @brief BinaryImage::Open  Load information from file into BinaryImage
  * @param filename string with the file path
  */
-void BinaryImage::Open(std::string filename) {
-    AbstractMatrix<bool>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
+void BinaryImage::Open(std::string_view filename) {
+    AbstractMatrix<bool>::data = cv::imread(std::string(filename), cv::IMREAD_UNCHANGED);
 }
 
 /**
  * @brief BinaryImage::Save  Save information from BinaryImage into file
  * @param filename   string with the file path
  */
-void BinaryImage::Save(std::string filename) const {
-    cv::imwrite(filename, AbstractMatrix<bool>::data);
+void BinaryImage::Save(std::string_view filename) const {
+    cv::imwrite(std::string(filename), AbstractMatrix<bool>::data);
 }
 
 /**
@@ -395,7 +395,7 @@ void BinaryImage::Save(std::string filename) const {
 RgbImage BinaryImage::ToRgbImage() const {
     RgbImage newImage;
     cv::cvtColor(data, newImage.GetData(), cv::COLOR_GRAY2RGB);
-    // TODO: evaluate if there is any other way to return more efficient 
+    // TODO: evaluate if there is any other way to return more efficient
     return newImage;
 
 }

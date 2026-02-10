@@ -443,9 +443,9 @@ namespace ctk
          * @brief Open Read information from file
          * @param filename TODO
          */
-        void Open(std::string filename)
+        void Open(std::string_view filename) override
         {
-            AbstractMatrix<T>::data = cv::imread(filename, cv::IMREAD_UNCHANGED);
+            AbstractMatrix<T>::data = cv::imread(std::string(filename), cv::IMREAD_UNCHANGED);
             if (invert_channels)
             {
                 cv::cvtColor(AbstractMatrix<T>::data,
@@ -458,15 +458,15 @@ namespace ctk
          * @brief Save Save information to file
          * @param filename string with filename
          */
-        void Save(std::string filename) const
+        void Save(std::string_view filename) const override
         {
-            cv::imwrite(filename, AbstractMatrix<T>::data);
+            cv::imwrite(std::string(filename), AbstractMatrix<T>::data);
             if (invert_channels)
             {
                 cv::Mat aux;
                 cv::cvtColor(AbstractMatrix<T>::data,
                              aux, cv::COLOR_RGB2BGR);
-                cv::imwrite(filename, aux);
+                cv::imwrite(std::string(filename), aux);
             }
         }
 

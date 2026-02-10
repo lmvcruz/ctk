@@ -131,8 +131,8 @@ GrayImage &GrayImage::operator=(const AbstractImage<uchar> &that) {
  * @brief GrayImage::Open Read gray image from file
  * @param filename  string representing the filename
  */
-void GrayImage::Open(std::string filename) {
-    data = cv::imread(filename, cv::IMREAD_UNCHANGED);
+void GrayImage::Open(std::string_view filename) {
+    data = cv::imread(std::string(filename), cv::IMREAD_UNCHANGED);
     if (data.channels() == 3) {
         cv::cvtColor(data, data, cv::COLOR_RGB2GRAY);
     }
@@ -211,7 +211,7 @@ GrayImage GrayImage::Normalize(int minv, int maxv) const {
             cmax = std::max(cmax, ic);
         }
     }
-    float scale = static_cast<float>(maxv - minv) 
+    float scale = static_cast<float>(maxv - minv)
                    / static_cast<float>(cmax - cmin);
     for (auto x = 0; x < data.rows; ++x) {
         for (auto y = 0; y < data.cols; ++y) {

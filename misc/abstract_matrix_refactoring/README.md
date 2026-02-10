@@ -23,7 +23,8 @@ Results are saved in `misc/abstract_matrix_refactoring/results/`.
 
 ### 🟠 High Priority (Performance)
 
-- [ ] **Use `cv::Mat::setTo()` for `Fill()`** - Replace element-by-element loop (future)
+- [x] **Use `std::fill()` for `Fill()`** - Replaced element-by-element loop with `std::fill(begin(), end(), v)`
+  - Note: `cv::Mat::setTo()` not viable as it doesn't work with vector types like `cv::Vec3b`
 - [x] **Move semantics for cv::Mat constructor** - Added `AbstractMatrix(cv::Mat&&)`
 - [x] **Member initializer lists** - All constructors now use init lists
 
@@ -31,11 +32,13 @@ Results are saved in `misc/abstract_matrix_refactoring/results/`.
 
 - [x] **Add `noexcept`** - To getters and non-throwing methods
 - [x] **Add `[[nodiscard]]`** - To getters to prevent ignoring return values
-- [ ] **Use `std::string_view`** - For `Open()` and `Save()` parameters (future)
+- [x] **Use `std::string_view`** - For `Open()` and `Save()` parameters in all derived classes
+  - Updated: `NumericMatrix`, `BinaryImage`, `GrayImage`, `AbstractImage<T>`
 
 ### 🔵 Low Priority (Code Quality)
 
 - [x] **Fix typo** - `"AbstractMatyrix"` → `"AbstractMatrix"` in exception messages
+- [x] **Complete Doxygen documentation** - Full documentation for all public members
 - [ ] **Use `std::span`** - For `Create()` vector parameter (C++20, future)
 - [ ] **Use `size_t`** - For size-related return types (future)
 
