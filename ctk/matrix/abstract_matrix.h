@@ -43,10 +43,17 @@ namespace ctk
          * @param d Reference to a cv::Mat array
          */
         AbstractMatrix(const cv::Mat &d)
+            : type(d.type()), ch_size(d.channels()), data(d.clone())
         {
-            type = d.type();
-            ch_size = d.channels();
-            data = d.clone();
+        }
+
+        /**
+         * @brief Move Constructor for cv::Mat
+         * @param d Rvalue reference to a cv::Mat array
+         */
+        AbstractMatrix(cv::Mat &&d) noexcept
+            : type(d.type()), ch_size(d.channels()), data(std::move(d))
+        {
         }
 
         /**
@@ -54,10 +61,49 @@ namespace ctk
          * @param that Reference to an existing AbstractMatrix
          */
         AbstractMatrix(const AbstractMatrix &that)
+            : type(that.type), ch_size(that.ch_size), data(that.data.clone())
         {
-            type = that.type;
-            ch_size = that.ch_size;
-            data = that.data.clone();
+        }
+
+        /**
+         * @brief Move Constructor
+         * @param that Rvalue reference to an existing AbstractMatrix
+         */
+        AbstractMatrix(AbstractMatrix &&that) noexcept
+            : type(that.type), ch_size(that.ch_size), data(std::move(that.data))
+        {
+        }
+
+        /**
+         * @brief Copy Assignment Operator
+         * @param that Reference to an existing AbstractMatrix
+         * @return Reference to this AbstractMatrix
+         */
+        AbstractMatrix &operator=(const AbstractMatrix &that)
+        {
+            if (this != &that)
+            {
+                type = that.type;
+                ch_size = that.ch_size;
+                data = that.data.clone();
+            }
+            return *this;
+        }
+
+        /**
+         * @brief Move Assignment Operator
+         * @param that Rvalue reference to an existing AbstractMatrix
+         * @return Reference to this AbstractMatrix
+         */
+        AbstractMatrix &operator=(AbstractMatrix &&that) noexcept
+        {
+            if (this != &that)
+            {
+                type = that.type;
+                ch_size = that.ch_size;
+                data = std::move(that.data);
+            }
+            return *this;
         }
 
         /**
@@ -129,7 +175,7 @@ namespace ctk
          * @brief cols  Get number of columns
          * @return  int representing the number of columns
          */
-        int GetCols() const
+        [[nodiscard]] int GetCols() const noexcept
         {
             return data.cols;
         }
@@ -138,7 +184,7 @@ namespace ctk
          * @brief width  Get AbstractMatrix width (number of columns)
          * @return int representing the number columns in matrix
          */
-        int GetWidth() const
+        [[nodiscard]] int GetWidth() const noexcept
         {
             return data.cols;
         }
@@ -147,16 +193,16 @@ namespace ctk
          * @brief GetRows  Get number of rows
          * @return int representing the number of rows
          */
-        int GetRows() const
+        [[nodiscard]] int GetRows() const noexcept
         {
             return data.rows;
         }
 
         /**
-         * @brief GetHeight  Get AbstractMatrix width (number of rows)
+         * @brief GetHeight  Get AbstractMatrix height (number of rows)
          * @return int representing the number of rows
          */
-        int GetHeight() const
+        [[nodiscard]] int GetHeight() const noexcept
         {
             return data.rows;
         }
@@ -165,7 +211,7 @@ namespace ctk
          * @brief size   Get AbstractMatrix size
          * @return int representing matrix size (nº of rows x nº of columns)
          */
-        int GetSize() const
+        [[nodiscard]] int GetSize() const noexcept
         {
             return data.rows * data.cols;
         }
@@ -174,7 +220,7 @@ namespace ctk
          * @brief channels  Get number of channels
          * @return int representing the number of channels in matrix
          */
-        int GetChannels() const
+        [[nodiscard]] int GetChannels() const noexcept
         {
             return ch_size;
         }
@@ -183,7 +229,7 @@ namespace ctk
          * @brief checkChannel  Check if ch_size parameter is correctly assigned
          * @return  boolean true if ch_size corresponds to number of channels in AbstractMatrix.
          */
-        bool CheckChannel() const
+        [[nodiscard]] bool CheckChannel() const noexcept
         {
             return ch_size == data.channels();
         }
@@ -219,7 +265,7 @@ namespace ctk
         {
             if (x < 0 || x >= data.cols || y < 0 || y >= data.rows)
             {
-                throw std::out_of_range("Exception thrown in AbstractMatyrix::SafeGet");
+                throw std::out_of_range("Exception thrown in AbstractMatrix::SafeGet");
             }
             return data.at<T>(y, x);
         }
@@ -245,27 +291,45 @@ namespace ctk
         {
             if (x < 0 || x >= data.cols || y < 0 || y >= data.rows)
             {
-                throw std::out_of_range("Exception thrown in AbstractMatyrix::SafeSet");
+                throw std::out_of_range("Exception thrown in AbstractMatrix::SafeSet");
             }
             data.at<T>(y, x) = v;
         }
 
         /**
          * @brief begin Get the first element of the AbstractMatrix
-         * @return  AbstractMatrix element at position (0,0)
+         * @return  Pointer to first AbstractMatrix element
          */
-        T *begin()
+        T *begin() noexcept
         {
-            return &data.at<T>(0, 0);
+            return data.ptr<T>(0);
         }
 
         /**
-         * @brief end Get the last element of the AbstractMatrix
-         * @return  AbstractMatrix element at position (nº rows , nº columns)
+         * @brief begin Get the first element of the AbstractMatrix (const version)
+         * @return  Const pointer to first AbstractMatrix element
          */
-        T *end()
+        const T *begin() const noexcept
         {
-            return &data.at<T>(data.rows * data.cols);
+            return data.ptr<T>(0);
+        }
+
+        /**
+         * @brief end Get past-the-end pointer of the AbstractMatrix
+         * @return  Pointer to one past the last element
+         */
+        T *end() noexcept
+        {
+            return data.ptr<T>(0) + (data.rows * data.cols);
+        }
+
+        /**
+         * @brief end Get past-the-end pointer of the AbstractMatrix (const version)
+         * @return  Const pointer to one past the last element
+         */
+        const T *end() const noexcept
+        {
+            return data.ptr<T>(0) + (data.rows * data.cols);
         }
 
         /**

@@ -1,6 +1,6 @@
 # AbstractMatrix Refactoring
 
-This document tracks the planned improvements for `AbstractMatrix` class.
+This document tracks improvements for the `AbstractMatrix` class.
 
 ## Benchmarking Strategy
 
@@ -13,47 +13,59 @@ Results are saved in `misc/abstract_matrix_refactoring/results/`.
 
 ---
 
-## Planned Improvements
+## Implemented Improvements
 
 ### 🔴 Critical (Safety)
 
-- [ ] **Fix UB in `end()` iterator** - Currently accesses memory beyond bounds
-- [ ] **Add const iterators** - `begin() const` and `end() const`
-- [ ] **Rule of Five** - Add move constructor, move assignment, copy assignment
+- [x] **Fix UB in `end()` iterator** - Use `ptr<T>() + size` instead of `at<T>(size)`
+- [x] **Add const iterators** - `begin() const` and `end() const`
+- [x] **Rule of Five** - Added move constructor, move assignment, copy assignment
 
 ### 🟠 High Priority (Performance)
 
-- [ ] **Use `cv::Mat::setTo()` for `Fill()`** - Replace element-by-element loop
-- [ ] **Move semantics for cv::Mat constructor** - Avoid unnecessary copies
-- [ ] **Member initializer lists** - Use in constructors instead of assignment
+- [ ] **Use `cv::Mat::setTo()` for `Fill()`** - Replace element-by-element loop (future)
+- [x] **Move semantics for cv::Mat constructor** - Added `AbstractMatrix(cv::Mat&&)`
+- [x] **Member initializer lists** - All constructors now use init lists
 
 ### 🟡 Medium Priority (Modern C++)
 
-- [ ] **Add `noexcept`** - To getters and non-throwing methods
-- [ ] **Add `[[nodiscard]]`** - To getters to prevent ignoring return values
-- [ ] **Use `std::string_view`** - For `Open()` and `Save()` parameters
+- [x] **Add `noexcept`** - To getters and non-throwing methods
+- [x] **Add `[[nodiscard]]`** - To getters to prevent ignoring return values
+- [ ] **Use `std::string_view`** - For `Open()` and `Save()` parameters (future)
 
 ### 🔵 Low Priority (Code Quality)
 
-- [ ] **Fix typo** - `"AbstractMatyrix"` → `"AbstractMatrix"` in exception messages
-- [ ] **Use `std::span`** - For `Create()` vector parameter (C++20)
-- [ ] **Use `size_t`** - For size-related return types
+- [x] **Fix typo** - `"AbstractMatyrix"` → `"AbstractMatrix"` in exception messages
+- [ ] **Use `std::span`** - For `Create()` vector parameter (C++20, future)
+- [ ] **Use `size_t`** - For size-related return types (future)
 
 ---
 
-## Benchmark Results
+## Benchmark Results Comparison
 
-### Baseline (dev/no_change)
+### Key Benchmarks (Time in ns, lower is better)
 
-```
-[Results will be added after running benchmark]
-```
+| Benchmark | Baseline | Refactored | Change |
+|-----------|----------|------------|--------|
+| NM_CreateNumericMatrix/8/8 | 1244 ns | 1099 ns | **-11.7%** ✅ |
+| NM_CreateNumericMatrix/32/32 | 16029 ns | 14218 ns | **-11.3%** ✅ |
+| NM_Vec2NumericMatrix/8/8 | 357 ns | 222 ns | **-37.8%** ✅ |
+| NM_Vec2NumericMatrix/32/32 | 1867 ns | 830 ns | **-55.5%** ✅ |
+| NM_CvMat2NumericMatrix/8/8 | 335 ns | 269 ns | **-19.7%** ✅ |
+| NM_CvMat2NumericMatrix/32/32 | 475 ns | 375 ns | **-21.1%** ✅ |
+| NM_Sum/8 | 996 ns | 792 ns | **-20.5%** ✅ |
+| NM_Diff/32 | 1649 ns | 1160 ns | **-29.7%** ✅ |
 
-### After Refactoring (dev/refactor_abstract_matrix)
+### Summary
 
-```
-[Results will be added after running benchmark]
-```
+- **Matrix creation**: ~11% faster
+- **Vector to Matrix**: ~38-55% faster (major improvement!)
+- **cv::Mat to Matrix**: ~20% faster
+- **Arithmetic operations**: ~20-30% faster
+
+Full results available in JSON format:
+- `results/baseline.json` - Before refactoring
+- `results/refactored.json` - After refactoring
 
 ---
 
@@ -63,6 +75,7 @@ Results are saved in `misc/abstract_matrix_refactoring/results/`.
 # Build with MSVC
 python build_ctk.py --msvc
 
-# Run matrices benchmark
-.\build-msvc\benchmark\matrices\Release\matrices.exe --benchmark_format=console
+# Run matrices benchmark (ensure DLLs in PATH)
+$env:PATH = "D:\playground\opencv\build\bin\Release;D:\playground\benchmark\install\bin;" + $env:PATH
+.\build-msvc\benchmark\matrices\Release\matrixbench.exe --benchmark_format=console
 ```
