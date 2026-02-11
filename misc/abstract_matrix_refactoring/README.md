@@ -127,10 +127,37 @@ Full results available in JSON format:
 **Conclusion:**
 The refactoring changes (noexcept, [[nodiscard]], const correctness) do NOT cause performance regression. Performance variations observed are within normal benchmark variance.
 
+---
+
+## BinaryImage OpenCV Optimization Results
+
+Replaced element-by-element loops with OpenCV's SIMD-optimized operations:
+
+| Operation | Baseline | Optimized | Speedup |
+|-----------|----------|-----------|---------|
+| Not/32x32 | 2197 ns | 338 ns | **6.5x** 🚀 |
+| CountTrues/32x32 | 1423 ns | 85 ns | **16.7x** 🚀 |
+| CountFalses/32x32 | 1368 ns | 82 ns | **16.7x** 🚀 |
+| And/32x32 | 3128 ns | 2574 ns | **1.2x** |
+| Or/32x32 | 3226 ns | 2902 ns | **1.1x** |
+| Xor/32x32 | 3369 ns | 2567 ns | **1.3x** |
+
+**Changes Made:**
+- `Not()`: Use `cv::bitwise_not()`
+- `And()`: Use `cv::bitwise_and()`
+- `Or()`: Use `cv::bitwise_or()`
+- `Xor()`: Use `cv::bitwise_xor()`
+- `CountTrues()`: Use `cv::countNonZero()`
+- `CountFalses()`: Use `total - cv::countNonZero()`
+
+**Note:** Small images (8x8) may show overhead from OpenCV function call setup.
+Large images benefit from SIMD vectorization.
+
 Full results available in JSON format:
 - `results/binimage_baseline.json` - BinaryImage baseline
 - `results/binimage_cpp17.json` - BinaryImage C++17 refactored
 - `results/binimage_cpp20.json` - BinaryImage C++20 std::span
+- `results/binimage_optimized.json` - BinaryImage with OpenCV optimizations
 - `results/rgbimage_baseline.json` - RgbImage baseline
 - `results/rgbimage_cpp17.json` - RgbImage C++17 refactored
 - `results/rgbimage_cpp20.json` - RgbImage C++20 std::span
