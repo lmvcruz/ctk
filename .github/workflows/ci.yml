@@ -171,6 +171,9 @@ jobs:
         ./unittests.exe
       shell: pwsh
       continue-on-error: false
+      env:
+        CTK_ENV_VAR_TEST: Test
+        CTK_WORKSPACE: ${{ github.workspace }}
 
     - name: Run Tests (Windows Clang)
       if: runner.os == 'Windows' && matrix.compiler == 'clang'
@@ -179,6 +182,9 @@ jobs:
         ./unittests.exe
       shell: pwsh
       continue-on-error: false
+      env:
+        CTK_ENV_VAR_TEST: Test
+        CTK_WORKSPACE: ${{ github.workspace }}
 
     - name: Run Tests (Linux)
       if: runner.os == 'Linux'
@@ -187,6 +193,9 @@ jobs:
         ./unittests
       shell: bash
       continue-on-error: false
+      env:
+        CTK_ENV_VAR_TEST: Test
+        CTK_WORKSPACE: ${{ github.workspace }}
 
     # Upload artifacts for failed builds
     - name: Upload build logs on failure
