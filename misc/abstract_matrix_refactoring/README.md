@@ -153,6 +153,33 @@ Replaced element-by-element loops with OpenCV's SIMD-optimized operations:
 **Note:** Small images (8x8) may show overhead from OpenCV function call setup.
 Large images benefit from SIMD vectorization.
 
+---
+
+## RgbImage Optimization Results
+
+### PickColor - cv::inRange Optimization
+
+Replaced element-by-element loop with OpenCV's vectorized comparison:
+
+| Image Size | Baseline | Optimized | Speedup |
+|------------|----------|-----------|---------|
+| 128×128 | 26,144 ns | 14,223 ns | **1.8x** |
+| 256×256 | 137,658 ns | 53,669 ns | **2.6x** |
+| 512×512 | 723,120 ns | 208,787 ns | **3.5x** 🚀 |
+| 1024×1024 | 7,210,779 ns | 1,692,875 ns | **4.3x** 🚀 |
+
+**Changes Made:**
+- `PickColor()`: Use `cv::inRange()` for SIMD comparison
+- Added move constructor `RgbImage(RgbImage&&) noexcept`
+- Added move assignment `operator=(RgbImage&&) noexcept`
+- Added cv::Mat move constructor `RgbImage(cv::Mat&&)`
+- Added copy assignment operator (was missing)
+
+**Note:** Speedup scales with image size due to SIMD vectorization benefits.
+Small images (8x8, 32x32) may show overhead from OpenCV function call setup.
+
+---
+
 Full results available in JSON format:
 - `results/binimage_baseline.json` - BinaryImage baseline
 - `results/binimage_cpp17.json` - BinaryImage C++17 refactored
@@ -161,6 +188,7 @@ Full results available in JSON format:
 - `results/rgbimage_baseline.json` - RgbImage baseline
 - `results/rgbimage_cpp17.json` - RgbImage C++17 refactored
 - `results/rgbimage_cpp20.json` - RgbImage C++20 std::span
+- `results/rgbimage_optimized.json` - RgbImage with PickColor optimization
 
 ---
 
