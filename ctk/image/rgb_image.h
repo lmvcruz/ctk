@@ -49,7 +49,7 @@ public:
     // TODO: create a classe for contours (avoiding copy to PointI)
     [[nodiscard]] std::vector<Polygon> Contours() const;
     [[nodiscard]] std::vector<Polygon> ApproximateContours(int eps=3);
-    [[nodiscard]] RgbImage Warp(const std::vector<PointD> &pts, 
+    [[nodiscard]] RgbImage Warp(const std::vector<PointD> &pts,
                   const std::vector<PointD> &refs, int w, int h) const;
 
     [[nodiscard]] GrayImage ToGrayImage() const;
@@ -73,4 +73,4 @@ public:
 //    friend class BgraImage;
 };
 
-} // namespace ctk 
+} // namespace ctk

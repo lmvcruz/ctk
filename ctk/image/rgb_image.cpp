@@ -198,7 +198,7 @@ PointI RgbImage::GetPixel(int x, int y) const noexcept {
  * @param qtype int specifying the method of selecting the first centers
  * @return RgbImage obtained after kmeans clustering of original image
  */
-RgbImage RgbImage::Quantize(int q, int iter, float eps, 
+RgbImage RgbImage::Quantize(int q, int iter, float eps,
                             int attempts, int qtype) const {
     RgbImage cluster(data.clone());
     cv::Mat vals;
@@ -330,7 +330,7 @@ std::vector<Polygon> RgbImage::ApproximateContours(int eps) {
  * @param h  int representing the hight of the output image
  * @return RgbImage resulting of the transformation
  */
-RgbImage RgbImage::Warp(const std::vector<PointD> &pts, 
+RgbImage RgbImage::Warp(const std::vector<PointD> &pts,
                         const std::vector<PointD> &refs, int w, int h) const {
     if (pts.size() != refs.size()) throw  incompatible_parameters();
     if (pts.size() < 4) throw  incompatible_parameters();
@@ -376,7 +376,7 @@ RgbImage RgbImage::DrawPolygon(Polygon &pol) const {
     std::vector<std::vector<cv::Point>> cv_conts;
     cv_conts.resize(1);
     cv_conts[0] = pol.GetCvData();
-    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0]) 
+    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0])
               << std::endl;
 
     RgbImage new_img(data);
@@ -388,4 +388,4 @@ RgbImage RgbImage::DrawPolygon(Polygon &pol) const {
     return new_img;
 }
 
-} // namespace ctk 
+} // namespace ctk

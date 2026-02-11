@@ -57,4 +57,4 @@ int ColorImage::GetChannels() const noexcept {
     return 3;
 }
 
-} // namespace ctk 
+} // namespace ctk
