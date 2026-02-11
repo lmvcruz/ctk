@@ -13,9 +13,14 @@ public:
 
     RgbImage();
     RgbImage(const RgbImage& that);
+    RgbImage(RgbImage&& that) noexcept;
     // TODO: add constructor from vector (update benchmark)
     RgbImage(const AbstractImage<cv::Vec3b>& that);
     RgbImage(const cv::Mat& d);
+    RgbImage(cv::Mat&& d);
+
+    RgbImage& operator=(const RgbImage& that);
+    RgbImage& operator=(RgbImage&& that) noexcept;
 
     void Create(int w, int h);
     void Fill(int r, int g, int b);

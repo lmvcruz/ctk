@@ -6,6 +6,7 @@
 
 #include <opencv2/highgui.hpp>
 
+#include "ctk/image/binary_image.h"
 #include "ctk/image/rgb_image.h"
 #include "ctk/matrix/numeric_matrix.h"
 
@@ -112,6 +113,40 @@ static void RGBIMG_CvMat2RgbImage(benchmark::State& state) {
 BENCHMARK(RGBIMG_CvMat2RgbImage)
                 ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
                          {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+                ->Complexity();
+
+static void RGBIMG_PickColor(benchmark::State& state) {
+    ctk::RgbImage rgb;
+    CreateRgbImage(rgb, state.range(0), state.range(1));
+    // Pick a color that exists in the image
+    int r = 128, g = 128, b = 128;
+    for (auto _ : state) {
+        ctk::BinaryImage mask = rgb.PickColor(r, g, b);
+        benchmark::DoNotOptimize(mask);
+    }
+    state.SetComplexityN(state.range(0)*state.range(1));
+}
+BENCHMARK(RGBIMG_PickColor)
+                ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
+                         {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+                ->Complexity();
+
+// Larger image sizes for real-world scenarios
+static void RGBIMG_PickColorLarge(benchmark::State& state) {
+    ctk::RgbImage rgb;
+    CreateRgbImage(rgb, state.range(0), state.range(1));
+    int r = 128, g = 128, b = 128;
+    for (auto _ : state) {
+        ctk::BinaryImage mask = rgb.PickColor(r, g, b);
+        benchmark::DoNotOptimize(mask);
+    }
+    state.SetComplexityN(state.range(0)*state.range(1));
+}
+BENCHMARK(RGBIMG_PickColorLarge)
+                ->Args({128, 128})
+                ->Args({256, 256})
+                ->Args({512, 512})
+                ->Args({1024, 1024})
                 ->Complexity();
 #endif
 
