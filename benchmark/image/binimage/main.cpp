@@ -1,8 +1,8 @@
-#include <benchmark/benchmark.h>
-
 #include <algorithm>
 #include <iostream>
 #include <vector>
+
+#include <benchmark/benchmark.h>
 
 #include <opencv2/highgui.hpp>
 
@@ -10,18 +10,17 @@
 #include "ctk/matrix/numeric_matrix.h"
 
 const int LARGE_RANGE_MIN = 8;
-const int LARGE_RANGE_MAX = 8<<2;
+const int LARGE_RANGE_MAX = 8 << 2;
 const double NUMERIC_SCALAR = 1000.0;
-
 
 //
 // Auxiliar Function
 //
-void CreateBinaryImage(ctk::BinaryImage &bm, int w, int h) {
+void CreateBinaryImage(ctk::BinaryImage& bm, int w, int h) {
     bm.Create(w, h);
-    for (auto x=0; x<w; x++) {
-        for (auto y=0; y<h; y++) {
-            bm.Set(x,y, std::rand() % 2 == 0);
+    for (auto x = 0; x < w; x++) {
+        for (auto y = 0; y < h; y++) {
+            bm.Set(x, y, std::rand() % 2 == 0);
         }
     }
 }
@@ -39,27 +38,27 @@ static void BINIMG_CreateBinaryImage(benchmark::State& state) {
     state.SetComplexityN(state.range(0));
 }
 BENCHMARK(BINIMG_CreateBinaryImage)
-                ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                         {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-                ->Complexity();
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity();
 
 static void BINIMG_CreateStdVector(benchmark::State& state) {
     for (auto _ : state) {
         std::vector<bool> vec;
-        vec.resize(state.range(0)*state.range(1));
-        for (int i=0; i<vec.size(); i++) vec[i] = (std::rand() % 2 == 0);
+        vec.resize(state.range(0) * state.range(1));
+        for (int i = 0; i < vec.size(); i++)
+            vec[i] = (std::rand() % 2 == 0);
     }
     state.SetComplexityN(state.range(0));
 }
 BENCHMARK(BINIMG_CreateStdVector)
-                ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                         {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-                ->Complexity();
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity();
 
 static void BINIMG_Vec2BinaryImage(benchmark::State& state) {
     std::vector<bool> vec;
-    vec.resize(state.range(0)*state.range(1));
-    for (int i=0; i<vec.size(); i++) vec[i] = (std::rand() % 2 == 0);
+    vec.resize(state.range(0) * state.range(1));
+    for (int i = 0; i < vec.size(); i++)
+        vec[i] = (std::rand() % 2 == 0);
     //
     for (auto _ : state) {
         ctk::BinaryImage bm;
@@ -68,31 +67,29 @@ static void BINIMG_Vec2BinaryImage(benchmark::State& state) {
     state.SetComplexityN(state.range(0));
 }
 BENCHMARK(BINIMG_Vec2BinaryImage)
-                ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                         {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-                ->Complexity();
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity();
 
 static void BINIMG_CreateMat(benchmark::State& state) {
     for (auto _ : state) {
-        cv::Mat mat(state.range(1),state.range(0),CV_8U);
-        for (int x=0; x<state.range(0); x++) {
-            for(int y=0; y<state.range(1); y++) {
-                mat.at<uchar>(y,x) = (std::rand() % 2==0)*255;
+        cv::Mat mat(state.range(1), state.range(0), CV_8U);
+        for (int x = 0; x < state.range(0); x++) {
+            for (int y = 0; y < state.range(1); y++) {
+                mat.at<uchar>(y, x) = (std::rand() % 2 == 0) * 255;
             }
         }
     }
     state.SetComplexityN(state.range(0));
 }
 BENCHMARK(BINIMG_CreateMat)
-                ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                         {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-                ->Complexity();
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity();
 
 static void BINIMG_CvMat2BinaryImage(benchmark::State& state) {
-    cv::Mat mat(state.range(1),state.range(0),CV_8U);
-    for (int x=0; x<state.range(0); x++) {
-        for(int y=0; y<state.range(1); y++) {
-            mat.at<uchar>(y,x) = (std::rand() % 2==0)*255;
+    cv::Mat mat(state.range(1), state.range(0), CV_8U);
+    for (int x = 0; x < state.range(0); x++) {
+        for (int y = 0; y < state.range(1); y++) {
+            mat.at<uchar>(y, x) = (std::rand() % 2 == 0) * 255;
         }
     }
     for (auto _ : state) {
@@ -101,9 +98,8 @@ static void BINIMG_CvMat2BinaryImage(benchmark::State& state) {
     state.SetComplexityN(state.range(0));
 }
 BENCHMARK(BINIMG_CvMat2BinaryImage)
-                ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                         {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-                ->Complexity();
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity();
 #endif
 
 #if 1
@@ -119,9 +115,7 @@ static void BINIMG_CountTrues(benchmark::State& state) {
     }
     state.SetComplexityN(bm.GetSize());
 }
-BENCHMARK(BINIMG_CountTrues)
-                ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
-                ->Complexity(benchmark::oN);
+BENCHMARK(BINIMG_CountTrues)->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)->Complexity(benchmark::oN);
 
 static void BINIMG_CountFalses(benchmark::State& state) {
     ctk::BinaryImage bm;
@@ -131,9 +125,7 @@ static void BINIMG_CountFalses(benchmark::State& state) {
     }
     state.SetComplexityN(bm.GetSize());
 }
-BENCHMARK(BINIMG_CountFalses)
-                ->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)
-                ->Complexity(benchmark::oN);
+BENCHMARK(BINIMG_CountFalses)->Range(LARGE_RANGE_MIN, LARGE_RANGE_MAX)->Complexity(benchmark::oN);
 
 static void BINIMG_CountTrues2(benchmark::State& state) {
     ctk::BinaryImage bm;
@@ -143,8 +135,7 @@ static void BINIMG_CountTrues2(benchmark::State& state) {
     }
 }
 BENCHMARK(BINIMG_CountTrues2)
-                ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                         {LARGE_RANGE_MIN, LARGE_RANGE_MAX}});
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}});
 #endif
 
 #if 1
@@ -161,9 +152,8 @@ static void BINIMG_Not(benchmark::State& state) {
     state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BINIMG_Not)
-            ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                     {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-            ->Complexity(benchmark::oN);
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity(benchmark::oN);
 
 static void BINIMG_And(benchmark::State& state) {
     ctk::BinaryImage m1, m2;
@@ -175,10 +165,8 @@ static void BINIMG_And(benchmark::State& state) {
     state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BINIMG_And)
-            ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                     {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-            ->Complexity(benchmark::oN);
-
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity(benchmark::oN);
 
 static void BINIMG_Or(benchmark::State& state) {
     ctk::BinaryImage m1, m2;
@@ -190,10 +178,8 @@ static void BINIMG_Or(benchmark::State& state) {
     state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BINIMG_Or)
-            ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                     {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-            ->Complexity(benchmark::oN);
-
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity(benchmark::oN);
 
 static void BINIMG_Xor(benchmark::State& state) {
     ctk::BinaryImage m1, m2;
@@ -205,9 +191,8 @@ static void BINIMG_Xor(benchmark::State& state) {
     state.SetComplexityN(m1.GetSize());
 }
 BENCHMARK(BINIMG_Xor)
-            ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX},
-                     {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
-            ->Complexity(benchmark::oN);
+    ->Ranges({{LARGE_RANGE_MIN, LARGE_RANGE_MAX}, {LARGE_RANGE_MIN, LARGE_RANGE_MAX}})
+    ->Complexity(benchmark::oN);
 #endif
 
 BENCHMARK_MAIN();

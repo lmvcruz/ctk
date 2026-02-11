@@ -1,23 +1,22 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include <QOpenGLWidget>
-#include <QMouseEvent>
 #include <QKeyEvent>
+#include <QMouseEvent>
+#include <QOpenGLWidget>
 #include <QRect>
 
 #include "ctkimage.h"
 
-class Canvas : public QOpenGLWidget
-{
+class Canvas : public QOpenGLWidget {
 public:
-    Canvas(QWidget* par=nullptr);
+    Canvas(QWidget* par = nullptr);
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
 
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent* event);
 
     void paintGL() override;
 
@@ -31,8 +30,8 @@ private:
     bool m_paintingMode;
 
     void RestoreCache();
-    QImage CtkImage2QImage(ctk::RgbImage &rgb);
+    QImage CtkImage2QImage(ctk::RgbImage& rgb);
     ctk::RgbImage QImage2CtkImage();
 };
 
-#endif // CANVAS_H
+#endif  // CANVAS_H

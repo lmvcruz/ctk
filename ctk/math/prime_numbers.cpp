@@ -98,4 +98,4 @@ std::vector<unsigned long long> GeneratePrimeNumbers(unsigned long long n) {
     return GeneratePrimeNumbersEs<unsigned long long>(n);
 }
 
-}
+}  // namespace ctk

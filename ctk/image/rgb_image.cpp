@@ -1,8 +1,9 @@
 #include "ctk/image/rgb_image.h"
 
+#include <opencv2/core/types_c.h>
+
 #include <opencv2/calib3d.hpp>
 #include <opencv2/highgui.hpp>
-#include <opencv2/core/types_c.h>
 
 #include "ctk/image/binary_image.h"
 #include "ctk/image/gray_image.h"
@@ -20,8 +21,9 @@ RgbImage::RgbImage() : ColorImage() {
  * @brief RgbImage::RgbImage - Copy Construtor
  * @param that reference to an existing RgbImage
  */
-RgbImage::RgbImage(const RgbImage &that) {
-    if (that.data.type()!=CV_8UC3 || that.data.channels()!=3) throw  incompatible_parameters();
+RgbImage::RgbImage(const RgbImage& that) {
+    if (that.data.type() != CV_8UC3 || that.data.channels() != 3)
+        throw incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
     invert_channels = true;
@@ -32,8 +34,7 @@ RgbImage::RgbImage(const RgbImage &that) {
  * @brief RgbImage::RgbImage - Move Constructor
  * @param that rvalue reference to an existing RgbImage
  */
-RgbImage::RgbImage(RgbImage &&that) noexcept
-    : ColorImage() {
+RgbImage::RgbImage(RgbImage&& that) noexcept : ColorImage() {
     type = that.type;
     ch_size = that.ch_size;
     invert_channels = true;
@@ -44,9 +45,9 @@ RgbImage::RgbImage(RgbImage &&that) noexcept
  * @brief RgbImage::RgbImage - Copy Construtor
  * @param that  reference to an existing AbstractImage
  */
-RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that) {
+RgbImage::RgbImage(const AbstractImage<cv::Vec3b>& that) {
     if (that.GetData().type() != CV_8UC3 || that.GetData().channels() != 3) {
-        throw  incompatible_parameters();
+        throw incompatible_parameters();
     }
     type = CV_8UC3;
     ch_size = 3;
@@ -58,9 +59,9 @@ RgbImage::RgbImage(const AbstractImage<cv::Vec3b> &that) {
  * @brief RgbImage::RgbImage
  * @param d
  */
-RgbImage::RgbImage(const cv::Mat &d) : ColorImage(d) {
+RgbImage::RgbImage(const cv::Mat& d) : ColorImage(d) {
     if (d.type() != CV_8UC3 || d.channels() != 3) {
-        throw  incompatible_parameters();
+        throw incompatible_parameters();
     }
 }
 
@@ -68,9 +69,9 @@ RgbImage::RgbImage(const cv::Mat &d) : ColorImage(d) {
  * @brief RgbImage::RgbImage - Move Constructor from cv::Mat
  * @param d rvalue reference to cv::Mat
  */
-RgbImage::RgbImage(cv::Mat &&d) : ColorImage() {
+RgbImage::RgbImage(cv::Mat&& d) : ColorImage() {
     if (d.type() != CV_8UC3 || d.channels() != 3) {
-        throw  incompatible_parameters();
+        throw incompatible_parameters();
     }
     type = CV_8UC3;
     ch_size = 3;
@@ -83,7 +84,7 @@ RgbImage::RgbImage(cv::Mat &&d) : ColorImage() {
  * @param that reference to an existing RgbImage
  * @return reference to this
  */
-RgbImage& RgbImage::operator=(const RgbImage &that) {
+RgbImage& RgbImage::operator=(const RgbImage& that) {
     if (this != &that) {
         if (that.data.type() != CV_8UC3 || that.data.channels() != 3) {
             throw incompatible_parameters();
@@ -101,7 +102,7 @@ RgbImage& RgbImage::operator=(const RgbImage &that) {
  * @param that rvalue reference to an existing RgbImage
  * @return reference to this
  */
-RgbImage& RgbImage::operator=(RgbImage &&that) noexcept {
+RgbImage& RgbImage::operator=(RgbImage&& that) noexcept {
     if (this != &that) {
         type = that.type;
         ch_size = that.ch_size;
@@ -128,10 +129,13 @@ void RgbImage::Create(int w, int h) {
  * @param b int representing the blue value
  */
 void RgbImage::Fill(int r, int g, int b) {
-    //TODO: TEST
-    if (r < 0 || r > 255) throw incompatible_parameters();
-    if (g < 0 || g > 255) throw incompatible_parameters();
-    if (b < 0 || b > 255) throw incompatible_parameters();
+    // TODO: TEST
+    if (r < 0 || r > 255)
+        throw incompatible_parameters();
+    if (g < 0 || g > 255)
+        throw incompatible_parameters();
+    if (b < 0 || b > 255)
+        throw incompatible_parameters();
     data = cv::Scalar(r, g, b);
 }
 
@@ -144,7 +148,7 @@ void RgbImage::Fill(int r, int g, int b) {
  * @param b int representing the blue value
  */
 void RgbImage::CreateAndFill(int w, int h, int r, int g, int b) {
-    //TODO: TEST
+    // TODO: TEST
     Create(w, h);
     Fill(r, g, b);
 }
@@ -227,7 +231,6 @@ int RgbImage::Green(int x, int y) const noexcept {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[1];
 }
 
-
 /**
  * @brief RgbImage::Blue Get blue value of a pixel
  * @param x int representing the row index
@@ -251,14 +254,16 @@ PointI RgbImage::GetPixel(int x, int y) const noexcept {
 /**
  * @brief RgbImage::Quantize
  * @param q int representing the number of clusters for the kmeans algorithm
- * @param iter int representing the maximum number of iterations for the termination criteria in the kmeans algorithm
- * @param eps float representing the desired accuracy for the termination criteria in the kmeans algorithm
- * @param attempts int representing the number of times the kmeans algorithm is executed using different initial labellings
+ * @param iter int representing the maximum number of iterations for the
+ * termination criteria in the kmeans algorithm
+ * @param eps float representing the desired accuracy for the termination
+ * criteria in the kmeans algorithm
+ * @param attempts int representing the number of times the kmeans algorithm is
+ * executed using different initial labellings
  * @param qtype int specifying the method of selecting the first centers
  * @return RgbImage obtained after kmeans clustering of original image
  */
-RgbImage RgbImage::Quantize(int q, int iter, float eps,
-                            int attempts, int qtype) const {
+RgbImage RgbImage::Quantize(int q, int iter, float eps, int attempts, int qtype) const {
     RgbImage cluster(data.clone());
     cv::Mat vals;
     cluster.data.convertTo(vals, CV_32F);
@@ -271,19 +276,19 @@ RgbImage RgbImage::Quantize(int q, int iter, float eps,
     centers = centers.reshape(3, centers.rows);
     vals = vals.reshape(3, vals.rows);
     // replace pixel values with their center value:
-    cv::Vec3f *p = vals.ptr<cv::Vec3f>();
+    cv::Vec3f* p = vals.ptr<cv::Vec3f>();
     for (size_t i = 0; i < vals.rows; ++i) {
-       p[i] = centers.at<cv::Vec3f>(labels.at<int>(i));
+        p[i] = centers.at<cv::Vec3f>(labels.at<int>(i));
     }
     // back to 2d, and uchar:
     cluster.data = vals.reshape(3, cluster.data.rows);
     cluster.data.convertTo(cluster.data, CV_8U);
-    //cv::cvtColor(cluster.data, cluster.data, cv::COLOR_BGR2RGB);
+    // cv::cvtColor(cluster.data, cluster.data, cv::COLOR_BGR2RGB);
     return cluster;
 }
 
-RgbImage RgbImage::Quantize(const std::vector<PointI> &centers, int iter,
-                            float eps, int attempts) const {
+RgbImage RgbImage::Quantize(const std::vector<PointI>& centers, int iter, float eps,
+                            int attempts) const {
     // TODO: implement this method
     assert(false);
     return RgbImage();
@@ -294,7 +299,8 @@ RgbImage RgbImage::Quantize(const std::vector<PointI> &centers, int iter,
  * @param r int representing the red value
  * @param g int representing the green value
  * @param b int representing the blue value
- * @return BinaryImage consisting of a mask of the original image which is 1 for the passed color and 0 otherwise
+ * @return BinaryImage consisting of a mask of the original image which is 1 for
+ * the passed color and 0 otherwise
  * @note Uses OpenCV's optimized inRange for vectorized comparison
  */
 BinaryImage RgbImage::PickColor(int r, int g, int b) const {
@@ -307,10 +313,12 @@ BinaryImage RgbImage::PickColor(int r, int g, int b) const {
 /**
  * @brief RgbImage::Project
  * @param colors vector of PointI where each element represents a color
- * @return GrayImage for each pixel in the original image assigns the index of the most similar color in the passed vector
+ * @return GrayImage for each pixel in the original image assigns the index of
+ * the most similar color in the passed vector
  */
-GrayImage RgbImage::Project(const std::vector<PointI> &colors) const {
-    if (colors.size() > 256) throw incompatible_parameters();
+GrayImage RgbImage::Project(const std::vector<PointI>& colors) const {
+    if (colors.size() > 256)
+        throw incompatible_parameters();
     GrayImage mask;
     mask.Create(GetWidth(), GetHeight());
     for (auto x = 0; x < data.rows; ++x) {
@@ -337,14 +345,14 @@ GrayImage RgbImage::Project(const std::vector<PointI> &colors) const {
 std::vector<Polygon> RgbImage::Contours() const {
     BinaryImage bin = ToGrayImage().ApplyOtsuThreshold();
 
-    std::vector<std::vector<cv::Point> > cv_contours;
+    std::vector<std::vector<cv::Point>> cv_contours;
     std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(bin.GetData(), cv_contours, hierarchy,
-                     cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
+    cv::findContours(bin.GetData(), cv_contours, hierarchy, cv::RETR_TREE,
+                     cv::CHAIN_APPROX_TC89_KCOS);
 
     std::vector<Polygon> ctk_contours;
     ctk_contours.resize(cv_contours.size());
-    for (auto i=0; i<cv_contours.size(); ++i) {
+    for (auto i = 0; i < cv_contours.size(); ++i) {
         ctk_contours[i] = cv_contours[i];
     }
     return ctk_contours;
@@ -352,16 +360,17 @@ std::vector<Polygon> RgbImage::Contours() const {
 
 /**
  * @brief RgbImage::ApproximateContours  Get approximate image contours
- * @param eps int specifying the approximation accuracy. The maximum distance between the original polygon and its approximation.
+ * @param eps int specifying the approximation accuracy. The maximum distance
+ * between the original polygon and its approximation.
  * @return vector of Polygons with the approximate image contours
  */
 std::vector<Polygon> RgbImage::ApproximateContours(int eps) {
     BinaryImage bin = ToGrayImage().ApplyOtsuThreshold();
 
-    std::vector<std::vector<cv::Point> > cv_contours;
+    std::vector<std::vector<cv::Point>> cv_contours;
     std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(bin.GetData(), cv_contours, hierarchy,
-                     cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
+    cv::findContours(bin.GetData(), cv_contours, hierarchy, cv::RETR_TREE,
+                     cv::CHAIN_APPROX_TC89_KCOS);
 
     std::vector<Polygon> ctk_contours;
     ctk_contours.resize(cv_contours.size());
@@ -373,19 +382,23 @@ std::vector<Polygon> RgbImage::ApproximateContours(int eps) {
     return ctk_contours;
 }
 
-//TODO: write tests and benchmark
+// TODO: write tests and benchmark
 /**
  * @brief RgbImage::Warp  Applies a perspective transformation to the image
- * @param pts  vector of PointD representing the coordinates of the points in the original plane
- * @param refs  vector of PointD representing the coordinates of the points in the target plane
+ * @param pts  vector of PointD representing the coordinates of the points in
+ * the original plane
+ * @param refs  vector of PointD representing the coordinates of the points in
+ * the target plane
  * @param w  int representing the width of the output image
  * @param h  int representing the hight of the output image
  * @return RgbImage resulting of the transformation
  */
-RgbImage RgbImage::Warp(const std::vector<PointD> &pts,
-                        const std::vector<PointD> &refs, int w, int h) const {
-    if (pts.size() != refs.size()) throw  incompatible_parameters();
-    if (pts.size() < 4) throw  incompatible_parameters();
+RgbImage RgbImage::Warp(const std::vector<PointD>& pts, const std::vector<PointD>& refs, int w,
+                        int h) const {
+    if (pts.size() != refs.size())
+        throw incompatible_parameters();
+    if (pts.size() < 4)
+        throw incompatible_parameters();
     std::vector<cv::Point2f> cv_pts;
     cv_pts.resize(pts.size());
     std::vector<cv::Point2f> cv_refs;
@@ -399,13 +412,13 @@ RgbImage RgbImage::Warp(const std::vector<PointD> &pts,
     cv::Mat homo_mat;
     // We assume that size>=4 (verified in the begining of the method)
     if (pts.size() > 4) {
-        homo_mat = cv::findHomography(cv_pts, cv_refs,cv::RANSAC);
+        homo_mat = cv::findHomography(cv_pts, cv_refs, cv::RANSAC);
     } else {
         homo_mat = cv::findHomography(cv_pts, cv_refs);
     }
     //
     RgbImage rect;
-    cv::warpPerspective(data, rect.GetData(), homo_mat, cv::Size(w,h));
+    cv::warpPerspective(data, rect.GetData(), homo_mat, cv::Size(w, h));
     return rect;
 }
 
@@ -424,20 +437,19 @@ GrayImage RgbImage::ToGrayImage() const {
  * @param pol  Polygon respresenting the contour to draw
  * @return RgbImage image with drawn contour
  */
-RgbImage RgbImage::DrawPolygon(Polygon &pol) const {
+RgbImage RgbImage::DrawPolygon(Polygon& pol) const {
     std::vector<std::vector<cv::Point>> cv_conts;
     cv_conts.resize(1);
     cv_conts[0] = pol.GetCvData();
-    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0])
-              << std::endl;
+    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0]) << std::endl;
 
     RgbImage new_img(data);
-    cv::Mat &new_mat = new_img.GetData();
+    cv::Mat& new_mat = new_img.GetData();
     const int kThickness = 2;
     const int kLineType = 8;
     cv::Scalar color = cv::Scalar(rand() % 255, rand() % 255, rand() % 255);
-    cv::drawContours(new_mat,cv_conts, 0, color, kThickness, kLineType);
+    cv::drawContours(new_mat, cv_conts, 0, color, kThickness, kLineType);
     return new_img;
 }
 
-} // namespace ctk
+}  // namespace ctk

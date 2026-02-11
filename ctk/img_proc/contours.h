@@ -16,21 +16,21 @@ public:
     void Resize(int s);
     int GetSize() const;
 
-    void AddPolygon(const Polygon &pol);
-    void SetPolygon(int idx, const Polygon &pol);
-    Polygon &GetPolygon(int idx);
+    void AddPolygon(const Polygon& pol);
+    void SetPolygon(int idx, const Polygon& pol);
+    Polygon& GetPolygon(int idx);
 
     Contours OrientedBoundingBoxes() const;
 
-    void CalculateContours(const BinaryImage &img);
-    void CalculateApproximateContours(const BinaryImage &img, int eps=3);
+    void CalculateContours(const BinaryImage& img);
+    void CalculateApproximateContours(const BinaryImage& img, int eps = 3);
 
-    RgbImage Draw(const BinaryImage &img) const;
-    RgbImage Draw(const RgbImage &img) const;
+    RgbImage Draw(const BinaryImage& img) const;
+    RgbImage Draw(const RgbImage& img) const;
 
 protected:
     std::vector<Polygon> polys;
     std::vector<cv::Vec4i> hierarchy;
 };
 
-} // namespace ctk 
+}  // namespace ctk

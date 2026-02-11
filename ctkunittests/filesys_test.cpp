@@ -5,7 +5,6 @@
 
 #include "ctk/misc/filesys.h"
 #include "ctk/misc/string_aux.h"
-
 #include "test_setup.h"
 
 #ifdef TEST_FILESYS
@@ -76,7 +75,7 @@ TEST_F(CtkFileSystemTest, Test_ListDirAbsolutePath) {
 
     EXPECT_EQ(files.size(), 29);
     bool containsFyleSys = false;
-    for (auto &fn : files) {
+    for (auto& fn : files) {
         if (fn == expected)
             containsFyleSys = true;
     }
@@ -103,7 +102,7 @@ TEST_F(CtkFileSystemTest, Test_FileNamesWithAllFilters) {
 
     EXPECT_EQ(files.size(), 12);
     bool containsFyleSys = false;
-    for (auto &fn : files) {
+    for (auto& fn : files) {
         if (fn == expected)
             containsFyleSys = true;
     }
@@ -117,9 +116,9 @@ TEST_F(CtkFileSystemTest, Test_FileNamesWithAnyFilter) {
 
     EXPECT_EQ(files.size(), 25);
     bool containsFyleSys = false;
-    for (auto &fn : files) {
-         if (fn == expected)
-             containsFyleSys = true;
+    for (auto& fn : files) {
+        if (fn == expected)
+            containsFyleSys = true;
     }
     EXPECT_TRUE(containsFyleSys);
 }
@@ -131,7 +130,7 @@ TEST_F(CtkFileSystemTest, Test_FileNamesWithoutAllFilters) {
 
     EXPECT_EQ(files.size(), 15);
     bool containsFyleSys = false;
-    for (auto &fn : files) {
+    for (auto& fn : files) {
         if (fn == expected)
             containsFyleSys = true;
     }

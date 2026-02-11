@@ -1,13 +1,10 @@
 #pragma once
 
-#include "gtest/gtest.h"
-
 #include "ctk/image/rgb_image.h"
-
+#include "gtest/gtest.h"
 #include "test_setup.h"
 
-class CtkRgbImageTest : public ::testing::Test
-{
+class CtkRgbImageTest : public ::testing::Test {
 public:
     void SetUp() override;
 

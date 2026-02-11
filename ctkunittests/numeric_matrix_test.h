@@ -2,9 +2,8 @@
 
 #include <vector>
 
-#include "gtest/gtest.h"
-
 #include "ctk/matrix/numeric_matrix.h"
+#include "gtest/gtest.h"
 
 class CtkNumericMatrixTest : public ::testing::Test {
 public:

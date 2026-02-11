@@ -16,10 +16,10 @@ void processImage(ctk::RgbImage& img, int w, int h) {
     int niw = iw;
     int nih = ih;
     if (curRatio >= expRatio) {
-        niw = static_cast<int>(diw * expRatio / curRatio );
+        niw = static_cast<int>(diw * expRatio / curRatio);
         ox = (iw - niw) / 2;
     } else {
-        nih = static_cast<int>(dih * curRatio / expRatio );
+        nih = static_cast<int>(dih * curRatio / expRatio);
         oy = (ih - nih) / 2;
     }
     img.SelfCrop(ox, oy, niw, nih);
@@ -48,11 +48,10 @@ void createRegularMosaic(std::vector<std::string>& imgDb) {
     mosaic.Save("test.png");
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     std::vector<std::string> filters = {"png", "PNG", "jpg", "jpeg", "JPEG", "JPG"};
-    std::vector<std::string> imgDb = 
-                            ctk::ListFilesContainingAnyExpressions(
-                                        "../../../../imgdb/dogs", filters);
+    std::vector<std::string> imgDb =
+        ctk::ListFilesContainingAnyExpressions("../../../../imgdb/dogs", filters);
     createRegularMosaic(imgDb);
     return 0;
 }

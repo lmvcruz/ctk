@@ -2,7 +2,6 @@
 
 #include "ctk/math/prime_numbers.h"
 #include "ctk/misc/vector_aux.h"
-
 #include "test_setup.h"
 
 #ifdef TEST_PRIME_NUMBERS

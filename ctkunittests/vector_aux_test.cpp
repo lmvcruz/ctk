@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "ctk/misc/vector_aux.h"
-
 #include "test_setup.h"
 
 #ifdef TEST_VEC_AUX
@@ -45,7 +44,7 @@ TEST(CtkVecAuxTest, Test_RangeVector) {
 
 TEST(CtkVecAuxTest, Test_Shuffle1) {
     int maxV = 9;
-    std::vector<int> vec1gt = ctk::RangeVector(0,maxV);
+    std::vector<int> vec1gt = ctk::RangeVector(0, maxV);
     std::vector<int> vec1sh = vec1gt;
     ctk::Shuffle(vec1sh);
     EXPECT_EQ(vec1gt.size(), vec1sh.size());
@@ -53,7 +52,8 @@ TEST(CtkVecAuxTest, Test_Shuffle1) {
     //
     int countDiff = 0;
     for (int i = 0; i <= maxV; ++i) {
-        if (vec1sh[i] != vec1gt[i]) countDiff++;
+        if (vec1sh[i] != vec1gt[i])
+            countDiff++;
     }
     int rate = static_cast<int>(static_cast<float>(vec1gt.size()) * 0.8);
     EXPECT_GE(countDiff, rate);
@@ -61,7 +61,7 @@ TEST(CtkVecAuxTest, Test_Shuffle1) {
 
 TEST(CtkVecAuxTest, Test_Shuffle2) {
     int maxV = 900;
-    std::vector<int> vec1gt = ctk::RangeVector(0,maxV);
+    std::vector<int> vec1gt = ctk::RangeVector(0, maxV);
     std::vector<int> vec1sh = vec1gt;
     ctk::Shuffle(vec1sh, 1000);
     EXPECT_EQ(vec1gt.size(), vec1sh.size());
@@ -69,7 +69,8 @@ TEST(CtkVecAuxTest, Test_Shuffle2) {
     //
     int countDiff = 0;
     for (int i = 0; i <= maxV; ++i) {
-        if (vec1sh[i] != vec1gt[i]) countDiff++;
+        if (vec1sh[i] != vec1gt[i])
+            countDiff++;
     }
     int rate = static_cast<int>(static_cast<float>(vec1gt.size()) * 0.8);
     EXPECT_GE(countDiff, rate);
@@ -77,7 +78,7 @@ TEST(CtkVecAuxTest, Test_Shuffle2) {
 
 TEST(CtkVecAuxTest, Test_Shuffle3) {
     int maxV = 10000;
-    std::vector<int> vec1gt = ctk::RangeVector(0,maxV);
+    std::vector<int> vec1gt = ctk::RangeVector(0, maxV);
     std::vector<int> vec1sh = vec1gt;
     ctk::Shuffle(vec1sh, -1000);
     EXPECT_EQ(vec1gt.size(), vec1sh.size());
@@ -85,7 +86,8 @@ TEST(CtkVecAuxTest, Test_Shuffle3) {
     //
     int countDiff = 0;
     for (int i = 0; i <= maxV; ++i) {
-        if (vec1sh[i] != vec1gt[i]) countDiff++;
+        if (vec1sh[i] != vec1gt[i])
+            countDiff++;
     }
     int rate = static_cast<int>(static_cast<float>(vec1gt.size()) * 0.8);
     EXPECT_GE(countDiff, rate);
@@ -94,13 +96,13 @@ TEST(CtkVecAuxTest, Test_Shuffle3) {
 TEST(CtkVecAuxTest, Test_Contains) {
     std::vector<int> veci = {-1, 7, 2, 0, 1, 7, 1, 3, 2};
     EXPECT_TRUE(ctk::Contains(veci, 1));
-    EXPECT_FALSE(ctk::Contains(veci, 10)); 
+    EXPECT_FALSE(ctk::Contains(veci, 10));
     std::vector<double> vecd = {-1.0, 7.0, 2.0, 0.0, 1.0, 7.0, 1.0, 3.0, 2.0};
     EXPECT_TRUE(ctk::Contains(vecd, 1.0));
-    EXPECT_FALSE(ctk::Contains(vecd, 10.0)); 
+    EXPECT_FALSE(ctk::Contains(vecd, 10.0));
     std::vector<std::string> vecs = {"-1", "7", "2", "0", "1", "7", "1", "3", "2"};
     // Explicit initialization of string is necessary
-    // In ctk::Contains(vecs, "-1"); 
+    // In ctk::Contains(vecs, "-1");
     //   "-1" is const char [3] instead of string
     EXPECT_TRUE(ctk::Contains(vecs, std::string("-1")));
     std::string s = "10";
@@ -111,10 +113,10 @@ TEST(CtkVecAuxTest, Test_IndexOf) {
     std::vector<int> veci = {-1, 7, 2, 0, 1, 7, 1, 3, 2};
     EXPECT_EQ(ctk::IndexOf(veci, 1), 4);
     EXPECT_EQ(ctk::IndexOf(veci, 1, 5), 6);
-    EXPECT_EQ(ctk::IndexOf(veci, 10), veci.size()); 
+    EXPECT_EQ(ctk::IndexOf(veci, 10), veci.size());
     std::vector<double> vecd = {-1.0, 7.0, 2.0, 0.0, 1.0, 7.0, 1.0, 3.0, 2.0};
     EXPECT_EQ(ctk::IndexOf(vecd, 1.0), 4);
-    EXPECT_EQ(ctk::IndexOf(vecd, 10.0), vecd.size()); 
+    EXPECT_EQ(ctk::IndexOf(vecd, 10.0), vecd.size());
     std::vector<std::string> vecs = {"-1", "7", "2", "0", "1", "7", "1", "3", "2"};
     // See comment in Test_Contains
     EXPECT_EQ(ctk::IndexOf(vecs, std::string("-1")), 0);
@@ -127,17 +129,17 @@ TEST(CtkVecAuxTest, Test_ContainsQueries) {
     std::vector<int> queriesTrueI = {7, 0, 2};
     std::vector<int> queriesFalseI = {7, 10, 2};
     EXPECT_TRUE(ctk::Contains(veci, queriesTrueI));
-    EXPECT_FALSE(ctk::Contains(veci, queriesFalseI)); 
+    EXPECT_FALSE(ctk::Contains(veci, queriesFalseI));
     std::vector<double> vecd = {-1.0, 7.0, 2.0, 0.0, 1.0, 7.0, 1.0, 3.0, 2.0};
     std::vector<double> queriesTrueD = {7., 0., 2.};
     std::vector<double> queriesFalseD = {7., 10., 2.};
     EXPECT_TRUE(ctk::Contains(vecd, queriesTrueD));
-    EXPECT_FALSE(ctk::Contains(vecd, queriesFalseD)); 
+    EXPECT_FALSE(ctk::Contains(vecd, queriesFalseD));
     std::vector<std::string> vecs = {"-1", "7", "2", "0", "1", "7", "1", "3", "2"};
     std::vector<std::string> queriesTrueS = {"7", "0", "2"};
     std::vector<std::string> queriesFalseS = {"7", "10", "2"};
     EXPECT_TRUE(ctk::Contains(vecs, queriesTrueS));
-    EXPECT_FALSE(ctk::Contains(vecs, queriesFalseS)); 
+    EXPECT_FALSE(ctk::Contains(vecs, queriesFalseS));
 }
 
 TEST(CtkVecAuxTest, Test_ContainsIndices) {

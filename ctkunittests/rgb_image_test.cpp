@@ -36,7 +36,6 @@ TEST_F(CtkRgbImageTest, Test_ConstructorMat) {
     EXPECT_EQ(img.CheckChannel(), true);
 }
 
-
 TEST_F(CtkRgbImageTest, Test_CopyImg) {
     ctk::RgbImage img = CtkRgbImageTest::rgbimg;
     EXPECT_EQ(img.GetWidth(), CtkRgbImageTest::rgbimg.GetWidth());
@@ -46,8 +45,7 @@ TEST_F(CtkRgbImageTest, Test_CopyImg) {
 }
 
 TEST_F(CtkRgbImageTest, Test_CopyMat) {
-    cv::Mat matimg = cv::imread(CtkRgbImageTest::rgbname,
-                                cv::IMREAD_UNCHANGED);
+    cv::Mat matimg = cv::imread(CtkRgbImageTest::rgbname, cv::IMREAD_UNCHANGED);
     ctk::RgbImage img = matimg;
     //
     EXPECT_EQ(img.GetWidth(), CtkRgbImageTest::rgbimg.GetWidth());
@@ -76,14 +74,14 @@ TEST_F(CtkRgbImageTest, Test_SelfCrop) {
 
 TEST_F(CtkRgbImageTest, Test_FlipHorizontally) {
     ctk::RgbImage img = CtkRgbImageTest::rgbimg.FlipHorizontally();
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"FlipHor.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "FlipHor.png");
     //
     int w = img.GetWidth() - 1;
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(w - x, y));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(w - x, y));
         }
     }
 }
@@ -96,22 +94,21 @@ TEST_F(CtkRgbImageTest, Test_SelfFlipHorizontally) {
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(w - x, y));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(w - x, y));
         }
     }
 }
 
 TEST_F(CtkRgbImageTest, Test_FlipVertically) {
     ctk::RgbImage img = CtkRgbImageTest::rgbimg.FlipVertically();
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"FlipVer.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "FlipVer.png");
     //
     int w = img.GetWidth() - 1;
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(x, h - y));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(x, h - y));
         }
     }
 }
@@ -124,22 +121,21 @@ TEST_F(CtkRgbImageTest, Test_SelfFlipVertically) {
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(x, h - y));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(x, h - y));
         }
     }
 }
 
 TEST_F(CtkRgbImageTest, Test_FlipBoth) {
     ctk::RgbImage img = CtkRgbImageTest::rgbimg.FlipBoth();
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"FlipBoth.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "FlipBoth.png");
     //
     int w = img.GetWidth() - 1;
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(w - x, h - y));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(w - x, h - y));
         }
     }
 }
@@ -152,22 +148,21 @@ TEST_F(CtkRgbImageTest, Test_SelfFlipBoth) {
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(w - x, h - y));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(w - x, h - y));
         }
     }
 }
 
 TEST_F(CtkRgbImageTest, Test_Rotate90) {
     ctk::RgbImage img = CtkRgbImageTest::rgbimg.Rotate90();
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"Rot90.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "Rot90.png");
     //
     int w = img.GetWidth() - 1;
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(y, w - x));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(y, w - x));
         }
     }
 }
@@ -180,22 +175,21 @@ TEST_F(CtkRgbImageTest, Test_SelfRotate90) {
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(y, w - x));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(y, w - x));
         }
     }
 }
 
 TEST_F(CtkRgbImageTest, Test_Rotate180) {
     ctk::RgbImage img = CtkRgbImageTest::rgbimg.Rotate180();
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"Rot180.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "Rot180.png");
     //
     int w = img.GetWidth() - 1;
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(w - x, h - y));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(w - x, h - y));
         }
     }
 }
@@ -208,22 +202,21 @@ TEST_F(CtkRgbImageTest, Test_SelfRotate180) {
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(w - x, h - y));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(w - x, h - y));
         }
     }
 }
 
 TEST_F(CtkRgbImageTest, Test_Rotate270) {
     ctk::RgbImage img = CtkRgbImageTest::rgbimg.Rotate270();
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-Rot270.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "rgb-Rot270.png");
     //
     int w = img.GetWidth() - 1;
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(h - y, x));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(h - y, x));
         }
     }
 }
@@ -236,8 +229,7 @@ TEST_F(CtkRgbImageTest, Test_SelfRotate270) {
     int h = img.GetHeight() - 1;
     for (int x = 0; x <= w; ++x) {
         for (int y = 0; y <= h; ++y) {
-            EXPECT_EQ(img.Get(x, y), 
-                      CtkRgbImageTest::rgbimg.Get(h - y, x));
+            EXPECT_EQ(img.Get(x, y), CtkRgbImageTest::rgbimg.Get(h - y, x));
         }
     }
 }
@@ -249,7 +241,8 @@ TEST_F(CtkRgbImageTest, Test_startScanIndices) {
     for (int i = 0; i < img.GetSize(); ++i) {
         img.Set(i, i % 255, 0, 0);
     }
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-scan.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "rgb-red-scan.png");
     EXPECT_EQ(img.Red(10, 2), 90);
     EXPECT_EQ(img.Green(10, 2), 0);
     EXPECT_EQ(img.Blue(10, 2), 0);
@@ -266,7 +259,7 @@ TEST_F(CtkRgbImageTest, Test_startScanIndices_Not_Init) {
     ctk::RgbImage img;
     img.Create(40, 40);
     for (int i = 0; i < img.GetSize(); ++i) {
-        img.SafeISet(i, i % 255,0,0);
+        img.SafeISet(i, i % 255, 0, 0);
     }
     EXPECT_EQ(img.Red(10, 2), 90);
     EXPECT_EQ(img.Green(10, 2), 0);
@@ -285,8 +278,8 @@ TEST_F(CtkRgbImageTest, Test_Safe_Set) {
     img.Create(40, 40);
     for (int i = 0; i < img.GetSize() + 2; ++i) {
         try {
-            img.SafeISet(i, i % 255,0,0);
-        } catch (std::exception& e){
+            img.SafeISet(i, i % 255, 0, 0);
+        } catch (std::exception& e) {
             std::cout << e.what() << std::endl;
         }
     }
@@ -309,7 +302,8 @@ TEST_F(CtkRgbImageTest, Test_startSnakeIndices) {
     for (int i = 0; i < img.GetSize(); ++i) {
         img.Set(i, i % 255, 0, 0);
     }
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-snake.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "rgb-red-snake.png");
     EXPECT_EQ(img.Red(10, 2), 90);
     EXPECT_EQ(img.Green(10, 2), 0);
     EXPECT_EQ(img.Blue(10, 2), 0);
@@ -327,7 +321,8 @@ TEST_F(CtkRgbImageTest, Test_startSpiralIndices) {
     for (int i = 0; i < img.GetSize(); ++i) {
         img.Set(i, i % 255, 0, 0);
     }
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-spiral.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "rgb-red-spiral.png");
     EXPECT_EQ(img.Red(10, 2), 102);
     EXPECT_EQ(img.Green(10, 2), 0);
     EXPECT_EQ(img.Blue(10, 2), 0);
@@ -345,7 +340,8 @@ TEST_F(CtkRgbImageTest, Test_startSnailIndices) {
     for (int i = 0; i < img.GetSize(); ++i) {
         img.Set(i, i % 255, 0, 0);
     }
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-snail.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "rgb-red-snail.png");
     EXPECT_EQ(img.Red(10, 2), 57);
     EXPECT_EQ(img.Green(10, 2), 0);
     EXPECT_EQ(img.Blue(10, 2), 0);
@@ -359,15 +355,16 @@ TEST_F(CtkRgbImageTest, Test_startSnailIndices) {
 TEST_F(CtkRgbImageTest, Test_startCustomIndices) {
     ctk::RgbImage img;
     img.Create(40, 40);
-    std::vector<unsigned int> vec = ctk::RangeVectorUi(0, (40*40)-1);
+    std::vector<unsigned int> vec = ctk::RangeVectorUi(0, (40 * 40) - 1);
     ctk::Shuffle(vec, 0);
     img.StartCustomIndices(vec);
     for (int i = 0; i < img.GetSize(); ++i) {
         img.Set(i, i % 255, 0, 0);
     }
-    if (SAVE_IMAGES) img.Save(OUTPUT_DIR+"rgb-red-custom.png");
+    if (SAVE_IMAGES)
+        img.Save(OUTPUT_DIR + "rgb-red-custom.png");
 
-    //TODO - verificar geração de num pseudo aleatorios em SO diferentes
+    // TODO - verificar geração de num pseudo aleatorios em SO diferentes
     /**EXPECT_EQ(img.Red(10, 2), 208);
     EXPECT_EQ(img.green(10, 2), 0);
     EXPECT_EQ(img.Blue(10, 2), 0);
@@ -381,7 +378,8 @@ TEST_F(CtkRgbImageTest, Test_startCustomIndices) {
 TEST_F(CtkRgbImageTest, Test_toGrayImage) {
     ctk::RgbImage rgb = CtkRgbImageTest::rgbimg;
     ctk::GrayImage gray = rgb.ToGrayImage();
-    if (SAVE_IMAGES) gray.Save(OUTPUT_DIR+"rgb2gray.jpg");
+    if (SAVE_IMAGES)
+        gray.Save(OUTPUT_DIR + "rgb2gray.jpg");
     EXPECT_EQ(gray.GetWidth(), rgb.GetWidth());
     EXPECT_EQ(gray.GetHeight(), rgb.GetHeight());
     EXPECT_EQ(gray.GetChannels(), 1);
@@ -401,7 +399,8 @@ TEST_F(CtkRgbImageTest, Test_toGrayImage) {
             EXPECT_LE(std::abs(color2gray.Get(x, y) - v), 1);
         }
     }
-    if (SAVE_IMAGES || 1) color.Save(OUTPUT_DIR+"rgb2gray-red.png");
+    if (SAVE_IMAGES || 1)
+        color.Save(OUTPUT_DIR + "rgb2gray-red.png");
 }
 
 TEST_F(CtkRgbImageTest, Test_CreateAndFill) {
@@ -431,7 +430,7 @@ TEST_F(CtkRgbImageTest, Test_CreateAndFill) {
     cv::Mat data2 = rgb2.GetData();
     for (int x = 0; x < w2; ++x) {
         for (int y = 0; y < h2; ++y) {
-            EXPECT_EQ(rgb2.Get(x, y),cv::Vec3b(255, 200, 100));
+            EXPECT_EQ(rgb2.Get(x, y), cv::Vec3b(255, 200, 100));
         }
     }
 
@@ -445,7 +444,7 @@ TEST_F(CtkRgbImageTest, Test_CreateAndFill) {
     int h0 = rgb0.GetHeight();
     for (int x = 0; x < w0; ++x) {
         for (int y = 0; y < h0; ++y) {
-            EXPECT_EQ(rgb0.Get(x, y),cv::Vec3b(0, 0, 0));
+            EXPECT_EQ(rgb0.Get(x, y), cv::Vec3b(0, 0, 0));
         }
     }
 
@@ -453,18 +452,15 @@ TEST_F(CtkRgbImageTest, Test_CreateAndFill) {
     ASSERT_ANY_THROW(rgb_t1.CreateAndFill(10, 10, -1, 5, 5));
     try {
         rgb_t1.CreateAndFill(10, 10, -1, 5, 5);
-    } catch (std::exception &e) {
-        EXPECT_EQ(std::string(e.what()),
-                  std::string("Parameters incompatible\n"));
+    } catch (std::exception& e) {
+        EXPECT_EQ(std::string(e.what()), std::string("Parameters incompatible\n"));
     }
     ctk::RgbImage rgb_t2;
     ASSERT_ANY_THROW(rgb_t2.CreateAndFill(10, 10, 5, 256, 5));
     try {
         rgb_t2.CreateAndFill(10, 10, 5, 256, 5);
-    } catch (std::exception &e) {
-        EXPECT_EQ(std::string(e.what()), 
-                  std::string("Parameters incompatible\n"));
+    } catch (std::exception& e) {
+        EXPECT_EQ(std::string(e.what()), std::string("Parameters incompatible\n"));
     }
-
 }
 #endif

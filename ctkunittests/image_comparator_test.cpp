@@ -88,7 +88,7 @@ TEST_F(CtkImageComparatorTest, Test_CompareRelativeImages) {
 TEST_F(CtkImageComparatorTest, Test_PixelDistance) {
     ctk::RgbImage rgb1 = ReadRgbImage("red_square.png");
     EXPECT_EQ(ctk::PixelL1Distance(rgb1.Get(0, 0), rgb1.Get(0, 0)), 0);
-    EXPECT_EQ(ctk::PixelL1Distance(rgb1.Get(0, 0), rgb1.Get(100, 100)), 255*2);
+    EXPECT_EQ(ctk::PixelL1Distance(rgb1.Get(0, 0), rgb1.Get(100, 100)), 255 * 2);
     EXPECT_EQ(ctk::PixelL1Distance(rgb1.Get(0, 0), rgb1.Get(0, 0)), 0);
     //
     ctk::GrayImage gray1 = ReadGrayImage("mask.png");
@@ -108,8 +108,8 @@ TEST_F(CtkImageComparatorTest, Test_ComparePixelDistance) {
     ctk::RgbImage rgb3 = ReadRgbImage("cyan_square.png");
     //
     EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(rgb1, rgb1), 0);
-    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(rgb1, rgb2), 50*50*255*3);
-    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(rgb1, rgb3), 200*200*255*3);
+    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(rgb1, rgb2), 50 * 50 * 255 * 3);
+    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(rgb1, rgb3), 200 * 200 * 255 * 3);
     //
     EXPECT_FLOAT_EQ(ctk::ComparePixelRelativeDistance(rgb1, rgb1), 0.0);
     EXPECT_FLOAT_EQ(ctk::ComparePixelRelativeDistance(rgb1, rgb2), 0.0625);
@@ -120,8 +120,8 @@ TEST_F(CtkImageComparatorTest, Test_ComparePixelDistance) {
     ctk::GrayImage gray3 = ReadGrayImage("maskinv.png");
     //
     EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(gray1, gray1), 0);
-    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(gray1, gray2), 50*50*255);
-    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(gray1, gray3), 200*200*255);
+    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(gray1, gray2), 50 * 50 * 255);
+    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(gray1, gray3), 200 * 200 * 255);
     //
     EXPECT_FLOAT_EQ(ctk::ComparePixelRelativeDistance(gray1, gray1), 0.0);
     EXPECT_FLOAT_EQ(ctk::ComparePixelRelativeDistance(gray1, gray2), 0.0625);
@@ -132,8 +132,8 @@ TEST_F(CtkImageComparatorTest, Test_ComparePixelDistance) {
     ctk::BinaryImage bin3 = ReadBinaryImage("maskinv.png");
     //
     EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(bin1, bin1), 0);
-    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(bin1, bin2), 50*50);
-    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(bin1, bin3), 200*200);
+    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(bin1, bin2), 50 * 50);
+    EXPECT_EQ(ctk::ComparePixelAbsoluteDistance(bin1, bin3), 200 * 200);
     //
     EXPECT_FLOAT_EQ(ctk::ComparePixelRelativeDistance(bin1, bin1), 0.0);
     EXPECT_FLOAT_EQ(ctk::ComparePixelRelativeDistance(bin1, bin2), 0.0625);

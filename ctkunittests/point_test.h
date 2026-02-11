@@ -1,10 +1,9 @@
 #pragma once
 
-#include "gtest/gtest.h"
-
 #include <vector>
 
 #include "ctk/geometry/point.h"
+#include "gtest/gtest.h"
 
 class CtkPointTest : public ::testing::Test {
 public:

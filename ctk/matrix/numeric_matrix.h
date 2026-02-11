@@ -25,17 +25,17 @@ public:
     void Save(std::string_view filename) const override;
     void Show() const;
 
-    NumericMatrix operator+(const NumericMatrix &that) const;
-    void operator+=(const NumericMatrix &that);
+    NumericMatrix operator+(const NumericMatrix& that) const;
+    void operator+=(const NumericMatrix& that);
 
-    NumericMatrix operator-(const NumericMatrix &that) const;
-    void operator-=(const NumericMatrix &that);
+    NumericMatrix operator-(const NumericMatrix& that) const;
+    void operator-=(const NumericMatrix& that);
 
-    NumericMatrix operator*(const NumericMatrix &that) const;
-    void operator*=(const NumericMatrix &that);
+    NumericMatrix operator*(const NumericMatrix& that) const;
+    void operator*=(const NumericMatrix& that);
 
-    NumericMatrix operator/(const NumericMatrix &that) const;
-    void operator/=(const NumericMatrix &that);
+    NumericMatrix operator/(const NumericMatrix& that) const;
+    void operator/=(const NumericMatrix& that);
 
     NumericMatrix operator+(const double v) const;
     void operator+=(const double v);
@@ -58,4 +58,4 @@ public:
     void SelfTranspose();
 };
 
-}
+}  // namespace ctk

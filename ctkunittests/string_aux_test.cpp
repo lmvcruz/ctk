@@ -3,7 +3,6 @@
 #include <string>
 
 #include "ctk/misc/string_aux.h"
-
 #include "test_setup.h"
 
 #ifdef TEST_STRING_AUX

@@ -5,11 +5,11 @@
 namespace ctk {
 
 /**
- * @brief Polygon::Polygon  Copy constructor. Takes a reference to an existing polygon object as input
- * and uses it to intialize another polygon object
+ * @brief Polygon::Polygon  Copy constructor. Takes a reference to an existing
+ * polygon object as input and uses it to intialize another polygon object
  * @param that  reference to an existing polygon object
  */
-Polygon::Polygon(const Polygon &that) {
+Polygon::Polygon(const Polygon& that) {
     points = that.points;
     cvpoints = that.cvpoints;
 }
@@ -18,7 +18,7 @@ Polygon::Polygon(const Polygon &that) {
  * @brief Polygon::Polygon  Parameterized constructor.
  * @param pts  vector of Point objects
  */
-Polygon::Polygon(const std::vector<PointD> &pts) {
+Polygon::Polygon(const std::vector<PointD>& pts) {
     points = pts;
     cvpoints.resize(pts.size());
     for (auto i = 0; i < pts.size(); i++) {
@@ -31,10 +31,10 @@ Polygon::Polygon(const std::vector<PointD> &pts) {
  * @brief Polygon::Polygon  Parameterized constructor
  * @param cvd  vector of cv::Points
  */
-Polygon::Polygon(const std::vector<cv::Point> &cvd) {
+Polygon::Polygon(const std::vector<cv::Point>& cvd) {
     cvpoints = cvd;
     points.resize(cvd.size());
-    for (auto i  =0; i < cvd.size(); i++) {
+    for (auto i = 0; i < cvd.size(); i++) {
         points[i].SetX(cvd[i].x);
         points[i].SetY(cvd[i].y);
     }
@@ -48,13 +48,12 @@ Polygon::~Polygon() {
     cvpoints.clear();
 }
 
-
 /**
  * @brief Polygon::operator =  Copy operator given a polgygon
  * @param that  reference to an existing polygon object
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(const Polygon &that) {
+Polygon& Polygon::operator=(const Polygon& that) {
     points = that.points;
     cvpoints = that.cvpoints;
     return *this;
@@ -65,7 +64,7 @@ Polygon &Polygon::operator=(const Polygon &that) {
  * @param pts  vector of Point objects
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(const std::vector<PointD> &pts) {
+Polygon& Polygon::operator=(const std::vector<PointD>& pts) {
     points = pts;
     cvpoints.resize(pts.size());
     for (auto i = 0; i < pts.size(); ++i) {
@@ -80,7 +79,7 @@ Polygon &Polygon::operator=(const std::vector<PointD> &pts) {
  * @param cvd  vector of cv::Points
  * @return the  updated Polygon object
  */
-Polygon &Polygon::operator=(const std::vector<cv::Point> &cvd) {
+Polygon& Polygon::operator=(const std::vector<cv::Point>& cvd) {
     cvpoints = cvd;
     points.resize(cvd.size());
     for (auto i = 0; i < cvd.size(); ++i) {
@@ -95,8 +94,7 @@ Polygon &Polygon::operator=(const std::vector<cv::Point> &cvd) {
  * @param i
  * @return
  */
-PointD &Polygon::operator[](int i)
-{
+PointD& Polygon::operator[](int i) {
     // TODO: test it
     // TODO: Safe access?
     return points[i];
@@ -106,7 +104,7 @@ PointD &Polygon::operator[](int i)
  * @brief Polygon::AddPoint  Add a Point to the Polygon
  * @param pt  reference to the Point object to be added.
  */
-void Polygon::AddPoint(PointD &pt) {
+void Polygon::AddPoint(PointD& pt) {
     points.push_back(pt);
     cvpoints.push_back(cv::Point(pt.GetX(), pt.GetY()));
 }
@@ -126,11 +124,10 @@ void Polygon::AddPoint(double x, double y) {
  * @param idx  an int indicating the index of the point to be set.
  * @param pt  reference to the Point object with the new information.
  */
-void Polygon::SetPoint(int idx, PointD &pt) {
+void Polygon::SetPoint(int idx, PointD& pt) {
     points[idx] = pt;
     cvpoints[idx] = cv::Point(pt.GetX(), pt.GetY());
 }
-
 
 /**
  * @brief Polygon::SetPoint  Set a Point in the Polygon
@@ -148,7 +145,7 @@ void Polygon::SetPoint(int idx, double x, double y) {
  * @param i  an int indicating the index of the point to get.
  * @return The de point at index i in points
  */
-PointD &Polygon::GetPoint(int i) {
+PointD& Polygon::GetPoint(int i) {
     return points[i];
 }
 
@@ -156,7 +153,7 @@ PointD &Polygon::GetPoint(int i) {
  * @brief Polygon::GetData  Get the Point vector points of the Polygon
  * @return The Polygon attribute points
  */
-std::vector<PointD> &Polygon::GetData() {
+std::vector<PointD>& Polygon::GetData() {
     return points;
 }
 
@@ -164,7 +161,7 @@ std::vector<PointD> &Polygon::GetData() {
  * @brief Polygon::GetData  Get the Point vector points of the Polygon
  * @return The Polygon attribute points
  */
-const std::vector<PointD> &Polygon::GetData() const {
+const std::vector<PointD>& Polygon::GetData() const {
     return points;
 }
 
@@ -172,7 +169,7 @@ const std::vector<PointD> &Polygon::GetData() const {
  * @brief Polygon::GetCvData  Get the cv::Point vector cvpoints of the Polygon
  * @return The Polygon attribute cvpoints
  */
-std::vector<cv::Point> &Polygon::GetCvData() {
+std::vector<cv::Point>& Polygon::GetCvData() {
     return cvpoints;
 }
 
@@ -180,7 +177,7 @@ std::vector<cv::Point> &Polygon::GetCvData() {
  * @brief Polygon::GetCvData  Get the cv::Point vector cvpoints of the Polygon
  * @return The Polygon attribute cvpoints
  */
-const std::vector<cv::Point> &Polygon::GetCvData() const {
+const std::vector<cv::Point>& Polygon::GetCvData() const {
     return cvpoints;
 }
 
@@ -219,15 +216,16 @@ double Polygon::Perimeter() {
 
 /**
  * @brief Polygon::Reduce  Reduce the nº of points in Polygon
- * @param epsilon  int specifying the approximation accuracy. The maximum distance between the original polygon and its approximation.
+ * @param epsilon  int specifying the approximation accuracy. The maximum
+ * distance between the original polygon and its approximation.
  * @return Polygon with less points
  */
 Polygon Polygon::Reduce(int epsilon) {
     Polygon new_poly;
-    // Approximate a curve or a polygon with another curve/polygon 
-    // with less vertices so that the distance between them is less or 
+    // Approximate a curve or a polygon with another curve/polygon
+    // with less vertices so that the distance between them is less or
     // equal to the specified precision
-    approxPolyDP(cv::Mat(cvpoints), new_poly.cvpoints, epsilon, true); 
+    approxPolyDP(cv::Mat(cvpoints), new_poly.cvpoints, epsilon, true);
     new_poly.points.resize(new_poly.cvpoints.size());
     for (auto i = 0; i < new_poly.cvpoints.size(); ++i) {
         new_poly.points[i].SetX(new_poly.cvpoints[i].x);
@@ -238,7 +236,8 @@ Polygon Polygon::Reduce(int epsilon) {
 
 /**
  * @brief Polygon::SelfReduce  Reduce the nº of points in Polygon
- * @param epsilon  int specifying the approximation accuracy. The maximum distance between the original polygon and its approximation.
+ * @param epsilon  int specifying the approximation accuracy. The maximum
+ * distance between the original polygon and its approximation.
  */
 void Polygon::SelfReduce(int epsilon) {
     approxPolyDP(cv::Mat(cvpoints), cvpoints, epsilon, true);
@@ -249,22 +248,22 @@ void Polygon::SelfReduce(int epsilon) {
     }
 }
 
-
 /**
- * @brief Polygon::Shift  Shifts the order (arrangement) Polygon vertices in the vectors points and cvpoints
+ * @brief Polygon::Shift  Shifts the order (arrangement) Polygon vertices in the
+ * vectors points and cvpoints
  * @param sh  int specifying the desired shift
  * @return Polygon with the reordered points and cvpoints vectors
  */
 Polygon Polygon::Shift(int sh) {
     Polygon new_poly(*this);
-    std::rotate(new_poly.points.begin(), new_poly.points.begin()+sh, new_poly.points.end());
-    std::rotate(new_poly.cvpoints.begin(), new_poly.cvpoints.begin()+sh, new_poly.cvpoints.end());
+    std::rotate(new_poly.points.begin(), new_poly.points.begin() + sh, new_poly.points.end());
+    std::rotate(new_poly.cvpoints.begin(), new_poly.cvpoints.begin() + sh, new_poly.cvpoints.end());
     return new_poly;
 }
 
-
 /**
- * @brief Polygon::SelfShift  Shifts the order (arrangement) Polygon vertices in the vectors points and cvpoints
+ * @brief Polygon::SelfShift  Shifts the order (arrangement) Polygon vertices in
+ * the vectors points and cvpoints
  * @param sh  int specifying the desired shift
  */
 void Polygon::SelfShift(int sh) {
@@ -272,4 +271,4 @@ void Polygon::SelfShift(int sh) {
     std::rotate(cvpoints.begin(), cvpoints.begin() + sh, cvpoints.end());
 }
 
-}
+}  // namespace ctk

@@ -8,26 +8,27 @@
 
 namespace ctk {
 /**
- * @brief RangeVector  Creates a vector of sequential ints between two passed ints
+ * @brief RangeVector  Creates a vector of sequential ints between two passed
+ * ints
  * @param i int representing the start of the range vector
  * @param e int representing the end of the range vector
  * @return vector of ints between i and e
  */
 std::vector<int> RangeVector(int i, int e) {
     std::vector<int> v;
-    long lsize = std::abs(static_cast<long>(e) - static_cast<long>(i))+1;
+    long lsize = std::abs(static_cast<long>(e) - static_cast<long>(i)) + 1;
     v.resize(static_cast<unsigned int>(lsize));
     if (i < e) {
-        std::generate(v.begin(), v.end(), [n = i] () mutable { return n++; });
-    }
-    else {
-        std::generate(v.begin(), v.end(), [n = i] () mutable { return n--; });
+        std::generate(v.begin(), v.end(), [n = i]() mutable { return n++; });
+    } else {
+        std::generate(v.begin(), v.end(), [n = i]() mutable { return n--; });
     }
     return v;
 }
 
 /**
- * @brief RangeVector  Creates a vector of sequential ints between zero and the passed int
+ * @brief RangeVector  Creates a vector of sequential ints between zero and the
+ * passed int
  * @param e  int representing the end of the range vector
  * @return vector of ints between 0 and e
  */
@@ -36,24 +37,26 @@ std::vector<int> RangeVector(int e) {
     return v;
 }
 /**
- * @brief RangeVectorUi   Creates a vector of sequential unsigned ints between two passed ints
+ * @brief RangeVectorUi   Creates a vector of sequential unsigned ints between
+ * two passed ints
  * @param i unsigned int representing the start of the range
  * @param e unsigned int representing the end of the range
  * @return vector of unsigned ints in the range between i and e
  */
 std::vector<unsigned int> RangeVectorUi(unsigned int i, unsigned int e) {
     std::vector<unsigned int> v;
-    long lsize = std::abs(static_cast<long>(e)-static_cast<long>(i))+1;
+    long lsize = std::abs(static_cast<long>(e) - static_cast<long>(i)) + 1;
     v.resize(static_cast<unsigned int>(lsize));
-    if (i<e)
-        std::generate(v.begin(), v.end(), [n = i] () mutable { return n++; });
+    if (i < e)
+        std::generate(v.begin(), v.end(), [n = i]() mutable { return n++; });
     else
-        std::generate(v.begin(), v.end(), [n = i] () mutable { return n--; });
+        std::generate(v.begin(), v.end(), [n = i]() mutable { return n--; });
     return v;
 }
 
 /**
- * @brief RangeVectorUi  Creates a vector of sequential unsigned ints between zero and the passed int
+ * @brief RangeVectorUi  Creates a vector of sequential unsigned ints between
+ * zero and the passed int
  * @param e  unsigned int representing the end of the range vector
  * @return vector of unsigned ints between 0 and e
  */
@@ -63,15 +66,17 @@ std::vector<unsigned int> RangeVectorUi(unsigned int e) {
 }
 
 /**
- * @brief generateUniqueRandomNumbs  Generates n unique random numbers between s and e
+ * @brief generateUniqueRandomNumbs  Generates n unique random numbers between s
+ * and e
  * @param n  int representing the number of random numbers to be generated
  * @param s  int representing the start of the range
  * @param e  int representing the end of the range
- * @return vector of ints with size n containing unique random numbers between s and e
+ * @return vector of ints with size n containing unique random numbers between s
+ * and e
  */
 std::vector<int> generateUniqueRandomNumbs(int n, int s, int e) {
     std::vector<int> numbers;
-    for (int i =s; i<e; i++) {
+    for (int i = s; i < e; i++) {
         numbers.push_back(i);
     }
     std::mt19937 g(0);
@@ -83,4 +88,4 @@ std::vector<int> generateUniqueRandomNumbs(int n, int s, int e) {
     return random_numbers;
 }
 
-}
+}  // namespace ctk

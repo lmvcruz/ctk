@@ -1,7 +1,7 @@
 #include "ctk/misc/filesys.h"
 
-#include <filesystem>
 #include <cstdlib>
+#include <filesystem>
 
 #include "ctk/misc/string_aux.h"
 
@@ -14,9 +14,8 @@ std::string GetEnvironmentVariable(std::string varname) {
     return std::string(envVar);
 }
 
-std::string NormalizePath(const std::string& path)
-{
-   return std::filesystem::path(path).generic_string();
+std::string NormalizePath(const std::string& path) {
+    return std::filesystem::path(path).generic_string();
 }
 
 bool Exists(std::string filename) {
@@ -64,51 +63,47 @@ bool ContainsFileOrDir(std::string curdir, std::string filename) {
 
 std::vector<std::string> ListDir(std::string cur) {
     std::vector<std::string> files;
-    for (auto& p: std::filesystem::directory_iterator(cur)) {
-        files.push_back( NormalizePath(p.path().string()) ) ;
+    for (auto& p : std::filesystem::directory_iterator(cur)) {
+        files.push_back(NormalizePath(p.path().string()));
     }
     return files;
 }
 
 // The filename must contain all provided expressions
 std::vector<std::string> ListFilesContainingAllExpressions(std::string cur,
-                                    const std::vector<std::string>& exps)
-{
+                                                           const std::vector<std::string>& exps) {
     std::vector<std::string> files;
-    for (auto& path: std::filesystem::directory_iterator(cur)) {
+    for (auto& path : std::filesystem::directory_iterator(cur)) {
         std::string name = path.path().string();
         bool valid = true;
-        for (auto& exp: exps) {
+        for (auto& exp : exps) {
             if (!Contains(name, exp)) {
                 valid = false;
                 break;
             }
         }
         if (valid)
-            files.push_back( NormalizePath(name) );
+            files.push_back(NormalizePath(name));
     }
     return files;
 }
 
 std::vector<std::string> ListFilesContainingAnyExpressions(std::string cur,
-                                    const std::vector<std::string>& exps)
-{
+                                                           const std::vector<std::string>& exps) {
     std::vector<std::string> files;
-    for (auto& path: std::filesystem::directory_iterator(cur)) {
+    for (auto& path : std::filesystem::directory_iterator(cur)) {
         std::string name = path.path().string();
         auto indices = ContainsIndices(name, exps);
         if (indices.size() > 0)
-            files.push_back( NormalizePath(name) );
+            files.push_back(NormalizePath(name));
     }
     return files;
 }
 
-std::vector<std::string> ListFilesWithoutAllExpressions(
-            std::string cur,
-            const std::vector<std::string>& exps)
-{
+std::vector<std::string> ListFilesWithoutAllExpressions(std::string cur,
+                                                        const std::vector<std::string>& exps) {
     std::vector<std::string> files;
-    for (auto& path: std::filesystem::directory_iterator(cur)) {
+    for (auto& path : std::filesystem::directory_iterator(cur)) {
         std::string name = path.path().string();
         bool valid = true;
         for (auto& exp : exps) {
@@ -118,7 +113,7 @@ std::vector<std::string> ListFilesWithoutAllExpressions(
             }
         }
         if (valid)
-            files.push_back( NormalizePath(name) );
+            files.push_back(NormalizePath(name));
     }
     return files;
 }
@@ -131,4 +126,4 @@ void RemoveDir(std::string dirname) {
     std::filesystem::remove_all(dirname);
 }
 
-}
+}  // namespace ctk

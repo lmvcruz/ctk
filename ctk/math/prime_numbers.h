@@ -1,11 +1,11 @@
 #pragma once
 
-#include <vector>
 #include <cmath>
+#include <vector>
 
 namespace ctk {
 
-template<class T>
+template <class T>
 /**
  * @brief CountPrimeNumbersBf Count the prime numbers before a passed limit
  * @param n count limit
@@ -13,20 +13,21 @@ template<class T>
  */
 T CountPrimeNumbersBf(T n) {
     T count = 0;
-    for (T i=2; i<n; i++) {
+    for (T i = 2; i < n; i++) {
         bool isPrime = true;
-        for (int j=2; j<i; j++) {
-            if (i%j==0) {
+        for (int j = 2; j < i; j++) {
+            if (i % j == 0) {
                 isPrime = false;
                 break;
             }
         }
-        if (isPrime) count++;
+        if (isPrime)
+            count++;
     }
     return count;
 }
 
-template<class T>
+template <class T>
 /**
  * @brief CountPrimeNumbersEs
  * @param n
@@ -34,27 +35,29 @@ template<class T>
  */
 T CountPrimeNumbersEs(T n) {
     std::vector<bool> sieve;
-    sieve.resize(n+1, true);
+    sieve.resize(n + 1, true);
     sieve[0] = sieve[1] = false;
     T p = 2;
     T count = 0;
-    T bk = static_cast<T>(sqrt(n))+1;
+    T bk = static_cast<T>(sqrt(n)) + 1;
     do {
         count++;
         sieve[p] = true;
-        for (auto i=p; i<n; i+=p) sieve[i] = false;
-        T init = p+1;
-        p = n+1;
-        for (auto i=init; i<sieve.size(); i++) {
+        for (auto i = p; i < n; i += p)
+            sieve[i] = false;
+        T init = p + 1;
+        p = n + 1;
+        for (auto i = init; i < sieve.size(); i++) {
             if (sieve[i]) {
                 p = i;
                 break;
             }
         }
-    } while(p<bk);
+    } while (p < bk);
     //
-    for (auto i=p; i<n; i++) {
-        if (sieve[i]) count++;
+    for (auto i = p; i < n; i++) {
+        if (sieve[i])
+            count++;
     }
     return count;
 }
@@ -73,7 +76,7 @@ unsigned long CountPrimeNumbers(unsigned long n);
 long long CountPrimeNumbers(long long n);
 unsigned long long CountPrimeNumbers(unsigned long long n);
 
-template<class T>
+template <class T>
 /**
  * @brief GeneratePrimeNumbersBf Get the prime numbers before a passed limit
  * @param n  limit
@@ -81,10 +84,10 @@ template<class T>
  */
 std::vector<T> GeneratePrimeNumbersBf(T n) {
     std::vector<T> primes;
-    for (int i=2; i<n; i++) {
+    for (int i = 2; i < n; i++) {
         bool isPrime = true;
-        for (int j=2; j<i; j++) {
-            if (i%j==0) {
+        for (int j = 2; j < i; j++) {
+            if (i % j == 0) {
                 isPrime = false;
                 break;
             }
@@ -96,32 +99,34 @@ std::vector<T> GeneratePrimeNumbersBf(T n) {
     return primes;
 }
 
-template<class T>
+template <class T>
 std::vector<T> GeneratePrimeNumbersEs(T n) {
     std::vector<bool> sieve;
-    sieve.resize(n+1, true);
+    sieve.resize(n + 1, true);
     sieve[0] = sieve[1] = false;
     T p = 2;
     T count = 0;
-    T bk = static_cast<T>(sqrt(n))+1;
+    T bk = static_cast<T>(sqrt(n)) + 1;
     std::vector<T> primes;
     do {
         count++;
         sieve[p] = true;
         primes.push_back(p);
-        for (auto i=p; i<n; i+=p) sieve[i] = false;
-        T init = p+1;
-        p = n+1;
-        for (auto i=init; i<sieve.size(); i++) {
+        for (auto i = p; i < n; i += p)
+            sieve[i] = false;
+        T init = p + 1;
+        p = n + 1;
+        for (auto i = init; i < sieve.size(); i++) {
             if (sieve[i]) {
                 p = i;
                 break;
             }
         }
-    } while(p<bk);
+    } while (p < bk);
     //
-    for (auto i=p; i<n; i++) {
-        if (sieve[i]) primes.push_back(i);
+    for (auto i = p; i < n; i++) {
+        if (sieve[i])
+            primes.push_back(i);
     }
     return primes;
 }
@@ -168,7 +173,6 @@ std::vector<long long> GeneratePrimeNumbersBf(long long n);
  */
 std::vector<unsigned long long> GeneratePrimeNumbersBf(unsigned long long n);
 
-
 /**
  * @brief GeneratePrimeNumbers
  * @param n
@@ -211,4 +215,4 @@ std::vector<long long> GeneratePrimeNumbers(long long n);
  */
 std::vector<unsigned long long> GeneratePrimeNumbers(unsigned long long n);
 
-};
+};  // namespace ctk

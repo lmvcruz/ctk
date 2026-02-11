@@ -25,11 +25,11 @@ public:
 
     int GetChannels() const;
 
-    BinaryImage ApplyBinaryThreshold(int t=127) const;
+    BinaryImage ApplyBinaryThreshold(int t = 127) const;
     BinaryImage ApplyOtsuThreshold() const;
-    BinaryImage ApplyAdaptativeThreshold(int bs=5, int c=1) const;
+    BinaryImage ApplyAdaptativeThreshold(int bs = 5, int c = 1) const;
 
-    GrayImage Truncate(int t=128) const;
+    GrayImage Truncate(int t = 128) const;
 
     GrayImage Normalize(int minv, int maxv) const;
     BinaryImage PickColor(int c) const;
@@ -37,4 +37,4 @@ public:
     RgbImage ToRgbImage() const;
 };
 
-} // namespace ctk
+}  // namespace ctk

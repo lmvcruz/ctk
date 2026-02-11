@@ -24,7 +24,7 @@ int Contours::GetSize() const {
  * @brief Contours::AddPolygon Add Polygon to Polygon vector
  * @param pol Polygon to be added
  */
-void Contours::AddPolygon(const Polygon &pol) {
+void Contours::AddPolygon(const Polygon& pol) {
     polys.push_back(pol);
 }
 
@@ -33,7 +33,7 @@ void Contours::AddPolygon(const Polygon &pol) {
  * @param idx int representing the index of the element to be set
  * @param pol desired Polygon
  */
-void Contours::SetPolygon(int idx, const Polygon &pol) {
+void Contours::SetPolygon(int idx, const Polygon& pol) {
     polys[idx] = pol;
 }
 
@@ -42,12 +42,13 @@ void Contours::SetPolygon(int idx, const Polygon &pol) {
  * @param idx int representing the index of the element to be get
  * @return Polygon at index idx
  */
-Polygon &Contours::GetPolygon(int idx) {
+Polygon& Contours::GetPolygon(int idx) {
     return polys[idx];
 }
 
 /**
- * @brief Contours::OrientedBoundingBoxes Get oriented bounding boxes for each Polygon
+ * @brief Contours::OrientedBoundingBoxes Get oriented bounding boxes for each
+ * Polygon
  * @return Contours object with oriented bounding boxes of the passed Polygons
  */
 Contours Contours::OrientedBoundingBoxes() const {
@@ -58,7 +59,7 @@ Contours Contours::OrientedBoundingBoxes() const {
         cv_box = cv::minAreaRect(cv::Mat(polys[i].GetCvData()));
         cv::Point2f vertices[4];
         cv_box.points(vertices);
-        Polygon &pol = boxes.GetPolygon(i);
+        Polygon& pol = boxes.GetPolygon(i);
         pol.Resize(4);
         for (int j = 0; j < 4; ++j) {
             pol.SetPoint(j, vertices[j].x, vertices[j].y);
@@ -71,10 +72,10 @@ Contours Contours::OrientedBoundingBoxes() const {
  * @brief Contours::CalculateContours Get contours from BinaryImage
  * @param img input BinaryImage
  */
-void Contours::CalculateContours(const BinaryImage &img) {
-    std::vector<std::vector<cv::Point> > cv_contours;
-    cv::findContours(img.GetData(), cv_contours, hierarchy,
-                     cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
+void Contours::CalculateContours(const BinaryImage& img) {
+    std::vector<std::vector<cv::Point>> cv_contours;
+    cv::findContours(img.GetData(), cv_contours, hierarchy, cv::RETR_TREE,
+                     cv::CHAIN_APPROX_TC89_KCOS);
     polys.resize(cv_contours.size());
     for (auto i = 0; i < cv_contours.size(); i++) {
         polys[i] = cv_contours[i];
@@ -82,15 +83,17 @@ void Contours::CalculateContours(const BinaryImage &img) {
 }
 
 /**
- * @brief Contours::CalculateApproximateContours Get approximate contours from BinaryImage
+ * @brief Contours::CalculateApproximateContours Get approximate contours from
+ * BinaryImage
  * @param img input BinaryImage
- * @param eps int specifying the approximation accuracy. The maximum distance between the original contour and its approximation.
+ * @param eps int specifying the approximation accuracy. The maximum distance
+ * between the original contour and its approximation.
  */
-void Contours::CalculateApproximateContours(const BinaryImage &img, int eps) {
-    std::vector<std::vector<cv::Point> > cv_contours;
+void Contours::CalculateApproximateContours(const BinaryImage& img, int eps) {
+    std::vector<std::vector<cv::Point>> cv_contours;
     std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(img.GetData(), cv_contours, hierarchy,
-                     cv::RETR_TREE, cv::CHAIN_APPROX_TC89_KCOS);
+    cv::findContours(img.GetData(), cv_contours, hierarchy, cv::RETR_TREE,
+                     cv::CHAIN_APPROX_TC89_KCOS);
     polys.resize(cv_contours.size());
     for (auto i = 0; i < cv_contours.size(); i++) {
         std::vector<cv::Point> approx;
@@ -104,7 +107,7 @@ void Contours::CalculateApproximateContours(const BinaryImage &img, int eps) {
  * @param bin input BinaryImage
  * @return RgbImage with drawn contours
  */
-RgbImage Contours::Draw(const BinaryImage &bin) const {
+RgbImage Contours::Draw(const BinaryImage& bin) const {
     RgbImage rgb = bin.ToRgbImage();
     return Draw(rgb);
 }
@@ -114,9 +117,9 @@ RgbImage Contours::Draw(const BinaryImage &bin) const {
  * @param img input RgbImage
  * @return RgbImage with drawn contours
  */
-RgbImage Contours::Draw(const RgbImage &img) const {
+RgbImage Contours::Draw(const RgbImage& img) const {
     RgbImage new_img = img;
-    cv::Mat &new_mat = new_img.GetData();
+    cv::Mat& new_mat = new_img.GetData();
     std::vector<std::vector<cv::Point>> cv_conts;
     cv_conts.resize(polys.size());
     for (auto i = 0; i < polys.size(); i++) {
@@ -124,12 +127,12 @@ RgbImage Contours::Draw(const RgbImage &img) const {
     }
     srand(12345);
     for (int i = 0; i < polys.size(); i++) {
-        const int  kThickness  = 2;
-        const int  kLineType   = 8;
-        cv::Scalar color = cv::Scalar(rand()%255, rand()%255, rand()%255);
+        const int kThickness = 2;
+        const int kLineType = 8;
+        cv::Scalar color = cv::Scalar(rand() % 255, rand() % 255, rand() % 255);
         cv::drawContours(new_mat, cv_conts, i, color, kThickness, kLineType);
     }
     return new_img;
 }
 
-} // namespace ctk 
+}  // namespace ctk

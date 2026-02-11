@@ -1,15 +1,14 @@
 #ifndef VIDEOGENERATOR_H
 #define VIDEOGENERATOR_H
 
+#include <QDebug>
 #include <QObject>
 #include <QProcess>
 #include <QString>
 #include <QStringList>
 #include <QTime>
-#include <QDebug>
 
-class VideoGenerator : public QObject
-{
+class VideoGenerator : public QObject {
     Q_OBJECT
 
 private:
@@ -23,7 +22,7 @@ private:
     QString m_out;
 
 public:
-    VideoGenerator(QObject *par = nullptr);
+    VideoGenerator(QObject* par = nullptr);
 
     virtual ~VideoGenerator();
 
@@ -31,11 +30,10 @@ public:
 
     void showReport();
 
-
 public slots:
     void finished();
 
     void readProcessOutput();
 };
 
-#endif // VIDEOGENERATOR_H
+#endif  // VIDEOGENERATOR_H

@@ -6,7 +6,7 @@ namespace ctk {
 
 int CountBits(int num) {
     int numberOfBits = 0;
-    while (num>0) {
+    while (num > 0) {
         numberOfBits += num & 1;
         num >>= 1;
     }
@@ -15,7 +15,7 @@ int CountBits(int num) {
 
 std::vector<int> int2bits(int num) {
     std::vector<int> bits;
-    while (num>0) {
+    while (num > 0) {
         bits.push_back(num & 1);
         num >>= 1;
     }
@@ -26,11 +26,11 @@ std::vector<int> int2bits(int num) {
 int bits2int(std::vector<int> bits) {
     int num = 0;
     int base = 1;
-    for (size_t i=0; i<bits.size(); ++i) {
-        num += bits[bits.size()-1-i] * base;
+    for (size_t i = 0; i < bits.size(); ++i) {
+        num += bits[bits.size() - 1 - i] * base;
         base <<= 1;
     }
     return num;
 }
 
-};
+};  // namespace ctk

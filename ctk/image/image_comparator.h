@@ -4,12 +4,10 @@
 
 namespace ctk {
 
-template<class T>
+template <class T>
 bool CompareAbsoluteImages(AbstractImage<T>& img1, AbstractImage<T>& img2) {
-    if (img1.GetWidth() != img2.GetWidth() ||
-        img1.GetHeight() != img2.GetHeight() ||
-        img1.GetChannels() != img2.GetChannels() )
-    {
+    if (img1.GetWidth() != img2.GetWidth() || img1.GetHeight() != img2.GetHeight() ||
+        img1.GetChannels() != img2.GetChannels()) {
         return false;
     }
     // TODO: investigate a more efficient way for data comparison
@@ -22,21 +20,20 @@ bool CompareAbsoluteImages(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     return true;
 }
 
-template<class T>
+template <class T>
 int CountDifferentPixels(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     int maxWidth = std::max(img1.GetWidth(), img2.GetWidth());
     int minWidth = std::min(img1.GetWidth(), img2.GetWidth());
     int maxHeight = std::max(img1.GetHeight(), img2.GetHeight());
     int minHeight = std::min(img1.GetHeight(), img2.GetHeight());
-    if (img1.GetChannels() != img2.GetChannels() ) {
+    if (img1.GetChannels() != img2.GetChannels()) {
         return maxWidth * maxHeight;
     }
     // TODO: investigate a more efficient way for data comparison
     int diff = 0;
     for (int x = 0; x < maxWidth; ++x) {
         for (int y = 0; y < maxHeight; ++y) {
-            if (x >= minWidth || y >= minHeight
-                || img1.Get(x, y) != img2.Get(x, y)) {
+            if (x >= minWidth || y >= minHeight || img1.Get(x, y) != img2.Get(x, y)) {
                 diff++;
             }
         }
@@ -44,7 +41,7 @@ int CountDifferentPixels(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     return diff;
 }
 
-template<class T>
+template <class T>
 float CompareRelativeImages(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     int maxWidth = std::max(img1.GetWidth(), img2.GetWidth());
     int maxHeight = std::max(img1.GetHeight(), img2.GetHeight());
@@ -53,7 +50,7 @@ float CompareRelativeImages(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     return static_cast<double>(correct) / static_cast<double>(full_size);
 }
 
-template<class T>
+template <class T>
 bool IsEquals(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     return CompareAbsoluteImages(img1, img2);
 }
@@ -85,24 +82,23 @@ int GetDefaultDistance(bool) {
     return 1.0;
 }
 
-template<class T>
+template <class T>
 int ComparePixelAbsoluteDistance(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     int maxWidth = std::max(img1.GetWidth(), img2.GetWidth());
     int minWidth = std::min(img1.GetWidth(), img2.GetWidth());
     int maxHeight = std::max(img1.GetHeight(), img2.GetHeight());
     int minHeight = std::min(img1.GetHeight(), img2.GetHeight());
-    if (minWidth*minHeight < 1) {
-        return maxWidth*maxHeight;
+    if (minWidth * minHeight < 1) {
+        return maxWidth * maxHeight;
     }
-    int pixel = GetDefaultDistance(img1.Get(0,0));
+    int pixel = GetDefaultDistance(img1.Get(0, 0));
     // TODO: investigate a more efficient way for data comparison
     int diff = 0.0;
     for (int x = 0; x < maxWidth; ++x) {
         for (int y = 0; y < maxHeight; ++y) {
             if (x >= minWidth || y >= minHeight) {
                 diff += pixel;
-            }
-            else if (img1.Get(x, y) != img2.Get(x, y)) {
+            } else if (img1.Get(x, y) != img2.Get(x, y)) {
                 diff += PixelL1Distance(img1.Get(x, y), img2.Get(x, y));
             }
         }
@@ -110,17 +106,17 @@ int ComparePixelAbsoluteDistance(AbstractImage<T>& img1, AbstractImage<T>& img2)
     return diff;
 }
 
-template<class T>
+template <class T>
 double ComparePixelRelativeDistance(AbstractImage<T>& img1, AbstractImage<T>& img2) {
     int maxWidth = std::max(img1.GetWidth(), img2.GetWidth());
     int minWidth = std::min(img1.GetWidth(), img2.GetWidth());
     int maxHeight = std::max(img1.GetHeight(), img2.GetHeight());
     int minHeight = std::min(img1.GetHeight(), img2.GetHeight());
-    if (minWidth*minHeight < 1) {
-        return maxWidth*maxHeight;
+    if (minWidth * minHeight < 1) {
+        return maxWidth * maxHeight;
     }
-    int full_size = maxWidth * maxHeight * GetDefaultDistance(img1.Get(0,0));
+    int full_size = maxWidth * maxHeight * GetDefaultDistance(img1.Get(0, 0));
     int absDist = ComparePixelAbsoluteDistance(img1, img2);
     return static_cast<double>(absDist) / static_cast<double>(full_size);
 }
-}
+}  // namespace ctk

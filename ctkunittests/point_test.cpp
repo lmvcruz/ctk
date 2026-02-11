@@ -244,7 +244,7 @@ TEST_F(CtkPointTest, Test_MultiplicationAssignement) {
 
 TEST_F(CtkPointTest, Test_OperatorDivision) {
     ctk::PointI Pix(2, 4, 6);
-    ctk::PointI Pid = Pix / CtkPointTest::Pi ;
+    ctk::PointI Pid = Pix / CtkPointTest::Pi;
     EXPECT_EQ(Pid.GetX(), 2);
     EXPECT_EQ(Pid.GetY(), 2);
     EXPECT_EQ(Pid.GetZ(), 2);
@@ -259,13 +259,13 @@ TEST_F(CtkPointTest, Test_OperatorDivision) {
 TEST_F(CtkPointTest, Test_DivisionAssignement) {
     // Also testing initialize list constructor
     ctk::PointI Pix = {2, 4, 6};
-    Pix /= CtkPointTest::Pi ;
+    Pix /= CtkPointTest::Pi;
     EXPECT_EQ(Pix.GetX(), 2);
     EXPECT_EQ(Pix.GetY(), 2);
     EXPECT_EQ(Pix.GetZ(), 2);
 
     ctk::PointD Pdx = {2.2, 4.2, 6.2};
-    Pdx /= CtkPointTest::Pd ;
+    Pdx /= CtkPointTest::Pd;
     EXPECT_DOUBLE_EQ(Pdx.GetX(), 2);
     EXPECT_DOUBLE_EQ(Pdx.GetY(), 2);
     EXPECT_DOUBLE_EQ(Pdx.GetZ(), 2);
@@ -299,17 +299,15 @@ TEST_F(CtkPointTest, Test_Outter) {
 }
 
 TEST_F(CtkPointTest, Test_Distance) {
-    EXPECT_DOUBLE_EQ(CtkPointTest::Pi.Distance(CtkPointTest::Pi_2),
-                     std::sqrt(18));
-    EXPECT_DOUBLE_EQ(CtkPointTest::Pd.Distance(CtkPointTest::Pd_2),
-                     std::sqrt(23.81));
+    EXPECT_DOUBLE_EQ(CtkPointTest::Pi.Distance(CtkPointTest::Pi_2), std::sqrt(18));
+    EXPECT_DOUBLE_EQ(CtkPointTest::Pd.Distance(CtkPointTest::Pd_2), std::sqrt(23.81));
 }
 
 TEST_F(CtkPointTest, Test_Angle) {
     ctk::PointD p(0, 0);
     ctk::PointD p1(0, 1);
     ctk::PointD p2(1, 0);
-    EXPECT_DOUBLE_EQ(p.Angle(p1,p2), std::acos(0.0));
+    EXPECT_DOUBLE_EQ(p.Angle(p1, p2), std::acos(0.0));
 }
 
 TEST_F(CtkPointTest, Test_Normalize) {

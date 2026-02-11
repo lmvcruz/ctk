@@ -1,11 +1,9 @@
 #pragma once
 
+#include "ctk/image/binary_image.h"
 #include "gtest/gtest.h"
 
-#include "ctk/image/binary_image.h"
-
-class CtkBinaryImageTest : public ::testing::Test
-{
+class CtkBinaryImageTest : public ::testing::Test {
 public:
     void SetUp() override;
 

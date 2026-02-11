@@ -1,8 +1,7 @@
 #include "byte_numbers_test.h"
 
-#include "test_setup.h"
-
 #include "ctk/math/byte_numbers.h"
+#include "test_setup.h"
 
 #ifdef TEST_BYTE_NUMBERS
 

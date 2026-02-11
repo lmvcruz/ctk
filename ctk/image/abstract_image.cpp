@@ -1,10 +1,11 @@
 #include "ctk/image/abstract_image.h"
 
-#include <opencv2/calib3d.hpp>
 #include <opencv2/core/types_c.h>
 
-#include "ctk/image/rgb_image.h"
+#include <opencv2/calib3d.hpp>
+
 #include "ctk/image/binary_image.h"
+#include "ctk/image/rgb_image.h"
 
 namespace ctk {
 
@@ -21,8 +22,9 @@ ColorImage::ColorImage() {
  * @brief ColorImage::ColorImage - Copy Construtor
  * @param that reference to an existing ColorImage object
  */
-ColorImage::ColorImage(const ColorImage &that) {
-    if (that.data.type()!=CV_8UC3 || that.data.channels()!=3) throw  incompatible_parameters();
+ColorImage::ColorImage(const ColorImage& that) {
+    if (that.data.type() != CV_8UC3 || that.data.channels() != 3)
+        throw incompatible_parameters();
     type = that.type;
     ch_size = that.ch_size;
     invert_channels = false;
@@ -33,8 +35,9 @@ ColorImage::ColorImage(const ColorImage &that) {
  * @brief ColorImage::ColorImage - Copy Construtor
  * @param that  reference to an AbstractImage
  */
-ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that) {
-    if (that.GetData().type()!=CV_8UC3 || that.GetData().channels()!=3) throw  incompatible_parameters();
+ColorImage::ColorImage(const AbstractImage<cv::Vec3b>& that) {
+    if (that.GetData().type() != CV_8UC3 || that.GetData().channels() != 3)
+        throw incompatible_parameters();
     type = CV_8UC3;
     ch_size = 3;
     invert_channels = false;
@@ -45,8 +48,9 @@ ColorImage::ColorImage(const AbstractImage<cv::Vec3b> &that) {
  * @brief ColorImage::ColorImage
  * @param d
  */
-ColorImage::ColorImage(cv::Mat &d) : AbstractImage<cv::Vec3b>(d) {
-    if (d.type()!=CV_8UC3 || d.channels()!=3) throw  incompatible_parameters();
+ColorImage::ColorImage(cv::Mat& d) : AbstractImage<cv::Vec3b>(d) {
+    if (d.type() != CV_8UC3 || d.channels() != 3)
+        throw incompatible_parameters();
 }
 
 /**
@@ -57,4 +61,4 @@ int ColorImage::GetChannels() const noexcept {
     return 3;
 }
 
-} // namespace ctk
+}  // namespace ctk

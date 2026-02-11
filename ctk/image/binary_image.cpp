@@ -1,7 +1,8 @@
 #include "ctk/image/binary_image.h"
 
-#include <opencv2/calib3d.hpp>
 #include <opencv2/core/types_c.h>
+
+#include <opencv2/calib3d.hpp>
 
 #include "ctk/image/rgb_image.h"
 
@@ -11,7 +12,7 @@ namespace ctk {
  * @brief BinaryImage::BinaryImage  Default Constructor
  */
 BinaryImage::BinaryImage() {
-    type = CV_8U; // 8-bit single-channel array
+    type = CV_8U;  // 8-bit single-channel array
     ch_size = 1;
 }
 
@@ -19,9 +20,9 @@ BinaryImage::BinaryImage() {
  * @brief BinaryImage::BinaryImage Copy Constructor
  * @param that Reference to an existing BinaryImage object
  */
-BinaryImage::BinaryImage(const BinaryImage &that) {
+BinaryImage::BinaryImage(const BinaryImage& that) {
     if (that.data.type() != CV_8U || that.data.channels() != 1) {
-        throw  incompatible_parameters();
+        throw incompatible_parameters();
     }
     type = that.type;
     ch_size = that.ch_size;
@@ -32,9 +33,9 @@ BinaryImage::BinaryImage(const BinaryImage &that) {
  * @brief BinaryImage::BinaryImage  Copy Constructor
  * @param that  Reference to an existing AbstractImage object
  */
-BinaryImage::BinaryImage(const AbstractImage<bool> &that) {
+BinaryImage::BinaryImage(const AbstractImage<bool>& that) {
     if (that.GetData().type() != CV_8U || that.GetData().channels() != 1) {
-        throw  incompatible_parameters();
+        throw incompatible_parameters();
     }
     type = CV_8U;
     ch_size = 1;
@@ -45,9 +46,9 @@ BinaryImage::BinaryImage(const AbstractImage<bool> &that) {
  * @brief BinaryImage::BinaryImage
  * @param d
  */
-BinaryImage::BinaryImage(const cv::Mat &d): AbstractImage<bool>(d) {
+BinaryImage::BinaryImage(const cv::Mat& d) : AbstractImage<bool>(d) {
     if (d.type() != CV_8U || d.channels() != 1) {
-        throw  incompatible_parameters();
+        throw incompatible_parameters();
     }
 }
 
@@ -57,7 +58,7 @@ BinaryImage::BinaryImage(const cv::Mat &d): AbstractImage<bool>(d) {
  * @param h height of the image
  */
 BinaryImage::BinaryImage(int w, int h, bool v) {
-    //TODO: test this method
+    // TODO: test this method
     type = CV_8U;
     ch_size = 1;
     CreateAndFill(w, h, v);
@@ -69,7 +70,7 @@ BinaryImage::BinaryImage(int w, int h, bool v) {
  * @param h  int representing the image hight (number of rows)
  * @param d  vector of booleans representing image data
  */
-BinaryImage::BinaryImage(int w, int h, const std::vector<bool> &d) {
+BinaryImage::BinaryImage(int w, int h, const std::vector<bool>& d) {
     type = CV_8U;
     ch_size = 1;
     // std::vector<bool> is not contiguous, so we can't use std::span
@@ -91,9 +92,9 @@ BinaryImage::BinaryImage(int w, int h, const std::vector<bool> &d) {
  * @param that  Reference to an existing BinaryImage object
  * @return Updated BinaryImage
  */
-BinaryImage &BinaryImage::operator=(const BinaryImage &that) {
+BinaryImage& BinaryImage::operator=(const BinaryImage& that) {
     if (that.data.type() != CV_8U || that.data.channels() != 1) {
-        throw  incompatible_parameters();
+        throw incompatible_parameters();
     }
     type = that.type;
     ch_size = that.ch_size;
@@ -108,7 +109,7 @@ BinaryImage &BinaryImage::operator=(const BinaryImage &that) {
  * @param d  vector of booleans representing image data
  * @note std::vector<bool> is a special case that doesn't support std::span
  */
-void BinaryImage::Create(int w, int h, const std::vector<bool> &d) {
+void BinaryImage::Create(int w, int h, const std::vector<bool>& d) {
     if (w > 0 && h > 0) {
         data = cv::Mat(h, w, type);
         auto it = begin();
@@ -122,7 +123,8 @@ void BinaryImage::Create(int w, int h, const std::vector<bool> &d) {
 }
 
 /**
- * @brief BinaryImage::CreateAndFill Create Binary image of specified size anda value
+ * @brief BinaryImage::CreateAndFill Create Binary image of specified size anda
+ * value
  * @param w  int representing the desired Binary Image width
  * @param h  int representing the desired Binary Image height
  * @param v  bool representing the value for every pixel in the Binary Image
@@ -133,11 +135,12 @@ void BinaryImage::CreateAndFill(int w, int h, bool v) {
 }
 
 /**
- * @brief BinaryImage::Fill  Set every pixel in the BinaryImage to the passed value
+ * @brief BinaryImage::Fill  Set every pixel in the BinaryImage to the passed
+ * value
  * @param v  bool representing the value for every pixel in the Binary Image
  */
 void BinaryImage::Fill(bool v) {
-    uchar conv_val = v*255;
+    uchar conv_val = v * 255;
     data = cv::Scalar::all(conv_val);
 }
 /**
@@ -147,7 +150,7 @@ void BinaryImage::Fill(bool v) {
  * @param v  bool representing the desired value
  */
 void BinaryImage::Set(int x, int y, bool v) {
-    data.at<uchar>(y,x) = v*255;
+    data.at<uchar>(y, x) = v * 255;
 }
 
 /**
@@ -174,12 +177,14 @@ BinaryImage BinaryImage::Not() const {
 }
 
 /**
- * @brief BinaryImage::And -   true if both arguments are true and false otherwise
+ * @brief BinaryImage::And -   true if both arguments are true and false
+ * otherwise
  * @param that reference to an existing BinaryImage object
- * @return BinaryImage resulting from the And operation between the two BinaryImages
+ * @return BinaryImage resulting from the And operation between the two
+ * BinaryImages
  * @note Uses OpenCV's SIMD-optimized bitwise_and for maximum performance
  */
-BinaryImage BinaryImage::And(const BinaryImage &that) const {
+BinaryImage BinaryImage::And(const BinaryImage& that) const {
     BinaryImage aux;
     aux.type = type;
     aux.ch_size = ch_size;
@@ -188,12 +193,14 @@ BinaryImage BinaryImage::And(const BinaryImage &that) const {
 }
 
 /**
- * @brief BinaryImage::Or -   true if any of the arguments are true and false otherwise
+ * @brief BinaryImage::Or -   true if any of the arguments are true and false
+ * otherwise
  * @param that reference to an existing BinaryImage object
- * @return BinaryImage resulting from the Or operation between the two BinaryImages
+ * @return BinaryImage resulting from the Or operation between the two
+ * BinaryImages
  * @note Uses OpenCV's SIMD-optimized bitwise_or for maximum performance
  */
-BinaryImage BinaryImage::Or(const BinaryImage &that) const {
+BinaryImage BinaryImage::Or(const BinaryImage& that) const {
     BinaryImage aux;
     aux.type = type;
     aux.ch_size = ch_size;
@@ -202,12 +209,14 @@ BinaryImage BinaryImage::Or(const BinaryImage &that) const {
 }
 
 /**
- * @brief BinaryImage::Xor- if either input is true, then the result is true, but if both inputs are true, then the result is false
+ * @brief BinaryImage::Xor- if either input is true, then the result is true,
+ * but if both inputs are true, then the result is false
  * @param that reference to an existing BinaryImage object
- * @return BinaryImage resulting from the Xor operation between the two BinaryImages
+ * @return BinaryImage resulting from the Xor operation between the two
+ * BinaryImages
  * @note Uses OpenCV's SIMD-optimized bitwise_xor for maximum performance
  */
-BinaryImage BinaryImage::Xor(const BinaryImage &that) const {
+BinaryImage BinaryImage::Xor(const BinaryImage& that) const {
     BinaryImage aux;
     aux.type = type;
     aux.ch_size = ch_size;
@@ -241,8 +250,7 @@ int BinaryImage::CountFalses() const {
  */
 BinaryImage BinaryImage::Erode(int size, int etype) const {
     cv::Size elsize(2 * size + 1, 2 * size + 1);
-    cv::Mat element = getStructuringElement(etype, elsize,
-                                            cv::Point(size, size));
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size, size));
     BinaryImage aux;
     cv::erode(data, aux.data, element);
     return aux;
@@ -255,8 +263,7 @@ BinaryImage BinaryImage::Erode(int size, int etype) const {
  */
 void BinaryImage::SelfErode(int size, int etype) {
     cv::Size elsize(2 * size + 1, 2 * size + 1);
-    cv::Mat element = getStructuringElement(etype, elsize,
-                                            cv::Point(size, size));
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size, size));
     cv::erode(data, data, element);
 }
 
@@ -268,37 +275,40 @@ void BinaryImage::SelfErode(int size, int etype) {
  */
 BinaryImage BinaryImage::Dilate(int size, int etype) const {
     cv::Size elsize(2 * size + 1, 2 * size + 1);
-    cv::Mat element = getStructuringElement(etype, elsize,
-                                            cv::Point(size, size));
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size, size));
     BinaryImage aux;
     cv::dilate(data, aux.data, element);
     return aux;
 }
 
 /**
- * @brief BinaryImage::SelfDilate  Dilate the image with given structuring element
+ * @brief BinaryImage::SelfDilate  Dilate the image with given structuring
+ * element
  * @param size  int representing Structuring Element size
  * @param etype int representing Structuring Element shape
  */
 void BinaryImage::SelfDilate(int size, int etype) {
     cv::Size elsize(2 * size + 1, 2 * size + 1);
-    cv::Mat element = getStructuringElement(etype, elsize,
-                                            cv::Point(size, size));
+    cv::Mat element = getStructuringElement(etype, elsize, cv::Point(size, size));
     cv::dilate(data, data, element);
 }
 
 /**
  * @brief BinaryImage::Warp  Applies a perspective transformation to the image
- * @param pts  vector of PointD representing the coordinates of the points in the original plane
- * @param refs  vector of PointD representing the coordinates of the points in the target plane
+ * @param pts  vector of PointD representing the coordinates of the points in
+ * the original plane
+ * @param refs  vector of PointD representing the coordinates of the points in
+ * the target plane
  * @param w  int representing the width of the output image
  * @param h  int representing the hight of the output image
  * @return BinaryImage resulting of the transformation
  */
-BinaryImage BinaryImage::Warp(const std::vector<PointD> &pts,
-            const std::vector<PointD> &refs, int w, int h) const {
-    if (pts.size() != refs.size()) throw  incompatible_parameters();
-    if (pts.size() < 4) throw  incompatible_parameters();
+BinaryImage BinaryImage::Warp(const std::vector<PointD>& pts, const std::vector<PointD>& refs,
+                              int w, int h) const {
+    if (pts.size() != refs.size())
+        throw incompatible_parameters();
+    if (pts.size() < 4)
+        throw incompatible_parameters();
     std::vector<cv::Point2f> cv_pts;
     cv_pts.resize(pts.size());
     std::vector<cv::Point2f> cv_refs;
@@ -311,20 +321,20 @@ BinaryImage BinaryImage::Warp(const std::vector<PointD> &pts,
     }
     cv::Mat homo_mat;
     // We assume that size>=4 (verified in the begining of the method)
-    if (pts.size()>4) {
-        homo_mat = cv::findHomography(cv_pts, cv_refs,cv::RANSAC);
+    if (pts.size() > 4) {
+        homo_mat = cv::findHomography(cv_pts, cv_refs, cv::RANSAC);
     } else {
         homo_mat = cv::findHomography(cv_pts, cv_refs);
     }
     cv::Mat aux1, aux2;
     data.convertTo(aux1, CV_32F);
-    cv::warpPerspective(aux1, aux2, homo_mat, cv::Size(w,h));
+    cv::warpPerspective(aux1, aux2, homo_mat, cv::Size(w, h));
     aux2.convertTo(aux2, CV_8U);
     BinaryImage rect(aux2);
     return rect;
 }
 
-//TODO: when template is outside is always counted as a distance
+// TODO: when template is outside is always counted as a distance
 /**
  * @brief BinaryImage::Compare
  * @param x
@@ -332,24 +342,26 @@ BinaryImage BinaryImage::Warp(const std::vector<PointD> &pts,
  * @param that
  * @return
  */
-int BinaryImage::Compare(int x, int y, const BinaryImage &that) const {
+int BinaryImage::Compare(int x, int y, const BinaryImage& that) const {
     int dist = 0;
     for (int xx = 0; xx < that.GetWidth(); ++xx) {
         for (int yy = 0; yy < that.GetHeight(); ++yy) {
-            if ((x + xx >= GetWidth()) || (y + yy >= GetHeight())) dist++;
-            else if (Get(x + xx, y + yy) == that.Get(xx, yy)) dist++;
+            if ((x + xx >= GetWidth()) || (y + yy >= GetHeight()))
+                dist++;
+            else if (Get(x + xx, y + yy) == that.Get(xx, yy))
+                dist++;
         }
     }
     return dist;
 }
 
-//TODO: add mirrorerd and toroidal comparisons
+// TODO: add mirrorerd and toroidal comparisons
 /**
  * @brief BinaryImage::FindBestMatch
  * @param that
  * @return
  */
-PointI BinaryImage::FindBestMatch(const BinaryImage &that) const {
+PointI BinaryImage::FindBestMatch(const BinaryImage& that) const {
     PointI bp(-1, -1);
     int bd = INT_MAX;
     for (int x = 0; x < GetWidth() - that.GetWidth(); ++x) {
@@ -373,16 +385,15 @@ PointI BinaryImage::FindBestMatch(const BinaryImage &that) const {
  * @param that
  * @return
  */
-PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf,
-                                  const BinaryImage &that) const {
-    PointI bp(-1,-1);
+PointI BinaryImage::FindBestMatch(int xi, int xf, int yi, int yf, const BinaryImage& that) const {
+    PointI bp(-1, -1);
     int bd = INT_MAX;
-    for (int x=xi; x<=xf; x++) {
-        for (int y=yi; y<=yf; y++) {
-            int d = Compare(x,y,that);
-            if (d<bd) {
+    for (int x = xi; x <= xf; x++) {
+        for (int y = yi; y <= yf; y++) {
+            int d = Compare(x, y, that);
+            if (d < bd) {
                 bd = d;
-                bp.Set(x,y);
+                bp.Set(x, y);
             }
         }
     }
@@ -414,7 +425,6 @@ RgbImage BinaryImage::ToRgbImage() const {
     cv::cvtColor(data, newImage.GetData(), cv::COLOR_GRAY2RGB);
     // TODO: evaluate if there is any other way to return more efficient
     return newImage;
-
 }
 
-} // namespace ctk
+}  // namespace ctk

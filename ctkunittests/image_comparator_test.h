@@ -1,13 +1,10 @@
 #pragma once
 
-#include "gtest/gtest.h"
-
 #include "ctk/image/binary_image.h"
 #include "ctk/image/gray_image.h"
 #include "ctk/image/rgb_image.h"
-
+#include "gtest/gtest.h"
 #include "test_setup.h"
-
 
 class CtkImageComparatorTest : public ::testing::Test {
 public:
@@ -19,5 +16,4 @@ public:
     ctk::RgbImage rgbimg;
     ctk::GrayImage grayimg;
     ctk::BinaryImage binimg;
-
 };

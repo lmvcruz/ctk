@@ -374,12 +374,12 @@ class CTKBuilder:
             r'C:\Program Files\LLVM\bin\clang-format.exe',
             r'C:\Program Files (x86)\LLVM\bin\clang-format.exe',
         ]
-        
+
         for path in possible_paths:
             if Path(path).exists():
                 clang_format = path
                 break
-        
+
         if not clang_format:
             # Try to find in PATH
             try:
@@ -398,7 +398,7 @@ class CTKBuilder:
         # Find source files
         source_dirs = ['ctk', 'ctkunittests', 'benchmark', 'demos']
         extensions = ['*.cpp', '*.h', '*.hpp']
-        
+
         files_to_check = []
         for src_dir in source_dirs:
             src_path = self.project_root / src_dir
@@ -421,9 +421,9 @@ class CTKBuilder:
                 cmd = [clang_format, '-i', str(file_path)]
             else:
                 cmd = [clang_format, '--dry-run', '--Werror', str(file_path)]
-            
+
             result = subprocess.run(cmd, capture_output=True, text=True)
-            
+
             if result.returncode != 0:
                 violations_found += 1
                 files_with_violations.append(file_path)
