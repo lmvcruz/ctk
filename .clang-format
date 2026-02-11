@@ -1,0 +1,70 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+ConstructorInitializerIndentWidth: 4
+AccessModifierOffset: -4
+
+# Braces
+BreakBeforeBraces: Attach
+Cpp11BracedListStyle: true
+
+# Line width
+ColumnLimit: 100
+
+# Alignment
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignOperands: true
+AlignTrailingComments: true
+
+# Spacing
+SpaceAfterCStyleCast: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 2
+SpacesInAngles: false
+SpacesInContainerLiterals: true
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+
+# Includes
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^<[a-z_]+>'
+    Priority: 1
+  - Regex: '^<.+\.h>'
+    Priority: 2
+  - Regex: '^<.+>'
+    Priority: 3
+  - Regex: '^".*"'
+    Priority: 4
+SortIncludes: true
+
+# Other
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+BinPackArguments: true
+BinPackParameters: true
+BreakConstructorInitializersBeforeComma: false
+DerivePointerAlignment: false
+PointerAlignment: Left
+FixNamespaceComments: true
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: None
+ReflowComments: true
+SortUsingDeclarations: true
+Standard: c++20
+...
