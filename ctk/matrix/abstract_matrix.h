@@ -1,7 +1,11 @@
 #pragma once
 
-#include <string>
+#include <algorithm>
 #include <iostream>
+#include <span>
+#include <string>
+#include <string_view>
+
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
@@ -11,64 +15,139 @@ namespace ctk
 {
 
     /**
-     *  @brief CtkAbstractMatrix TODO
+     * @brief Abstract base class for matrix operations wrapping OpenCV's cv::Mat.
+     *
+     * AbstractMatrix provides a type-safe, modern C++ interface for matrix operations.
+     * It serves as a base class for specialized matrix types (numeric, binary, image).
+     *
+     * @tparam T The element type stored in the matrix (e.g., double, float, uchar).
+     *
+     * @note This class follows the Rule of Five for proper resource management.
+     * @note Derived classes must implement Open() and Save() for file I/O.
+     *
+     * @example
+     * @code
+     * class NumericMatrix : public AbstractMatrix<double> {
+     *     // Implementation
+     * };
+     * @endcode
      */
     template <class T>
     class AbstractMatrix
     {
     protected:
         /**
-         * @brief AbstractMatrix elements type
+         * @brief OpenCV type identifier for matrix elements.
+         * @details Set to -1 by default (invalid). Must be set by derived classes
+         *          before calling Create() (e.g., CV_64F for double, CV_8UC1 for uchar).
          */
         int type = -1;
 
         /**
-         * @brief ch_size number of AbstractMatrix channels
+         * @brief Number of channels in the matrix.
+         * @details Typically 1 for grayscale/numeric, 3 for RGB, 4 for RGBA.
          */
         int ch_size = -1;
 
         /**
-         * @brief data AbstractMatrix data
+         * @brief Underlying OpenCV matrix storing the data.
          */
         cv::Mat data;
 
     public:
         /**
-         * @brief Default Constructor
+         * @brief Default constructor.
+         * @details Creates an empty, uninitialized matrix. Call Create() to allocate.
          */
         AbstractMatrix() = default;
 
         /**
-         * @brief Parameterized Constructor
-         * @param d Reference to a cv::Mat array
+         * @brief Constructs a matrix by copying data from a cv::Mat.
+         * @param d The source cv::Mat to copy from.
+         * @note Creates a deep copy of the input matrix.
          */
         AbstractMatrix(const cv::Mat &d)
+            : type(d.type()), ch_size(d.channels()), data(d.clone())
         {
-            type = d.type();
-            ch_size = d.channels();
-            data = d.clone();
         }
 
         /**
-         * @brief Copy Constructor
-         * @param that Reference to an existing AbstractMatrix
+         * @brief Constructs a matrix by moving data from a cv::Mat.
+         * @param d The source cv::Mat to move from.
+         * @note Zero-copy operation; the source matrix becomes empty.
+         */
+        AbstractMatrix(cv::Mat &&d) noexcept
+            : type(d.type()), ch_size(d.channels()), data(std::move(d))
+        {
+        }
+
+        /**
+         * @brief Copy constructor.
+         * @param that The source AbstractMatrix to copy from.
+         * @note Creates a deep copy of all matrix data.
          */
         AbstractMatrix(const AbstractMatrix &that)
+            : type(that.type), ch_size(that.ch_size), data(that.data.clone())
         {
-            type = that.type;
-            ch_size = that.ch_size;
-            data = that.data.clone();
         }
 
         /**
-         * @brief ~CtkAbstractMatrix Destructor
+         * @brief Move constructor.
+         * @param that The source AbstractMatrix to move from.
+         * @note Zero-copy operation; the source matrix becomes empty.
+         */
+        AbstractMatrix(AbstractMatrix &&that) noexcept
+            : type(that.type), ch_size(that.ch_size), data(std::move(that.data))
+        {
+        }
+
+        /**
+         * @brief Copy assignment operator.
+         * @param that The source AbstractMatrix to copy from.
+         * @return Reference to this matrix.
+         * @note Creates a deep copy; self-assignment is handled safely.
+         */
+        AbstractMatrix &operator=(const AbstractMatrix &that)
+        {
+            if (this != &that)
+            {
+                type = that.type;
+                ch_size = that.ch_size;
+                data = that.data.clone();
+            }
+            return *this;
+        }
+
+        /**
+         * @brief Move assignment operator.
+         * @param that The source AbstractMatrix to move from.
+         * @return Reference to this matrix.
+         * @note Zero-copy operation; self-assignment is handled safely.
+         */
+        AbstractMatrix &operator=(AbstractMatrix &&that) noexcept
+        {
+            if (this != &that)
+            {
+                type = that.type;
+                ch_size = that.ch_size;
+                data = std::move(that.data);
+            }
+            return *this;
+        }
+
+        /**
+         * @brief Virtual destructor.
+         * @details Default destructor; cv::Mat handles its own memory cleanup.
          */
         virtual ~AbstractMatrix() = default;
 
         /**
-         * @brief Create  Create AbstractMatrix
-         * @param w  int representing the number of cols
-         * @param h  int representing the number of rows
+         * @brief Allocates matrix storage with specified dimensions.
+         * @param w Width (number of columns). Must be positive.
+         * @param h Height (number of rows). Must be positive.
+         * @throws invalid_type If the matrix type has not been set (type == -1).
+         * @throws std::bad_alloc If width or height is negative.
+         * @note If both w and h are zero, no allocation occurs.
          */
         virtual void Create(int w, int h)
         {
@@ -85,21 +164,24 @@ namespace ctk
         }
 
         /**
-         * @brief Create  Create AbstractMatrix
-         * @param w  int representing the number of cols
-         * @param h  int representing the number of rows
-         * @param vec  vector with AbstractMatrix elements
+         * @brief Allocates matrix and initializes with values from a span.
+         * @param w Width (number of columns). Must be positive.
+         * @param h Height (number of rows). Must be positive.
+         * @param values Span containing initial values in row-major order.
+         * @throws invalid_type If the matrix type has not been set.
+         * @throws std::bad_alloc If width or height is negative.
+         * @warning The span must contain at least w*h elements.
+         * @note Accepts any contiguous container (vector, array, C-array) via implicit conversion.
          */
-        virtual void Create(int w, int h, const std::vector<T> &vec)
+        virtual void Create(int w, int h, std::span<const T> values)
         {
             if (w > 0 && h > 0)
             {
                 if (type == -1)
                     throw invalid_type();
                 data = cv::Mat(h, w, type);
-                int i = -1;
-                for (auto it = begin(); it != end(); ++it)
-                    *it = vec[++i];
+                const auto count = static_cast<size_t>(w * h);
+                std::copy_n(values.data(), std::min(count, values.size()), begin());
             }
             else if (w < 0 || h < 0)
             {
@@ -108,8 +190,9 @@ namespace ctk
         }
 
         /**
-         * @brief GetData  Access AbstractMatrix data
-         * @return data
+         * @brief Returns a mutable reference to the underlying cv::Mat.
+         * @return Reference to the internal cv::Mat data.
+         * @warning Direct modification may invalidate internal state.
          */
         cv::Mat &GetData()
         {
@@ -117,8 +200,8 @@ namespace ctk
         }
 
         /**
-         * @brief GetData  Access AbstractMatrix data
-         * @return data
+         * @brief Returns a const reference to the underlying cv::Mat.
+         * @return Const reference to the internal cv::Mat data.
          */
         const cv::Mat &GetData() const
         {
@@ -126,83 +209,84 @@ namespace ctk
         }
 
         /**
-         * @brief cols  Get number of columns
-         * @return  int representing the number of columns
+         * @brief Returns the number of columns.
+         * @return Column count (width).
          */
-        int GetCols() const
+        [[nodiscard]] int GetCols() const noexcept
         {
             return data.cols;
         }
 
         /**
-         * @brief width  Get AbstractMatrix width (number of columns)
-         * @return int representing the number columns in matrix
+         * @brief Returns the matrix width (alias for GetCols).
+         * @return Width in pixels/elements.
          */
-        int GetWidth() const
+        [[nodiscard]] int GetWidth() const noexcept
         {
             return data.cols;
         }
 
         /**
-         * @brief GetRows  Get number of rows
-         * @return int representing the number of rows
+         * @brief Returns the number of rows.
+         * @return Row count (height).
          */
-        int GetRows() const
+        [[nodiscard]] int GetRows() const noexcept
         {
             return data.rows;
         }
 
         /**
-         * @brief GetHeight  Get AbstractMatrix width (number of rows)
-         * @return int representing the number of rows
+         * @brief Returns the matrix height (alias for GetRows).
+         * @return Height in pixels/elements.
          */
-        int GetHeight() const
+        [[nodiscard]] int GetHeight() const noexcept
         {
             return data.rows;
         }
 
         /**
-         * @brief size   Get AbstractMatrix size
-         * @return int representing matrix size (nº of rows x nº of columns)
+         * @brief Returns the total number of elements.
+         * @return Total element count (rows * cols).
          */
-        int GetSize() const
+        [[nodiscard]] int GetSize() const noexcept
         {
             return data.rows * data.cols;
         }
 
         /**
-         * @brief channels  Get number of channels
-         * @return int representing the number of channels in matrix
+         * @brief Returns the number of channels.
+         * @return Channel count (1 for grayscale, 3 for RGB, etc.).
          */
-        int GetChannels() const
+        [[nodiscard]] int GetChannels() const noexcept
         {
             return ch_size;
         }
 
         /**
-         * @brief checkChannel  Check if ch_size parameter is correctly assigned
-         * @return  boolean true if ch_size corresponds to number of channels in AbstractMatrix.
+         * @brief Validates channel count consistency.
+         * @return True if stored channel count matches actual cv::Mat channels.
          */
-        bool CheckChannel() const
+        [[nodiscard]] bool CheckChannel() const noexcept
         {
             return ch_size == data.channels();
         }
 
         /**
-         * @brief Fill Fill all elements of the AbstractMatrix according to the received parameter
-         * @param v value used to fill the AbstractMatrix
+         * @brief Fills the entire matrix with a single value.
+         * @param v The value to fill with.
          */
         virtual void Fill(T v)
-        { // TODO: test and benchmark this method
-            for (auto it = begin(); it != end(); ++it)
-                *it = v;
+        {
+            std::fill(begin(), end(), v);
         }
 
         /**
-         * @brief Get  Get a specific AbstractMatrix element
-         * @param x  int representing the column index
-         * @param y  int representing the row index
-         * @return  AbstractMatrix element at row y and column x
+         * @brief Retrieves an element at the specified position (unchecked).
+         * @param x Column index (0-based).
+         * @param y Row index (0-based).
+         * @return The element value at position (x, y).
+         * @warning No bounds checking; undefined behavior if out of range.
+         * @see SafeGet() for bounds-checked access.
          */
         virtual T Get(int x, int y) const
         {
@@ -210,25 +294,28 @@ namespace ctk
         }
 
         /**
-         * @brief SafeGet   Get a specific AbstractMatrix element with protections
-         * @param x  int representing the column index
-         * @param y  int representing the row index
-         * @return  AbstractMatrix element at row y and column x
+         * @brief Retrieves an element with bounds checking.
+         * @param x Column index (0-based).
+         * @param y Row index (0-based).
+         * @return The element value at position (x, y).
+         * @throws std::out_of_range If indices are out of bounds.
          */
         virtual T SafeGet(int x, int y) const
         {
             if (x < 0 || x >= data.cols || y < 0 || y >= data.rows)
             {
-                throw std::out_of_range("Exception thrown in AbstractMatyrix::SafeGet");
+                throw std::out_of_range("Exception thrown in AbstractMatrix::SafeGet");
             }
             return data.at<T>(y, x);
         }
 
         /**
-         * @brief Set  Setting the value of a specific AbstractMatrix element
-         * @param x  int representing the column index
-         * @param y  int representing the row index
-         * @param v  desired value
+         * @brief Sets an element at the specified position (unchecked).
+         * @param x Column index (0-based).
+         * @param y Row index (0-based).
+         * @param v The value to set.
+         * @warning No bounds checking; undefined behavior if out of range.
+         * @see SafeSet() for bounds-checked access.
          */
         virtual void Set(int x, int y, T v)
         {
@@ -236,42 +323,61 @@ namespace ctk
         }
 
         /**
-         * @brief SafeSet  Setting the value of a specific AbstractMatrix element with protections
-         * @param x  int representing the column index
-         * @param y  int representing the row index
-         * @param v  desired value
+         * @brief Sets an element with bounds checking.
+         * @param x Column index (0-based).
+         * @param y Row index (0-based).
+         * @param v The value to set.
+         * @throws std::out_of_range If indices are out of bounds.
          */
         virtual void SafeSet(int x, int y, T v)
         {
             if (x < 0 || x >= data.cols || y < 0 || y >= data.rows)
             {
-                throw std::out_of_range("Exception thrown in AbstractMatyrix::SafeSet");
+                throw std::out_of_range("Exception thrown in AbstractMatrix::SafeSet");
             }
             data.at<T>(y, x) = v;
         }
 
         /**
-         * @brief begin Get the first element of the AbstractMatrix
-         * @return  AbstractMatrix element at position (0,0)
+         * @brief Returns an iterator to the beginning.
+         * @return Pointer to the first element.
          */
-        T *begin()
+        T *begin() noexcept
         {
-            return &data.at<T>(0, 0);
+            return data.ptr<T>(0);
         }
 
         /**
-         * @brief end Get the last element of the AbstractMatrix
-         * @return  AbstractMatrix element at position (nº rows , nº columns)
+         * @brief Returns a const iterator to the beginning.
+         * @return Const pointer to the first element.
          */
-        T *end()
+        const T *begin() const noexcept
         {
-            return &data.at<T>(data.rows * data.cols);
+            return data.ptr<T>(0);
         }
 
         /**
-         * @brief operator ==
-         * @param that  reference to an existing AbstractMatrix
-         * @return boolean, true if all elements in both AbstractMatrixes are equal.
+         * @brief Returns an iterator to the end.
+         * @return Pointer to one past the last element.
+         */
+        T *end() noexcept
+        {
+            return data.ptr<T>(0) + (data.rows * data.cols);
+        }
+
+        /**
+         * @brief Returns a const iterator to the end.
+         * @return Const pointer to one past the last element.
+         */
+        const T *end() const noexcept
+        {
+            return data.ptr<T>(0) + (data.rows * data.cols);
+        }
+
+        /**
+         * @brief Equality comparison operator.
+         * @param that The matrix to compare with.
+         * @return True if dimensions and all elements are equal.
          */
         bool operator==(const AbstractMatrix<T> &that) const
         {
@@ -291,17 +397,28 @@ namespace ctk
         }
 
         /**
-         * @brief operator != TODO
-         * @param that reference to an existing AbstractMatrix
-         * @return boolean, false if all elements in both AbstractMatrixes are equal.
+         * @brief Inequality comparison operator.
+         * @param that The matrix to compare with.
+         * @return True if dimensions or any elements differ.
          */
         bool operator!=(const AbstractMatrix<T> &that) const
         {
             return !(*this == that);
         }
 
-        virtual void Open(std::string filename) = 0;
-        virtual void Save(std::string filename) const = 0;
+        /**
+         * @brief Loads matrix data from a file.
+         * @param filename Path to the input file.
+         * @note Pure virtual; must be implemented by derived classes.
+         */
+        virtual void Open(std::string_view filename) = 0;
+
+        /**
+         * @brief Saves matrix data to a file.
+         * @param filename Path to the output file.
+         * @note Pure virtual; must be implemented by derived classes.
+         */
+        virtual void Save(std::string_view filename) const = 0;
     };
 
 }

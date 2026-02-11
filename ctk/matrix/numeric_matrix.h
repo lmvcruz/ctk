@@ -1,6 +1,8 @@
 #pragma once
 
+#include <span>
 #include <string>
+#include <string_view>
 
 #include "ctk/matrix/abstract_matrix.h"
 
@@ -17,10 +19,10 @@ public:
 
     NumericMatrix& operator=(const NumericMatrix& that);
 
-    void Create(int w, int h, const std::vector<double> &vec) override;
+    void Create(int w, int h, std::span<const double> values) override;
 
-    void Open(std::string filename);
-    void Save(std::string filename) const;
+    void Open(std::string_view filename) override;
+    void Save(std::string_view filename) const override;
     void Show() const;
 
     NumericMatrix operator+(const NumericMatrix &that) const;

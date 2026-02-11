@@ -53,8 +53,8 @@ ColorImage::ColorImage(cv::Mat &d) : AbstractImage<cv::Vec3b>(d) {
  * @brief ColorImage::channels Get color image channels
  * @return 3
  */
-int ColorImage::GetChannels() const {
+int ColorImage::GetChannels() const noexcept {
     return 3;
 }
 
-} // namespace ctk 
+} // namespace ctk

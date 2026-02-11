@@ -29,6 +29,18 @@ RgbImage::RgbImage(const RgbImage &that) {
 }
 
 /**
+ * @brief RgbImage::RgbImage - Move Constructor
+ * @param that rvalue reference to an existing RgbImage
+ */
+RgbImage::RgbImage(RgbImage &&that) noexcept
+    : ColorImage() {
+    type = that.type;
+    ch_size = that.ch_size;
+    invert_channels = true;
+    data = std::move(that.data);
+}
+
+/**
  * @brief RgbImage::RgbImage - Copy Construtor
  * @param that  reference to an existing AbstractImage
  */
@@ -50,6 +62,53 @@ RgbImage::RgbImage(const cv::Mat &d) : ColorImage(d) {
     if (d.type() != CV_8UC3 || d.channels() != 3) {
         throw  incompatible_parameters();
     }
+}
+
+/**
+ * @brief RgbImage::RgbImage - Move Constructor from cv::Mat
+ * @param d rvalue reference to cv::Mat
+ */
+RgbImage::RgbImage(cv::Mat &&d) : ColorImage() {
+    if (d.type() != CV_8UC3 || d.channels() != 3) {
+        throw  incompatible_parameters();
+    }
+    type = CV_8UC3;
+    ch_size = 3;
+    invert_channels = true;
+    data = std::move(d);
+}
+
+/**
+ * @brief RgbImage::operator= - Copy Assignment
+ * @param that reference to an existing RgbImage
+ * @return reference to this
+ */
+RgbImage& RgbImage::operator=(const RgbImage &that) {
+    if (this != &that) {
+        if (that.data.type() != CV_8UC3 || that.data.channels() != 3) {
+            throw incompatible_parameters();
+        }
+        type = that.type;
+        ch_size = that.ch_size;
+        invert_channels = true;
+        data = that.data.clone();
+    }
+    return *this;
+}
+
+/**
+ * @brief RgbImage::operator= - Move Assignment
+ * @param that rvalue reference to an existing RgbImage
+ * @return reference to this
+ */
+RgbImage& RgbImage::operator=(RgbImage &&that) noexcept {
+    if (this != &that) {
+        type = that.type;
+        ch_size = that.ch_size;
+        invert_channels = true;
+        data = std::move(that.data);
+    }
+    return *this;
 }
 
 /**
@@ -154,7 +213,7 @@ void RgbImage::Set(int i, int r, int g, int b) {
  * @param y int representing the column index
  * @return int representing the red value of the pixel at (x,y)
  */
-int RgbImage::Red(int x, int y) const {
+int RgbImage::Red(int x, int y) const noexcept {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[0];
 }
 
@@ -164,7 +223,7 @@ int RgbImage::Red(int x, int y) const {
  * @param y int representing the column index
  * @return int representing the green value of the pixel at (x,y)
  */
-int RgbImage::Green(int x, int y) const {
+int RgbImage::Green(int x, int y) const noexcept {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[1];
 }
 
@@ -175,7 +234,7 @@ int RgbImage::Green(int x, int y) const {
  * @param y int representing the column index
  * @return int representing the blue value of the pixel at (x,y)
  */
-int RgbImage::Blue(int x, int y) const {
+int RgbImage::Blue(int x, int y) const noexcept {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[2];
 }
 
@@ -185,7 +244,7 @@ int RgbImage::Blue(int x, int y) const {
  * @param y int representing the column index
  * @return Point representing the pixel at (x,y)
  */
-PointI RgbImage::GetPixel(int x, int y) const {
+PointI RgbImage::GetPixel(int x, int y) const noexcept {
     return PointI(Red(x, y), Green(x, y), Blue(x, y));
 }
 
@@ -198,7 +257,7 @@ PointI RgbImage::GetPixel(int x, int y) const {
  * @param qtype int specifying the method of selecting the first centers
  * @return RgbImage obtained after kmeans clustering of original image
  */
-RgbImage RgbImage::Quantize(int q, int iter, float eps, 
+RgbImage RgbImage::Quantize(int q, int iter, float eps,
                             int attempts, int qtype) const {
     RgbImage cluster(data.clone());
     cv::Mat vals;
@@ -236,20 +295,13 @@ RgbImage RgbImage::Quantize(const std::vector<PointI> &centers, int iter,
  * @param g int representing the green value
  * @param b int representing the blue value
  * @return BinaryImage consisting of a mask of the original image which is 1 for the passed color and 0 otherwise
+ * @note Uses OpenCV's optimized inRange for vectorized comparison
  */
 BinaryImage RgbImage::PickColor(int r, int g, int b) const {
-    BinaryImage mask;
-    mask.Create(GetWidth(), GetHeight());
-    for (auto x = 0; x < data.rows; ++x) {
-        for (auto y = 0; y < data.cols; ++y) {
-            if ((Red(x, y) == r) && (Green(x, y) == g) && (Blue(x, y) == b)) {
-                mask.Set(x, y, true);
-            } else {
-                mask.Set(x, y, false);
-            }
-        }
-    }
-    return mask;
+    cv::Mat result;
+    cv::Scalar targetColor(b, g, r);  // OpenCV uses BGR order
+    cv::inRange(data, targetColor, targetColor, result);
+    return BinaryImage(result);
 }
 
 /**
@@ -330,7 +382,7 @@ std::vector<Polygon> RgbImage::ApproximateContours(int eps) {
  * @param h  int representing the hight of the output image
  * @return RgbImage resulting of the transformation
  */
-RgbImage RgbImage::Warp(const std::vector<PointD> &pts, 
+RgbImage RgbImage::Warp(const std::vector<PointD> &pts,
                         const std::vector<PointD> &refs, int w, int h) const {
     if (pts.size() != refs.size()) throw  incompatible_parameters();
     if (pts.size() < 4) throw  incompatible_parameters();
@@ -376,7 +428,7 @@ RgbImage RgbImage::DrawPolygon(Polygon &pol) const {
     std::vector<std::vector<cv::Point>> cv_conts;
     cv_conts.resize(1);
     cv_conts[0] = pol.GetCvData();
-    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0]) 
+    std::cout << cv_conts[0].size() << " " << contourArea(cv_conts[0])
               << std::endl;
 
     RgbImage new_img(data);
@@ -388,4 +440,4 @@ RgbImage RgbImage::DrawPolygon(Polygon &pol) const {
     return new_img;
 }
 
-} // namespace ctk 
+} // namespace ctk

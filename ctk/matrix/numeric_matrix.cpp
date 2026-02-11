@@ -2,6 +2,7 @@
 
 #include <iomanip>
 #include <iostream>
+#include <span>
 
 #include <opencv2/highgui.hpp>
 
@@ -65,33 +66,26 @@ NumericMatrix &NumericMatrix::operator=(const NumericMatrix &that) {
  * @brief NumericMatrix::Create  Create NumericMatrix
  * @param w  int indicating the number of rows
  * @param h  int indicating the number of coumns
- * @param vec  vector of ints with matrix elements
+ * @param values  span of doubles with matrix elements
  */
-void NumericMatrix::Create(int w, int h, const std::vector<double> &vec) {
-    if (w > 0 && h > 0) {
-        if (type == -1) throw invalid_type();
-        data = cv::Mat(h, w, type);
-        int i=-1;
-        for (auto it = begin(); it != end(); ++it) *it = static_cast<double>(vec[++i]);
-    } else if (w < 0 || h < 0) {
-        throw std::bad_alloc();
-    }
+void NumericMatrix::Create(int w, int h, std::span<const double> values) {
+    AbstractMatrix<double>::Create(w, h, values);
 }
 
 /**
  * @brief NumericMatrix::Open  Read data from a file into the NumeriMatrix
  * @param filename
  */
-void NumericMatrix::Open(std::string filename) {
-    data = cv::imread(filename, cv::IMREAD_ANYDEPTH);
+void NumericMatrix::Open(std::string_view filename) {
+    data = cv::imread(std::string(filename), cv::IMREAD_ANYDEPTH);
 }
 
 /**
  * @brief NumericMatrix::Save  Save data of the numeric matrix into a file
  * @param filename
  */
-void NumericMatrix::Save(std::string filename) const {
-    cv::imwrite(filename, data);
+void NumericMatrix::Save(std::string_view filename) const {
+    cv::imwrite(std::string(filename), data);
 }
 
 /**

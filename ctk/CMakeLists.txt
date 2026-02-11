@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(ctklib VERSION 0.1)
 
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 
 add_library(ctklib STATIC
 authentication/auth_object.cpp
