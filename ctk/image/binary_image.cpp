@@ -163,14 +163,13 @@ bool BinaryImage::Get(int x, int y) const {
 /**
  * @brief BinaryImage::Not
  * @return Complement of original image
+ * @note Uses OpenCV's SIMD-optimized bitwise_not for maximum performance
  */
 BinaryImage BinaryImage::Not() const {
-    BinaryImage aux(*this);
-    for (int x = 0; x < data.cols; x++) {
-        for(int y = 0; y < data.rows; y++) {
-            aux.Set(x,y, 1-Get(x,y));
-        }
-    }
+    BinaryImage aux;
+    aux.type = type;
+    aux.ch_size = ch_size;
+    cv::bitwise_not(data, aux.data);
     return aux;
 }
 
@@ -178,14 +177,13 @@ BinaryImage BinaryImage::Not() const {
  * @brief BinaryImage::And -   true if both arguments are true and false otherwise
  * @param that reference to an existing BinaryImage object
  * @return BinaryImage resulting from the And operation between the two BinaryImages
+ * @note Uses OpenCV's SIMD-optimized bitwise_and for maximum performance
  */
 BinaryImage BinaryImage::And(const BinaryImage &that) const {
-    BinaryImage aux(*this);
-    for (int x = 0; x < data.cols; x++) {
-        for(int y = 0; y < data.rows; y++) {
-            aux.Set(x, y, Get(x, y)&&that.Get(x, y));
-        }
-    }
+    BinaryImage aux;
+    aux.type = type;
+    aux.ch_size = ch_size;
+    cv::bitwise_and(data, that.data, aux.data);
     return aux;
 }
 
@@ -193,14 +191,13 @@ BinaryImage BinaryImage::And(const BinaryImage &that) const {
  * @brief BinaryImage::Or -   true if any of the arguments are true and false otherwise
  * @param that reference to an existing BinaryImage object
  * @return BinaryImage resulting from the Or operation between the two BinaryImages
+ * @note Uses OpenCV's SIMD-optimized bitwise_or for maximum performance
  */
 BinaryImage BinaryImage::Or(const BinaryImage &that) const {
-    BinaryImage aux(*this);
-    for (int x = 0; x < data.cols; x++) {
-        for(int y = 0; y < data.rows; y++) {
-            aux.Set(x, y, Get(x, y) || that.Get(x, y));
-        }
-    }
+    BinaryImage aux;
+    aux.type = type;
+    aux.ch_size = ch_size;
+    cv::bitwise_or(data, that.data, aux.data);
     return aux;
 }
 
@@ -208,43 +205,32 @@ BinaryImage BinaryImage::Or(const BinaryImage &that) const {
  * @brief BinaryImage::Xor- if either input is true, then the result is true, but if both inputs are true, then the result is false
  * @param that reference to an existing BinaryImage object
  * @return BinaryImage resulting from the Xor operation between the two BinaryImages
+ * @note Uses OpenCV's SIMD-optimized bitwise_xor for maximum performance
  */
 BinaryImage BinaryImage::Xor(const BinaryImage &that) const {
-    BinaryImage aux(*this);
-    for (int x = 0; x < data.cols; x++) {
-        for (int y = 0; y < data.rows; y++) {
-            aux.Set(x,y, Get(x, y) ^ that.Get(x, y));
-        }
-    }
+    BinaryImage aux;
+    aux.type = type;
+    aux.ch_size = ch_size;
+    cv::bitwise_xor(data, that.data, aux.data);
     return aux;
 }
 
 /**
  * @brief BinaryImage::CountTrues
  * @return  int representing the number of image pixels with true value (>0)
+ * @note Uses OpenCV's optimized countNonZero for maximum performance
  */
 int BinaryImage::CountTrues() const {
-    int count = 0;
-    for (int x = 0; x < data.cols; x++) {
-        for (int y = 0; y < data.rows; y++) {
-            if (Get(x, y)) count++;
-        }
-    }
-    return count;
+    return cv::countNonZero(data);
 }
 
 /**
  * @brief BinaryImage::CountFalses
  * @return  int representing the number of image pixels with false value (0)
+ * @note Uses OpenCV's optimized countNonZero for maximum performance
  */
 int BinaryImage::CountFalses() const {
-    int count = 0;
-    for (int x = 0; x < data.cols; x++) {
-        for(int y = 0; y < data.rows; y++) {
-            if (!Get(x, y)) count++;
-        }
-    }
-    return count;
+    return (data.rows * data.cols) - cv::countNonZero(data);
 }
 
 /**
