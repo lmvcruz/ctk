@@ -363,6 +363,89 @@ class CTKBuilder:
 
         self.logger.success(f"Installation completed to {self.install_prefix}")
 
+    def format_check(self, fix=False):
+        """Check or fix clang-format violations"""
+        action = "Fixing" if fix else "Checking"
+        self.logger.header(f"{action} Clang-Format Violations")
+
+        # Find clang-format executable
+        clang_format = None
+        possible_paths = [
+            r'C:\Program Files\LLVM\bin\clang-format.exe',
+            r'C:\Program Files (x86)\LLVM\bin\clang-format.exe',
+        ]
+        
+        for path in possible_paths:
+            if Path(path).exists():
+                clang_format = path
+                break
+        
+        if not clang_format:
+            # Try to find in PATH
+            try:
+                result = subprocess.run(['where', 'clang-format'],
+                                        capture_output=True,
+                                        text=True,
+                                        check=True)
+                clang_format = result.stdout.strip().split('\n')[0]
+            except subprocess.CalledProcessError:
+                self.logger.error(
+                    "clang-format not found! Please install LLVM/Clang.")
+                sys.exit(1)
+
+        self.logger.info(f"Using clang-format: {clang_format}")
+
+        # Find source files
+        source_dirs = ['ctk', 'ctkunittests', 'benchmark', 'demos']
+        extensions = ['*.cpp', '*.h', '*.hpp']
+        
+        files_to_check = []
+        for src_dir in source_dirs:
+            src_path = self.project_root / src_dir
+            if src_path.exists():
+                for ext in extensions:
+                    files_to_check.extend(src_path.rglob(ext))
+
+        if not files_to_check:
+            self.logger.warning("No source files found to check")
+            return
+
+        self.logger.info(f"Found {len(files_to_check)} source files")
+
+        violations_found = 0
+        files_with_violations = []
+
+        for file_path in files_to_check:
+            # Check for violations using --dry-run --Werror
+            if fix:
+                cmd = [clang_format, '-i', str(file_path)]
+            else:
+                cmd = [clang_format, '--dry-run', '--Werror', str(file_path)]
+            
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            
+            if result.returncode != 0:
+                violations_found += 1
+                files_with_violations.append(file_path)
+                if self.args.verbose:
+                    self.logger.warning(f"Violation in: {file_path.relative_to(self.project_root)}")
+                    if result.stderr:
+                        for line in result.stderr.strip().split('\n')[:5]:
+                            self.logger.info(f"  {line}")
+
+        if fix:
+            self.logger.success(f"Formatted {len(files_to_check)} files")
+        elif violations_found > 0:
+            self.logger.error(f"\nFound {violations_found} files with format violations:")
+            for f in files_with_violations[:20]:  # Show first 20
+                self.logger.error(f"  - {f.relative_to(self.project_root)}")
+            if len(files_with_violations) > 20:
+                self.logger.error(f"  ... and {len(files_with_violations) - 20} more")
+            self.logger.info("\nRun with --format-fix to automatically fix violations")
+            sys.exit(1)
+        else:
+            self.logger.success("No format violations found!")
+
     def list_targets(self):
         """List available build targets"""
         self.logger.header("Available Build Targets")
@@ -390,6 +473,14 @@ class CTKBuilder:
         try:
             if self.args.list_targets:
                 self.list_targets()
+                return
+
+            if self.args.format_check:
+                self.format_check(fix=False)
+                return
+
+            if self.args.format_fix:
+                self.format_check(fix=True)
                 return
 
             if self.args.clean:
@@ -430,6 +521,8 @@ Examples:
   %(prog)s --msvc --configure-only   # Only configure, don't build
   %(prog)s --clang --target ctklib   # Build only the ctklib target
   %(prog)s --clang --list-targets    # List available build targets
+  %(prog)s --msvc --format-check     # Check for clang-format violations
+  %(prog)s --msvc --format-fix       # Fix clang-format violations
         """
     )
 
@@ -469,6 +562,10 @@ Examples:
                         help='List available build targets')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='Verbose build output')
+    parser.add_argument('--format-check', action='store_true',
+                        help='Check for clang-format violations (dry-run)')
+    parser.add_argument('--format-fix', action='store_true',
+                        help='Fix clang-format violations in-place')
 
     args = parser.parse_args()
 
