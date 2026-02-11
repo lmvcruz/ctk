@@ -154,7 +154,7 @@ void RgbImage::Set(int i, int r, int g, int b) {
  * @param y int representing the column index
  * @return int representing the red value of the pixel at (x,y)
  */
-int RgbImage::Red(int x, int y) const {
+int RgbImage::Red(int x, int y) const noexcept {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[0];
 }
 
@@ -164,7 +164,7 @@ int RgbImage::Red(int x, int y) const {
  * @param y int representing the column index
  * @return int representing the green value of the pixel at (x,y)
  */
-int RgbImage::Green(int x, int y) const {
+int RgbImage::Green(int x, int y) const noexcept {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[1];
 }
 
@@ -175,7 +175,7 @@ int RgbImage::Green(int x, int y) const {
  * @param y int representing the column index
  * @return int representing the blue value of the pixel at (x,y)
  */
-int RgbImage::Blue(int x, int y) const {
+int RgbImage::Blue(int x, int y) const noexcept {
     return AbstractMatrix<cv::Vec3b>::Get(x, y)[2];
 }
 
@@ -185,7 +185,7 @@ int RgbImage::Blue(int x, int y) const {
  * @param y int representing the column index
  * @return Point representing the pixel at (x,y)
  */
-PointI RgbImage::GetPixel(int x, int y) const {
+PointI RgbImage::GetPixel(int x, int y) const noexcept {
     return PointI(Red(x, y), Green(x, y), Blue(x, y));
 }
 

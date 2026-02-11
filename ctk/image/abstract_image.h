@@ -139,7 +139,7 @@ namespace ctk
          * pre-defined indices
          * @return  true if the attribute indices is filled
          */
-        bool IsIndices() const
+        [[nodiscard]] bool IsIndices() const noexcept
         {
             return indices.size() > 0;
         }
@@ -149,7 +149,7 @@ namespace ctk
          * @param i int representing the desired index in vector indices
          * @return AbstractMatrix element at  position = indices(i)
          */
-        T IGet(int i) const
+        [[nodiscard]] T IGet(int i) const
         {
             unsigned int ui = static_cast<unsigned int>(i);
             int int_indx = static_cast<int>(indices[ui]);
@@ -163,7 +163,7 @@ namespace ctk
          * @param i int representing the desired index in vector indices
          * @return AbstractMatrix element at  position = indices(i)
          */
-        T SafeIGet(int i) const
+        [[nodiscard]] T SafeIGet(int i) const
         {
             if (!IsIndices())
                 StartScanIndices();
@@ -214,12 +214,12 @@ namespace ctk
             AbstractMatrix<T>::Set(x, y, v);
         }
 
-        bool GetInvertedChannels()
+        [[nodiscard]] bool GetInvertedChannels() const noexcept
         {
             return invert_channels;
         }
 
-        void SetInvertedChannels(bool isInverted)
+        void SetInvertedChannels(bool isInverted) noexcept
         {
             invert_channels = isInverted;
         }
@@ -232,7 +232,7 @@ namespace ctk
          * @param h height of the rectangle
          * @return  Cropped image containing the desired rgion
          */
-        AbstractImage<T> Crop(int x, int y, int w, int h) const
+        [[nodiscard]] AbstractImage<T> Crop(int x, int y, int w, int h) const
         {
             cv::Rect roi(x, y, w, h);
             // TODO: use move constructor
@@ -291,7 +291,7 @@ namespace ctk
          * @brief FlipHorizontally
          * @return  Image flipped arround the horizontal axis
          */
-        AbstractImage<T> FlipHorizontally() const
+        [[nodiscard]] AbstractImage<T> FlipHorizontally() const
         {
             cv::Mat aux;
             cv::flip(AbstractMatrix<T>::data, aux, +1);
@@ -313,7 +313,7 @@ namespace ctk
          * @brief FlipVertically
          * @return  Image flipped arround the vertical axis
          */
-        AbstractImage<T> FlipVertically() const
+        [[nodiscard]] AbstractImage<T> FlipVertically() const
         {
             cv::Mat aux;
             cv::flip(AbstractMatrix<T>::data, aux, 0);
@@ -335,7 +335,7 @@ namespace ctk
          * @brief FlipBoth
          * @return  Image flipped arround both the vertical and horizontal axis
          */
-        AbstractImage<T> FlipBoth() const
+        [[nodiscard]] AbstractImage<T> FlipBoth() const
         {
             cv::Mat aux;
             cv::flip(AbstractMatrix<T>::data, aux, -1);
@@ -357,7 +357,7 @@ namespace ctk
          * @brief Rotate90
          * @return  Image rotated by 90º clockwise
          */
-        AbstractImage<T> Rotate90() const
+        [[nodiscard]] AbstractImage<T> Rotate90() const
         {
             cv::Mat aux;
             cv::transpose(AbstractMatrix<T>::data, aux);
@@ -381,7 +381,7 @@ namespace ctk
          * @brief Rotate180
          * @return  Image rotated by 180º clockwise
          */
-        AbstractImage<T> Rotate180() const
+        [[nodiscard]] AbstractImage<T> Rotate180() const
         {
             cv::Mat aux;
             cv::flip(AbstractMatrix<T>::data, aux, -1);
@@ -403,7 +403,7 @@ namespace ctk
          * @brief Rotate270 TODO
          * @return  Image rotated by 270º clockwise
          */
-        AbstractImage<T> Rotate270() const
+        [[nodiscard]] AbstractImage<T> Rotate270() const
         {
             cv::Mat aux;
             cv::transpose(AbstractMatrix<T>::data, aux);
@@ -429,7 +429,7 @@ namespace ctk
          * @param nh int representing new hight
          * @return Resized image
          */
-        AbstractImage<T> Resize(int nw, int nh) const
+        [[nodiscard]] AbstractImage<T> Resize(int nw, int nh) const
         {
             cv::Mat aux;
             cv::resize(AbstractMatrix<T>::data, aux, cv::Size(nw, nh), cv::INTER_CUBIC);
@@ -494,7 +494,7 @@ namespace ctk
 
         virtual ~ColorImage() {}
 
-        int GetChannels() const;
+        [[nodiscard]] int GetChannels() const noexcept;
     };
 
     // TODO: NEXT SPRINT
