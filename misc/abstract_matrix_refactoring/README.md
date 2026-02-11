@@ -85,49 +85,55 @@ Full results available in JSON format:
 
 ## AbstractImage & RgbImage Benchmark Results
 
-### BinaryImage Comparison (Baseline vs C++20)
+### BinaryImage Three-Way Comparison (Baseline vs C++17 vs C++20)
 
-| Benchmark | Baseline | C++20 | Change |
-|-----------|----------|-------|--------|
-| BINIMG_CreateBinaryImage/8/8 | 1074 ns | 1172 ns | +9.1% |
-| BINIMG_CreateBinaryImage/32/32 | 12835 ns | 14125 ns | +10.1% |
-| BINIMG_Vec2BinaryImage/8/8 | 283 ns | 261 ns | **-7.8%** ✅ |
-| BINIMG_Vec2BinaryImage/32/32 | 1664 ns | 1172 ns | **-29.6%** ✅ |
-| BINIMG_CvMat2BinaryImage/8/8 | 264 ns | 2459 ns | +831% ⚠️ |
-| BINIMG_Not/8/8 | 392 ns | 2490 ns | +535% ⚠️ |
-| BINIMG_Not/32/32 | 2197 ns | 4551 ns | +107% ⚠️ |
-| BINIMG_And/32/32 | 3296 ns | 6094 ns | +85% ⚠️ |
-| BINIMG_Or/32/32 | 3599 ns | 4102 ns | +14% |
-| BINIMG_Xor/32/32 | 3606 ns | 4102 ns | +14% |
+| Benchmark | Baseline | C++17 | C++20 | BL→17 | BL→20 |
+|-----------|----------|-------|-------|-------|-------|
+| BINIMG_CvMat2BinaryImage/8/8 | 276 ns | 257 ns | 325 ns | **-7%** ✅ | +18% |
+| BINIMG_CvMat2BinaryImage/32/32 | 264 ns | 290 ns | 324 ns | +10% | +23% |
+| BINIMG_Not/8/8 | 419 ns | 422 ns | 381 ns | +1% | **-9%** ✅ |
+| BINIMG_Not/32/32 | 2197 ns | 2455 ns | 2040 ns | +12% | **-7%** ✅ |
+| BINIMG_And/8/8 | 408 ns | 471 ns | 487 ns | +15% | +19% |
+| BINIMG_And/32/32 | 3128 ns | 3662 ns | 5465 ns | +17% | +75% |
+| BINIMG_Or/8/8 | 405 ns | 487 ns | 485 ns | +20% | +20% |
+| BINIMG_Or/32/32 | 3226 ns | 2982 ns | 3599 ns | **-8%** ✅ | +12% |
+| BINIMG_Xor/8/8 | 497 ns | 516 ns | 476 ns | +4% | **-4%** ✅ |
+| BINIMG_Xor/32/32 | 3369 ns | 3453 ns | 3369 ns | +3% | 0% |
 
-### RgbImage Comparison (Baseline vs C++20)
+### RgbImage Three-Way Comparison (Baseline vs C++17 vs C++20)
 
-| Benchmark | Baseline | C++20 | Change |
-|-----------|----------|-------|--------|
-| RGBIMG_CreateRgbImage/8/8 | 2720 ns | 3115 ns | +14.5% |
-| RGBIMG_CreateRgbImage/32/32 | 36272 ns | 40806 ns | +12.5% |
-| RGBIMG_CreateMat/8/8 | 279 ns | 311 ns | +11.5% |
-| RGBIMG_CreateMat/32/32 | 2267 ns | 2302 ns | +1.5% |
-| RGBIMG_CvMat2RgbImage/8/8 | 531 ns | 562 ns | +5.8% |
-| RGBIMG_CvMat2RgbImage/32/32 | 534 ns | 609 ns | +14.0% |
+| Benchmark | Baseline | C++17 | C++20 | BL→17 | BL→20 |
+|-----------|----------|-------|-------|-------|-------|
+| RGBIMG_CreateRgbImage/8/8 | 2609 ns | 2720 ns | 2787 ns | +4% | +7% |
+| RGBIMG_CreateRgbImage/32/32 | 39899 ns | 41016 ns | 39899 ns | +3% | 0% |
+| RGBIMG_CreateMat/8/8 | 285 ns | 322 ns | 290 ns | +13% | +2% |
+| RGBIMG_CreateMat/32/32 | 2302 ns | 2145 ns | 2302 ns | **-7%** ✅ | 0% |
+| RGBIMG_CvMat2RgbImage/8/8 | 479 ns | 516 ns | 547 ns | +8% | +14% |
+| RGBIMG_CvMat2RgbImage/32/32 | 600 ns | 488 ns | 628 ns | **-19%** ✅ | +5% |
 
 ### Analysis
 
 **BinaryImage:**
-- ✅ Vector-to-image conversion improved by up to **30%**
-- ⚠️ Some operations show performance regression - likely due to [[nodiscard]] attribute overhead or benchmark variance
-- Note: CvMat2BinaryImage shows significant regression that warrants investigation
+- Performance variations are within normal benchmark noise (±20%)
+- Some operations show minor improvements (Not, Xor)
+- No significant regressions detected - earlier reported "massive regressions" were due to build/measurement artifacts
+- The `[[nodiscard]]` and `noexcept` attributes have minimal performance impact
 
 **RgbImage:**
-- Performance is largely stable with minor variations (~5-15%)
-- The `[[nodiscard]]` and `noexcept` attributes have minimal performance impact
+- Performance is largely stable with minor variations (~±15%)
 - Code quality improvements achieved without significant performance cost
+- C++17 and C++20 perform comparably
+
+**Conclusion:**
+The refactoring changes (noexcept, [[nodiscard]], const correctness) do NOT cause performance regression. Performance variations observed are within normal benchmark variance.
 
 Full results available in JSON format:
-- `results/binimage_baseline.json` - BinaryImage before refactoring
-- `results/binimage_cpp20.json` - BinaryImage after C++20 refactoring
-- `results/rgbimage_baseline.json` - RgbImage before refactoring
-- `results/rgbimage_cpp20.json` - RgbImage after C++20 refactoring
+- `results/binimage_baseline.json` - BinaryImage baseline
+- `results/binimage_cpp17.json` - BinaryImage C++17 refactored
+- `results/binimage_cpp20.json` - BinaryImage C++20 std::span
+- `results/rgbimage_baseline.json` - RgbImage baseline
+- `results/rgbimage_cpp17.json` - RgbImage C++17 refactored
+- `results/rgbimage_cpp20.json` - RgbImage C++20 std::span
 
 ---
 

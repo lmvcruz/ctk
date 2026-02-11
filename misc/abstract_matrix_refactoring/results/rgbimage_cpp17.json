@@ -1,6 +1,6 @@
 {
   "context": {
-    "date": "2026-02-11T10:50:15+00:00",
+    "date": "2026-02-11T10:48:30+00:00",
     "host_name": "BHX-OPT-22-6873",
     "executable": "D:\\playground\\ctk\\build-msvc\\benchmark\\image\\rgbimage\\Release\\rgbimagebench.exe",
     "num_cpus": 20,
@@ -46,9 +46,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 263529,
-      "real_time": 2.6913607229884033e+03,
-      "cpu_time": 2.6088210405685900e+03,
+      "iterations": 298667,
+      "real_time": 2.8209105793735207e+03,
+      "cpu_time": 2.7204210709586264e+03,
       "time_unit": "ns"
     },
     {
@@ -60,9 +60,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 74667,
-      "real_time": 1.0268532282799286e+04,
-      "cpu_time": 1.0044598015187432e+04,
+      "iterations": 69688,
+      "real_time": 1.1756333945862285e+04,
+      "cpu_time": 1.0089613706807484e+04,
       "time_unit": "ns"
     },
     {
@@ -74,9 +74,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 74667,
-      "real_time": 1.0260664015247125e+04,
-      "cpu_time": 1.0253860473837171e+04,
+      "iterations": 64000,
+      "real_time": 1.1642664062492258e+04,
+      "cpu_time": 1.0986328125000000e+04,
       "time_unit": "ns"
     },
     {
@@ -88,9 +88,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 17231,
-      "real_time": 4.0198769658202051e+04,
-      "cpu_time": 3.9899019209564154e+04,
+      "iterations": 16000,
+      "real_time": 4.5743937498627929e+04,
+      "cpu_time": 4.1015625000000000e+04,
       "time_unit": "ns"
     },
     {
@@ -103,8 +103,8 @@
       "threads": 1,
       "aggregate_name": "BigO",
       "aggregate_unit": "time",
-      "cpu_coefficient": 3.9045575386553502e+01,
-      "real_coefficient": 3.9359237697145694e+01,
+      "cpu_coefficient": 4.0185671950594106e+01,
+      "real_coefficient": 4.4783731757722670e+01,
       "big_o": "N",
       "time_unit": "ns"
     },
@@ -118,7 +118,7 @@
       "threads": 1,
       "aggregate_name": "RMS",
       "aggregate_unit": "percentage",
-      "rms": 9.4536386353972334e-03
+      "rms": 2.3249414768273899e-02
     },
     {
       "name": "RGBIMG_CreateMat/8/8",
@@ -129,9 +129,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 2357895,
-      "real_time": 2.8764474245366307e+02,
-      "cpu_time": 2.8494695480502736e+02,
+      "iterations": 2133333,
+      "real_time": 3.2079497198734003e+02,
+      "cpu_time": 3.2226567535401176e+02,
       "time_unit": "ns"
     },
     {
@@ -143,9 +143,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 1120000,
-      "real_time": 6.9795169640981067e+02,
-      "cpu_time": 6.9754464285714289e+02,
+      "iterations": 896000,
+      "real_time": 7.3144341519894488e+02,
+      "cpu_time": 7.3242187500000000e+02,
       "time_unit": "ns"
     },
     {
@@ -158,7 +158,7 @@
       "repetition_index": 0,
       "threads": 1,
       "iterations": 1120000,
-      "real_time": 6.8564366068000834e+02,
+      "real_time": 6.9803928568684830e+02,
       "cpu_time": 6.8359375000000000e+02,
       "time_unit": "ns"
     },
@@ -172,8 +172,8 @@
       "repetition_index": 0,
       "threads": 1,
       "iterations": 298667,
-      "real_time": 2.2720421070265875e+03,
-      "cpu_time": 2.3018947523496067e+03,
+      "real_time": 2.2745261444430062e+03,
+      "cpu_time": 2.1449473828712244e+03,
       "time_unit": "ns"
     },
     {
@@ -186,8 +186,8 @@
       "threads": 1,
       "aggregate_name": "BigO",
       "aggregate_unit": "time",
-      "cpu_coefficient": 2.3053534041861652e+00,
-      "real_coefficient": 2.2802065248290622e+00,
+      "cpu_coefficient": 2.1791461019298008e+00,
+      "real_coefficient": 2.2940713714651064e+00,
       "big_o": "N",
       "time_unit": "ns"
     },
@@ -201,7 +201,7 @@
       "threads": 1,
       "aggregate_name": "RMS",
       "aggregate_unit": "percentage",
-      "rms": 1.0402306071930571e-01
+      "rms": 1.5206882490735557e-01
     },
     {
       "name": "RGBIMG_CvMat2RgbImage/8/8",
@@ -212,9 +212,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 1600000,
-      "real_time": 5.5340974999126047e+02,
-      "cpu_time": 4.7851562500000000e+02,
+      "iterations": 1000000,
+      "real_time": 5.6372900004498661e+02,
+      "cpu_time": 5.1562500000000000e+02,
       "time_unit": "ns"
     },
     {
@@ -226,9 +226,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 1000000,
-      "real_time": 6.2391750002279878e+02,
-      "cpu_time": 5.0000000000000000e+02,
+      "iterations": 1120000,
+      "real_time": 5.5631946426209265e+02,
+      "cpu_time": 5.0223214285714283e+02,
       "time_unit": "ns"
     },
     {
@@ -240,9 +240,9 @@
       "repetitions": 1,
       "repetition_index": 0,
       "threads": 1,
-      "iterations": 1493333,
-      "real_time": 5.9890720956312714e+02,
-      "cpu_time": 5.3362177089771671e+02,
+      "iterations": 1544828,
+      "real_time": 5.7360683520153452e+02,
+      "cpu_time": 5.4617730905964936e+02,
       "time_unit": "ns"
     },
     {
@@ -255,8 +255,8 @@
       "repetition_index": 0,
       "threads": 1,
       "iterations": 1120000,
-      "real_time": 6.4387366068591029e+02,
-      "cpu_time": 5.9988839285714289e+02,
+      "real_time": 6.1175392859565488e+02,
+      "cpu_time": 4.8828125000000000e+02,
       "time_unit": "ns"
     },
     {
@@ -269,8 +269,8 @@
       "threads": 1,
       "aggregate_name": "BigO",
       "aggregate_unit": "time",
-      "cpu_coefficient": 5.2800644718871490e+02,
-      "real_coefficient": 6.0502703006577417e+02,
+      "cpu_coefficient": 5.1307892547919812e+02,
+      "real_coefficient": 5.7635230702606725e+02,
       "big_o": "(1)",
       "time_unit": "ns"
     },
@@ -284,7 +284,7 @@
       "threads": 1,
       "aggregate_name": "RMS",
       "aggregate_unit": "percentage",
-      "rms": 8.6956585528685987e-02
+      "rms": 4.1739969783369323e-02
     }
   ]
 }
