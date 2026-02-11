@@ -8,6 +8,8 @@ namespace ctk {
 
 class BinaryImage : public AbstractImage<bool> {
 public:
+    using AbstractImage<bool>::Create;
+
     BinaryImage();
     BinaryImage(const BinaryImage& that);
     BinaryImage(const AbstractImage<bool>& that);
@@ -17,6 +19,7 @@ public:
 
     BinaryImage &operator=(const BinaryImage& that);
 
+    void Create(int w, int h, const std::vector<bool>& d);
     void CreateAndFill(int w, int h, bool v);
 
     void Fill(bool v);

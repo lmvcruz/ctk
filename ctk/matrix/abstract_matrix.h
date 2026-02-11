@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -163,22 +164,24 @@ namespace ctk
         }
 
         /**
-         * @brief Allocates matrix and initializes with values from a vector.
+         * @brief Allocates matrix and initializes with values from a span.
          * @param w Width (number of columns). Must be positive.
          * @param h Height (number of rows). Must be positive.
-         * @param vec Vector containing initial values in row-major order.
+         * @param values Span containing initial values in row-major order.
          * @throws invalid_type If the matrix type has not been set.
          * @throws std::bad_alloc If width or height is negative.
-         * @warning The vector must contain at least w*h elements.
+         * @warning The span must contain at least w*h elements.
+         * @note Accepts any contiguous container (vector, array, C-array) via implicit conversion.
          */
-        virtual void Create(int w, int h, const std::vector<T> &vec)
+        virtual void Create(int w, int h, std::span<const T> values)
         {
             if (w > 0 && h > 0)
             {
                 if (type == -1)
                     throw invalid_type();
                 data = cv::Mat(h, w, type);
-                std::copy(vec.begin(), vec.begin() + (w * h), begin());
+                const auto count = static_cast<size_t>(w * h);
+                std::copy_n(values.data(), std::min(count, values.size()), begin());
             }
             else if (w < 0 || h < 0)
             {

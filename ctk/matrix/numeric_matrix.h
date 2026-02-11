@@ -1,5 +1,6 @@
 #pragma once
 
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -18,7 +19,7 @@ public:
 
     NumericMatrix& operator=(const NumericMatrix& that);
 
-    void Create(int w, int h, const std::vector<double> &vec) override;
+    void Create(int w, int h, std::span<const double> values) override;
 
     void Open(std::string_view filename) override;
     void Save(std::string_view filename) const override;

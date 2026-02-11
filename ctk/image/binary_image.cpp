@@ -72,7 +72,18 @@ BinaryImage::BinaryImage(int w, int h, bool v) {
 BinaryImage::BinaryImage(int w, int h, const std::vector<bool> &d) {
     type = CV_8U;
     ch_size = 1;
-    AbstractMatrix::Create(w, h, d);
+    // std::vector<bool> is not contiguous, so we can't use std::span
+    // Manual copy required
+    if (w > 0 && h > 0) {
+        data = cv::Mat(h, w, type);
+        auto it = begin();
+        const auto count = static_cast<size_t>(w * h);
+        for (size_t i = 0; i < count && i < d.size(); ++i, ++it) {
+            *it = d[i];
+        }
+    } else if (w < 0 || h < 0) {
+        throw std::bad_alloc();
+    }
 }
 
 /**
@@ -88,6 +99,26 @@ BinaryImage &BinaryImage::operator=(const BinaryImage &that) {
     ch_size = that.ch_size;
     data = that.data.clone();
     return *this;
+}
+
+/**
+ * @brief BinaryImage::Create Create BinaryImage from vector of bools
+ * @param w  int representing the desired Binary Image width
+ * @param h  int representing the desired Binary Image height
+ * @param d  vector of booleans representing image data
+ * @note std::vector<bool> is a special case that doesn't support std::span
+ */
+void BinaryImage::Create(int w, int h, const std::vector<bool> &d) {
+    if (w > 0 && h > 0) {
+        data = cv::Mat(h, w, type);
+        auto it = begin();
+        const auto count = static_cast<size_t>(w * h);
+        for (size_t i = 0; i < count && i < d.size(); ++i, ++it) {
+            *it = d[i];
+        }
+    } else if (w < 0 || h < 0) {
+        throw std::bad_alloc();
+    }
 }
 
 /**

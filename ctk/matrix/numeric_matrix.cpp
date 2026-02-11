@@ -2,6 +2,7 @@
 
 #include <iomanip>
 #include <iostream>
+#include <span>
 
 #include <opencv2/highgui.hpp>
 
@@ -65,17 +66,10 @@ NumericMatrix &NumericMatrix::operator=(const NumericMatrix &that) {
  * @brief NumericMatrix::Create  Create NumericMatrix
  * @param w  int indicating the number of rows
  * @param h  int indicating the number of coumns
- * @param vec  vector of ints with matrix elements
+ * @param values  span of doubles with matrix elements
  */
-void NumericMatrix::Create(int w, int h, const std::vector<double> &vec) {
-    if (w > 0 && h > 0) {
-        if (type == -1) throw invalid_type();
-        data = cv::Mat(h, w, type);
-        int i=-1;
-        for (auto it = begin(); it != end(); ++it) *it = static_cast<double>(vec[++i]);
-    } else if (w < 0 || h < 0) {
-        throw std::bad_alloc();
-    }
+void NumericMatrix::Create(int w, int h, std::span<const double> values) {
+    AbstractMatrix<double>::Create(w, h, values);
 }
 
 /**

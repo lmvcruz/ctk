@@ -7,7 +7,8 @@ This document tracks improvements for the `AbstractMatrix` class.
 | Branch | Purpose |
 |--------|---------|
 | `dev/no_change` | Baseline benchmark (from develop, no refactoring) |
-| `dev/refactor_abstract_matrix` | Refactored code benchmark |
+| `dev/refactor_abstract_matrix` | Refactored code (C++17) |
+| `dev/cpp20_std_span` | C++20 with std::span |
 
 Results are saved in `misc/abstract_matrix_refactoring/results/`.
 
@@ -39,36 +40,46 @@ Results are saved in `misc/abstract_matrix_refactoring/results/`.
 
 - [x] **Fix typo** - `"AbstractMatyrix"` → `"AbstractMatrix"` in exception messages
 - [x] **Complete Doxygen documentation** - Full documentation for all public members
-- [ ] **Use `std::span`** - For `Create()` vector parameter (C++20, future)
+- [x] **Use `std::span`** - For `Create()` vector parameter (C++20)
+  - Note: `std::vector<bool>` requires special handling (not contiguous)
 - [ ] **Use `size_t`** - For size-related return types (future)
 
 ---
 
 ## Benchmark Results Comparison
 
-### Key Benchmarks (Time in ns, lower is better)
+### Three-Way Comparison (Baseline vs C++17 Refactored vs C++20 std::span)
 
-| Benchmark | Baseline | Refactored | Change |
-|-----------|----------|------------|--------|
-| NM_CreateNumericMatrix/8/8 | 1244 ns | 1099 ns | **-11.7%** ✅ |
-| NM_CreateNumericMatrix/32/32 | 16029 ns | 14218 ns | **-11.3%** ✅ |
-| NM_Vec2NumericMatrix/8/8 | 357 ns | 222 ns | **-37.8%** ✅ |
-| NM_Vec2NumericMatrix/32/32 | 1867 ns | 830 ns | **-55.5%** ✅ |
-| NM_CvMat2NumericMatrix/8/8 | 335 ns | 269 ns | **-19.7%** ✅ |
-| NM_CvMat2NumericMatrix/32/32 | 475 ns | 375 ns | **-21.1%** ✅ |
-| NM_Sum/8 | 996 ns | 792 ns | **-20.5%** ✅ |
-| NM_Diff/32 | 1649 ns | 1160 ns | **-29.7%** ✅ |
+| Benchmark | Baseline | C++17 Refactored | C++20 std::span | Baseline → C++17 | C++17 → C++20 |
+|-----------|----------|------------------|-----------------|------------------|---------------|
+| NM_CreateNumericMatrix/8/8 | 1244 ns | 1099 ns | 1088 ns | **-11.7%** ✅ | **-1.0%** |
+| NM_CreateNumericMatrix/32/32 | 16029 ns | 14218 ns | 13184 ns | **-11.3%** ✅ | **-7.3%** ✅ |
+| NM_Vec2NumericMatrix/8/8 | 357 ns | 222 ns | 176 ns | **-37.8%** ✅ | **-20.7%** ✅ |
+| NM_Vec2NumericMatrix/32/32 | 1867 ns | 830 ns | 279 ns | **-55.5%** ✅ | **-66.4%** ✅ |
+| NM_CvMat2NumericMatrix/8/8 | 335 ns | 269 ns | 239 ns | **-19.7%** ✅ | **-11.2%** ✅ |
+| NM_CvMat2NumericMatrix/32/32 | 475 ns | 375 ns | ~375 ns | **-21.1%** ✅ | ~0% |
 
 ### Summary
 
+**C++17 Refactoring (vs Baseline):**
 - **Matrix creation**: ~11% faster
 - **Vector to Matrix**: ~38-55% faster (major improvement!)
 - **cv::Mat to Matrix**: ~20% faster
-- **Arithmetic operations**: ~20-30% faster
+
+**C++20 std::span (vs C++17 Refactored):**
+- **Matrix creation**: ~1-7% faster
+- **Vector to Matrix**: ~20-66% faster (additional major improvement!)
+- **cv::Mat to Matrix**: ~11% faster
+
+**Total Improvement (Baseline → C++20):**
+- **Matrix creation**: ~12-18% faster
+- **Vector to Matrix**: ~51-85% faster 🚀
+- **cv::Mat to Matrix**: ~20-30% faster
 
 Full results available in JSON format:
-- `results/baseline.json` - Before refactoring
-- `results/refactored.json` - After refactoring
+- `results/baseline.json` - Before refactoring (C++17)
+- `results/refactored.json` - After C++17 refactoring
+- `results/cpp20_span.json` - C++20 with std::span
 
 ---
 
